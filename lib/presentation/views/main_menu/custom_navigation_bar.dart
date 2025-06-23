@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/presentation/views/main_menu/game_history_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
+
+class CustomNavigationBar extends StatefulWidget {
+  const CustomNavigationBar({super.key});
+
+  @override
+  State<CustomNavigationBar> createState() => _CustomNavigationBarState();
+}
+
+class _CustomNavigationBarState extends State<CustomNavigationBar>
+    with SingleTickerProviderStateMixin {
+  int currentIndex = 0;
+  final List<Widget> tabs = [
+    const HomeView(),
+    const GameHistoryView(),
+    const GroupsView(),
+    const StatisticsView(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: CustomTheme.backgroundColor,
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+        ],
+        elevation: 0,
+      ),
+      backgroundColor: CustomTheme.backgroundColor,
+      body: tabs[currentIndex],
+      extendBody: true,
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: CustomTheme.primaryColor,
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        elevation: 10,
+        height: 60,
+        color: CustomTheme.primaryColor,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 5,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.home,
+                color: currentIndex == 0 ? Colors.white : Colors.black,
+              ),
+              onPressed: () => onTabTapped(0),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.history,
+                color: currentIndex == 1 ? Colors.white : Colors.black,
+              ),
+              onPressed: () => onTabTapped(1),
+            ),
+            const SizedBox(width: 40),
+            IconButton(
+              icon: Icon(
+                Icons.group,
+                color: currentIndex == 2 ? Colors.white : Colors.black,
+              ),
+              onPressed: () => onTabTapped(2),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.bar_chart,
+                color: currentIndex == 3 ? Colors.white : Colors.black,
+              ),
+              onPressed: () => onTabTapped(3),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
