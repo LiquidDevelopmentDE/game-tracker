@@ -14,9 +14,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Game Tracker',
-      themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark(),
-      theme: ThemeData(appBarTheme: CustomTheme.appBarTheme),
+
+      themeMode: ThemeMode.dark, // forces light mode
+      theme: ThemeData(
+        primaryColor: CustomTheme.primaryColor,
+        scaffoldBackgroundColor: CustomTheme.backgroundColor,
+        appBarTheme: CustomTheme.appBarTheme,
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: CustomTheme.primaryColor,
+          brightness: Brightness.dark,
+        ).copyWith(surface: CustomTheme.backgroundColor),
+      ),
+
       home: const CustomNavigationBar(),
     );
   }

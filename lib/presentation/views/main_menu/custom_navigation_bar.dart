@@ -3,6 +3,7 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/presentation/views/main_menu/game_history_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
 
 class CustomNavigationBar extends StatefulWidget {
@@ -22,12 +23,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     const StatisticsView(),
   ];
 
-  void onTabTapped(int index) {
-    setState(() {
-      currentIndex = index;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -39,7 +34,13 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsView()),
+            ),
+            icon: const Icon(Icons.settings),
+          ),
         ],
         elevation: 0,
       ),
@@ -97,5 +98,11 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
         ),
       ),
     );
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
   }
 }
