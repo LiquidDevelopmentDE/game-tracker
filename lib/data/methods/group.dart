@@ -21,7 +21,7 @@ extension GroupMethods on AppDatabase {
   }
 
   Future<void> updateGroupname(String id, String newName) async {
-    await (update(group)..where((u) => u.id.equals(id))).write(
+    await (update(group)..where((g) => g.id.equals(id))).write(
       GroupCompanion(name: Value(newName)),
     );
   }
