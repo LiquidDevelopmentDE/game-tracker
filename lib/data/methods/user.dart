@@ -1,7 +1,7 @@
 import 'package:game_tracker/data/database.dart';
 import 'package:drift/drift.dart';
 
-extension User on AppDatabase {
+extension UserMethods on AppDatabase {
   Future<List<UserData>> getAllUsers() async {
     return await select(user).get();
   }
