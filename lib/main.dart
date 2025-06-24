@@ -8,7 +8,7 @@ void main() {
   runApp(
     Provider<AppDatabase>(
       create: (context) => AppDatabase(),
-      child: MyApp(),
+      child: const MyApp(),
       dispose: (context, db) => db.close(),
    ),
   );
