@@ -6,8 +6,8 @@ extension GroupMethods on AppDatabase {
     return await select(group).get();
   }
 
-  Future<List<GroupData>> getGroupById(String id) async {
-    return await (select(group)..where((g) => g.id.equals(id))).get();
+  Future<GroupData> getGroupById(String id) async {
+    return await (select(group)..where((g) => g.id.equals(id))).getSingle();
   }
 
   Future<void> addGroup(String id, String name) async {

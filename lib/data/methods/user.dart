@@ -6,8 +6,8 @@ extension UserMethods on AppDatabase {
     return await select(user).get();
   }
 
-  Future<List<UserData>> getUserById(String id) async {
-    return await (select(user)..where((u) => u.id.equals(id))).get();
+  Future<UserData> getUserById(String id) async {
+    return await (select(user)..where((u) => u.id.equals(id))).getSingle();
   }
 
   Future<void> addUser(String id, String name) async {
