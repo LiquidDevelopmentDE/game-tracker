@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/data/database.dart';
 import 'package:game_tracker/presentation/views/home_view.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    Provider<AppDatabase>(
+      create: (context) => AppDatabase(),
+      child: MyApp(),
+      dispose: (context, db) => db.close(),
+   ),
+  );
 }
 
 class MyApp extends StatelessWidget {
