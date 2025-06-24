@@ -17,7 +17,7 @@ extension Group on AppDatabase {
   }
 
   Future<void> deleteGroup(String id) async {
-    await (delete(group)..where((u) => u.id.equals(id))).go();
+    await (delete(group)..where((g) => g.id.equals(id))).go();
   }
 
   Future<void> updateGroupname(String id, String newName) async {
