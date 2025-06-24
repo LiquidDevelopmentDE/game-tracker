@@ -1,7 +1,7 @@
 import 'package:game_tracker/data/database.dart';
 import 'package:drift/drift.dart';
 
-extension Group on AppDatabase {
+extension GroupMethods on AppDatabase {
   Future<List<GroupData>> getAllGroups() async {
     return await select(group).get();
   }
