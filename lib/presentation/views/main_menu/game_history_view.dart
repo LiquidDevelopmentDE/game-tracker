@@ -119,7 +119,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
     },
   ];
   late List<Map<String, dynamic>> suggestedGameData;
-  
+
   @override
   void initState() {
     super.initState();
@@ -134,9 +134,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
         children: [
           Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 75),
-              ),
+              Container(margin: EdgeInsets.only(bottom: 75)),
               Expanded(
                 child: gameHistoryListView(allGameData, suggestedGameData),
               ),
@@ -146,7 +144,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
             margin: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
             child: SearchBar(
               leading: Icon(Icons.search),
-              onChanged:(value) {
+              onChanged: (value) {
                 if (value.isEmpty) {
                   setState(() {
                     suggestedGameData.clear();
@@ -155,9 +153,15 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                   return;
                 }
                 final suggestions = allGameData.where((currentGame) {
-                  return currentGame['game'].toString().toLowerCase().contains(value.toLowerCase()) ||
-                         currentGame['title'].toString().toLowerCase().contains(value.toLowerCase()) ||
-                         currentGame['group'].toString().toLowerCase().contains(value.toLowerCase());
+                  return currentGame['game'].toString().toLowerCase().contains(
+                        value.toLowerCase(),
+                      ) ||
+                      currentGame['title'].toString().toLowerCase().contains(
+                        value.toLowerCase(),
+                      ) ||
+                      currentGame['group'].toString().toLowerCase().contains(
+                        value.toLowerCase(),
+                      );
                 });
                 setState(() {
                   suggestedGameData.clear();
@@ -179,10 +183,10 @@ Widget gameHistoryListView(allGameData, suggestedGameData) {
     return TopCenteredMessage("Kein Spiel mit den Suchparametern gefunden.");
   }
   return ListView.builder(
-          itemCount: suggestedGameData.length,
-          itemBuilder: (context, index) { 
-            final currentGame = suggestedGameData[index];
-            return GameHistoryListTile(currentGame);
-          }
-        );
+    itemCount: suggestedGameData.length,
+    itemBuilder: (context, index) {
+      final currentGame = suggestedGameData[index];
+      return GameHistoryListTile(currentGame);
+    },
+  );
 }

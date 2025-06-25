@@ -35,10 +35,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
         centerTitle: true,
         title: Text(
           _currentTabTitle(),
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
@@ -114,6 +111,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       currentIndex = index;
     });
   }
+
   String _currentTabTitle() {
     switch (currentIndex) {
       case 0:
