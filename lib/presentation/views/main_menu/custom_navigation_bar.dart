@@ -33,6 +33,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
+        scrolledUnderElevation: 0,
         actions: [
           IconButton(
             onPressed: () => Navigator.push(
