@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget GameHistoryEmptyBuilder(message) {
+Widget GameHistoryEmptyBuilder(String message) {
   return Container(
       padding: EdgeInsets.only(top:100),
       margin: EdgeInsets.only(left: 10, right: 10),
