@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-Widget GameHistoryListTile(currentGame){
+Widget GameHistoryListTile(Map<String, dynamic> currentGame){
   return  Container(
             margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
             padding: EdgeInsets.all(10),
