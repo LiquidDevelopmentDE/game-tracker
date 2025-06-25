@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/custom_navigation_bar.dart';
+import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/database.dart';
-import 'package:game_tracker/presentation/views/home_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -19,11 +21,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Game Tracker',
+      darkTheme: ThemeData.dark(),
+
+      themeMode: ThemeMode.dark, // forces dark mode
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primaryColor: CustomTheme.primaryColor,
+        scaffoldBackgroundColor: CustomTheme.backgroundColor,
+        appBarTheme: CustomTheme.appBarTheme,
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: CustomTheme.primaryColor,
+          brightness: Brightness.dark,
+        ).copyWith(surface: CustomTheme.backgroundColor),
       ),
-      home: const HomeView(),
+
+      home: const CustomNavigationBar(),
     );
   }
 }
