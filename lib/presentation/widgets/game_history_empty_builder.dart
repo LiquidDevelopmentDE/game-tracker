@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/presentation/widgets/game_history_listtile.dart';
 
 Widget GameHistoryEmptyBuilder(message) {
   return Container(
