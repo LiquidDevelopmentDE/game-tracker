@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
-import 'package:game_tracker/presentation/widgets/game_history_listtile.dart';
+import 'package:game_tracker/presentation/widgets/double_row_info_tile.dart';
 
 class GameHistoryView extends StatefulWidget {
   const GameHistoryView({super.key});
@@ -21,7 +21,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
     },
     {
       'game': 'Monopoly',
-      'title': 'Wochenendspaß',
+      'title': 'Wochenendspaß mit Gras du Saas',
       'players': 4,
       'group': 'Freunde',
       'date': '28.05.2024',
@@ -186,7 +186,13 @@ Widget gameHistoryListView(allGameData, suggestedGameData) {
     itemCount: suggestedGameData.length,
     itemBuilder: (context, index) {
       final currentGame = suggestedGameData[index];
-      return GameHistoryListTile(currentGame);
+      return doubleRowInfoTile(
+        currentGame['game'] + ": ",
+        currentGame['title'],
+        currentGame['players'].toString() + " Spieler",
+        currentGame['group'],
+        currentGame['date'],
+      );
     },
   );
 }
