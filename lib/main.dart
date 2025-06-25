@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Game Tracker',
       darkTheme: ThemeData.dark(),
 
-      themeMode: ThemeMode.dark, // forces light mode
+      themeMode: ThemeMode.dark, // forces dark mode
       theme: ThemeData(
         primaryColor: CustomTheme.primaryColor,
         scaffoldBackgroundColor: CustomTheme.backgroundColor,
