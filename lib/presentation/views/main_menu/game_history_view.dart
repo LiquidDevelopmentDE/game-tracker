@@ -118,7 +118,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
       'date': '25.04.2024',
     },
   ];
-  late List<Map<dynamic, dynamic>> suggestedGameData;
+  late List<Map<String, dynamic>> suggestedGameData;
   
   @override
   void initState() {
