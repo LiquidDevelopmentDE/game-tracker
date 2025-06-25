@@ -32,6 +32,14 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          _currentTabTitle(),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
         actions: [
@@ -83,7 +91,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             const SizedBox(width: 40),
             IconButton(
               icon: Icon(
-                Icons.group,
+                Icons.groups,
                 color: currentIndex == 2 ? Colors.white : Colors.black,
               ),
               onPressed: () => onTabTapped(2),
@@ -105,5 +113,19 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     setState(() {
       currentIndex = index;
     });
+  }
+  String _currentTabTitle() {
+    switch (currentIndex) {
+      case 0:
+        return 'Home';
+      case 1:
+        return 'Game History';
+      case 2:
+        return 'Groups';
+      case 3:
+        return 'Statistics';
+      default:
+        return '';
+    }
   }
 }
