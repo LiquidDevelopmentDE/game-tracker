@@ -8,11 +8,22 @@ import 'package:game_tracker/data/tables/game_table.dart';
 import 'package:game_tracker/data/tables/match_table.dart';
 import 'package:game_tracker/data/tables/result_score_table.dart';
 import 'package:game_tracker/data/tables/result_win_table.dart';
-import 'package:game_tracker/data/tables/result_placement_table.dart';  
+import 'package:game_tracker/data/tables/result_placement_table.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [UserTable, GroupTable, UserGroupTable, GameTable, MatchTable, ResultScoreTable, ResultWinTable, ResultPlacementTable])
+@DriftDatabase(
+  tables: [
+    UserTable,
+    GroupTable,
+    UserGroupTable,
+    GameTable,
+    MatchTable,
+    ResultScoreTable,
+    ResultWinTable,
+    ResultPlacementTable,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
