@@ -9,6 +9,8 @@ class LanguageView extends StatefulWidget {
 }
 
 class _LanguageViewState extends State<LanguageView> {
+  String _selectedLanguage = "Systemstandard";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,25 +21,31 @@ class _LanguageViewState extends State<LanguageView> {
           ListTile(
             title: Text("Systemstandard"),
             leading: Radio(
-              value: Null,
-              groupValue: Null, 
-              onChanged: (value) {},
+              value: "Systemstandard",
+              groupValue: _selectedLanguage, 
+              onChanged: (value) {setState(() {
+                _selectedLanguage = value.toString();
+              });},
             ),
           ),
           ListTile(
             title: Text("Deutsch"),
             leading: Radio(
-              value: Null,
-              groupValue: Null, 
-              onChanged: (value) {},
+              value: "Deutsch",
+              groupValue: _selectedLanguage, 
+              onChanged: (value) {setState(() {
+                _selectedLanguage = value.toString();
+              });},
             ),
           ),
           ListTile(
             title: Text("Englisch"),
             leading: Radio(
-              value: Null,
-              groupValue: Null, 
-              onChanged: (value) {},
+              value: "Englisch",
+              groupValue: _selectedLanguage,
+              onChanged: (value) {setState(() {
+                _selectedLanguage = value.toString();
+              });},
             ),
           )
         ],

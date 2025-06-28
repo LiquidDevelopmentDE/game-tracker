@@ -9,6 +9,8 @@ class ThemeView extends StatefulWidget {
 }
 
 class _ThemeViewState extends State<ThemeView> {
+  String _selectedTheme = "Systemstandard";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,25 +21,31 @@ class _ThemeViewState extends State<ThemeView> {
           ListTile(
             title: Text("Systemstandard"),
             leading: Radio(
-              value: Null,
-              groupValue: Null, 
-              onChanged: (value) {},
+              value: "Systemstandard",
+              groupValue: _selectedTheme, 
+              onChanged: (value) {setState(() {
+                _selectedTheme = value.toString();
+              });},
             ),
           ),
           ListTile(
             title: Text("Dunkel"),
             leading: Radio(
-              value: Null,
-              groupValue: Null, 
-              onChanged: (value) {},
+              value: "Dunkel",
+              groupValue: _selectedTheme, 
+              onChanged: (value) {setState(() {
+                _selectedTheme = value.toString();
+              });},
             ),
           ),
           ListTile(
             title: Text("Hell"),
             leading: Radio(
-              value: Null,
-              groupValue: Null, 
-              onChanged: (value) {},
+              value: "Hell",
+              groupValue: _selectedTheme,
+              onChanged: (value) {setState(() {
+                _selectedTheme = value.toString();
+              });},
             ),
           )
         ],
