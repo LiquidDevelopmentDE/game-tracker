@@ -6,6 +6,7 @@ class MatchTable extends Table {
   TextColumn get id => text()();
   IntColumn get gameId => integer().references(GameTable, #id)();
   TextColumn get groupId => text().nullable().references(GroupTable, #id)();
+  DateTimeColumn get createdAt => dateTime()();
 
   @override
   Set<Column<Object>> get primaryKey => {id};
