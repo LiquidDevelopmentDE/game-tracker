@@ -5,7 +5,7 @@ import 'group_table.dart';
 class MatchTable extends Table {
   TextColumn get id => text()();
   IntColumn get gameId => integer().references(GameTable, #id)();
-  TextColumn get groupId => text().nullable().references(GroupTable, #id)();
+  TextColumn get groupId => text().references(GroupTable, #id)();
   DateTimeColumn get createdAt => dateTime()();
 
   @override
