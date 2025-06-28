@@ -913,15 +913,26 @@ class $MatchTableTable extends MatchTable
   late final GeneratedColumn<String> groupId = GeneratedColumn<String>(
     'group_id',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.string,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'REFERENCES group_table (id)',
     ),
   );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, gameId, groupId];
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, gameId, groupId, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -952,6 +963,16 @@ class $MatchTableTable extends MatchTable
         _groupIdMeta,
         groupId.isAcceptableOrUnknown(data['group_id']!, _groupIdMeta),
       );
+    } else if (isInserting) {
+      context.missing(_groupIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
     }
     return context;
   }
@@ -973,7 +994,11 @@ class $MatchTableTable extends MatchTable
       groupId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}group_id'],
-      ),
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -986,16 +1011,21 @@ class $MatchTableTable extends MatchTable
 class MatchTableData extends DataClass implements Insertable<MatchTableData> {
   final String id;
   final int gameId;
-  final String? groupId;
-  const MatchTableData({required this.id, required this.gameId, this.groupId});
+  final String groupId;
+  final DateTime createdAt;
+  const MatchTableData({
+    required this.id,
+    required this.gameId,
+    required this.groupId,
+    required this.createdAt,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['game_id'] = Variable<int>(gameId);
-    if (!nullToAbsent || groupId != null) {
-      map['group_id'] = Variable<String>(groupId);
-    }
+    map['group_id'] = Variable<String>(groupId);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
@@ -1003,9 +1033,8 @@ class MatchTableData extends DataClass implements Insertable<MatchTableData> {
     return MatchTableCompanion(
       id: Value(id),
       gameId: Value(gameId),
-      groupId: groupId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(groupId),
+      groupId: Value(groupId),
+      createdAt: Value(createdAt),
     );
   }
 
@@ -1017,7 +1046,8 @@ class MatchTableData extends DataClass implements Insertable<MatchTableData> {
     return MatchTableData(
       id: serializer.fromJson<String>(json['id']),
       gameId: serializer.fromJson<int>(json['gameId']),
-      groupId: serializer.fromJson<String?>(json['groupId']),
+      groupId: serializer.fromJson<String>(json['groupId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -1026,24 +1056,28 @@ class MatchTableData extends DataClass implements Insertable<MatchTableData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'gameId': serializer.toJson<int>(gameId),
-      'groupId': serializer.toJson<String?>(groupId),
+      'groupId': serializer.toJson<String>(groupId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
   MatchTableData copyWith({
     String? id,
     int? gameId,
-    Value<String?> groupId = const Value.absent(),
+    String? groupId,
+    DateTime? createdAt,
   }) => MatchTableData(
     id: id ?? this.id,
     gameId: gameId ?? this.gameId,
-    groupId: groupId.present ? groupId.value : this.groupId,
+    groupId: groupId ?? this.groupId,
+    createdAt: createdAt ?? this.createdAt,
   );
   MatchTableData copyWithCompanion(MatchTableCompanion data) {
     return MatchTableData(
       id: data.id.present ? data.id.value : this.id,
       gameId: data.gameId.present ? data.gameId.value : this.gameId,
       groupId: data.groupId.present ? data.groupId.value : this.groupId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -1052,50 +1086,59 @@ class MatchTableData extends DataClass implements Insertable<MatchTableData> {
     return (StringBuffer('MatchTableData(')
           ..write('id: $id, ')
           ..write('gameId: $gameId, ')
-          ..write('groupId: $groupId')
+          ..write('groupId: $groupId, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, gameId, groupId);
+  int get hashCode => Object.hash(id, gameId, groupId, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MatchTableData &&
           other.id == this.id &&
           other.gameId == this.gameId &&
-          other.groupId == this.groupId);
+          other.groupId == this.groupId &&
+          other.createdAt == this.createdAt);
 }
 
 class MatchTableCompanion extends UpdateCompanion<MatchTableData> {
   final Value<String> id;
   final Value<int> gameId;
-  final Value<String?> groupId;
+  final Value<String> groupId;
+  final Value<DateTime> createdAt;
   final Value<int> rowid;
   const MatchTableCompanion({
     this.id = const Value.absent(),
     this.gameId = const Value.absent(),
     this.groupId = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   MatchTableCompanion.insert({
     required String id,
     required int gameId,
-    this.groupId = const Value.absent(),
+    required String groupId,
+    required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       gameId = Value(gameId);
+       gameId = Value(gameId),
+       groupId = Value(groupId),
+       createdAt = Value(createdAt);
   static Insertable<MatchTableData> custom({
     Expression<String>? id,
     Expression<int>? gameId,
     Expression<String>? groupId,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (gameId != null) 'game_id': gameId,
       if (groupId != null) 'group_id': groupId,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1103,13 +1146,15 @@ class MatchTableCompanion extends UpdateCompanion<MatchTableData> {
   MatchTableCompanion copyWith({
     Value<String>? id,
     Value<int>? gameId,
-    Value<String?>? groupId,
+    Value<String>? groupId,
+    Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
     return MatchTableCompanion(
       id: id ?? this.id,
       gameId: gameId ?? this.gameId,
       groupId: groupId ?? this.groupId,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1126,6 +1171,9 @@ class MatchTableCompanion extends UpdateCompanion<MatchTableData> {
     if (groupId.present) {
       map['group_id'] = Variable<String>(groupId.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1138,6 +1186,7 @@ class MatchTableCompanion extends UpdateCompanion<MatchTableData> {
           ..write('id: $id, ')
           ..write('gameId: $gameId, ')
           ..write('groupId: $groupId, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3449,14 +3498,16 @@ typedef $$MatchTableTableCreateCompanionBuilder =
     MatchTableCompanion Function({
       required String id,
       required int gameId,
-      Value<String?> groupId,
+      required String groupId,
+      required DateTime createdAt,
       Value<int> rowid,
     });
 typedef $$MatchTableTableUpdateCompanionBuilder =
     MatchTableCompanion Function({
       Value<String> id,
       Value<int> gameId,
-      Value<String?> groupId,
+      Value<String> groupId,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 
@@ -3486,9 +3537,9 @@ final class $$MatchTableTableReferences
         $_aliasNameGenerator(db.matchTable.groupId, db.groupTable.id),
       );
 
-  $$GroupTableTableProcessedTableManager? get groupId {
-    final $_column = $_itemColumn<String>('group_id');
-    if ($_column == null) return null;
+  $$GroupTableTableProcessedTableManager get groupId {
+    final $_column = $_itemColumn<String>('group_id')!;
+
     final manager = $$GroupTableTableTableManager(
       $_db,
       $_db.groupTable,
@@ -3584,6 +3635,11 @@ class $$MatchTableTableFilterComposer
   });
   ColumnFilters<String> get id => $composableBuilder(
     column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3723,6 +3779,11 @@ class $$MatchTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$GameTableTableOrderingComposer get gameId {
     final $$GameTableTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -3781,6 +3842,9 @@ class $$MatchTableTableAnnotationComposer
   });
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   $$GameTableTableAnnotationComposer get gameId {
     final $$GameTableTableAnnotationComposer composer = $composerBuilder(
@@ -3941,24 +4005,28 @@ class $$MatchTableTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<int> gameId = const Value.absent(),
-                Value<String?> groupId = const Value.absent(),
+                Value<String> groupId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MatchTableCompanion(
                 id: id,
                 gameId: gameId,
                 groupId: groupId,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
                 required int gameId,
-                Value<String?> groupId = const Value.absent(),
+                required String groupId,
+                required DateTime createdAt,
                 Value<int> rowid = const Value.absent(),
               }) => MatchTableCompanion.insert(
                 id: id,
                 gameId: gameId,
                 groupId: groupId,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
