@@ -1,7 +1,7 @@
 import 'package:game_tracker/data/database.dart';
 import 'package:drift/drift.dart';
 
-extension UserMethods on AppDatabase {
+extension UserDao on AppDatabase {
   Future<List<UserTableData>> getAllUsers() async {
     return await select(userTable).get();
   }
@@ -11,9 +11,7 @@ extension UserMethods on AppDatabase {
   }
 
   Future<void> addUser(String id, String name) async {
-    await into(userTable).insert(
-      UserTableCompanion.insert(id: id, name: name),
-    );
+    await into(userTable).insert(UserTableCompanion.insert(id: id, name: name));
   }
 
   Future<void> deleteUser(String id) async {

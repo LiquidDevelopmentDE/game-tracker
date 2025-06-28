@@ -1,19 +1,21 @@
 import 'package:game_tracker/data/database.dart';
 import 'package:drift/drift.dart';
 
-extension GroupMethods on AppDatabase {
+extension GroupDao on AppDatabase {
   Future<List<GroupTableData>> getAllGroups() async {
     return await select(groupTable).get();
   }
 
   Future<GroupTableData> getGroupById(String id) async {
-    return await (select(groupTable)..where((g) => g.id.equals(id))).getSingle();
+    return await (select(
+      groupTable,
+    )..where((g) => g.id.equals(id))).getSingle();
   }
 
   Future<void> addGroup(String id, String name) async {
-    await into(groupTable).insert(
-      GroupTableCompanion.insert(id: id, name: name),
-    );
+    await into(
+      groupTable,
+    ).insert(GroupTableCompanion.insert(id: id, name: name));
   }
 
   Future<void> deleteGroup(String id) async {
