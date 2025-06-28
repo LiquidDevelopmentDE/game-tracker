@@ -14,7 +14,7 @@ extension UserDao on AppDatabase {
     await into(userTable).insert(UserTableCompanion.insert(id: id, name: name));
   }
 
-  Future<void> deleteUser(String id) async {
+  Future<void> deleteUserById(String id) async {
     await (delete(userTable)..where((u) => u.id.equals(id))).go();
   }
 

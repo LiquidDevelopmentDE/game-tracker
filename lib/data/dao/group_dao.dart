@@ -9,7 +9,7 @@ extension GroupDao on AppDatabase {
   Future<GroupTableData> getGroupById(String id) async {
     return await (select(
       groupTable,
-    )..where((g) => g.id.equals(id))).getSingle();
+    )..where((gr) => gr.id.equals(id))).getSingle();
   }
 
   Future<void> addGroup(String id, String name) async {
@@ -18,12 +18,12 @@ extension GroupDao on AppDatabase {
     ).insert(GroupTableCompanion.insert(id: id, name: name));
   }
 
-  Future<void> deleteGroup(String id) async {
-    await (delete(groupTable)..where((g) => g.id.equals(id))).go();
+  Future<void> deleteGroupById(String id) async {
+    await (delete(groupTable)..where((gr) => gr.id.equals(id))).go();
   }
 
-  Future<void> updateGroupname(String id, String newName) async {
-    await (update(groupTable)..where((g) => g.id.equals(id))).write(
+  Future<void> updateGroupName(String id, String newName) async {
+    await (update(groupTable)..where((gr) => gr.id.equals(id))).write(
       GroupTableCompanion(name: Value(newName)),
     );
   }
