@@ -28,7 +28,7 @@ extension ResultScoreDao on AppDatabase {
     await (delete(resultScoreTable)..where((rS) => rS.matchId.equals(matchId))).go();
   }
 
-  Future<void> updateResultScore(String matchId, String userId, int score) async {
+  Future<void> updateResultScoreByMatchIdAndUserId(String matchId, String userId, int score) async {
     await (update(resultScoreTable)..where((rS) => rS.matchId.equals(matchId))..where((rS) => rS.userId.equals(userId))).write(
       ResultScoreTableCompanion(score: Value(score)),
     );

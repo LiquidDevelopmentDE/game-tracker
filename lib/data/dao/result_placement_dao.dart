@@ -28,7 +28,7 @@ extension ResultPlacementDao on AppDatabase {
     await (delete(resultPlacementTable)..where((rP) => rP.matchId.equals(matchId))).go();
   }
 
-  Future<void> updateResultPlacement(String matchId, String userId, int placement) async {
+  Future<void> updateResultPlacementByMatchIdAndUserId(String matchId, String userId, int placement) async {
     await (update(resultPlacementTable)..where((rP) => rP.matchId.equals(matchId))..where((rP) => rP.userId.equals(userId))).write(
       ResultPlacementTableCompanion(placement: Value(placement)),
     );

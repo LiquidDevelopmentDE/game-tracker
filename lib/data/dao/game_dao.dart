@@ -22,7 +22,7 @@ extension GameDao on AppDatabase {
     await (delete(gameTable)..where((ga) => ga.id.equals(id))).go();
   }
 
-  Future<void> updateGameName(int id, String newName) async {
+  Future<void> updateGameNameById(int id, String newName) async {
     await (update(gameTable)..where((ga) => ga.id.equals(id))).write(
       GameTableCompanion(name: Value(newName)),
     );

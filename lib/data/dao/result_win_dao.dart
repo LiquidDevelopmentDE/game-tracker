@@ -28,7 +28,7 @@ extension ResultWinDao on AppDatabase {
     await (delete(resultWinTable)..where((rW) => rW.matchId.equals(matchId))).go();
   }
 
-  Future<void> updateResultWin(String matchId, String newWinnerId) async {
+  Future<void> updateResultWinByMatchIdAndUserId(String matchId, String newWinnerId) async {
     await (update(resultWinTable)..where((rW) => rW.matchId.equals(matchId))).write(
       ResultWinTableCompanion(winnerId: Value(newWinnerId)),
     );

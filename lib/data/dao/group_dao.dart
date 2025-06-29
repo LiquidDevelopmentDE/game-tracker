@@ -22,7 +22,7 @@ extension GroupDao on AppDatabase {
     await (delete(groupTable)..where((gr) => gr.id.equals(id))).go();
   }
 
-  Future<void> updateGroupName(String id, String newName) async {
+  Future<void> updateGroupNameById(String id, String newName) async {
     await (update(groupTable)..where((gr) => gr.id.equals(id))).write(
       GroupTableCompanion(name: Value(newName)),
     );
