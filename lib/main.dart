@@ -10,7 +10,7 @@ void main() {
       create: (context) => AppDatabase(),
       child: const MyApp(),
       dispose: (context, db) => db.close(),
-   ),
+    ),
   );
 }
 
