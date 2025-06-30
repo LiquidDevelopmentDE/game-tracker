@@ -20,6 +20,11 @@ class _LanguageViewState extends State<LanguageView> {
         children: [
           ListTile(
             title: Text("Systemstandard"),
+            onTap: () {
+              setState(() {
+                _selectedLanguage = "Systemstandard";
+              });
+            },
             leading: Radio(
               value: "Systemstandard",
               groupValue: _selectedLanguage, 
@@ -30,6 +35,11 @@ class _LanguageViewState extends State<LanguageView> {
           ),
           ListTile(
             title: Text("Deutsch"),
+            onTap: () {
+              setState(() {
+                _selectedLanguage = "Deutsch";
+              });
+            },
             leading: Radio(
               value: "Deutsch",
               groupValue: _selectedLanguage, 
@@ -40,6 +50,11 @@ class _LanguageViewState extends State<LanguageView> {
           ),
           ListTile(
             title: Text("Englisch"),
+            onTap: () {
+              setState(() {
+                _selectedLanguage = "Englisch";
+              });
+            },
             leading: Radio(
               value: "Englisch",
               groupValue: _selectedLanguage,

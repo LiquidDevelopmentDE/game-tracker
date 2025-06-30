@@ -20,6 +20,11 @@ class _ThemeViewState extends State<ThemeView> {
         children: [
           ListTile(
             title: Text("Systemstandard"),
+            onTap: () {
+              setState(() {
+                _selectedTheme = "Systemstandard";
+              });
+            },
             leading: Radio(
               value: "Systemstandard",
               groupValue: _selectedTheme, 
@@ -30,6 +35,11 @@ class _ThemeViewState extends State<ThemeView> {
           ),
           ListTile(
             title: Text("Dunkel"),
+            onTap: () {
+              setState(() {
+                _selectedTheme = "Dunkel";
+              });
+            },
             leading: Radio(
               value: "Dunkel",
               groupValue: _selectedTheme, 
@@ -40,6 +50,11 @@ class _ThemeViewState extends State<ThemeView> {
           ),
           ListTile(
             title: Text("Hell"),
+            onTap: () {
+              setState(() {
+                _selectedTheme = "Hell";
+              });
+            },
             leading: Radio(
               value: "Hell",
               groupValue: _selectedTheme,
