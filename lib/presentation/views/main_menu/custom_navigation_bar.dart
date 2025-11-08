@@ -65,7 +65,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
           children: <Widget>[
             const SizedBox(width: 0),
             _buildNavItem(Icons.home, 'Home', 0),
-            _buildNavItem(Icons.history, 'History', 1),
+            _buildNavItem(Icons.history, 'Games', 1),
             _buildNavItem(Icons.groups, 'Groups', 2),
             _buildNavItem(Icons.bar_chart, 'Stats', 3),
             const SizedBox(width: 0),
