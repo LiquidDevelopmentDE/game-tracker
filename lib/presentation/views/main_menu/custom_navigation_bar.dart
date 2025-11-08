@@ -5,6 +5,7 @@ import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
+import 'package:game_tracker/presentation/widgets/navbar_item.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({super.key});
@@ -66,10 +67,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  _buildNavItem(Icons.home, 'Home', 0),
-                  _buildNavItem(Icons.history, 'Games', 1),
-                  _buildNavItem(Icons.groups, 'Groups', 2),
-                  _buildNavItem(Icons.bar_chart, 'Stats', 3),
+                  NavbarItem(currentIndex: currentIndex, index: 0, icon: Icons.home_rounded, label: 'Home', onTabTapped: onTabTapped),
+                  NavbarItem(currentIndex: currentIndex, index: 1, icon: Icons.gamepad_rounded, label: 'Games', onTabTapped: onTabTapped),
+                  NavbarItem(currentIndex: currentIndex, index: 2, icon: Icons.group_rounded, label: 'Groups', onTabTapped: onTabTapped),
+                  NavbarItem(currentIndex: currentIndex, index: 3, icon: Icons.bar_chart_rounded, label: 'Stats', onTabTapped: onTabTapped),
                 ],
               ),
             ),
@@ -78,39 +79,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       ),
     );
   }
-
-  Widget _buildNavItem(IconData icon, String label, int index) {
-  final isSelected = currentIndex == index;
-
-  return Expanded(
-    child: GestureDetector(
-      onTap: () => onTabTapped(index),
-      behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : Colors.black,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontSize: 12,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
 
   void onTabTapped(int index) {
     setState(() {
