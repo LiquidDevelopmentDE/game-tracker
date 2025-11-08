@@ -52,7 +52,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       ),
       backgroundColor: CustomTheme.backgroundColor,
       body: tabs[currentIndex],
-      extendBody: true, // Enables floating effect
+      extendBody: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 8.0),
         child: Material(
@@ -82,12 +82,12 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   Widget _buildNavItem(IconData icon, String label, int index) {
   final isSelected = currentIndex == index;
 
-  return Expanded( // makes each nav item occupy equal width = large horizontal hitbox
+  return Expanded(
     child: GestureDetector(
       onTap: () => onTabTapped(index),
-      behavior: HitTestBehavior.opaque, // ensures the entire area is tappable
+      behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5.0), // adds comfortable tap height
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
