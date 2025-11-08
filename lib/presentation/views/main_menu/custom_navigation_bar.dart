@@ -80,31 +80,37 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   }
 
   Widget _buildNavItem(IconData icon, String label, int index) {
-    final isSelected = currentIndex == index;
+  final isSelected = currentIndex == index;
 
-    return GestureDetector(
+  return Expanded( // makes each nav item occupy equal width = large horizontal hitbox
+    child: GestureDetector(
       onTap: () => onTabTapped(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? Colors.white : Colors.black,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
+      behavior: HitTestBehavior.opaque, // ensures the entire area is tappable
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5.0), // adds comfortable tap height
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
               color: isSelected ? Colors.white : Colors.black,
-              fontSize: 12,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.black,
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   void onTabTapped(int index) {
     setState(() {
