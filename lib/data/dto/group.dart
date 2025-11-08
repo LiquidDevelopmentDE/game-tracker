@@ -1,4 +1,4 @@
-import 'package:game_tracker/data/methods/dto/player.dart';
+import 'package:game_tracker/data/dto/player.dart';
 
 class Group {
   final String id;

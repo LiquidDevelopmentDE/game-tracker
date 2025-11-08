@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/db/tables/group_table.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/player.dart';
 
 part 'group_dao.g.dart';
 
@@ -9,6 +10,7 @@ part 'group_dao.g.dart';
 class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
   GroupDao(super.db);
 
+  /// Retrieves all groups from the database.
   Future<List<Group>> getAllGroups() async {
     final query = select(groupTable);
     final result = await query.get();
@@ -17,26 +19,41 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         .toList();
   }
 
+  /// Retrieves a [Group] by its [id], including its members.
   Future<Group> getGroupById(String id) async {
     final query = select(groupTable)..where((g) => g.id.equals(id));
     final result = await query.getSingle();
 
-    // todo: Get group members
+    List<Player> members = [];
 
-    return Group(id: result.id, name: result.name, members: []);
+    members = await db.playerGroupDao.getPlayersOfGroupById(id);
+
+    return Group(id: result.id, name: result.name, members: members);
   }
 
+  /// Adds a new group with the given [id] and [name] to the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
   Future<void> addGroup(String id, String name) async {
-    await into(group).insert(GroupCompanion.insert(id: id, name: name));
+    await into(
+      groupTable,
+    ).insert(GroupTableCompanion.insert(id: id, name: name));
   }
 
-  Future<void> deleteGroup(String id) async {
-    await (delete(group)..where((g) => g.id.equals(id))).go();
+  /// Deletes the group with the given [id] from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteGroup(String id) async {
+    final query = (delete(groupTable)..where((g) => g.id.equals(id)));
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
   }
 
-  Future<void> updateGroupname(String id, String newName) async {
-    await (update(group)..where((g) => g.id.equals(id))).write(
-      GroupCompanion(name: Value(newName)),
-    );
+  /// Updates the name of the group with the given [id] to [newName].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> updateGroupname(String id, String newName) async {
+    final rowsAffected =
+        await (update(groupTable)..where((g) => g.id.equals(id))).write(
+          GroupTableCompanion(name: Value(newName)),
+        );
+    return rowsAffected > 0;
   }
 }
