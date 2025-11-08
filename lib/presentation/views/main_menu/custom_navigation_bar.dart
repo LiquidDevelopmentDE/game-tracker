@@ -53,20 +53,12 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       backgroundColor: CustomTheme.backgroundColor,
       body: tabs[currentIndex],
       extendBody: true,
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        backgroundColor: CustomTheme.primaryColor,
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         elevation: 10,
         height: 60,
         color: CustomTheme.primaryColor,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 5,
+        shape: null,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +77,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
               ),
               onPressed: () => onTabTapped(1),
             ),
-            const SizedBox(width: 40),
             IconButton(
               icon: Icon(
                 Icons.groups,
