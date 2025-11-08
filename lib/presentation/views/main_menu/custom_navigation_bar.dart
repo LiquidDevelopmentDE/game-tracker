@@ -52,22 +52,28 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       ),
       backgroundColor: CustomTheme.backgroundColor,
       body: tabs[currentIndex],
-      extendBody: true,
-      bottomNavigationBar: BottomAppBar(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        elevation: 10,
-        height: 60,
-        color: CustomTheme.primaryColor,
-        shape: null,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _buildNavItem(Icons.home, 'Home', 0),
-            _buildNavItem(Icons.history, 'Games', 1),
-            _buildNavItem(Icons.groups, 'Groups', 2),
-            _buildNavItem(Icons.bar_chart, 'Stats', 3),
-          ],
+      extendBody: true, // Enables floating effect
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 8.0),
+        child: Material(
+          elevation: 10,
+          borderRadius: BorderRadius.circular(24),
+          color: CustomTheme.primaryColor,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: SizedBox(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildNavItem(Icons.home, 'Home', 0),
+                  _buildNavItem(Icons.history, 'Games', 1),
+                  _buildNavItem(Icons.groups, 'Groups', 2),
+                  _buildNavItem(Icons.bar_chart, 'Stats', 3),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
