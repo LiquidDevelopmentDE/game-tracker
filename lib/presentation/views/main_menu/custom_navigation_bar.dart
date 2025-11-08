@@ -63,36 +63,41 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.home,
-                color: currentIndex == 0 ? Colors.white : Colors.black,
-              ),
-              onPressed: () => onTabTapped(0),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.history,
-                color: currentIndex == 1 ? Colors.white : Colors.black,
-              ),
-              onPressed: () => onTabTapped(1),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.groups,
-                color: currentIndex == 2 ? Colors.white : Colors.black,
-              ),
-              onPressed: () => onTabTapped(2),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.bar_chart,
-                color: currentIndex == 3 ? Colors.white : Colors.black,
-              ),
-              onPressed: () => onTabTapped(3),
-            ),
+            const SizedBox(width: 0),
+            _buildNavItem(Icons.home, 'Home', 0),
+            _buildNavItem(Icons.history, 'History', 1),
+            _buildNavItem(Icons.groups, 'Groups', 2),
+            _buildNavItem(Icons.bar_chart, 'Stats', 3),
+            const SizedBox(width: 0),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    final isSelected = currentIndex == index;
+
+    return GestureDetector(
+      onTap: () => onTabTapped(index),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: isSelected ? Colors.white : Colors.black,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.black,
+              fontSize: 12,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }
