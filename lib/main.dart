@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/presentation/views/main_menu/custom_navigation_bar.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/database.dart';
+import 'package:game_tracker/presentation/views/main_menu/custom_navigation_bardb/database.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -10,7 +10,7 @@ void main() {
       create: (context) => AppDatabase(),
       child: const MyApp(),
       dispose: (context, db) => db.close(),
-   ),
+    ),
   );
 }
 
