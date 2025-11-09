@@ -5,6 +5,7 @@ import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
+import 'package:game_tracker/presentation/widgets/navbar_item.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({super.key});
@@ -53,54 +54,51 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       backgroundColor: CustomTheme.backgroundColor,
       body: tabs[currentIndex],
       extendBody: true,
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        backgroundColor: CustomTheme.primaryColor,
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        elevation: 10,
-        height: 60,
-        color: CustomTheme.primaryColor,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 5,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.home,
-                color: currentIndex == 0 ? Colors.white : Colors.black,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 8.0),
+        child: Material(
+          elevation: 10,
+          borderRadius: BorderRadius.circular(24),
+          color: CustomTheme.primaryColor,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: SizedBox(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  NavbarItem(
+                    index: 0,
+                    isSelected: currentIndex == 0,
+                    icon: Icons.home_rounded,
+                    label: 'Home',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 1,
+                    isSelected: currentIndex == 1,
+                    icon: Icons.gamepad_rounded,
+                    label: 'Games',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 2,
+                    isSelected: currentIndex == 2,
+                    icon: Icons.group_rounded,
+                    label: 'Groups',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 3,
+                    isSelected: currentIndex == 3,
+                    icon: Icons.bar_chart_rounded,
+                    label: 'Stats',
+                    onTabTapped: onTabTapped,
+                  ),
+                ],
               ),
-              onPressed: () => onTabTapped(0),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.history,
-                color: currentIndex == 1 ? Colors.white : Colors.black,
-              ),
-              onPressed: () => onTabTapped(1),
-            ),
-            const SizedBox(width: 40),
-            IconButton(
-              icon: Icon(
-                Icons.groups,
-                color: currentIndex == 2 ? Colors.white : Colors.black,
-              ),
-              onPressed: () => onTabTapped(2),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.bar_chart,
-                color: currentIndex == 3 ? Colors.white : Colors.black,
-              ),
-              onPressed: () => onTabTapped(3),
-            ),
-          ],
+          ),
         ),
       ),
     );
