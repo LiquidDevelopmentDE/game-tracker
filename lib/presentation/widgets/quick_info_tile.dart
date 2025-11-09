@@ -33,7 +33,7 @@ class _QuickInfoTileState extends State<QuickInfoTile> {
         children: [
           Row(
             children: [
-              const Icon(Icons.casino),
+              Icon(widget.icon),
               const SizedBox(width: 5),
               Text(
                 widget.title,
