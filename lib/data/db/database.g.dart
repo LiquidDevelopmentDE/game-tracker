@@ -3,11 +3,12 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $UserTable extends User with TableInfo<$UserTable, UserData> {
+class $PlayerTableTable extends PlayerTable
+    with TableInfo<$PlayerTableTable, PlayerTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $UserTable(this.attachedDatabase, [this._alias]);
+  $PlayerTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -32,10 +33,10 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'user';
+  static const String $name = 'player_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<UserData> instance, {
+    Insertable<PlayerTableData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -59,9 +60,9 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  UserData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  PlayerTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return UserData(
+    return PlayerTableData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -74,15 +75,15 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
   }
 
   @override
-  $UserTable createAlias(String alias) {
-    return $UserTable(attachedDatabase, alias);
+  $PlayerTableTable createAlias(String alias) {
+    return $PlayerTableTable(attachedDatabase, alias);
   }
 }
 
-class UserData extends DataClass implements Insertable<UserData> {
+class PlayerTableData extends DataClass implements Insertable<PlayerTableData> {
   final String id;
   final String name;
-  const UserData({required this.id, required this.name});
+  const PlayerTableData({required this.id, required this.name});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -91,16 +92,16 @@ class UserData extends DataClass implements Insertable<UserData> {
     return map;
   }
 
-  UserCompanion toCompanion(bool nullToAbsent) {
-    return UserCompanion(id: Value(id), name: Value(name));
+  PlayerTableCompanion toCompanion(bool nullToAbsent) {
+    return PlayerTableCompanion(id: Value(id), name: Value(name));
   }
 
-  factory UserData.fromJson(
+  factory PlayerTableData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return UserData(
+    return PlayerTableData(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
     );
@@ -114,10 +115,10 @@ class UserData extends DataClass implements Insertable<UserData> {
     };
   }
 
-  UserData copyWith({String? id, String? name}) =>
-      UserData(id: id ?? this.id, name: name ?? this.name);
-  UserData copyWithCompanion(UserCompanion data) {
-    return UserData(
+  PlayerTableData copyWith({String? id, String? name}) =>
+      PlayerTableData(id: id ?? this.id, name: name ?? this.name);
+  PlayerTableData copyWithCompanion(PlayerTableCompanion data) {
+    return PlayerTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
     );
@@ -125,7 +126,7 @@ class UserData extends DataClass implements Insertable<UserData> {
 
   @override
   String toString() {
-    return (StringBuffer('UserData(')
+    return (StringBuffer('PlayerTableData(')
           ..write('id: $id, ')
           ..write('name: $name')
           ..write(')'))
@@ -137,25 +138,27 @@ class UserData extends DataClass implements Insertable<UserData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is UserData && other.id == this.id && other.name == this.name);
+      (other is PlayerTableData &&
+          other.id == this.id &&
+          other.name == this.name);
 }
 
-class UserCompanion extends UpdateCompanion<UserData> {
+class PlayerTableCompanion extends UpdateCompanion<PlayerTableData> {
   final Value<String> id;
   final Value<String> name;
   final Value<int> rowid;
-  const UserCompanion({
+  const PlayerTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  UserCompanion.insert({
+  PlayerTableCompanion.insert({
     required String id,
     required String name,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name);
-  static Insertable<UserData> custom({
+  static Insertable<PlayerTableData> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<int>? rowid,
@@ -167,12 +170,12 @@ class UserCompanion extends UpdateCompanion<UserData> {
     });
   }
 
-  UserCompanion copyWith({
+  PlayerTableCompanion copyWith({
     Value<String>? id,
     Value<String>? name,
     Value<int>? rowid,
   }) {
-    return UserCompanion(
+    return PlayerTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       rowid: rowid ?? this.rowid,
@@ -196,7 +199,7 @@ class UserCompanion extends UpdateCompanion<UserData> {
 
   @override
   String toString() {
-    return (StringBuffer('UserCompanion(')
+    return (StringBuffer('PlayerTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('rowid: $rowid')
@@ -205,11 +208,12 @@ class UserCompanion extends UpdateCompanion<UserData> {
   }
 }
 
-class $GroupTable extends Group with TableInfo<$GroupTable, GroupData> {
+class $GroupTableTable extends GroupTable
+    with TableInfo<$GroupTableTable, GroupTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $GroupTable(this.attachedDatabase, [this._alias]);
+  $GroupTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -234,10 +238,10 @@ class $GroupTable extends Group with TableInfo<$GroupTable, GroupData> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'group';
+  static const String $name = 'group_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<GroupData> instance, {
+    Insertable<GroupTableData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -261,9 +265,9 @@ class $GroupTable extends Group with TableInfo<$GroupTable, GroupData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  GroupData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  GroupTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return GroupData(
+    return GroupTableData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -276,15 +280,15 @@ class $GroupTable extends Group with TableInfo<$GroupTable, GroupData> {
   }
 
   @override
-  $GroupTable createAlias(String alias) {
-    return $GroupTable(attachedDatabase, alias);
+  $GroupTableTable createAlias(String alias) {
+    return $GroupTableTable(attachedDatabase, alias);
   }
 }
 
-class GroupData extends DataClass implements Insertable<GroupData> {
+class GroupTableData extends DataClass implements Insertable<GroupTableData> {
   final String id;
   final String name;
-  const GroupData({required this.id, required this.name});
+  const GroupTableData({required this.id, required this.name});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -293,16 +297,16 @@ class GroupData extends DataClass implements Insertable<GroupData> {
     return map;
   }
 
-  GroupCompanion toCompanion(bool nullToAbsent) {
-    return GroupCompanion(id: Value(id), name: Value(name));
+  GroupTableCompanion toCompanion(bool nullToAbsent) {
+    return GroupTableCompanion(id: Value(id), name: Value(name));
   }
 
-  factory GroupData.fromJson(
+  factory GroupTableData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return GroupData(
+    return GroupTableData(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
     );
@@ -316,10 +320,10 @@ class GroupData extends DataClass implements Insertable<GroupData> {
     };
   }
 
-  GroupData copyWith({String? id, String? name}) =>
-      GroupData(id: id ?? this.id, name: name ?? this.name);
-  GroupData copyWithCompanion(GroupCompanion data) {
-    return GroupData(
+  GroupTableData copyWith({String? id, String? name}) =>
+      GroupTableData(id: id ?? this.id, name: name ?? this.name);
+  GroupTableData copyWithCompanion(GroupTableCompanion data) {
+    return GroupTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
     );
@@ -327,7 +331,7 @@ class GroupData extends DataClass implements Insertable<GroupData> {
 
   @override
   String toString() {
-    return (StringBuffer('GroupData(')
+    return (StringBuffer('GroupTableData(')
           ..write('id: $id, ')
           ..write('name: $name')
           ..write(')'))
@@ -339,25 +343,27 @@ class GroupData extends DataClass implements Insertable<GroupData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is GroupData && other.id == this.id && other.name == this.name);
+      (other is GroupTableData &&
+          other.id == this.id &&
+          other.name == this.name);
 }
 
-class GroupCompanion extends UpdateCompanion<GroupData> {
+class GroupTableCompanion extends UpdateCompanion<GroupTableData> {
   final Value<String> id;
   final Value<String> name;
   final Value<int> rowid;
-  const GroupCompanion({
+  const GroupTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  GroupCompanion.insert({
+  GroupTableCompanion.insert({
     required String id,
     required String name,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name);
-  static Insertable<GroupData> custom({
+  static Insertable<GroupTableData> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<int>? rowid,
@@ -369,12 +375,12 @@ class GroupCompanion extends UpdateCompanion<GroupData> {
     });
   }
 
-  GroupCompanion copyWith({
+  GroupTableCompanion copyWith({
     Value<String>? id,
     Value<String>? name,
     Value<int>? rowid,
   }) {
-    return GroupCompanion(
+    return GroupTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       rowid: rowid ?? this.rowid,
@@ -398,7 +404,7 @@ class GroupCompanion extends UpdateCompanion<GroupData> {
 
   @override
   String toString() {
-    return (StringBuffer('GroupCompanion(')
+    return (StringBuffer('GroupTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('rowid: $rowid')
@@ -407,12 +413,12 @@ class GroupCompanion extends UpdateCompanion<GroupData> {
   }
 }
 
-class $UserGroupTable extends UserGroup
-    with TableInfo<$UserGroupTable, UserGroupData> {
+class $PlayerGroupTableTable extends PlayerGroupTable
+    with TableInfo<$PlayerGroupTableTable, PlayerGroupTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $UserGroupTable(this.attachedDatabase, [this._alias]);
+  $PlayerGroupTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
   late final GeneratedColumn<String> userId = GeneratedColumn<String>(
@@ -422,7 +428,7 @@ class $UserGroupTable extends UserGroup
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user (id)',
+      'REFERENCES player_table (id)',
     ),
   );
   static const VerificationMeta _groupIdMeta = const VerificationMeta(
@@ -436,7 +442,7 @@ class $UserGroupTable extends UserGroup
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES "group" (id)',
+      'REFERENCES group_table (id)',
     ),
   );
   @override
@@ -445,10 +451,10 @@ class $UserGroupTable extends UserGroup
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'user_group';
+  static const String $name = 'player_group_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<UserGroupData> instance, {
+    Insertable<PlayerGroupTableData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -475,9 +481,9 @@ class $UserGroupTable extends UserGroup
   @override
   Set<GeneratedColumn> get $primaryKey => {userId, groupId};
   @override
-  UserGroupData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  PlayerGroupTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return UserGroupData(
+    return PlayerGroupTableData(
       userId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}user_id'],
@@ -490,15 +496,16 @@ class $UserGroupTable extends UserGroup
   }
 
   @override
-  $UserGroupTable createAlias(String alias) {
-    return $UserGroupTable(attachedDatabase, alias);
+  $PlayerGroupTableTable createAlias(String alias) {
+    return $PlayerGroupTableTable(attachedDatabase, alias);
   }
 }
 
-class UserGroupData extends DataClass implements Insertable<UserGroupData> {
+class PlayerGroupTableData extends DataClass
+    implements Insertable<PlayerGroupTableData> {
   final String userId;
   final String groupId;
-  const UserGroupData({required this.userId, required this.groupId});
+  const PlayerGroupTableData({required this.userId, required this.groupId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -507,16 +514,19 @@ class UserGroupData extends DataClass implements Insertable<UserGroupData> {
     return map;
   }
 
-  UserGroupCompanion toCompanion(bool nullToAbsent) {
-    return UserGroupCompanion(userId: Value(userId), groupId: Value(groupId));
+  PlayerGroupTableCompanion toCompanion(bool nullToAbsent) {
+    return PlayerGroupTableCompanion(
+      userId: Value(userId),
+      groupId: Value(groupId),
+    );
   }
 
-  factory UserGroupData.fromJson(
+  factory PlayerGroupTableData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return UserGroupData(
+    return PlayerGroupTableData(
       userId: serializer.fromJson<String>(json['userId']),
       groupId: serializer.fromJson<String>(json['groupId']),
     );
@@ -530,12 +540,13 @@ class UserGroupData extends DataClass implements Insertable<UserGroupData> {
     };
   }
 
-  UserGroupData copyWith({String? userId, String? groupId}) => UserGroupData(
-    userId: userId ?? this.userId,
-    groupId: groupId ?? this.groupId,
-  );
-  UserGroupData copyWithCompanion(UserGroupCompanion data) {
-    return UserGroupData(
+  PlayerGroupTableData copyWith({String? userId, String? groupId}) =>
+      PlayerGroupTableData(
+        userId: userId ?? this.userId,
+        groupId: groupId ?? this.groupId,
+      );
+  PlayerGroupTableData copyWithCompanion(PlayerGroupTableCompanion data) {
+    return PlayerGroupTableData(
       userId: data.userId.present ? data.userId.value : this.userId,
       groupId: data.groupId.present ? data.groupId.value : this.groupId,
     );
@@ -543,7 +554,7 @@ class UserGroupData extends DataClass implements Insertable<UserGroupData> {
 
   @override
   String toString() {
-    return (StringBuffer('UserGroupData(')
+    return (StringBuffer('PlayerGroupTableData(')
           ..write('userId: $userId, ')
           ..write('groupId: $groupId')
           ..write(')'))
@@ -555,27 +566,27 @@ class UserGroupData extends DataClass implements Insertable<UserGroupData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is UserGroupData &&
+      (other is PlayerGroupTableData &&
           other.userId == this.userId &&
           other.groupId == this.groupId);
 }
 
-class UserGroupCompanion extends UpdateCompanion<UserGroupData> {
+class PlayerGroupTableCompanion extends UpdateCompanion<PlayerGroupTableData> {
   final Value<String> userId;
   final Value<String> groupId;
   final Value<int> rowid;
-  const UserGroupCompanion({
+  const PlayerGroupTableCompanion({
     this.userId = const Value.absent(),
     this.groupId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  UserGroupCompanion.insert({
+  PlayerGroupTableCompanion.insert({
     required String userId,
     required String groupId,
     this.rowid = const Value.absent(),
   }) : userId = Value(userId),
        groupId = Value(groupId);
-  static Insertable<UserGroupData> custom({
+  static Insertable<PlayerGroupTableData> custom({
     Expression<String>? userId,
     Expression<String>? groupId,
     Expression<int>? rowid,
@@ -587,12 +598,12 @@ class UserGroupCompanion extends UpdateCompanion<UserGroupData> {
     });
   }
 
-  UserGroupCompanion copyWith({
+  PlayerGroupTableCompanion copyWith({
     Value<String>? userId,
     Value<String>? groupId,
     Value<int>? rowid,
   }) {
-    return UserGroupCompanion(
+    return PlayerGroupTableCompanion(
       userId: userId ?? this.userId,
       groupId: groupId ?? this.groupId,
       rowid: rowid ?? this.rowid,
@@ -616,9 +627,214 @@ class UserGroupCompanion extends UpdateCompanion<UserGroupData> {
 
   @override
   String toString() {
-    return (StringBuffer('UserGroupCompanion(')
+    return (StringBuffer('PlayerGroupTableCompanion(')
           ..write('userId: $userId, ')
           ..write('groupId: $groupId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GameTableTable extends GameTable
+    with TableInfo<$GameTableTable, GameTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GameTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'game_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<GameTableData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GameTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GameTableData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+    );
+  }
+
+  @override
+  $GameTableTable createAlias(String alias) {
+    return $GameTableTable(attachedDatabase, alias);
+  }
+}
+
+class GameTableData extends DataClass implements Insertable<GameTableData> {
+  final String id;
+  final String name;
+  const GameTableData({required this.id, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  GameTableCompanion toCompanion(bool nullToAbsent) {
+    return GameTableCompanion(id: Value(id), name: Value(name));
+  }
+
+  factory GameTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GameTableData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GameTableData copyWith({String? id, String? name}) =>
+      GameTableData(id: id ?? this.id, name: name ?? this.name);
+  GameTableData copyWithCompanion(GameTableCompanion data) {
+    return GameTableData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GameTableData(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GameTableData &&
+          other.id == this.id &&
+          other.name == this.name);
+}
+
+class GameTableCompanion extends UpdateCompanion<GameTableData> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<int> rowid;
+  const GameTableCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GameTableCompanion.insert({
+    required String id,
+    required String name,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name);
+  static Insertable<GameTableData> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GameTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<int>? rowid,
+  }) {
+    return GameTableCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GameTableCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -628,54 +844,74 @@ class UserGroupCompanion extends UpdateCompanion<UserGroupData> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final $UserTable user = $UserTable(this);
-  late final $GroupTable group = $GroupTable(this);
-  late final $UserGroupTable userGroup = $UserGroupTable(this);
+  late final $PlayerTableTable playerTable = $PlayerTableTable(this);
+  late final $GroupTableTable groupTable = $GroupTableTable(this);
+  late final $PlayerGroupTableTable playerGroupTable = $PlayerGroupTableTable(
+    this,
+  );
+  late final $GameTableTable gameTable = $GameTableTable(this);
+  late final GroupDao groupDao = GroupDao(this as AppDatabase);
+  late final PlayerDao playerDao = PlayerDao(this as AppDatabase);
+  late final PlayerGroupDao playerGroupDao = PlayerGroupDao(
+    this as AppDatabase,
+  );
+  late final GameDao gameDao = GameDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [user, group, userGroup];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    playerTable,
+    groupTable,
+    playerGroupTable,
+    gameTable,
+  ];
 }
 
-typedef $$UserTableCreateCompanionBuilder =
-    UserCompanion Function({
+typedef $$PlayerTableTableCreateCompanionBuilder =
+    PlayerTableCompanion Function({
       required String id,
       required String name,
       Value<int> rowid,
     });
-typedef $$UserTableUpdateCompanionBuilder =
-    UserCompanion Function({
+typedef $$PlayerTableTableUpdateCompanionBuilder =
+    PlayerTableCompanion Function({
       Value<String> id,
       Value<String> name,
       Value<int> rowid,
     });
 
-final class $$UserTableReferences
-    extends BaseReferences<_$AppDatabase, $UserTable, UserData> {
-  $$UserTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$PlayerTableTableReferences
+    extends BaseReferences<_$AppDatabase, $PlayerTableTable, PlayerTableData> {
+  $$PlayerTableTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$UserGroupTable, List<UserGroupData>>
-  _userGroupRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.userGroup,
-    aliasName: $_aliasNameGenerator(db.user.id, db.userGroup.userId),
+  static MultiTypedResultKey<$PlayerGroupTableTable, List<PlayerGroupTableData>>
+  _playerGroupTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.playerGroupTable,
+    aliasName: $_aliasNameGenerator(
+      db.playerTable.id,
+      db.playerGroupTable.userId,
+    ),
   );
 
-  $$UserGroupTableProcessedTableManager get userGroupRefs {
-    final manager = $$UserGroupTableTableManager(
+  $$PlayerGroupTableTableProcessedTableManager get playerGroupTableRefs {
+    final manager = $$PlayerGroupTableTableTableManager(
       $_db,
-      $_db.userGroup,
+      $_db.playerGroupTable,
     ).filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
 
-    final cache = $_typedResult.readTableOrNull(_userGroupRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(
+      _playerGroupTableRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
 
-class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
-  $$UserTableFilterComposer({
+class $$PlayerTableTableFilterComposer
+    extends Composer<_$AppDatabase, $PlayerTableTable> {
+  $$PlayerTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -692,22 +928,22 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> userGroupRefs(
-    Expression<bool> Function($$UserGroupTableFilterComposer f) f,
+  Expression<bool> playerGroupTableRefs(
+    Expression<bool> Function($$PlayerGroupTableTableFilterComposer f) f,
   ) {
-    final $$UserGroupTableFilterComposer composer = $composerBuilder(
+    final $$PlayerGroupTableTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.userGroup,
+      referencedTable: $db.playerGroupTable,
       getReferencedColumn: (t) => t.userId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserGroupTableFilterComposer(
+          }) => $$PlayerGroupTableTableFilterComposer(
             $db: $db,
-            $table: $db.userGroup,
+            $table: $db.playerGroupTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -718,8 +954,9 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
   }
 }
 
-class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
-  $$UserTableOrderingComposer({
+class $$PlayerTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $PlayerTableTable> {
+  $$PlayerTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -737,9 +974,9 @@ class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
   );
 }
 
-class $$UserTableAnnotationComposer
-    extends Composer<_$AppDatabase, $UserTable> {
-  $$UserTableAnnotationComposer({
+class $$PlayerTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PlayerTableTable> {
+  $$PlayerTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -752,22 +989,22 @@ class $$UserTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  Expression<T> userGroupRefs<T extends Object>(
-    Expression<T> Function($$UserGroupTableAnnotationComposer a) f,
+  Expression<T> playerGroupTableRefs<T extends Object>(
+    Expression<T> Function($$PlayerGroupTableTableAnnotationComposer a) f,
   ) {
-    final $$UserGroupTableAnnotationComposer composer = $composerBuilder(
+    final $$PlayerGroupTableTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.userGroup,
+      referencedTable: $db.playerGroupTable,
       getReferencedColumn: (t) => t.userId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserGroupTableAnnotationComposer(
+          }) => $$PlayerGroupTableTableAnnotationComposer(
             $db: $db,
-            $table: $db.userGroup,
+            $table: $db.playerGroupTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -778,68 +1015,77 @@ class $$UserTableAnnotationComposer
   }
 }
 
-class $$UserTableTableManager
+class $$PlayerTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $UserTable,
-          UserData,
-          $$UserTableFilterComposer,
-          $$UserTableOrderingComposer,
-          $$UserTableAnnotationComposer,
-          $$UserTableCreateCompanionBuilder,
-          $$UserTableUpdateCompanionBuilder,
-          (UserData, $$UserTableReferences),
-          UserData,
-          PrefetchHooks Function({bool userGroupRefs})
+          $PlayerTableTable,
+          PlayerTableData,
+          $$PlayerTableTableFilterComposer,
+          $$PlayerTableTableOrderingComposer,
+          $$PlayerTableTableAnnotationComposer,
+          $$PlayerTableTableCreateCompanionBuilder,
+          $$PlayerTableTableUpdateCompanionBuilder,
+          (PlayerTableData, $$PlayerTableTableReferences),
+          PlayerTableData,
+          PrefetchHooks Function({bool playerGroupTableRefs})
         > {
-  $$UserTableTableManager(_$AppDatabase db, $UserTable table)
+  $$PlayerTableTableTableManager(_$AppDatabase db, $PlayerTableTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$UserTableFilterComposer($db: db, $table: table),
+              $$PlayerTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$UserTableOrderingComposer($db: db, $table: table),
+              $$PlayerTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$UserTableAnnotationComposer($db: db, $table: table),
+              $$PlayerTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => UserCompanion(id: id, name: name, rowid: rowid),
+              }) => PlayerTableCompanion(id: id, name: name, rowid: rowid),
           createCompanionCallback:
               ({
                 required String id,
                 required String name,
                 Value<int> rowid = const Value.absent(),
-              }) => UserCompanion.insert(id: id, name: name, rowid: rowid),
+              }) =>
+                  PlayerTableCompanion.insert(id: id, name: name, rowid: rowid),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) =>
-                    (e.readTable(table), $$UserTableReferences(db, table, e)),
+                (e) => (
+                  e.readTable(table),
+                  $$PlayerTableTableReferences(db, table, e),
+                ),
               )
               .toList(),
-          prefetchHooksCallback: ({userGroupRefs = false}) {
+          prefetchHooksCallback: ({playerGroupTableRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (userGroupRefs) db.userGroup],
+              explicitlyWatchedTables: [
+                if (playerGroupTableRefs) db.playerGroupTable,
+              ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (userGroupRefs)
+                  if (playerGroupTableRefs)
                     await $_getPrefetchedData<
-                      UserData,
-                      $UserTable,
-                      UserGroupData
+                      PlayerTableData,
+                      $PlayerTableTable,
+                      PlayerGroupTableData
                     >(
                       currentTable: table,
-                      referencedTable: $$UserTableReferences
-                          ._userGroupRefsTable(db),
+                      referencedTable: $$PlayerTableTableReferences
+                          ._playerGroupTableRefsTable(db),
                       managerFromTypedResult: (p0) =>
-                          $$UserTableReferences(db, table, p0).userGroupRefs,
+                          $$PlayerTableTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).playerGroupTableRefs,
                       referencedItemsForCurrentItem: (item, referencedItems) =>
                           referencedItems.where((e) => e.userId == item.id),
                       typedResults: items,
@@ -852,58 +1098,64 @@ class $$UserTableTableManager
       );
 }
 
-typedef $$UserTableProcessedTableManager =
+typedef $$PlayerTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $UserTable,
-      UserData,
-      $$UserTableFilterComposer,
-      $$UserTableOrderingComposer,
-      $$UserTableAnnotationComposer,
-      $$UserTableCreateCompanionBuilder,
-      $$UserTableUpdateCompanionBuilder,
-      (UserData, $$UserTableReferences),
-      UserData,
-      PrefetchHooks Function({bool userGroupRefs})
+      $PlayerTableTable,
+      PlayerTableData,
+      $$PlayerTableTableFilterComposer,
+      $$PlayerTableTableOrderingComposer,
+      $$PlayerTableTableAnnotationComposer,
+      $$PlayerTableTableCreateCompanionBuilder,
+      $$PlayerTableTableUpdateCompanionBuilder,
+      (PlayerTableData, $$PlayerTableTableReferences),
+      PlayerTableData,
+      PrefetchHooks Function({bool playerGroupTableRefs})
     >;
-typedef $$GroupTableCreateCompanionBuilder =
-    GroupCompanion Function({
+typedef $$GroupTableTableCreateCompanionBuilder =
+    GroupTableCompanion Function({
       required String id,
       required String name,
       Value<int> rowid,
     });
-typedef $$GroupTableUpdateCompanionBuilder =
-    GroupCompanion Function({
+typedef $$GroupTableTableUpdateCompanionBuilder =
+    GroupTableCompanion Function({
       Value<String> id,
       Value<String> name,
       Value<int> rowid,
     });
 
-final class $$GroupTableReferences
-    extends BaseReferences<_$AppDatabase, $GroupTable, GroupData> {
-  $$GroupTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$GroupTableTableReferences
+    extends BaseReferences<_$AppDatabase, $GroupTableTable, GroupTableData> {
+  $$GroupTableTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$UserGroupTable, List<UserGroupData>>
-  _userGroupRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.userGroup,
-    aliasName: $_aliasNameGenerator(db.group.id, db.userGroup.groupId),
+  static MultiTypedResultKey<$PlayerGroupTableTable, List<PlayerGroupTableData>>
+  _playerGroupTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.playerGroupTable,
+    aliasName: $_aliasNameGenerator(
+      db.groupTable.id,
+      db.playerGroupTable.groupId,
+    ),
   );
 
-  $$UserGroupTableProcessedTableManager get userGroupRefs {
-    final manager = $$UserGroupTableTableManager(
+  $$PlayerGroupTableTableProcessedTableManager get playerGroupTableRefs {
+    final manager = $$PlayerGroupTableTableTableManager(
       $_db,
-      $_db.userGroup,
+      $_db.playerGroupTable,
     ).filter((f) => f.groupId.id.sqlEquals($_itemColumn<String>('id')!));
 
-    final cache = $_typedResult.readTableOrNull(_userGroupRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(
+      _playerGroupTableRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
 
-class $$GroupTableFilterComposer extends Composer<_$AppDatabase, $GroupTable> {
-  $$GroupTableFilterComposer({
+class $$GroupTableTableFilterComposer
+    extends Composer<_$AppDatabase, $GroupTableTable> {
+  $$GroupTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -920,22 +1172,22 @@ class $$GroupTableFilterComposer extends Composer<_$AppDatabase, $GroupTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> userGroupRefs(
-    Expression<bool> Function($$UserGroupTableFilterComposer f) f,
+  Expression<bool> playerGroupTableRefs(
+    Expression<bool> Function($$PlayerGroupTableTableFilterComposer f) f,
   ) {
-    final $$UserGroupTableFilterComposer composer = $composerBuilder(
+    final $$PlayerGroupTableTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.userGroup,
+      referencedTable: $db.playerGroupTable,
       getReferencedColumn: (t) => t.groupId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserGroupTableFilterComposer(
+          }) => $$PlayerGroupTableTableFilterComposer(
             $db: $db,
-            $table: $db.userGroup,
+            $table: $db.playerGroupTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -946,9 +1198,9 @@ class $$GroupTableFilterComposer extends Composer<_$AppDatabase, $GroupTable> {
   }
 }
 
-class $$GroupTableOrderingComposer
-    extends Composer<_$AppDatabase, $GroupTable> {
-  $$GroupTableOrderingComposer({
+class $$GroupTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $GroupTableTable> {
+  $$GroupTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -966,9 +1218,9 @@ class $$GroupTableOrderingComposer
   );
 }
 
-class $$GroupTableAnnotationComposer
-    extends Composer<_$AppDatabase, $GroupTable> {
-  $$GroupTableAnnotationComposer({
+class $$GroupTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GroupTableTable> {
+  $$GroupTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -981,22 +1233,22 @@ class $$GroupTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  Expression<T> userGroupRefs<T extends Object>(
-    Expression<T> Function($$UserGroupTableAnnotationComposer a) f,
+  Expression<T> playerGroupTableRefs<T extends Object>(
+    Expression<T> Function($$PlayerGroupTableTableAnnotationComposer a) f,
   ) {
-    final $$UserGroupTableAnnotationComposer composer = $composerBuilder(
+    final $$PlayerGroupTableTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.userGroup,
+      referencedTable: $db.playerGroupTable,
       getReferencedColumn: (t) => t.groupId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserGroupTableAnnotationComposer(
+          }) => $$PlayerGroupTableTableAnnotationComposer(
             $db: $db,
-            $table: $db.userGroup,
+            $table: $db.playerGroupTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1007,68 +1259,77 @@ class $$GroupTableAnnotationComposer
   }
 }
 
-class $$GroupTableTableManager
+class $$GroupTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $GroupTable,
-          GroupData,
-          $$GroupTableFilterComposer,
-          $$GroupTableOrderingComposer,
-          $$GroupTableAnnotationComposer,
-          $$GroupTableCreateCompanionBuilder,
-          $$GroupTableUpdateCompanionBuilder,
-          (GroupData, $$GroupTableReferences),
-          GroupData,
-          PrefetchHooks Function({bool userGroupRefs})
+          $GroupTableTable,
+          GroupTableData,
+          $$GroupTableTableFilterComposer,
+          $$GroupTableTableOrderingComposer,
+          $$GroupTableTableAnnotationComposer,
+          $$GroupTableTableCreateCompanionBuilder,
+          $$GroupTableTableUpdateCompanionBuilder,
+          (GroupTableData, $$GroupTableTableReferences),
+          GroupTableData,
+          PrefetchHooks Function({bool playerGroupTableRefs})
         > {
-  $$GroupTableTableManager(_$AppDatabase db, $GroupTable table)
+  $$GroupTableTableTableManager(_$AppDatabase db, $GroupTableTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$GroupTableFilterComposer($db: db, $table: table),
+              $$GroupTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$GroupTableOrderingComposer($db: db, $table: table),
+              $$GroupTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$GroupTableAnnotationComposer($db: db, $table: table),
+              $$GroupTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => GroupCompanion(id: id, name: name, rowid: rowid),
+              }) => GroupTableCompanion(id: id, name: name, rowid: rowid),
           createCompanionCallback:
               ({
                 required String id,
                 required String name,
                 Value<int> rowid = const Value.absent(),
-              }) => GroupCompanion.insert(id: id, name: name, rowid: rowid),
+              }) =>
+                  GroupTableCompanion.insert(id: id, name: name, rowid: rowid),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) =>
-                    (e.readTable(table), $$GroupTableReferences(db, table, e)),
+                (e) => (
+                  e.readTable(table),
+                  $$GroupTableTableReferences(db, table, e),
+                ),
               )
               .toList(),
-          prefetchHooksCallback: ({userGroupRefs = false}) {
+          prefetchHooksCallback: ({playerGroupTableRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (userGroupRefs) db.userGroup],
+              explicitlyWatchedTables: [
+                if (playerGroupTableRefs) db.playerGroupTable,
+              ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (userGroupRefs)
+                  if (playerGroupTableRefs)
                     await $_getPrefetchedData<
-                      GroupData,
-                      $GroupTable,
-                      UserGroupData
+                      GroupTableData,
+                      $GroupTableTable,
+                      PlayerGroupTableData
                     >(
                       currentTable: table,
-                      referencedTable: $$GroupTableReferences
-                          ._userGroupRefsTable(db),
+                      referencedTable: $$GroupTableTableReferences
+                          ._playerGroupTableRefsTable(db),
                       managerFromTypedResult: (p0) =>
-                          $$GroupTableReferences(db, table, p0).userGroupRefs,
+                          $$GroupTableTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).playerGroupTableRefs,
                       referencedItemsForCurrentItem: (item, referencedItems) =>
                           referencedItems.where((e) => e.groupId == item.id),
                       typedResults: items,
@@ -1081,47 +1342,57 @@ class $$GroupTableTableManager
       );
 }
 
-typedef $$GroupTableProcessedTableManager =
+typedef $$GroupTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $GroupTable,
-      GroupData,
-      $$GroupTableFilterComposer,
-      $$GroupTableOrderingComposer,
-      $$GroupTableAnnotationComposer,
-      $$GroupTableCreateCompanionBuilder,
-      $$GroupTableUpdateCompanionBuilder,
-      (GroupData, $$GroupTableReferences),
-      GroupData,
-      PrefetchHooks Function({bool userGroupRefs})
+      $GroupTableTable,
+      GroupTableData,
+      $$GroupTableTableFilterComposer,
+      $$GroupTableTableOrderingComposer,
+      $$GroupTableTableAnnotationComposer,
+      $$GroupTableTableCreateCompanionBuilder,
+      $$GroupTableTableUpdateCompanionBuilder,
+      (GroupTableData, $$GroupTableTableReferences),
+      GroupTableData,
+      PrefetchHooks Function({bool playerGroupTableRefs})
     >;
-typedef $$UserGroupTableCreateCompanionBuilder =
-    UserGroupCompanion Function({
+typedef $$PlayerGroupTableTableCreateCompanionBuilder =
+    PlayerGroupTableCompanion Function({
       required String userId,
       required String groupId,
       Value<int> rowid,
     });
-typedef $$UserGroupTableUpdateCompanionBuilder =
-    UserGroupCompanion Function({
+typedef $$PlayerGroupTableTableUpdateCompanionBuilder =
+    PlayerGroupTableCompanion Function({
       Value<String> userId,
       Value<String> groupId,
       Value<int> rowid,
     });
 
-final class $$UserGroupTableReferences
-    extends BaseReferences<_$AppDatabase, $UserGroupTable, UserGroupData> {
-  $$UserGroupTableReferences(super.$_db, super.$_table, super.$_typedResult);
-
-  static $UserTable _userIdTable(_$AppDatabase db) => db.user.createAlias(
-    $_aliasNameGenerator(db.userGroup.userId, db.user.id),
+final class $$PlayerGroupTableTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $PlayerGroupTableTable,
+          PlayerGroupTableData
+        > {
+  $$PlayerGroupTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
   );
 
-  $$UserTableProcessedTableManager get userId {
+  static $PlayerTableTable _userIdTable(_$AppDatabase db) =>
+      db.playerTable.createAlias(
+        $_aliasNameGenerator(db.playerGroupTable.userId, db.playerTable.id),
+      );
+
+  $$PlayerTableTableProcessedTableManager get userId {
     final $_column = $_itemColumn<String>('user_id')!;
 
-    final manager = $$UserTableTableManager(
+    final manager = $$PlayerTableTableTableManager(
       $_db,
-      $_db.user,
+      $_db.playerTable,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_userIdTable($_db));
     if (item == null) return manager;
@@ -1130,16 +1401,17 @@ final class $$UserGroupTableReferences
     );
   }
 
-  static $GroupTable _groupIdTable(_$AppDatabase db) => db.group.createAlias(
-    $_aliasNameGenerator(db.userGroup.groupId, db.group.id),
-  );
+  static $GroupTableTable _groupIdTable(_$AppDatabase db) =>
+      db.groupTable.createAlias(
+        $_aliasNameGenerator(db.playerGroupTable.groupId, db.groupTable.id),
+      );
 
-  $$GroupTableProcessedTableManager get groupId {
+  $$GroupTableTableProcessedTableManager get groupId {
     final $_column = $_itemColumn<String>('group_id')!;
 
-    final manager = $$GroupTableTableManager(
+    final manager = $$GroupTableTableTableManager(
       $_db,
-      $_db.group,
+      $_db.groupTable,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_groupIdTable($_db));
     if (item == null) return manager;
@@ -1149,29 +1421,29 @@ final class $$UserGroupTableReferences
   }
 }
 
-class $$UserGroupTableFilterComposer
-    extends Composer<_$AppDatabase, $UserGroupTable> {
-  $$UserGroupTableFilterComposer({
+class $$PlayerGroupTableTableFilterComposer
+    extends Composer<_$AppDatabase, $PlayerGroupTableTable> {
+  $$PlayerGroupTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  $$UserTableFilterComposer get userId {
-    final $$UserTableFilterComposer composer = $composerBuilder(
+  $$PlayerTableTableFilterComposer get userId {
+    final $$PlayerTableTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.userId,
-      referencedTable: $db.user,
+      referencedTable: $db.playerTable,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserTableFilterComposer(
+          }) => $$PlayerTableTableFilterComposer(
             $db: $db,
-            $table: $db.user,
+            $table: $db.playerTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1181,20 +1453,20 @@ class $$UserGroupTableFilterComposer
     return composer;
   }
 
-  $$GroupTableFilterComposer get groupId {
-    final $$GroupTableFilterComposer composer = $composerBuilder(
+  $$GroupTableTableFilterComposer get groupId {
+    final $$GroupTableTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.groupId,
-      referencedTable: $db.group,
+      referencedTable: $db.groupTable,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$GroupTableFilterComposer(
+          }) => $$GroupTableTableFilterComposer(
             $db: $db,
-            $table: $db.group,
+            $table: $db.groupTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1205,29 +1477,29 @@ class $$UserGroupTableFilterComposer
   }
 }
 
-class $$UserGroupTableOrderingComposer
-    extends Composer<_$AppDatabase, $UserGroupTable> {
-  $$UserGroupTableOrderingComposer({
+class $$PlayerGroupTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $PlayerGroupTableTable> {
+  $$PlayerGroupTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  $$UserTableOrderingComposer get userId {
-    final $$UserTableOrderingComposer composer = $composerBuilder(
+  $$PlayerTableTableOrderingComposer get userId {
+    final $$PlayerTableTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.userId,
-      referencedTable: $db.user,
+      referencedTable: $db.playerTable,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserTableOrderingComposer(
+          }) => $$PlayerTableTableOrderingComposer(
             $db: $db,
-            $table: $db.user,
+            $table: $db.playerTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1237,20 +1509,20 @@ class $$UserGroupTableOrderingComposer
     return composer;
   }
 
-  $$GroupTableOrderingComposer get groupId {
-    final $$GroupTableOrderingComposer composer = $composerBuilder(
+  $$GroupTableTableOrderingComposer get groupId {
+    final $$GroupTableTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.groupId,
-      referencedTable: $db.group,
+      referencedTable: $db.groupTable,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$GroupTableOrderingComposer(
+          }) => $$GroupTableTableOrderingComposer(
             $db: $db,
-            $table: $db.group,
+            $table: $db.groupTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1261,29 +1533,29 @@ class $$UserGroupTableOrderingComposer
   }
 }
 
-class $$UserGroupTableAnnotationComposer
-    extends Composer<_$AppDatabase, $UserGroupTable> {
-  $$UserGroupTableAnnotationComposer({
+class $$PlayerGroupTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PlayerGroupTableTable> {
+  $$PlayerGroupTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  $$UserTableAnnotationComposer get userId {
-    final $$UserTableAnnotationComposer composer = $composerBuilder(
+  $$PlayerTableTableAnnotationComposer get userId {
+    final $$PlayerTableTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.userId,
-      referencedTable: $db.user,
+      referencedTable: $db.playerTable,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserTableAnnotationComposer(
+          }) => $$PlayerTableTableAnnotationComposer(
             $db: $db,
-            $table: $db.user,
+            $table: $db.playerTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1293,20 +1565,20 @@ class $$UserGroupTableAnnotationComposer
     return composer;
   }
 
-  $$GroupTableAnnotationComposer get groupId {
-    final $$GroupTableAnnotationComposer composer = $composerBuilder(
+  $$GroupTableTableAnnotationComposer get groupId {
+    final $$GroupTableTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.groupId,
-      referencedTable: $db.group,
+      referencedTable: $db.groupTable,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$GroupTableAnnotationComposer(
+          }) => $$GroupTableTableAnnotationComposer(
             $db: $db,
-            $table: $db.group,
+            $table: $db.groupTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1317,38 +1589,40 @@ class $$UserGroupTableAnnotationComposer
   }
 }
 
-class $$UserGroupTableTableManager
+class $$PlayerGroupTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $UserGroupTable,
-          UserGroupData,
-          $$UserGroupTableFilterComposer,
-          $$UserGroupTableOrderingComposer,
-          $$UserGroupTableAnnotationComposer,
-          $$UserGroupTableCreateCompanionBuilder,
-          $$UserGroupTableUpdateCompanionBuilder,
-          (UserGroupData, $$UserGroupTableReferences),
-          UserGroupData,
+          $PlayerGroupTableTable,
+          PlayerGroupTableData,
+          $$PlayerGroupTableTableFilterComposer,
+          $$PlayerGroupTableTableOrderingComposer,
+          $$PlayerGroupTableTableAnnotationComposer,
+          $$PlayerGroupTableTableCreateCompanionBuilder,
+          $$PlayerGroupTableTableUpdateCompanionBuilder,
+          (PlayerGroupTableData, $$PlayerGroupTableTableReferences),
+          PlayerGroupTableData,
           PrefetchHooks Function({bool userId, bool groupId})
         > {
-  $$UserGroupTableTableManager(_$AppDatabase db, $UserGroupTable table)
-    : super(
+  $$PlayerGroupTableTableTableManager(
+    _$AppDatabase db,
+    $PlayerGroupTableTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$UserGroupTableFilterComposer($db: db, $table: table),
+              $$PlayerGroupTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$UserGroupTableOrderingComposer($db: db, $table: table),
+              $$PlayerGroupTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$UserGroupTableAnnotationComposer($db: db, $table: table),
+              $$PlayerGroupTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> userId = const Value.absent(),
                 Value<String> groupId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => UserGroupCompanion(
+              }) => PlayerGroupTableCompanion(
                 userId: userId,
                 groupId: groupId,
                 rowid: rowid,
@@ -1358,7 +1632,7 @@ class $$UserGroupTableTableManager
                 required String userId,
                 required String groupId,
                 Value<int> rowid = const Value.absent(),
-              }) => UserGroupCompanion.insert(
+              }) => PlayerGroupTableCompanion.insert(
                 userId: userId,
                 groupId: groupId,
                 rowid: rowid,
@@ -1367,7 +1641,7 @@ class $$UserGroupTableTableManager
               .map(
                 (e) => (
                   e.readTable(table),
-                  $$UserGroupTableReferences(db, table, e),
+                  $$PlayerGroupTableTableReferences(db, table, e),
                 ),
               )
               .toList(),
@@ -1396,11 +1670,13 @@ class $$UserGroupTableTableManager
                           state.withJoin(
                                 currentTable: table,
                                 currentColumn: table.userId,
-                                referencedTable: $$UserGroupTableReferences
-                                    ._userIdTable(db),
-                                referencedColumn: $$UserGroupTableReferences
-                                    ._userIdTable(db)
-                                    .id,
+                                referencedTable:
+                                    $$PlayerGroupTableTableReferences
+                                        ._userIdTable(db),
+                                referencedColumn:
+                                    $$PlayerGroupTableTableReferences
+                                        ._userIdTable(db)
+                                        .id,
                               )
                               as T;
                     }
@@ -1409,11 +1685,13 @@ class $$UserGroupTableTableManager
                           state.withJoin(
                                 currentTable: table,
                                 currentColumn: table.groupId,
-                                referencedTable: $$UserGroupTableReferences
-                                    ._groupIdTable(db),
-                                referencedColumn: $$UserGroupTableReferences
-                                    ._groupIdTable(db)
-                                    .id,
+                                referencedTable:
+                                    $$PlayerGroupTableTableReferences
+                                        ._groupIdTable(db),
+                                referencedColumn:
+                                    $$PlayerGroupTableTableReferences
+                                        ._groupIdTable(db)
+                                        .id,
                               )
                               as T;
                     }
@@ -1429,27 +1707,165 @@ class $$UserGroupTableTableManager
       );
 }
 
-typedef $$UserGroupTableProcessedTableManager =
+typedef $$PlayerGroupTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $UserGroupTable,
-      UserGroupData,
-      $$UserGroupTableFilterComposer,
-      $$UserGroupTableOrderingComposer,
-      $$UserGroupTableAnnotationComposer,
-      $$UserGroupTableCreateCompanionBuilder,
-      $$UserGroupTableUpdateCompanionBuilder,
-      (UserGroupData, $$UserGroupTableReferences),
-      UserGroupData,
+      $PlayerGroupTableTable,
+      PlayerGroupTableData,
+      $$PlayerGroupTableTableFilterComposer,
+      $$PlayerGroupTableTableOrderingComposer,
+      $$PlayerGroupTableTableAnnotationComposer,
+      $$PlayerGroupTableTableCreateCompanionBuilder,
+      $$PlayerGroupTableTableUpdateCompanionBuilder,
+      (PlayerGroupTableData, $$PlayerGroupTableTableReferences),
+      PlayerGroupTableData,
       PrefetchHooks Function({bool userId, bool groupId})
+    >;
+typedef $$GameTableTableCreateCompanionBuilder =
+    GameTableCompanion Function({
+      required String id,
+      required String name,
+      Value<int> rowid,
+    });
+typedef $$GameTableTableUpdateCompanionBuilder =
+    GameTableCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<int> rowid,
+    });
+
+class $$GameTableTableFilterComposer
+    extends Composer<_$AppDatabase, $GameTableTable> {
+  $$GameTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$GameTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $GameTableTable> {
+  $$GameTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$GameTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GameTableTable> {
+  $$GameTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+}
+
+class $$GameTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $GameTableTable,
+          GameTableData,
+          $$GameTableTableFilterComposer,
+          $$GameTableTableOrderingComposer,
+          $$GameTableTableAnnotationComposer,
+          $$GameTableTableCreateCompanionBuilder,
+          $$GameTableTableUpdateCompanionBuilder,
+          (
+            GameTableData,
+            BaseReferences<_$AppDatabase, $GameTableTable, GameTableData>,
+          ),
+          GameTableData,
+          PrefetchHooks Function()
+        > {
+  $$GameTableTableTableManager(_$AppDatabase db, $GameTableTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GameTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GameTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GameTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => GameTableCompanion(id: id, name: name, rowid: rowid),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                Value<int> rowid = const Value.absent(),
+              }) => GameTableCompanion.insert(id: id, name: name, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$GameTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $GameTableTable,
+      GameTableData,
+      $$GameTableTableFilterComposer,
+      $$GameTableTableOrderingComposer,
+      $$GameTableTableAnnotationComposer,
+      $$GameTableTableCreateCompanionBuilder,
+      $$GameTableTableUpdateCompanionBuilder,
+      (
+        GameTableData,
+        BaseReferences<_$AppDatabase, $GameTableTable, GameTableData>,
+      ),
+      GameTableData,
+      PrefetchHooks Function()
     >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$UserTableTableManager get user => $$UserTableTableManager(_db, _db.user);
-  $$GroupTableTableManager get group =>
-      $$GroupTableTableManager(_db, _db.group);
-  $$UserGroupTableTableManager get userGroup =>
-      $$UserGroupTableTableManager(_db, _db.userGroup);
+  $$PlayerTableTableTableManager get playerTable =>
+      $$PlayerTableTableTableManager(_db, _db.playerTable);
+  $$GroupTableTableTableManager get groupTable =>
+      $$GroupTableTableTableManager(_db, _db.groupTable);
+  $$PlayerGroupTableTableTableManager get playerGroupTable =>
+      $$PlayerGroupTableTableTableManager(_db, _db.playerGroupTable);
+  $$GameTableTableTableManager get gameTable =>
+      $$GameTableTableTableManager(_db, _db.gameTable);
 }
