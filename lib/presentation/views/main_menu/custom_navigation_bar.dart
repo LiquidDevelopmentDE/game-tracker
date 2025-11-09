@@ -67,10 +67,34 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  NavbarItem(currentIndex: currentIndex, index: 0, icon: Icons.home_rounded, label: 'Home', onTabTapped: onTabTapped),
-                  NavbarItem(currentIndex: currentIndex, index: 1, icon: Icons.gamepad_rounded, label: 'Games', onTabTapped: onTabTapped),
-                  NavbarItem(currentIndex: currentIndex, index: 2, icon: Icons.group_rounded, label: 'Groups', onTabTapped: onTabTapped),
-                  NavbarItem(currentIndex: currentIndex, index: 3, icon: Icons.bar_chart_rounded, label: 'Stats', onTabTapped: onTabTapped),
+                  NavbarItem(
+                    index: 0,
+                    isSelected: currentIndex == 0,
+                    icon: Icons.home_rounded,
+                    label: 'Home',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 1,
+                    isSelected: currentIndex == 1,
+                    icon: Icons.gamepad_rounded,
+                    label: 'Games',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 2,
+                    isSelected: currentIndex == 2,
+                    icon: Icons.group_rounded,
+                    label: 'Groups',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 3,
+                    isSelected: currentIndex == 3,
+                    icon: Icons.bar_chart_rounded,
+                    label: 'Stats',
+                    onTabTapped: onTabTapped,
+                  ),
                 ],
               ),
             ),
