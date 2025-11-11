@@ -2,7 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
 class GameTile extends StatefulWidget {
-  const GameTile({super.key});
+  final String gameTitle;
+  final String gameType;
+  final String ruleset;
+  final String players;
+  final String winner;
+
+  const GameTile({
+    super.key,
+    required this.gameTitle,
+    required this.gameType,
+    required this.ruleset,
+    required this.players,
+    required this.winner,
+  });
 
   @override
   State<GameTile> createState() => _GameTileState();
@@ -11,72 +24,67 @@ class GameTile extends StatefulWidget {
 class _GameTileState extends State<GameTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      height: 120,
-      width: 250,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: CustomTheme.boxColor,
-        border: Border.all(color: CustomTheme.boxBorder),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Text(
-                'Gametitle',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(width: 5),
-              Text(
-                'Gametype',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-            ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              widget.gameTitle,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(width: 5),
+            Text(
+              widget.gameType,
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          height: 20,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: CustomTheme.primaryColor,
           ),
-          const SizedBox(height: 5),
-          Container(
+          child: Text(
+            widget.ruleset,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Center(
+          heightFactor: 1.5,
+          child: Text(
+            widget.players,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Center(
+          child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            height: 20,
+            width: 220,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: CustomTheme.primaryColor,
+              color: Colors.yellow.shade300,
             ),
-            child: const Text(
-              'Ruleset',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          const Center(
-            child: Text(
-              '5 Player',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          const Spacer(),
-          Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              width: 220,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: Colors.yellow.shade300,
-              ),
-              child: const Text(
-                'In Progress',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.emoji_events, color: Colors.black, size: 20),
+                Text(
+                  widget.winner,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
