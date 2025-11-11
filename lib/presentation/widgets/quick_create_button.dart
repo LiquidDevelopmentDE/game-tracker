@@ -19,15 +19,14 @@ class _QuickCreateButtonState extends State<QuickCreateButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: widget.onPressed,
-
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(140, 40),
+        minimumSize: const Size(140, 45),
         backgroundColor: CustomTheme.primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Text(
         widget.text,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
     );
   }
