@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/presentation/widgets/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/quick_create_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
+import 'package:provider/provider.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  late Future<int> _gameCountFuture;
+  late Future<int> _groupCountFuture;
+
+  @override
+  initState() {
+    super.initState();
+    final db = Provider.of<AppDatabase>(context, listen: false);
+    _gameCountFuture = db.gameDao.getGameCount();
+    _groupCountFuture = db.groupDao.getGroupCount();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +36,36 @@ class HomeView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  QuickInfoTile(
-                    width: constraints.maxWidth * 0.45,
-                    height: constraints.maxHeight * 0.15,
-                    title: 'Games',
-                    icon: Icons.casino,
-                    value: 42,
+                  FutureBuilder<int>(
+                    future: _gameCountFuture,
+                    builder: (context, snapshot) {
+                      final int count = (snapshot.hasData) ? snapshot.data! : 0;
+                      return QuickInfoTile(
+                        width: constraints.maxWidth * 0.45,
+                        height: constraints.maxHeight * 0.15,
+                        title: 'Games',
+                        icon: Icons.groups_rounded,
+                        value: count,
+                      );
+                    },
                   ),
                   SizedBox(width: constraints.maxWidth * 0.05),
-                  QuickInfoTile(
-                    width: constraints.maxWidth * 0.45,
-                    height: constraints.maxHeight * 0.15,
-                    title: 'Groups',
-                    icon: Icons.groups_rounded,
-                    value: 5,
+                  FutureBuilder<int>(
+                    future: _groupCountFuture,
+                    builder: (context, snapshot) {
+                      final int count =
+                          (snapshot.connectionState == ConnectionState.done &&
+                              snapshot.hasData)
+                          ? snapshot.data!
+                          : 0;
+                      return QuickInfoTile(
+                        width: constraints.maxWidth * 0.45,
+                        height: constraints.maxHeight * 0.15,
+                        title: 'Groups',
+                        icon: Icons.groups_rounded,
+                        value: count,
+                      );
+                    },
                   ),
                 ],
               ),

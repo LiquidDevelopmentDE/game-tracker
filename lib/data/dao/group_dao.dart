@@ -56,4 +56,13 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         );
     return rowsAffected > 0;
   }
+
+  /// Retrieves the number of groups in the database.
+  Future<int> getGroupCount() async {
+    final count =
+        await (selectOnly(groupTable)..addColumns([groupTable.id.count()]))
+            .map((row) => row.read(groupTable.id.count()))
+            .getSingle();
+    return count ?? 0;
+  }
 }
