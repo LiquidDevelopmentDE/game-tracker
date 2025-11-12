@@ -20,12 +20,12 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
   }
 
   /// Retrieves a [Group] by its [groupId], including its members.
-  Future<Group> getGroupById(String groupId) async {
+  Future<Group> getGroupById({required String groupId}) async {
     final query = select(groupTable)..where((g) => g.id.equals(groupId));
     final result = await query.getSingle();
 
     List<Player> members = await db.playerGroupDao.getPlayersOfGroupById(
-      groupId,
+      groupId: groupId,
     );
 
     return Group(id: result.id, name: result.name, members: members);
@@ -33,7 +33,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
 
   /// Adds a new group with the given [id] and [name] to the database.
   /// This method also adds the group's members to the [PlayerGroupTable].
-  Future<void> addGroup(Group group) async {
+  Future<void> addGroup({required Group group}) async {
     await db.transaction(() async {
       await into(
         groupTable,
@@ -56,15 +56,18 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
 
   /// Deletes the group with the given [id] from the database.
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> deleteGroup(String id) async {
-    final query = (delete(groupTable)..where((g) => g.id.equals(id)));
+  Future<bool> deleteGroup({required String groupId}) async {
+    final query = (delete(groupTable)..where((g) => g.id.equals(groupId)));
     final rowsAffected = await query.go();
     return rowsAffected > 0;
   }
 
   /// Updates the name of the group with the given [id] to [newName].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> updateGroupname(String id, String newName) async {
+  Future<bool> updateGroupname({
+    required String id,
+    required String newName,
+  }) async {
     final rowsAffected =
         await (update(groupTable)..where((g) => g.id.equals(id))).write(
           GroupTableCompanion(name: Value(newName)),

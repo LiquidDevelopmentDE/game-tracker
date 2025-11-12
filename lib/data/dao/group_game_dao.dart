@@ -12,7 +12,7 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
 
   /// Checks if there is a group associated with the given [gameId].
   /// Returns `true` if there is a group, otherwise `false`.
-  Future<bool> hasGameGroup(String gameId) async {
+  Future<bool> hasGameGroup({required String gameId}) async {
     final count =
         await (selectOnly(groupGameTable)
               ..where(groupGameTable.gameId.equals(gameId))
@@ -22,12 +22,12 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
     return (count ?? 0) > 0;
   }
 
-  Future<Group> getGroupByGameId(String gameId) async {
+  Future<Group> getGroupByGameId({required String gameId}) async {
     final result = await (select(
       groupGameTable,
     )..where((g) => g.gameId.equals(gameId))).getSingle();
 
-    final group = await db.groupDao.getGroupById(result.groupId);
+    final group = await db.groupDao.getGroupById(groupId: result.groupId);
     return group;
   }
 

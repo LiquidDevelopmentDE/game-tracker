@@ -12,7 +12,7 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
 
   /// Checks if there are any players associated with the given [gameId].
   /// Returns `true` if there are players, otherwise `false`.
-  Future<bool> hasGamePlayers(String gameId) async {
+  Future<bool> hasGamePlayers({required String gameId}) async {
     final count =
         await (selectOnly(playerGameTable)
               ..where(playerGameTable.gameId.equals(gameId))
@@ -24,7 +24,7 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
 
   /// Retrieves a list of [Player]s associated with the given [gameId].
   /// Returns an empty list if no players are found.
-  Future<List<Player>> getPlayersByGameId(String gameId) async {
+  Future<List<Player>> getPlayersByGameId({required String gameId}) async {
     final result = await (select(
       playerGameTable,
     )..where((p) => p.gameId.equals(gameId))).get();
@@ -32,7 +32,7 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
     if (result.isEmpty) return <Player>[];
 
     final futures = result.map(
-      (row) => db.playerDao.getPlayerById(row.playerId),
+      (row) => db.playerDao.getPlayerById(playerId: row.playerId),
     );
     final players = await Future.wait(futures);
     return players.whereType<Player>().toList();
@@ -40,7 +40,10 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
 
   /// Associates a player with a game by inserting a record into the
   /// [PlayerGameTable].
-  Future<void> addPlayerToGame(String gameId, String playerId) async {
+  Future<void> addPlayerToGame({
+    required String gameId,
+    required String playerId,
+  }) async {
     await into(playerGameTable).insert(
       PlayerGameTableCompanion.insert(playerId: playerId, gameId: gameId),
     );

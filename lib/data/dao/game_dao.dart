@@ -19,17 +19,17 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
   }
 
   /// Retrieves a [Game] by its [gameId].
-  Future<Game> getGameById(String gameId) async {
+  Future<Game> getGameById({required String gameId}) async {
     final query = select(gameTable)..where((g) => g.id.equals(gameId));
     final result = await query.getSingle();
 
     List<Player>? players;
-    if (await db.playerGameDao.hasGamePlayers(gameId)) {
-      players = await db.playerGameDao.getPlayersByGameId(gameId);
+    if (await db.playerGameDao.hasGamePlayers(gameId: gameId)) {
+      players = await db.playerGameDao.getPlayersByGameId(gameId: gameId);
     }
     Group? group;
-    if (await db.groupGameDao.hasGameGroup(gameId)) {
-      group = await db.groupGameDao.getGroupByGameId(gameId);
+    if (await db.groupGameDao.hasGameGroup(gameId: gameId)) {
+      group = await db.groupGameDao.getGroupByGameId(gameId: gameId);
     }
 
     return Game(
@@ -41,14 +41,16 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     );
   }
 
-  Future<void> addGame(Game game) async {
+  /// Adds a new [Game] to the database.
+  /// Also adds associated players and group if they exist.
+  Future<void> addGame({required Game game}) async {
     await db.transaction(() async {
       for (final p in game.players ?? []) {
-        await db.playerDao.addPlayer(p);
-        await db.playerGameDao.addPlayerToGame(game.id, p.id);
+        await db.playerDao.addPlayer(player: p);
+        await db.playerGameDao.addPlayerToGame(gameId: game.id, playerId: p.id);
       }
       if (game.group != null) {
-        await db.groupDao.addGroup(game.group!);
+        await db.groupDao.addGroup(group: game.group!);
         await db.groupGameDao.addGroupToGame(game.id, game.group!.id);
       }
       await into(gameTable).insert(
