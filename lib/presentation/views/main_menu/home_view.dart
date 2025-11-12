@@ -70,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: InfoTile(
                   width: constraints.maxWidth * 0.95,
                   title: 'Recent Games',
