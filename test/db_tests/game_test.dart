@@ -8,7 +8,6 @@ import 'package:game_tracker/data/dto/player.dart';
 
 void main() {
   late AppDatabase database;
-  late Player testPlayer;
   late Player player1;
   late Player player2;
   late Player player3;
@@ -25,7 +24,6 @@ void main() {
       ),
     );
 
-    testPlayer = Player(id: 'test_id', name: 'Test Player');
     player1 = Player(id: 'p1', name: 'Alice');
     player2 = Player(id: 'p2', name: 'Bob');
     player3 = Player(id: 'p3', name: 'Charlie');
