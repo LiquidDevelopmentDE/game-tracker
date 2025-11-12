@@ -20,14 +20,14 @@ part 'database.g.dart';
   tables: [
     PlayerTable,
     GroupTable,
+    GameTable,
     PlayerGroupTable,
     PlayerGameTable,
     GroupGameTable,
-    GameTable,
   ],
   daos: [
-    GroupDao,
     PlayerDao,
+    GroupDao,
     GameDao,
     PlayerGroupDao,
     PlayerGameDao,
