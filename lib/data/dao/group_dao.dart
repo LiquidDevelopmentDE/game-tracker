@@ -51,6 +51,9 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
               .toList(),
         ),
       );
+      await Future.wait(
+        group.members.map((player) => db.playerDao.addPlayer(player: player)),
+      );
     });
   }
 
@@ -65,11 +68,11 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
   /// Updates the name of the group with the given [id] to [newName].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
   Future<bool> updateGroupname({
-    required String id,
+    required String groupId,
     required String newName,
   }) async {
     final rowsAffected =
-        await (update(groupTable)..where((g) => g.id.equals(id))).write(
+        await (update(groupTable)..where((g) => g.id.equals(groupId))).write(
           GroupTableCompanion(name: Value(newName)),
         );
     return rowsAffected > 0;
@@ -82,5 +85,13 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
             .map((row) => row.read(groupTable.id.count()))
             .getSingle();
     return count ?? 0;
+  }
+
+  /// Checks if a group with the given [groupId] exists in the database.
+  /// Returns `true` if the group exists, `false` otherwise.
+  Future<bool> groupExists({required String groupId}) async {
+    final query = select(groupTable)..where((g) => g.id.equals(groupId));
+    final result = await query.getSingleOrNull();
+    return result != null;
   }
 }

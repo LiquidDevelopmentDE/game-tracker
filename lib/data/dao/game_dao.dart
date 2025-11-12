@@ -57,11 +57,19 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
         GameTableCompanion.insert(
           id: game.id,
           name: game.name,
-          winnerId: Value(game.winner),
+          winnerId: game.winner,
         ),
         mode: InsertMode.insertOrReplace,
       );
     });
+  }
+
+  /// Deletes the game with the given [gameId] from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteGame({required String gameId}) async {
+    final query = delete(gameTable)..where((g) => g.id.equals(gameId));
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
   }
 
   /// Retrieves the number of games in the database.
@@ -71,5 +79,13 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
             .map((row) => row.read(gameTable.id.count()))
             .getSingle();
     return count ?? 0;
+  }
+
+  /// Checks if a game with the given [gameId] exists in the database.
+  /// Returns `true` if the game exists, otherwise `false`.
+  Future<bool> gameExists({required String gameId}) async {
+    final query = select(gameTable)..where((g) => g.id.equals(gameId));
+    final result = await query.getSingleOrNull();
+    return result != null;
   }
 }
