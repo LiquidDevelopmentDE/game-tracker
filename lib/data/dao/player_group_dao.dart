@@ -19,26 +19,26 @@ class PlayerGroupDao extends DatabaseAccessor<AppDatabase>
     List<Player> groupMembers = [];
 
     for (var entry in result) {
-      final player = await db.playerDao.getPlayerById(entry.userId);
+      final player = await db.playerDao.getPlayerById(entry.playerId);
       groupMembers.add(player);
     }
 
     return groupMembers;
   }
 
-  /// Removes a player from a group based on [userId] and [groupId].
+  /// Removes a player from a group based on [playerId] and [groupId].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> removePlayerFromGroup(String userId, String groupId) async {
+  Future<bool> removePlayerFromGroup(String playerId, String groupId) async {
     final query = delete(playerGroupTable)
-      ..where((p) => p.userId.equals(userId) & p.groupId.equals(groupId));
+      ..where((p) => p.playerId.equals(playerId) & p.groupId.equals(groupId));
     final rowsAffected = await query.go();
     return rowsAffected > 0;
   }
 
-  /// Adds a player to a group with the given [userId] and [groupId].
-  Future<void> addPlayerToGroup(String userId, String groupId) async {
+  /// Adds a player to a group with the given [playerId] and [groupId].
+  Future<void> addPlayerToGroup(String playerId, String groupId) async {
     await into(playerGroupTable).insert(
-      PlayerGroupTableCompanion.insert(userId: userId, groupId: groupId),
+      PlayerGroupTableCompanion.insert(playerId: playerId, groupId: groupId),
     );
   }
 }
