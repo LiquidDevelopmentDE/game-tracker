@@ -6,13 +6,18 @@ class Game {
   final String name;
   final List<Player>? players;
   final Group? group;
-  final String? winner;
+  final String winner;
 
   Game({
     this.players,
     this.group,
-    this.winner,
+    this.winner = '',
     required this.id,
     required this.name,
   });
+
+  @override
+  String toString() {
+    return 'Game{\n\tid: $id,\n\tname: $name,\n\tplayers: $players,\n\tgroup: $group,\n\twinner: $winner\n}';
+  }
 }

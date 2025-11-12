@@ -3,4 +3,9 @@ class Player {
   final String name;
 
   Player({required this.id, required this.name});
+
+  @override
+  String toString() {
+    return 'Player{id: $id,name: $name}';
+  }
 }
