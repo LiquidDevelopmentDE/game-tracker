@@ -2,6 +2,8 @@ import 'package:drift/drift.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/db/tables/game_table.dart';
 import 'package:game_tracker/data/dto/game.dart';
+import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/player.dart';
 
 part 'game_dao.g.dart';
 
@@ -16,11 +18,27 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     return result.map((row) => Game(id: row.id, name: row.name)).toList();
   }
 
-  /// Retrieves a [Game] by its [id].
-  Future<Game> getGameById(String id) async {
-    final query = select(gameTable)..where((g) => g.id.equals(id));
+  /// Retrieves a [Game] by its [gameId].
+  Future<Game> getGameById(String gameId) async {
+    final query = select(gameTable)..where((g) => g.id.equals(gameId));
     final result = await query.getSingle();
-    return Game(id: result.id, name: result.name);
+
+    List<Player>? players;
+    if (await db.playerGameDao.hasGamePlayers(gameId)) {
+      players = await db.playerGameDao.getPlayersByGameId(gameId);
+    }
+    Group? group;
+    if (await db.groupGameDao.hasGameGroup(gameId)) {
+      group = await db.groupGameDao.getGroupByGameId(gameId);
+    }
+
+    return Game(
+      id: result.id,
+      name: result.name,
+      players: players,
+      group: group,
+      winner: result.winnerId,
+    );
   }
 
   /// Retrieves the number of games in the database.

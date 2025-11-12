@@ -19,14 +19,14 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         .toList();
   }
 
-  /// Retrieves a [Group] by its [id], including its members.
-  Future<Group> getGroupById(String id) async {
-    final query = select(groupTable)..where((g) => g.id.equals(id));
+  /// Retrieves a [Group] by its [groupId], including its members.
+  Future<Group> getGroupById(String groupId) async {
+    final query = select(groupTable)..where((g) => g.id.equals(groupId));
     final result = await query.getSingle();
 
-    List<Player> members = [];
-
-    members = await db.playerGroupDao.getPlayersOfGroupById(id);
+    List<Player> members = await db.playerGroupDao.getPlayersOfGroupById(
+      groupId,
+    );
 
     return Group(id: result.id, name: result.name, members: members);
   }
