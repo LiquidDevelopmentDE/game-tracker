@@ -37,4 +37,12 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
     final players = await Future.wait(futures);
     return players.whereType<Player>().toList();
   }
+
+  /// Associates a player with a game by inserting a record into the
+  /// [PlayerGameTable].
+  Future<void> addPlayerToGame(String gameId, String playerId) async {
+    await into(playerGameTable).insert(
+      PlayerGameTableCompanion.insert(playerId: playerId, gameId: gameId),
+    );
+  }
 }

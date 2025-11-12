@@ -41,6 +41,27 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     );
   }
 
+  Future<void> addGame(Game game) async {
+    await db.transaction(() async {
+      for (final p in game.players ?? []) {
+        await db.playerDao.addPlayer(p);
+        await db.playerGameDao.addPlayerToGame(game.id, p.id);
+      }
+      if (game.group != null) {
+        await db.groupDao.addGroup(game.group!);
+        await db.groupGameDao.addGroupToGame(game.id, game.group!.id);
+      }
+      await into(gameTable).insert(
+        GameTableCompanion.insert(
+          id: game.id,
+          name: game.name,
+          winnerId: Value(game.winner),
+        ),
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
   /// Retrieves the number of games in the database.
   Future<int> getGameCount() async {
     final count =

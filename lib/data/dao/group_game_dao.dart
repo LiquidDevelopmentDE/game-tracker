@@ -30,4 +30,12 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
     final group = await db.groupDao.getGroupById(result.groupId);
     return group;
   }
+
+  /// Associates a group with a game by inserting a record into the
+  /// [GroupGameTable].
+  Future<void> addGroupToGame(String gameId, String groupId) async {
+    await into(
+      groupGameTable,
+    ).insert(GroupGameTableCompanion.insert(groupId: groupId, gameId: gameId));
+  }
 }

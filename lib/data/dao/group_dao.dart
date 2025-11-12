@@ -32,11 +32,26 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
   }
 
   /// Adds a new group with the given [id] and [name] to the database.
-  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<void> addGroup(String id, String name) async {
-    await into(
-      groupTable,
-    ).insert(GroupTableCompanion.insert(id: id, name: name));
+  /// This method also adds the group's members to the [PlayerGroupTable].
+  Future<void> addGroup(Group group) async {
+    await db.transaction(() async {
+      await into(
+        groupTable,
+      ).insert(GroupTableCompanion.insert(id: group.id, name: group.name));
+      await db.batch(
+        (b) => b.insertAll(
+          db.playerGroupTable,
+          group.members
+              .map(
+                (member) => PlayerGroupTableCompanion.insert(
+                  playerId: member.id,
+                  groupId: group.id,
+                ),
+              )
+              .toList(),
+        ),
+      );
+    });
   }
 
   /// Deletes the group with the given [id] from the database.
