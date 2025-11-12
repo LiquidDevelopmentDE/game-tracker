@@ -127,4 +127,22 @@ void main() {
     final playerExists = result.members.any((p) => p.id == playerToRemove.id);
     expect(playerExists, false);
   });
+
+  test('get group count works correctly', () async {
+    final initialCount = await database.groupDao.getGroupCount();
+    expect(initialCount, 0);
+
+    await database.groupDao.addGroup(group: testgroup);
+
+    final groupAdded = await database.groupDao.getGroupCount();
+    expect(groupAdded, 1);
+
+    final groupRemoved = await database.groupDao.deleteGroup(
+      groupId: testgroup.id,
+    );
+    expect(groupRemoved, true);
+
+    final finalCount = await database.groupDao.getGroupCount();
+    expect(finalCount, 0);
+  });
 }

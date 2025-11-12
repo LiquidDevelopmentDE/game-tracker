@@ -62,5 +62,23 @@ void main() {
       );
       expect(result.name, newPlayerName);
     });
+
+    test('get player count works correctly', () async {
+      final initialCount = await database.playerDao.getPlayerCount();
+      expect(initialCount, 0);
+
+      await database.playerDao.addPlayer(player: testPlayer);
+
+      final playerAdded = await database.playerDao.getPlayerCount();
+      expect(playerAdded, 1);
+
+      final playerRemoved = await database.playerDao.deletePlayer(
+        playerId: testPlayer.id,
+      );
+      expect(playerRemoved, true);
+
+      final finalCount = await database.playerDao.getPlayerCount();
+      expect(finalCount, 0);
+    });
   });
 }

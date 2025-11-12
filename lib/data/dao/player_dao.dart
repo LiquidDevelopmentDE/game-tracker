@@ -61,4 +61,13 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
       PlayerTableCompanion(name: Value(newName)),
     );
   }
+
+  /// Retrieves the total count of players in the database.
+  Future<int> getPlayerCount() async {
+    final count =
+        await (selectOnly(playerTable)..addColumns([playerTable.id.count()]))
+            .map((row) => row.read(playerTable.id.count()))
+            .getSingle();
+    return count ?? 0;
+  }
 }
