@@ -22,4 +22,13 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     final result = await query.getSingle();
     return Game(id: result.id, name: result.name);
   }
+
+  /// Retrieves the number of games in the database.
+  Future<int> getGameCount() async {
+    final count =
+        await (selectOnly(gameTable)..addColumns([gameTable.id.count()]))
+            .map((row) => row.read(gameTable.id.count()))
+            .getSingle();
+    return count ?? 0;
+  }
 }
