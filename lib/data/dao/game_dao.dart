@@ -24,7 +24,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     final result = await query.getSingle();
 
     List<Player>? players;
-    if (await db.playerGameDao.hasGamePlayers(gameId: gameId)) {
+    if (await db.playerGameDao.gameHasPlayers(gameId: gameId)) {
       players = await db.playerGameDao.getPlayersByGameId(gameId: gameId);
     }
     Group? group;

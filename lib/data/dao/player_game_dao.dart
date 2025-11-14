@@ -12,7 +12,7 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
 
   /// Checks if there are any players associated with the given [gameId].
   /// Returns `true` if there are players, otherwise `false`.
-  Future<bool> hasGamePlayers({required String gameId}) async {
+  Future<bool> gameHasPlayers({required String gameId}) async {
     final count =
         await (selectOnly(playerGameTable)
               ..where(playerGameTable.gameId.equals(gameId))
