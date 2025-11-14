@@ -22,6 +22,7 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
     return (count ?? 0) > 0;
   }
 
+  /// Retrieves the [Group] associated with the given [gameId].
   Future<Group> getGroupByGameId({required String gameId}) async {
     final result = await (select(
       groupGameTable,
