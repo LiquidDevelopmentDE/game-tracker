@@ -1140,7 +1140,7 @@ class $GroupGameTableTable extends GroupGameTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES player_table (id) ON DELETE CASCADE',
+      'REFERENCES group_table (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _gameIdMeta = const VerificationMeta('gameId');
@@ -1152,7 +1152,7 @@ class $GroupGameTableTable extends GroupGameTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES group_table (id) ON DELETE CASCADE',
+      'REFERENCES game_table (id) ON DELETE CASCADE',
     ),
   );
   @override
@@ -1359,8 +1359,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $GroupGameTableTable groupGameTable = $GroupGameTableTable(this);
-  late final GroupDao groupDao = GroupDao(this as AppDatabase);
   late final PlayerDao playerDao = PlayerDao(this as AppDatabase);
+  late final GroupDao groupDao = GroupDao(this as AppDatabase);
   late final GameDao gameDao = GameDao(this as AppDatabase);
   late final PlayerGroupDao playerGroupDao = PlayerGroupDao(
     this as AppDatabase,
@@ -1418,14 +1418,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName(
-        'player_table',
+        'group_table',
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('group_game_table', kind: UpdateKind.delete)],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName(
-        'group_table',
+        'game_table',
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('group_game_table', kind: UpdateKind.delete)],
@@ -1509,27 +1509,6 @@ final class $$PlayerTableTableReferences
     final cache = $_typedResult.readTableOrNull(
       _playerGameTableRefsTable($_db),
     );
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
-  static MultiTypedResultKey<$GroupGameTableTable, List<GroupGameTableData>>
-  _groupGameTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.groupGameTable,
-    aliasName: $_aliasNameGenerator(
-      db.playerTable.id,
-      db.groupGameTable.groupId,
-    ),
-  );
-
-  $$GroupGameTableTableProcessedTableManager get groupGameTableRefs {
-    final manager = $$GroupGameTableTableTableManager(
-      $_db,
-      $_db.groupGameTable,
-    ).filter((f) => f.groupId.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(_groupGameTableRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -1621,31 +1600,6 @@ class $$PlayerTableTableFilterComposer
           }) => $$PlayerGameTableTableFilterComposer(
             $db: $db,
             $table: $db.playerGameTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<bool> groupGameTableRefs(
-    Expression<bool> Function($$GroupGameTableTableFilterComposer f) f,
-  ) {
-    final $$GroupGameTableTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.groupGameTable,
-      getReferencedColumn: (t) => t.groupId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$GroupGameTableTableFilterComposer(
-            $db: $db,
-            $table: $db.groupGameTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1765,31 +1719,6 @@ class $$PlayerTableTableAnnotationComposer
     );
     return f(composer);
   }
-
-  Expression<T> groupGameTableRefs<T extends Object>(
-    Expression<T> Function($$GroupGameTableTableAnnotationComposer a) f,
-  ) {
-    final $$GroupGameTableTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.groupGameTable,
-      getReferencedColumn: (t) => t.groupId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$GroupGameTableTableAnnotationComposer(
-            $db: $db,
-            $table: $db.groupGameTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
 }
 
 class $$PlayerTableTableTableManager
@@ -1809,7 +1738,6 @@ class $$PlayerTableTableTableManager
             bool gameTableRefs,
             bool playerGroupTableRefs,
             bool playerGameTableRefs,
-            bool groupGameTableRefs,
           })
         > {
   $$PlayerTableTableTableManager(_$AppDatabase db, $PlayerTableTable table)
@@ -1849,7 +1777,6 @@ class $$PlayerTableTableTableManager
                 gameTableRefs = false,
                 playerGroupTableRefs = false,
                 playerGameTableRefs = false,
-                groupGameTableRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -1857,7 +1784,6 @@ class $$PlayerTableTableTableManager
                     if (gameTableRefs) db.gameTable,
                     if (playerGroupTableRefs) db.playerGroupTable,
                     if (playerGameTableRefs) db.playerGameTable,
-                    if (groupGameTableRefs) db.groupGameTable,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -1925,27 +1851,6 @@ class $$PlayerTableTableTableManager
                               ),
                           typedResults: items,
                         ),
-                      if (groupGameTableRefs)
-                        await $_getPrefetchedData<
-                          PlayerTableData,
-                          $PlayerTableTable,
-                          GroupGameTableData
-                        >(
-                          currentTable: table,
-                          referencedTable: $$PlayerTableTableReferences
-                              ._groupGameTableRefsTable(db),
-                          managerFromTypedResult: (p0) =>
-                              $$PlayerTableTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).groupGameTableRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.groupId == item.id,
-                              ),
-                          typedResults: items,
-                        ),
                     ];
                   },
                 );
@@ -1970,7 +1875,6 @@ typedef $$PlayerTableTableProcessedTableManager =
         bool gameTableRefs,
         bool playerGroupTableRefs,
         bool playerGameTableRefs,
-        bool groupGameTableRefs,
       })
     >;
 typedef $$GroupTableTableCreateCompanionBuilder =
@@ -2016,14 +1920,17 @@ final class $$GroupTableTableReferences
   static MultiTypedResultKey<$GroupGameTableTable, List<GroupGameTableData>>
   _groupGameTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.groupGameTable,
-    aliasName: $_aliasNameGenerator(db.groupTable.id, db.groupGameTable.gameId),
+    aliasName: $_aliasNameGenerator(
+      db.groupTable.id,
+      db.groupGameTable.groupId,
+    ),
   );
 
   $$GroupGameTableTableProcessedTableManager get groupGameTableRefs {
     final manager = $$GroupGameTableTableTableManager(
       $_db,
       $_db.groupGameTable,
-    ).filter((f) => f.gameId.id.sqlEquals($_itemColumn<String>('id')!));
+    ).filter((f) => f.groupId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_groupGameTableRefsTable($_db));
     return ProcessedTableManager(
@@ -2083,7 +1990,7 @@ class $$GroupTableTableFilterComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.groupGameTable,
-      getReferencedColumn: (t) => t.gameId,
+      getReferencedColumn: (t) => t.groupId,
       builder:
           (
             joinBuilder, {
@@ -2169,7 +2076,7 @@ class $$GroupTableTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.groupGameTable,
-      getReferencedColumn: (t) => t.gameId,
+      getReferencedColumn: (t) => t.groupId,
       builder:
           (
             joinBuilder, {
@@ -2287,7 +2194,7 @@ class $$GroupTableTableTableManager
                               ).groupGameTableRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.gameId == item.id,
+                                (e) => e.groupId == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -2373,6 +2280,24 @@ final class $$GameTableTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$GroupGameTableTable, List<GroupGameTableData>>
+  _groupGameTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.groupGameTable,
+    aliasName: $_aliasNameGenerator(db.gameTable.id, db.groupGameTable.gameId),
+  );
+
+  $$GroupGameTableTableProcessedTableManager get groupGameTableRefs {
+    final manager = $$GroupGameTableTableTableManager(
+      $_db,
+      $_db.groupGameTable,
+    ).filter((f) => f.gameId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_groupGameTableRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$GameTableTableFilterComposer
@@ -2433,6 +2358,31 @@ class $$GameTableTableFilterComposer
           }) => $$PlayerGameTableTableFilterComposer(
             $db: $db,
             $table: $db.playerGameTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> groupGameTableRefs(
+    Expression<bool> Function($$GroupGameTableTableFilterComposer f) f,
+  ) {
+    final $$GroupGameTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.groupGameTable,
+      getReferencedColumn: (t) => t.gameId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GroupGameTableTableFilterComposer(
+            $db: $db,
+            $table: $db.groupGameTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2548,6 +2498,31 @@ class $$GameTableTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> groupGameTableRefs<T extends Object>(
+    Expression<T> Function($$GroupGameTableTableAnnotationComposer a) f,
+  ) {
+    final $$GroupGameTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.groupGameTable,
+      getReferencedColumn: (t) => t.gameId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GroupGameTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.groupGameTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$GameTableTableTableManager
@@ -2563,7 +2538,11 @@ class $$GameTableTableTableManager
           $$GameTableTableUpdateCompanionBuilder,
           (GameTableData, $$GameTableTableReferences),
           GameTableData,
-          PrefetchHooks Function({bool winnerId, bool playerGameTableRefs})
+          PrefetchHooks Function({
+            bool winnerId,
+            bool playerGameTableRefs,
+            bool groupGameTableRefs,
+          })
         > {
   $$GameTableTableTableManager(_$AppDatabase db, $GameTableTable table)
     : super(
@@ -2609,11 +2588,16 @@ class $$GameTableTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({winnerId = false, playerGameTableRefs = false}) {
+              ({
+                winnerId = false,
+                playerGameTableRefs = false,
+                groupGameTableRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (playerGameTableRefs) db.playerGameTable,
+                    if (groupGameTableRefs) db.groupGameTable,
                   ],
                   addJoins:
                       <
@@ -2670,6 +2654,27 @@ class $$GameTableTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (groupGameTableRefs)
+                        await $_getPrefetchedData<
+                          GameTableData,
+                          $GameTableTable,
+                          GroupGameTableData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$GameTableTableReferences
+                              ._groupGameTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$GameTableTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).groupGameTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.gameId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -2690,7 +2695,11 @@ typedef $$GameTableTableProcessedTableManager =
       $$GameTableTableUpdateCompanionBuilder,
       (GameTableData, $$GameTableTableReferences),
       GameTableData,
-      PrefetchHooks Function({bool winnerId, bool playerGameTableRefs})
+      PrefetchHooks Function({
+        bool winnerId,
+        bool playerGameTableRefs,
+        bool groupGameTableRefs,
+      })
     >;
 typedef $$PlayerGroupTableTableCreateCompanionBuilder =
     PlayerGroupTableCompanion Function({
@@ -3448,17 +3457,17 @@ final class $$GroupGameTableTableReferences
     super.$_typedResult,
   );
 
-  static $PlayerTableTable _groupIdTable(_$AppDatabase db) =>
-      db.playerTable.createAlias(
-        $_aliasNameGenerator(db.groupGameTable.groupId, db.playerTable.id),
+  static $GroupTableTable _groupIdTable(_$AppDatabase db) =>
+      db.groupTable.createAlias(
+        $_aliasNameGenerator(db.groupGameTable.groupId, db.groupTable.id),
       );
 
-  $$PlayerTableTableProcessedTableManager get groupId {
+  $$GroupTableTableProcessedTableManager get groupId {
     final $_column = $_itemColumn<String>('group_id')!;
 
-    final manager = $$PlayerTableTableTableManager(
+    final manager = $$GroupTableTableTableManager(
       $_db,
-      $_db.playerTable,
+      $_db.groupTable,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_groupIdTable($_db));
     if (item == null) return manager;
@@ -3467,17 +3476,17 @@ final class $$GroupGameTableTableReferences
     );
   }
 
-  static $GroupTableTable _gameIdTable(_$AppDatabase db) =>
-      db.groupTable.createAlias(
-        $_aliasNameGenerator(db.groupGameTable.gameId, db.groupTable.id),
+  static $GameTableTable _gameIdTable(_$AppDatabase db) =>
+      db.gameTable.createAlias(
+        $_aliasNameGenerator(db.groupGameTable.gameId, db.gameTable.id),
       );
 
-  $$GroupTableTableProcessedTableManager get gameId {
+  $$GameTableTableProcessedTableManager get gameId {
     final $_column = $_itemColumn<String>('game_id')!;
 
-    final manager = $$GroupTableTableTableManager(
+    final manager = $$GameTableTableTableManager(
       $_db,
-      $_db.groupTable,
+      $_db.gameTable,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_gameIdTable($_db));
     if (item == null) return manager;
@@ -3496,33 +3505,10 @@ class $$GroupGameTableTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  $$PlayerTableTableFilterComposer get groupId {
-    final $$PlayerTableTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.groupId,
-      referencedTable: $db.playerTable,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$PlayerTableTableFilterComposer(
-            $db: $db,
-            $table: $db.playerTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$GroupTableTableFilterComposer get gameId {
+  $$GroupTableTableFilterComposer get groupId {
     final $$GroupTableTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.gameId,
+      getCurrentColumn: (t) => t.groupId,
       referencedTable: $db.groupTable,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -3533,6 +3519,29 @@ class $$GroupGameTableTableFilterComposer
           }) => $$GroupTableTableFilterComposer(
             $db: $db,
             $table: $db.groupTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GameTableTableFilterComposer get gameId {
+    final $$GameTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.gameId,
+      referencedTable: $db.gameTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GameTableTableFilterComposer(
+            $db: $db,
+            $table: $db.gameTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3552,33 +3561,10 @@ class $$GroupGameTableTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  $$PlayerTableTableOrderingComposer get groupId {
-    final $$PlayerTableTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.groupId,
-      referencedTable: $db.playerTable,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$PlayerTableTableOrderingComposer(
-            $db: $db,
-            $table: $db.playerTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$GroupTableTableOrderingComposer get gameId {
+  $$GroupTableTableOrderingComposer get groupId {
     final $$GroupTableTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.gameId,
+      getCurrentColumn: (t) => t.groupId,
       referencedTable: $db.groupTable,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -3589,6 +3575,29 @@ class $$GroupGameTableTableOrderingComposer
           }) => $$GroupTableTableOrderingComposer(
             $db: $db,
             $table: $db.groupTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GameTableTableOrderingComposer get gameId {
+    final $$GameTableTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.gameId,
+      referencedTable: $db.gameTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GameTableTableOrderingComposer(
+            $db: $db,
+            $table: $db.gameTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3608,33 +3617,10 @@ class $$GroupGameTableTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  $$PlayerTableTableAnnotationComposer get groupId {
-    final $$PlayerTableTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.groupId,
-      referencedTable: $db.playerTable,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$PlayerTableTableAnnotationComposer(
-            $db: $db,
-            $table: $db.playerTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$GroupTableTableAnnotationComposer get gameId {
+  $$GroupTableTableAnnotationComposer get groupId {
     final $$GroupTableTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.gameId,
+      getCurrentColumn: (t) => t.groupId,
       referencedTable: $db.groupTable,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -3645,6 +3631,29 @@ class $$GroupGameTableTableAnnotationComposer
           }) => $$GroupTableTableAnnotationComposer(
             $db: $db,
             $table: $db.groupTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GameTableTableAnnotationComposer get gameId {
+    final $$GameTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.gameId,
+      referencedTable: $db.gameTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GameTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.gameTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
