@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/presentation/widgets/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
-import 'package:game_tracker/presentation/widgets/double_row_info_tile.dart';
 
 class GameHistoryView extends StatefulWidget {
   const GameHistoryView({super.key});
@@ -182,16 +182,21 @@ Widget gameHistoryListView(allGameData, suggestedGameData) {
   } else if (suggestedGameData.isEmpty) {
     return TopCenteredMessage("Kein Spiel mit den Suchparametern gefunden.");
   }
-  return ListView.builder(
+  return ListView.separated(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     itemCount: suggestedGameData.length,
+    separatorBuilder: (context, index) => const Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Divider(),
+    ),
     itemBuilder: (context, index) {
       final currentGame = suggestedGameData[index];
-      return doubleRowInfoTile(
-        currentGame['game'] + ": ",
-        currentGame['title'],
-        currentGame['players'].toString() + " Spieler",
-        currentGame['group'],
-        currentGame['date'],
+      return GameTile(
+        gameTitle: currentGame['title'],
+        gameType: currentGame['game'],
+        ruleset: currentGame['date'],
+        players: '${currentGame['players']} Spieler',
+        winner: currentGame['group'],
       );
     },
   );
