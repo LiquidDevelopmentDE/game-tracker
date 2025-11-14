@@ -55,7 +55,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       body: tabs[currentIndex],
       extendBody: true,
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 8.0),
+        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 18.0),
         child: Material(
           elevation: 10,
           borderRadius: BorderRadius.circular(24),
