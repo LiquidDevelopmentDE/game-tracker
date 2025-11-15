@@ -31,71 +31,73 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          _currentTabTitle(),
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            _currentTabTitle(),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: CustomTheme.backgroundColor,
+          scrolledUnderElevation: 0,
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsView()),
+              ),
+              icon: const Icon(Icons.settings),
+            ),
+          ],
+          elevation: 0,
         ),
         backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsView()),
-            ),
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-        elevation: 0,
-      ),
-      backgroundColor: CustomTheme.backgroundColor,
-      body: tabs[currentIndex],
-      extendBody: true,
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 18.0),
-        child: Material(
-          elevation: 10,
-          borderRadius: BorderRadius.circular(24),
-          color: CustomTheme.primaryColor,
-          child: ClipRRect(
+        body: tabs[currentIndex],
+        extendBody: true,
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 18.0),
+          child: Material(
+            elevation: 10,
             borderRadius: BorderRadius.circular(24),
-            child: SizedBox(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  NavbarItem(
-                    index: 0,
-                    isSelected: currentIndex == 0,
-                    icon: Icons.home_rounded,
-                    label: 'Home',
-                    onTabTapped: onTabTapped,
-                  ),
-                  NavbarItem(
-                    index: 1,
-                    isSelected: currentIndex == 1,
-                    icon: Icons.gamepad_rounded,
-                    label: 'Games',
-                    onTabTapped: onTabTapped,
-                  ),
-                  NavbarItem(
-                    index: 2,
-                    isSelected: currentIndex == 2,
-                    icon: Icons.group_rounded,
-                    label: 'Groups',
-                    onTabTapped: onTabTapped,
-                  ),
-                  NavbarItem(
-                    index: 3,
-                    isSelected: currentIndex == 3,
-                    icon: Icons.bar_chart_rounded,
-                    label: 'Stats',
-                    onTabTapped: onTabTapped,
-                  ),
-                ],
+            color: CustomTheme.primaryColor,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: SizedBox(
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    NavbarItem(
+                      index: 0,
+                      isSelected: currentIndex == 0,
+                      icon: Icons.home_rounded,
+                      label: 'Home',
+                      onTabTapped: onTabTapped,
+                    ),
+                    NavbarItem(
+                      index: 1,
+                      isSelected: currentIndex == 1,
+                      icon: Icons.gamepad_rounded,
+                      label: 'Games',
+                      onTabTapped: onTabTapped,
+                    ),
+                    NavbarItem(
+                      index: 2,
+                      isSelected: currentIndex == 2,
+                      icon: Icons.group_rounded,
+                      label: 'Groups',
+                      onTabTapped: onTabTapped,
+                    ),
+                    NavbarItem(
+                      index: 3,
+                      isSelected: currentIndex == 3,
+                      icon: Icons.bar_chart_rounded,
+                      label: 'Stats',
+                      onTabTapped: onTabTapped,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
