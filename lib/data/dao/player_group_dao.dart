@@ -11,34 +11,65 @@ class PlayerGroupDao extends DatabaseAccessor<AppDatabase>
   PlayerGroupDao(super.db);
 
   /// Retrieves all players belonging to a specific group by [groupId].
-  Future<List<Player>> getPlayersOfGroupById(String groupId) async {
+  Future<List<Player>> getPlayersOfGroupById({required String groupId}) async {
     final query = select(playerGroupTable)
       ..where((pG) => pG.groupId.equals(groupId));
     final result = await query.get();
 
-    List<Player> groupMembers = [];
+    List<Player> groupMembers = List.empty(growable: true);
 
     for (var entry in result) {
-      final player = await db.playerDao.getPlayerById(entry.userId);
+      final player = await db.playerDao.getPlayerById(playerId: entry.playerId);
       groupMembers.add(player);
     }
 
     return groupMembers;
   }
 
-  /// Removes a player from a group based on [userId] and [groupId].
+  /// Removes a player from a group based on [playerId] and [groupId].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> removePlayerFromGroup(String userId, String groupId) async {
+  Future<bool> removePlayerFromGroup({
+    required String playerId,
+    required String groupId,
+  }) async {
     final query = delete(playerGroupTable)
-      ..where((p) => p.userId.equals(userId) & p.groupId.equals(groupId));
+      ..where((p) => p.playerId.equals(playerId) & p.groupId.equals(groupId));
     final rowsAffected = await query.go();
     return rowsAffected > 0;
   }
 
-  /// Adds a player to a group with the given [userId] and [groupId].
-  Future<void> addPlayerToGroup(String userId, String groupId) async {
+  /// Adds a [player] to a group with the given [groupId].
+  /// If the player is already in the group, no action is taken.
+  /// If the player does not exist in the player table, they are added.
+  /// Returns `true` if the player was added, otherwise `false`.
+  Future<bool> addPlayerToGroup({
+    required Player player,
+    required String groupId,
+  }) async {
+    if (await isPlayerInGroup(playerId: player.id, groupId: groupId)) {
+      return false;
+    }
+
+    if (await db.playerDao.playerExists(playerId: player.id) == false) {
+      db.playerDao.addPlayer(player: player);
+    }
+
     await into(playerGroupTable).insert(
-      PlayerGroupTableCompanion.insert(userId: userId, groupId: groupId),
+      PlayerGroupTableCompanion.insert(playerId: player.id, groupId: groupId),
     );
+
+    return true;
+  }
+
+  /// Checks if a player with [playerId] is in the group with [groupId].
+  /// Returns `true` if the player is in the group, otherwise `false`.
+  Future<bool> isPlayerInGroup({
+    required String playerId,
+    required String groupId,
+  }) async {
+    final query = select(playerGroupTable)
+      ..where((p) => p.playerId.equals(playerId) & p.groupId.equals(groupId));
+    final result = await query.getSingleOrNull();
+    return result != null;
   }
 }
