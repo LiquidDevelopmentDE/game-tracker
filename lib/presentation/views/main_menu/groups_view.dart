@@ -15,7 +15,7 @@ class GroupsView extends StatefulWidget {
 
 class _GroupsViewState extends State<GroupsView> {
   Future<List<Group>> _getMockGroups() async {
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 2));
     final player1 = Player(id: 'p1', name: 'Felix');
     final player2 = Player(id: 'p2', name: 'Yannick');
     final player3 = Player(id: 'p3', name: 'Mathis');
