@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
@@ -86,8 +87,10 @@ class _GroupsViewState extends State<GroupsView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
+    return Scaffold(
+      backgroundColor: CustomTheme.backgroundColor,
+      body: Stack(
+        alignment: Alignment.center,
         children: [
           FutureBuilder<List<Group>>(
             future: _getMockGroups(),
@@ -141,8 +144,7 @@ class _GroupsViewState extends State<GroupsView> {
           ),
 
           Positioned(
-            bottom: 16,
-            right: 16,
+            bottom: 80,
             child: FullWidthButton(text: 'Create Group', onPressed: () {}),
           ),
         ],
