@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 //import 'package:game_tracker/data/dto/group.dart';
 //import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
-import 'package:game_tracker/presentation/widgets/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class Group {
@@ -75,7 +74,8 @@ class _GroupsViewState extends State<GroupsView> {
                 child: TopCenteredMessage(message: "No groups created yet."),
               );
             }
-            return GroupTile(group: snapshot.data![0]);
+            return Center(child: Text("whatever"));
+            //return GroupTile(group: snapshot.data![0]);
             //return ListView.builder()
           },
         ),
