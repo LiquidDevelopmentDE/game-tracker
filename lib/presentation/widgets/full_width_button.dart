@@ -12,7 +12,7 @@ class FullWidthButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 60),
+        minimumSize: Size(MediaQuery.of(context).size.width * 0.90, 60),
         backgroundColor: CustomTheme.primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),

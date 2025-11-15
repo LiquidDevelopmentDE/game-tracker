@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:game_tracker/data/dto/group.dart';
 //import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
+import 'package:game_tracker/presentation/widgets/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class Group {
@@ -38,7 +39,15 @@ class _GroupsViewState extends State<GroupsView> {
       Group(
         id: 'g1',
         name: 'Weekend Warriors',
-        members: [player1, player2, player4],
+        members: [
+          player1,
+          player2,
+          player4,
+          player3,
+          player1,
+          player4,
+          player2,
+        ],
       ),
       Group(id: 'g2', name: 'Strategy Masters', members: [player3, player4]),
       Group(
@@ -46,41 +55,85 @@ class _GroupsViewState extends State<GroupsView> {
         name: 'The Cardboard Crew',
         members: [player1, player2, player3, player4],
       ),
-      Group(id: 'g4', name: 'The Group', members: [player1, player3, player4]),
+      Group(
+        id: 'g4',
+        name: 'Gamers',
+        members: [player1, player3, player1, player4],
+      ),
+      Group(
+        id: 'g4',
+        name: 'The Group',
+        members: [player4, player1, player3, player4, player3],
+      ),
+      Group(
+        id: 'g4',
+        name: 'Friends',
+        members: [player4, player1, player3, player4],
+      ),
+      Group(
+        id: 'g4',
+        name: 'Sample Group',
+        members: [player1, player1, player4, player3],
+      ),
+      Group(
+        id: 'g4',
+        name: 'The Group',
+        members: [player1, player1, player3, player4],
+      ),
+      Group(
+        id: 'g4',
+        name: 'The Best',
+        members: [player1, player3, player1, player4, player1],
+      ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FutureBuilder(
-          future: _getMockGroups(),
-          builder: (BuildContext context, AsyncSnapshot<List<Group>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: TopCenteredMessage(
-                  message: "Data not yet available, show sceleton",
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: TopCenteredMessage(
-                  message: "Error while loading group data.",
-                ),
-              );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
-                child: TopCenteredMessage(message: "No groups created yet."),
-              );
-            }
-            return Center(child: Text("whatever"));
-            //return GroupTile(group: snapshot.data![0]);
-            //return ListView.builder()
-          },
-        ),
-        FullWidthButton(text: "Create Group", onPressed: () {}),
-      ],
+    return SafeArea(
+      child: Stack(
+        children: [
+          FutureBuilder(
+            future: _getMockGroups(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Group>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: TopCenteredMessage(
+                        message: 'Data not yet available, show sceleton',
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: TopCenteredMessage(
+                        message: 'Error while loading group data.',
+                      ),
+                    );
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: TopCenteredMessage(
+                        message: 'No groups created yet.',
+                      ),
+                    );
+                  }
+                  //return Center(child: Text('whatever'));
+                  //return GroupTile(group: snapshot.data![0]);
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 85),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GroupTile(group: snapshot.data![index]);
+                    },
+                  );
+                },
+          ),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: FullWidthButton(text: 'Create Group', onPressed: () {}),
+          ),
+        ],
+      ),
     );
   }
 }

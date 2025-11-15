@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:game_tracker/data/dto/group.dart';
-
-class Group {
-  final String id;
-  final String name;
-  final List<Player> members;
-
-  Group({required this.id, required this.name, required this.members});
-}
-
-class Player {
-  final String id;
-  final String name;
-
-  Player({required this.id, required this.name});
-}
+import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({super.key, required this.group});
@@ -24,31 +10,70 @@ class GroupTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width * 0.90,
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      decoration: BoxDecoration(
+        color: CustomTheme.secondaryColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("${group.name}", overflow: TextOverflow.ellipsis),
-              Text("${group.members.length}"),
-              Icon(Icons.group),
+              Text(
+                group.name,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                '${group.members.length}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 3),
+              const Icon(Icons.group),
             ],
           ),
+          SizedBox(height: 5),
           Wrap(
-            spacing: 8.0,
-            runSpacing: -4.0,
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            spacing: 12.0,
+            runSpacing: 8.0,
             children: <Widget>[
               for (var member in group.members)
                 Container(
-                  color: Colors.grey,
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
+                  ),
                   decoration: BoxDecoration(
+                    color: Colors.black26,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(member.name),
+                  child: Text(
+                    member.name,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
             ],
           ),
+          SizedBox(height: 2.5),
         ],
       ),
     );
