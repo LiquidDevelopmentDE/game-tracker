@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
 import 'package:game_tracker/presentation/widgets/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Group {
   final String id;
@@ -29,7 +30,7 @@ class GroupsView extends StatefulWidget {
 
 class _GroupsViewState extends State<GroupsView> {
   Future<List<Group>> _getMockGroups() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 4));
     final player1 = Player(id: 'p1', name: 'Felix');
     final player2 = Player(id: 'p2', name: 'Yannick');
     final player3 = Player(id: 'p3', name: 'Mathis');
@@ -88,45 +89,73 @@ class _GroupsViewState extends State<GroupsView> {
     ];
   }
 
+  final player = Player(id: 'p1', name: 'Felix');
+  late final List<Group> skeletonData = List.filled(
+    7,
+    Group(
+      id: 'g1',
+      name: 'Weekend Warriors',
+      members: [player, player, player, player],
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Stack(
         children: [
-          FutureBuilder(
+          FutureBuilder<List<Group>>(
             future: _getMockGroups(),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Group>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: TopCenteredMessage(
-                        message: 'Data not yet available, show sceleton',
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
+                  if (snapshot.hasError) {
                     return const Center(
                       child: TopCenteredMessage(
                         message: 'Error while loading group data.',
                       ),
                     );
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  }
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      (!snapshot.hasData || snapshot.data!.isEmpty)) {
                     return const Center(
                       child: TopCenteredMessage(
                         message: 'No groups created yet.',
                       ),
                     );
                   }
-                  //return Center(child: Text('whatever'));
-                  //return GroupTile(group: snapshot.data![0]);
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 85),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GroupTile(group: snapshot.data![index]);
-                    },
+                  final bool isLoading =
+                      snapshot.connectionState == ConnectionState.waiting;
+                  final List<Group> groups = isLoading
+                      ? skeletonData
+                      : (snapshot.data ?? []);
+                  return Skeletonizer(
+                    effect: PulseEffect(
+                      from: Colors.grey[100]!,
+                      to: Colors.grey[400]!,
+                      duration: const Duration(milliseconds: 800),
+                    ),
+                    enabled: isLoading,
+                    enableSwitchAnimation: true,
+                    switchAnimationConfig: const SwitchAnimationConfig(
+                      duration: Duration(milliseconds: 200),
+                      switchInCurve: Curves.linear,
+                      switchOutCurve: Curves.linear,
+                      transitionBuilder:
+                          AnimatedSwitcher.defaultTransitionBuilder,
+                      layoutBuilder: AnimatedSwitcher.defaultLayoutBuilder,
+                    ),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 85),
+                      itemCount: groups.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GroupTile(group: groups[index]);
+                      },
+                    ),
                   );
                 },
           ),
+
+          // Dein Button bleibt wie gehabt
           Positioned(
             bottom: 16,
             right: 16,

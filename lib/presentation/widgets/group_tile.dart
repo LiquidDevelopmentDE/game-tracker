@@ -59,7 +59,7 @@ class GroupTile extends StatelessWidget {
                     horizontal: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black26,
+                    color: Colors.black38,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
