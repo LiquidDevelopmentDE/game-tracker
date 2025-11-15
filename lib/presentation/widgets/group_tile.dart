@@ -41,11 +41,11 @@ class GroupTile extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(width: 3),
+              const SizedBox(width: 3),
               const Icon(Icons.group),
             ],
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Wrap(
             alignment: WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.start,
@@ -64,7 +64,7 @@ class GroupTile extends StatelessWidget {
                   ),
                   child: Text(
                     member.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -73,7 +73,7 @@ class GroupTile extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: 2.5),
+          const SizedBox(height: 2.5),
         ],
       ),
     );
