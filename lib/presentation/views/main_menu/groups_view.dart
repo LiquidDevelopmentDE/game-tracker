@@ -1,25 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:game_tracker/data/dto/group.dart';
-//import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
 import 'package:game_tracker/presentation/widgets/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
-class Group {
-  final String id;
-  final String name;
-  final List<Player> members;
-
-  Group({required this.id, required this.name, required this.members});
-}
-
-class Player {
-  final String id;
-  final String name;
-
-  Player({required this.id, required this.name});
-}
 
 class GroupsView extends StatefulWidget {
   const GroupsView({super.key});
@@ -91,7 +76,7 @@ class _GroupsViewState extends State<GroupsView> {
 
   final player = Player(id: 'p1', name: 'Felix');
   late final List<Group> skeletonData = List.filled(
-    7,
+    8,
     Group(
       id: 'g1',
       name: 'Weekend Warriors',
@@ -155,7 +140,6 @@ class _GroupsViewState extends State<GroupsView> {
                 },
           ),
 
-          // Dein Button bleibt wie gehabt
           Positioned(
             bottom: 16,
             right: 16,

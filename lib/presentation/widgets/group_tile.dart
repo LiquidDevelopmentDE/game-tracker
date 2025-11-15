@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
+import 'package:game_tracker/data/dto/group.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({super.key, required this.group});
