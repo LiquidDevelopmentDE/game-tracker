@@ -36,7 +36,29 @@ void main() {
     await database.close();
   });
 
-  //TODO: test getAllGroups method
+  test('all groups get fetched correclty', () async {
+    final testgroup2 = Group(
+      id: 'gr2',
+      name: 'Second Group',
+      members: [player2, player3, player4],
+    );
+    await database.groupDao.addGroup(group: testgroup);
+    await database.groupDao.addGroup(group: testgroup2);
+
+    final allGroups = await database.groupDao.getAllGroups();
+    expect(allGroups.length, 2);
+
+    final fetchedGroup1 = allGroups.firstWhere((g) => g.id == testgroup.id);
+    expect(fetchedGroup1.name, testgroup.name);
+    expect(fetchedGroup1.members.length, testgroup.members.length);
+    expect(fetchedGroup1.members.elementAt(0).id, player1.id);
+
+    final fetchedGroup2 = allGroups.firstWhere((g) => g.id == testgroup2.id);
+    expect(fetchedGroup2.name, testgroup2.name);
+    expect(fetchedGroup2.members.length, testgroup2.members.length);
+    expect(fetchedGroup2.members.elementAt(0).id, player2.id);
+  });
+
   test('group and group members gets added correctly', () async {
     await database.groupDao.addGroup(group: testgroup);
 
