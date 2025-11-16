@@ -15,7 +15,8 @@ class GroupTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: BoxDecoration(
-        color: CustomTheme.secondaryColor,
+        color: CustomTheme.boxColor,
+        border: Border.all(color: CustomTheme.boxBorder),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -30,7 +31,6 @@ class GroupTile extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: Colors.white,
                 ),
               ),
               const Spacer(),
@@ -39,11 +39,10 @@ class GroupTile extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
-                  color: Colors.white,
                 ),
               ),
               const SizedBox(width: 3),
-              const Icon(Icons.group),
+              Icon(Icons.group),
             ],
           ),
           const SizedBox(height: 5),
@@ -69,7 +68,6 @@ class GroupTile extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
                       ),
                     ),
                   ),

@@ -69,8 +69,8 @@ class _GroupsViewState extends State<GroupsView> {
                       : (snapshot.data ?? []);
                   return Skeletonizer(
                     effect: PulseEffect(
-                      from: Colors.grey[100]!,
-                      to: Colors.grey[400]!,
+                      from: Colors.grey[800]!,
+                      to: Colors.grey[600]!,
                       duration: const Duration(milliseconds: 800),
                     ),
                     enabled: isLoading,
