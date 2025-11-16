@@ -51,7 +51,7 @@ class _GroupsViewState extends State<GroupsView> {
                     return const Center(
                       child: TopCenteredMessage(
                         icon: Icons.report,
-                        title: "Error",
+                        title: 'Error',
                         message: 'Group data couldn\'t\nbe loaded.',
                       ),
                     );
@@ -61,7 +61,7 @@ class _GroupsViewState extends State<GroupsView> {
                     return const Center(
                       child: TopCenteredMessage(
                         icon: Icons.info,
-                        title: "Info",
+                        title: 'Info',
                         message: 'No groups created yet.',
                       ),
                     );
