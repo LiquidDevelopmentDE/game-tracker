@@ -4,7 +4,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
-import 'package:game_tracker/presentation/widgets/group_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -21,11 +21,11 @@ class _GroupsViewState extends State<GroupsView> {
 
   final player = Player(id: 'p1', name: 'Sample');
   late final List<Group> skeletonData = List.filled(
-    8,
+    7,
     Group(
       id: '0',
       name: 'Sample Game',
-      members: [player, player, player, player],
+      members: [player, player, player, player, player, player],
     ),
   );
 
@@ -50,7 +50,9 @@ class _GroupsViewState extends State<GroupsView> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: TopCenteredMessage(
-                        message: 'Error while loading group data.',
+                        icon: Icons.report,
+                        title: 'Error',
+                        message: 'Group data couldn\'t\nbe loaded.',
                       ),
                     );
                   }
@@ -58,6 +60,8 @@ class _GroupsViewState extends State<GroupsView> {
                       (!snapshot.hasData || snapshot.data!.isEmpty)) {
                     return const Center(
                       child: TopCenteredMessage(
+                        icon: Icons.info,
+                        title: 'Info',
                         message: 'No groups created yet.',
                       ),
                     );

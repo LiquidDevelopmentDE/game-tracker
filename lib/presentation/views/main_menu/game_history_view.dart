@@ -178,9 +178,15 @@ class _GameHistoryViewState extends State<GameHistoryView> {
 
 Widget gameHistoryListView(allGameData, suggestedGameData) {
   if (suggestedGameData.isEmpty && allGameData.isEmpty) {
-    return TopCenteredMessage(message: "Keine Spiele erstellt");
+    return TopCenteredMessage(
+      icon: Icons.info,
+      title: "Info",
+      message: "Keine Spiele erstellt",
+    );
   } else if (suggestedGameData.isEmpty) {
     return TopCenteredMessage(
+      icon: Icons.search,
+      title: "Info",
       message: "Kein Spiel mit den Suchparametern gefunden.",
     );
   }

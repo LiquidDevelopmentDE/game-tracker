@@ -11,8 +11,7 @@ class GroupTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.90,
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: BoxDecoration(
         color: CustomTheme.boxColor,
@@ -30,7 +29,7 @@ class GroupTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
               const Spacer(),
@@ -38,11 +37,11 @@ class GroupTile extends StatelessWidget {
                 '${group.members.length}',
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
               const SizedBox(width: 3),
-              const Icon(Icons.group),
+              const Icon(Icons.group, size: 22),
             ],
           ),
           const SizedBox(height: 5),
@@ -66,7 +65,7 @@ class GroupTile extends StatelessWidget {
                     child: Text(
                       member.name,
                       style: const TextStyle(
-                        fontSize: 17,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
