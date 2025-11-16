@@ -24,7 +24,7 @@ void main() {
   });
 
   group('player tests', () {
-    test('all players get fetched correclty', () async {
+    test('all players get fetched correctly', () async {
       final testPlayer2 = Player(id: 'gr2', name: 'Second Group');
       await database.playerDao.addPlayer(player: testPlayer);
       await database.playerDao.addPlayer(player: testPlayer2);

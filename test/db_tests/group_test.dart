@@ -36,7 +36,7 @@ void main() {
     await database.close();
   });
   group('group tests', () {
-    test('all groups get fetched correclty', () async {
+    test('all groups get fetched correctly', () async {
       final testgroup2 = Group(
         id: 'gr2',
         name: 'Second Group',
