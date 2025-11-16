@@ -38,28 +38,32 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
 
   /// Adds a new group with the given [id] and [name] to the database.
   /// This method also adds the group's members to the [PlayerGroupTable].
-  Future<void> addGroup({required Group group}) async {
-    await db.transaction(() async {
-      await into(
-        groupTable,
-      ).insert(GroupTableCompanion.insert(id: group.id, name: group.name));
-      await db.batch(
-        (b) => b.insertAll(
-          db.playerGroupTable,
-          group.members
-              .map(
-                (member) => PlayerGroupTableCompanion.insert(
-                  playerId: member.id,
-                  groupId: group.id,
-                ),
-              )
-              .toList(),
-        ),
-      );
-      await Future.wait(
-        group.members.map((player) => db.playerDao.addPlayer(player: player)),
-      );
-    });
+  Future<bool> addGroup({required Group group}) async {
+    if (!await groupExists(groupId: group.id)) {
+      await db.transaction(() async {
+        await into(
+          groupTable,
+        ).insert(GroupTableCompanion.insert(id: group.id, name: group.name));
+        await db.batch(
+          (b) => b.insertAll(
+            db.playerGroupTable,
+            group.members
+                .map(
+                  (member) => PlayerGroupTableCompanion.insert(
+                    playerId: member.id,
+                    groupId: group.id,
+                  ),
+                )
+                .toList(),
+          ),
+        );
+        await Future.wait(
+          group.members.map((player) => db.playerDao.addPlayer(player: player)),
+        );
+        return true;
+      });
+    }
+    return false;
   }
 
   /// Deletes the group with the given [id] from the database.
