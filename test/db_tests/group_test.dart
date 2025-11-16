@@ -36,6 +36,7 @@ void main() {
     await database.close();
   });
 
+  //TODO: test getAllGroups method
   test('group and group members gets added correctly', () async {
     await database.groupDao.addGroup(group: testgroup);
 

@@ -14,9 +14,14 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
   Future<List<Group>> getAllGroups() async {
     final query = select(groupTable);
     final result = await query.get();
-    return result
-        .map((row) => Group(id: row.id, name: row.name, members: []))
-        .toList();
+    return Future.wait(
+      result.map((groupData) async {
+        final members = await db.playerGroupDao.getPlayersOfGroupById(
+          groupId: groupData.id,
+        );
+        return Group(id: groupData.id, name: groupData.name, members: members);
+      }),
+    );
   }
 
   /// Retrieves a [Group] by its [groupId], including its members.

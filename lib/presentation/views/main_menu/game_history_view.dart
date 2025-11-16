@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:game_tracker/presentation/widgets/double_row_info_tile.dart';
+import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class GameHistoryView extends StatefulWidget {
   const GameHistoryView({super.key});
@@ -178,9 +178,17 @@ class _GameHistoryViewState extends State<GameHistoryView> {
 
 Widget gameHistoryListView(allGameData, suggestedGameData) {
   if (suggestedGameData.isEmpty && allGameData.isEmpty) {
-    return TopCenteredMessage("Keine Spiele erstellt");
+    return TopCenteredMessage(
+      icon: Icons.info,
+      title: "Info",
+      message: "Keine Spiele erstellt",
+    );
   } else if (suggestedGameData.isEmpty) {
-    return TopCenteredMessage("Kein Spiel mit den Suchparametern gefunden.");
+    return TopCenteredMessage(
+      icon: Icons.search,
+      title: "Info",
+      message: "Kein Spiel mit den Suchparametern gefunden.",
+    );
   }
   return ListView.builder(
     itemCount: suggestedGameData.length,
