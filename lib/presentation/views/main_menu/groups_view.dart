@@ -68,17 +68,16 @@ class _GroupsViewState extends State<GroupsView> {
                   }
                   final bool isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
-                  final List<Group> groups = skeletonData;
-                  //final List<Group> groups = isLoading
-                  //    ? skeletonData
-                  //    : (snapshot.data ?? []);
+                  final List<Group> groups = isLoading
+                      ? skeletonData
+                      : (snapshot.data ?? []);
                   return Skeletonizer(
                     effect: PulseEffect(
                       from: Colors.grey[800]!,
                       to: Colors.grey[600]!,
                       duration: const Duration(milliseconds: 800),
                     ),
-                    enabled: true,
+                    enabled: isLoading,
                     enableSwitchAnimation: true,
                     switchAnimationConfig: const SwitchAnimationConfig(
                       duration: Duration(milliseconds: 200),
