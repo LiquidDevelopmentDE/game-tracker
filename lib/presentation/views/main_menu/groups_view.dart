@@ -21,11 +21,11 @@ class _GroupsViewState extends State<GroupsView> {
 
   final player = Player(id: 'p1', name: 'Sample');
   late final List<Group> skeletonData = List.filled(
-    8,
+    7,
     Group(
       id: '0',
       name: 'Sample Game',
-      members: [player, player, player, player],
+      members: [player, player, player, player, player, player],
     ),
   );
 
@@ -68,16 +68,17 @@ class _GroupsViewState extends State<GroupsView> {
                   }
                   final bool isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
-                  final List<Group> groups = isLoading
-                      ? skeletonData
-                      : (snapshot.data ?? []);
+                  final List<Group> groups = skeletonData;
+                  //final List<Group> groups = isLoading
+                  //    ? skeletonData
+                  //    : (snapshot.data ?? []);
                   return Skeletonizer(
                     effect: PulseEffect(
                       from: Colors.grey[800]!,
                       to: Colors.grey[600]!,
                       duration: const Duration(milliseconds: 800),
                     ),
-                    enabled: isLoading,
+                    enabled: true,
                     enableSwitchAnimation: true,
                     switchAnimationConfig: const SwitchAnimationConfig(
                       duration: Duration(milliseconds: 200),
