@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
 import 'package:game_tracker/presentation/widgets/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
+import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class GroupsView extends StatefulWidget {
@@ -15,75 +17,24 @@ class GroupsView extends StatefulWidget {
 }
 
 class _GroupsViewState extends State<GroupsView> {
-  Future<List<Group>> _getMockGroups() async {
-    await Future.delayed(const Duration(seconds: 2));
-    final player1 = Player(id: 'p1', name: 'Felix');
-    final player2 = Player(id: 'p2', name: 'Yannick');
-    final player3 = Player(id: 'p3', name: 'Mathis');
-    final player4 = Player(id: 'p4', name: 'Petrus');
+  late Future<List<Group>> _allGroupsFuture;
 
-    return [
-      Group(
-        id: 'g1',
-        name: 'Weekend Warriors',
-        members: [
-          player1,
-          player2,
-          player4,
-          player3,
-          player1,
-          player4,
-          player2,
-        ],
-      ),
-      Group(id: 'g2', name: 'Strategy Masters', members: [player3, player4]),
-      Group(
-        id: 'g3',
-        name: 'The Cardboard Crew',
-        members: [player1, player2, player3, player4],
-      ),
-      Group(
-        id: 'g4',
-        name: 'Gamers',
-        members: [player1, player3, player1, player4],
-      ),
-      Group(
-        id: 'g4',
-        name: 'The Group',
-        members: [player4, player1, player3, player4, player3],
-      ),
-      Group(
-        id: 'g4',
-        name: 'Friends',
-        members: [player4, player1, player3, player4],
-      ),
-      Group(
-        id: 'g4',
-        name: 'Sample Group',
-        members: [player1, player1, player4, player3],
-      ),
-      Group(
-        id: 'g4',
-        name: 'The Group',
-        members: [player1, player1, player3, player4],
-      ),
-      Group(
-        id: 'g4',
-        name: 'The Best',
-        members: [player1, player3, player1, player4, player1],
-      ),
-    ];
-  }
-
-  final player = Player(id: 'p1', name: 'Felix');
+  final player = Player(id: 'p1', name: 'Sample');
   late final List<Group> skeletonData = List.filled(
     8,
     Group(
-      id: 'g1',
-      name: 'Weekend Warriors',
+      id: '0',
+      name: 'Sample Game',
       members: [player, player, player, player],
     ),
   );
+
+  @override
+  void initState() {
+    super.initState();
+    final db = Provider.of<AppDatabase>(context, listen: false);
+    _allGroupsFuture = db.groupDao.getAllGroups();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +44,7 @@ class _GroupsViewState extends State<GroupsView> {
         alignment: Alignment.center,
         children: [
           FutureBuilder<List<Group>>(
-            future: _getMockGroups(),
+            future: _allGroupsFuture,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Group>> snapshot) {
                   if (snapshot.hasError) {
@@ -134,8 +85,11 @@ class _GroupsViewState extends State<GroupsView> {
                     ),
                     child: ListView.builder(
                       padding: const EdgeInsets.only(bottom: 85),
-                      itemCount: groups.length,
+                      itemCount: groups.length + 1,
                       itemBuilder: (BuildContext context, int index) {
+                        if (index == groups.length) {
+                          return const SizedBox(height: 60);
+                        }
                         return GroupTile(group: groups[index]);
                       },
                     ),
