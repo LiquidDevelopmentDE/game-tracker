@@ -24,6 +24,25 @@ void main() {
   });
 
   group('player tests', () {
+    test('all players get fetched correclty', () async {
+      final testPlayer2 = Player(id: 'gr2', name: 'Second Group');
+      await database.playerDao.addPlayer(player: testPlayer);
+      await database.playerDao.addPlayer(player: testPlayer2);
+
+      final allPlayers = await database.playerDao.getAllPlayers();
+      expect(allPlayers.length, 2);
+
+      final fetchedPlayer1 = allPlayers.firstWhere(
+        (g) => g.id == testPlayer.id,
+      );
+      expect(fetchedPlayer1.name, testPlayer.name);
+
+      final fetchedPlayer2 = allPlayers.firstWhere(
+        (g) => g.id == testPlayer2.id,
+      );
+      expect(fetchedPlayer2.name, testPlayer2.name);
+    });
+
     test('players get inserted correcly ', () async {
       await database.playerDao.addPlayer(player: testPlayer);
       final result = await database.playerDao.getPlayerById(
