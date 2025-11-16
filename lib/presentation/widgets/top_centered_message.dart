@@ -21,7 +21,7 @@ class TopCenteredMessage extends StatelessWidget {
       child: Column(
         children: [
           Icon(icon, size: 45),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             title,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
