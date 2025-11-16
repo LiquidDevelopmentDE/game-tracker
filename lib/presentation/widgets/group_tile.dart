@@ -42,7 +42,7 @@ class GroupTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 3),
-              Icon(Icons.group),
+              const Icon(Icons.group),
             ],
           ),
           const SizedBox(height: 5),
