@@ -17,39 +17,57 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   }
 
   /// Retrieves a [Player] by their [id].
-  Future<Player> getPlayerById(String id) async {
-    final query = select(playerTable)..where((p) => p.id.equals(id));
+  Future<Player> getPlayerById({required String playerId}) async {
+    final query = select(playerTable)..where((p) => p.id.equals(playerId));
     final result = await query.getSingle();
     return Player(id: result.id, name: result.name);
   }
 
   /// Adds a new [player] to the database.
-  Future<void> addPlayer(Player player) async {
-    await into(
-      playerTable,
-    ).insert(PlayerTableCompanion.insert(id: player.id, name: player.name));
+  /// If a player with the same ID already exists, updates their name to
+  /// the new one.
+  Future<void> addPlayer({required Player player}) async {
+    if (!await playerExists(playerId: player.id)) {
+      await into(
+        playerTable,
+      ).insert(PlayerTableCompanion.insert(id: player.id, name: player.name));
+    } else {
+      await updatePlayername(playerId: player.id, newName: player.name);
+    }
   }
 
   /// Deletes the player with the given [id] from the database.
   /// Returns `true` if the player was deleted, `false` if the player did not exist.
-  Future<bool> deletePlayer(String id) async {
-    final query = delete(playerTable)..where((p) => p.id.equals(id));
+  Future<bool> deletePlayer({required String playerId}) async {
+    final query = delete(playerTable)..where((p) => p.id.equals(playerId));
     final rowsAffected = await query.go();
     return rowsAffected > 0;
   }
 
   /// Checks if a player with the given [id] exists in the database.
   /// Returns `true` if the player exists, `false` otherwise.
-  Future<bool> playerExists(String id) async {
-    final query = select(playerTable)..where((p) => p.id.equals(id));
+  Future<bool> playerExists({required String playerId}) async {
+    final query = select(playerTable)..where((p) => p.id.equals(playerId));
     final result = await query.getSingleOrNull();
     return result != null;
   }
 
-  /// Updates the name of the player with the given [id] to [newName].
-  Future<void> updatePlayername(String id, String newName) async {
-    await (update(playerTable)..where((p) => p.id.equals(id))).write(
+  /// Updates the name of the player with the given [playerId] to [newName].
+  Future<void> updatePlayername({
+    required String playerId,
+    required String newName,
+  }) async {
+    await (update(playerTable)..where((p) => p.id.equals(playerId))).write(
       PlayerTableCompanion(name: Value(newName)),
     );
+  }
+
+  /// Retrieves the total count of players in the database.
+  Future<int> getPlayerCount() async {
+    final count =
+        await (selectOnly(playerTable)..addColumns([playerTable.id.count()]))
+            .map((row) => row.read(playerTable.id.count()))
+            .getSingle();
+    return count ?? 0;
   }
 }

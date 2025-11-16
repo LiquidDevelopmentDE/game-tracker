@@ -9,14 +9,14 @@ assignees: ''
 
 # Enhancement  
 
-## Current Behavior
-[Describe the existing functionality]  
+## Aktuelles Verhalten
+[Beschreibe die bestehende Funktionalität]  
 
-## Limitations/Problems 
-[What are the current shortcomings?]  
+## Einschränkungen/Probleme 
+[Was sind die aktuellen Mängel?]  
 
-## Suggested Improvement  
-[How can this be enhanced? Be specific.]  
+## Vorgeschlagene Verbesserung  
+[Wie kann das Problem bzw. die Einschränkung verbessert werden?]  
 
-## Benefits
-[How will this improve the product?]  
+## Zugehörige Issues
+[Links zu verwandten oder blockierenden Issues]
