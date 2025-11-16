@@ -26,14 +26,14 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   /// Adds a new [player] to the database.
   /// If a player with the same ID already exists, updates their name to
   /// the new one.
-  Future<void> addPlayer({required Player player}) async {
+  Future<bool> addPlayer({required Player player}) async {
     if (!await playerExists(playerId: player.id)) {
       await into(
         playerTable,
       ).insert(PlayerTableCompanion.insert(id: player.id, name: player.name));
-    } else {
-      await updatePlayername(playerId: player.id, newName: player.name);
+      return true;
     }
+    return false;
   }
 
   /// Deletes the player with the given [id] from the database.
