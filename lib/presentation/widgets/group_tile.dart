@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({super.key, required this.group});
@@ -62,12 +63,14 @@ class GroupTile extends StatelessWidget {
                     color: Colors.black38,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
-                    member.name,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  child: Skeleton.ignore(
+                    child: Text(
+                      member.name,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
