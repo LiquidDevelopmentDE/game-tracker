@@ -5,6 +5,7 @@ class CustomTheme {
   static Color secondaryColor = const Color(0xFFAFA2FF);
   static Color backgroundColor = const Color(0xFF0B0B0B);
   static Color boxColor = const Color(0xFF101010);
+  static Color onBoxColor = const Color(0xFF181818);
   static Color boxBorder = const Color(0xFF272727);
 
   static AppBarTheme appBarTheme = AppBarTheme(
