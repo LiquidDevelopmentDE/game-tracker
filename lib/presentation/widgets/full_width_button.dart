@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
 
 class FullWidthButton extends StatelessWidget {
-  const FullWidthButton({super.key, required this.text, this.onPressed});
+  const FullWidthButton({
+    super.key,
+    required this.text,
+    required this.borderColor,
+    required this.infillColor,
+    required this.sizeRelativeToWidth,
+    required this.onPressed,
+  });
 
   final String text;
+  final Color borderColor;
+  final Color infillColor;
+  final double sizeRelativeToWidth;
   final VoidCallback? onPressed;
 
   @override
@@ -12,8 +21,12 @@ class FullWidthButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(MediaQuery.sizeOf(context).width * 0.9, 60),
-        backgroundColor: CustomTheme.primaryColor,
+        minimumSize: Size(
+          MediaQuery.sizeOf(context).width * sizeRelativeToWidth,
+          60,
+        ),
+        backgroundColor: infillColor,
+        side: BorderSide(color: borderColor, width: 2),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Text(
