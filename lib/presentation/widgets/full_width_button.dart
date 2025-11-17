@@ -6,6 +6,7 @@ class FullWidthButton extends StatelessWidget {
     required this.text,
     required this.borderColor,
     required this.infillColor,
+    this.disabledInfillColor,
     required this.sizeRelativeToWidth,
     required this.onPressed,
   });
@@ -13,6 +14,7 @@ class FullWidthButton extends StatelessWidget {
   final String text;
   final Color borderColor;
   final Color infillColor;
+  final Color? disabledInfillColor;
   final double sizeRelativeToWidth;
   final VoidCallback? onPressed;
 
@@ -21,6 +23,7 @@ class FullWidthButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
+        disabledBackgroundColor: disabledInfillColor,
         minimumSize: Size(
           MediaQuery.sizeOf(context).width * sizeRelativeToWidth,
           60,
