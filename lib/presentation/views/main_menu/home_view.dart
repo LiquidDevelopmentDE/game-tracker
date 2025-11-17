@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/presentation/widgets/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/quick_create_button.dart';
+import 'package:game_tracker/presentation/widgets/tiles/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
