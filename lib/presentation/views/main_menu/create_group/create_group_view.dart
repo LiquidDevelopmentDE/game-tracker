@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
@@ -15,24 +16,30 @@ class CreateGroupView extends StatefulWidget {
 }
 
 class _CreateGroupViewState extends State<CreateGroupView> {
-  List<Player> selectedPlayers = [
-    Player(id: '0', name: 'Player 0'),
-    Player(id: '0', name: 'Player 0'),
-    Player(id: '0', name: 'Player 0'),
-    Player(id: '0', name: 'Player 0'),
-  ];
+  List<Player> selectedPlayers = [];
+  List<Player> suggestedPlayers = [];
+  List<Player> allPlayers = [];
+  late final AppDatabase db;
   late Future<List<Player>> _allPlayersFuture;
   late final List<Player> skeletonData = List.filled(
     7,
     Player(id: '0', name: 'Player 0'),
   );
+  final _groupNameController = TextEditingController();
+  final _searchBarController = TextEditingController();
 
   @override
   @override
   void initState() {
     super.initState();
-    final db = Provider.of<AppDatabase>(context, listen: false);
+    db = Provider.of<AppDatabase>(context, listen: false);
     _allPlayersFuture = db.playerDao.getAllPlayers();
+    _allPlayersFuture.then((loadedPlayers) {
+      setState(() {
+        allPlayers = loadedPlayers;
+        suggestedPlayers = loadedPlayers;
+      });
+    });
   }
 
   @override
@@ -55,6 +62,10 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: TextField(
+                controller: _groupNameController,
+                onChanged: (value) {
+                  setState(() {});
+                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: CustomTheme.boxColor,
@@ -90,6 +101,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SearchBar(
+                      controller: _searchBarController,
                       constraints: BoxConstraints(maxHeight: 45, minHeight: 45),
                       hintText: "Search for players",
                       hintStyle: WidgetStateProperty.all(
@@ -107,10 +119,23 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            suggestedPlayers = allPlayers;
+                          } else {
+                            suggestedPlayers = allPlayers.where((player) {
+                              return player.name.toLowerCase().contains(
+                                value.toLowerCase(),
+                              );
+                            }).toList();
+                          }
+                        });
+                      },
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Ausgewählte Spieler: (X)",
+                      "Ausgewählte Spieler: (${selectedPlayers.length})",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -123,7 +148,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       spacing: 8.0,
                       runSpacing: 8.0,
                       children: <Widget>[
-                        for (var player in selectedPlayers)
+                        for (var selectedPlayer in selectedPlayers)
                           Container(
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
@@ -136,7 +161,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                               children: [
                                 SizedBox(width: 12),
                                 Text(
-                                  player.name,
+                                  selectedPlayer.name,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -147,7 +172,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                   child: const Icon(Icons.close, size: 20),
                                   onTap: () {
                                     setState(() {
-                                      selectedPlayers.remove(player);
+                                      selectedPlayers.remove(selectedPlayer);
                                     });
                                   },
                                 ),
@@ -183,7 +208,10 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                             }
                             if (snapshot.connectionState ==
                                     ConnectionState.done &&
-                                (!snapshot.hasData || snapshot.data!.isEmpty)) {
+                                (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty ||
+                                    (suggestedPlayers.isEmpty &&
+                                        allPlayers.isEmpty))) {
                               return const Center(
                                 child: TopCenteredMessage(
                                   icon: Icons.info,
@@ -195,9 +223,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                             final bool isLoading =
                                 snapshot.connectionState ==
                                 ConnectionState.waiting;
-                            final List<Player> players = isLoading
-                                ? skeletonData
-                                : (snapshot.data ?? []);
                             return Expanded(
                               child: Skeletonizer(
                                 effect: PulseEffect(
@@ -217,48 +242,69 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                       layoutBuilder:
                                           AnimatedSwitcher.defaultLayoutBuilder,
                                     ),
-                                child: ListView.builder(
-                                  itemCount: players.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(
-                                            horizontal: 5,
-                                            vertical: 5,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: CustomTheme.boxColor,
-                                            border: Border.all(
-                                              color: CustomTheme.boxBorder,
+                                child:
+                                    (suggestedPlayers.isEmpty &&
+                                        !allPlayers.isEmpty)
+                                    ? TopCenteredMessage(
+                                        icon: Icons.info,
+                                        title: 'Info',
+                                        message:
+                                            'No players found with that name.',
+                                      )
+                                    : ListView.builder(
+                                        itemCount: suggestedPlayers.length,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return Container(
+                                            margin: const EdgeInsets.symmetric(
+                                              horizontal: 5,
+                                              vertical: 5,
                                             ),
-                                            borderRadius: BorderRadius.circular(
-                                              12,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
                                             ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Text(
-                                                players[index].name,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
+                                            decoration: BoxDecoration(
+                                              color: CustomTheme.boxColor,
+                                              border: Border.all(
+                                                color: CustomTheme.boxBorder,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Text(
+                                                  suggestedPlayers[index].name,
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.add, size: 20),
-                                                onPressed: () {},
-                                              ),
-                                            ],
-                                          ),
-                                        ); //GroupTile(group: groups[index]);
-                                      },
-                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.add,
+                                                    size: 20,
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      if (!selectedPlayers.contains(
+                                                        suggestedPlayers[index],
+                                                      )) {
+                                                        selectedPlayers.add(
+                                                          suggestedPlayers[index],
+                                                        );
+                                                      }
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ),
                               ),
                             );
                           },
@@ -271,14 +317,39 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               text: "Create group",
               infillColor: CustomTheme.primaryColor,
               borderColor: CustomTheme.primaryColor,
+              disabledInfillColor: CustomTheme.boxColor,
               sizeRelativeToWidth: 0.95,
-              onPressed: () {},
+              onPressed:
+                  (_groupNameController.text.isEmpty || selectedPlayers.isEmpty)
+                  ? null
+                  : () {
+                      String id = "ID_" + _groupNameController.text;
+                      String name = _groupNameController.text;
+                      List<Player> members = selectedPlayers;
+                      db.groupDao.addGroup(
+                        group: Group(id: id, name: name, members: members),
+                      );
+                      print(name);
+                      print(id);
+                      for (int i = 0; i < members.length; i++) {
+                        print(members[i].name);
+                        print(members[i].id);
+                      }
+                      if (true) {
+                        //eigentlich wenn create group erfolgreich
+                        _groupNameController.clear();
+                        _searchBarController.clear();
+                        selectedPlayers.clear();
+                      }
+                      setState(() {});
+                    },
             ),
             SizedBox(height: 10),
             FullWidthButton(
               text: "Cancel",
               infillColor: CustomTheme.boxColor,
               borderColor: CustomTheme.primaryColor,
+              disabledInfillColor: CustomTheme.boxColor,
               sizeRelativeToWidth: 0.95,
               onPressed: () {
                 Navigator.pop(context);
@@ -293,6 +364,22 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
   Future<void> addSamplePlayers(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
+    /*await db.groupDao.addGroup(
+      group: Group(
+        id: "dg1",
+        name: "Debug Gruppe 1",
+        members: [
+          Player(id: '1', name: 'Spieler 1'),
+          Player(id: '2', name: 'Spieler 2'),
+          Player(id: '3', name: 'Spieler 3'),
+        ],
+      ),
+    );
+    final group = await db.groupDao.getGroupById(groupId: "dg1");
+    print(group.name);
+    print(group.id);
+    print(group.members.length);
+     */
     final playerCount = await db.playerDao.getPlayerCount();
     if (playerCount == 0) {
       for (int i = 1; i <= 10; i++) {
