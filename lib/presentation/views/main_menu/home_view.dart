@@ -26,7 +26,8 @@ class _HomeViewState extends State<HomeView> {
     _gameCountFuture = db.gameDao.getGameCount();
     _groupCountFuture = db.groupDao.getGroupCount();
 
-    Future.wait([_gameCountFuture, _groupCountFuture]).then((_) {
+    Future.wait([_gameCountFuture, _groupCountFuture]).then((_) async {
+      await Future.delayed(const Duration(milliseconds: 50));
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -102,37 +103,29 @@ class _HomeViewState extends State<HomeView> {
                     width: constraints.maxWidth * 0.95,
                     title: 'Recent Games',
                     icon: Icons.timer,
-                    content: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    content: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Skeleton.unite(
-                            unite: true,
-                            borderRadius: BorderRadius.circular(8),
-                            child: const GameTile(
-                              gameTitle: 'Gamenight',
-                              gameType: 'Cabo',
-                              ruleset: 'Lowest Points',
-                              players: '5 Players',
-                              winner: 'Leonard',
-                            ),
+                          GameTile(
+                            gameTitle: 'Gamenight',
+                            gameType: 'Cabo',
+                            ruleset: 'Lowest Points',
+                            players: '5 Players',
+                            winner: 'Leonard',
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.0),
                             child: Divider(),
                           ),
-                          Skeleton.unite(
-                            unite: true,
-                            borderRadius: BorderRadius.circular(8),
-                            child: const GameTile(
-                              gameTitle: 'Schoolbreak',
-                              gameType: 'Uno',
-                              ruleset: 'Highest Points',
-                              players: 'The Gang',
-                              winner: 'Lina',
-                            ),
+                          GameTile(
+                            gameTitle: 'Schoolbreak',
+                            gameType: 'Uno',
+                            ruleset: 'Highest Points',
+                            players: 'The Gang',
+                            winner: 'Lina',
                           ),
                           SizedBox(height: 8),
                         ],
