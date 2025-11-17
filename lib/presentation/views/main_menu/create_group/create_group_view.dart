@@ -36,8 +36,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     _allPlayersFuture.then((loadedPlayers) {
       setState(() {
         loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
-        allPlayers = loadedPlayers;
-        suggestedPlayers = loadedPlayers;
+        allPlayers = [...loadedPlayers];
+        suggestedPlayers = [...loadedPlayers];
       });
     });
   }
@@ -123,7 +123,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
-                            suggestedPlayers = allPlayers;
+                            suggestedPlayers = [...allPlayers];
                           } else {
                             suggestedPlayers = allPlayers.where((player) {
                               return player.name.toLowerCase().contains(
@@ -197,131 +197,122 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                     SizedBox(height: 10),
                     FutureBuilder(
                       future: _allPlayersFuture,
-                      builder:
-                          (
-                            BuildContext context,
-                            AsyncSnapshot<List<Player>> snapshot,
-                          ) {
-                            if (snapshot.hasError) {
-                              return const Center(
-                                child: TopCenteredMessage(
-                                  icon: Icons.report,
-                                  title: 'Error',
-                                  message: 'Player data couldn\'t\nbe loaded.',
-                                ),
-                              );
-                            }
-                            if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                (!snapshot.hasData ||
-                                    snapshot.data!.isEmpty ||
-                                    (suggestedPlayers.isEmpty &&
-                                        allPlayers.isEmpty))) {
-                              return const Center(
-                                child: TopCenteredMessage(
-                                  icon: Icons.info,
-                                  title: 'Info',
-                                  message: 'No players created yet.',
-                                ),
-                              );
-                            }
-                            final bool isLoading =
-                                snapshot.connectionState ==
-                                ConnectionState.waiting;
-                            return Expanded(
-                              child: Skeletonizer(
-                                effect: PulseEffect(
-                                  from: Colors.grey[800]!,
-                                  to: Colors.grey[600]!,
-                                  duration: const Duration(milliseconds: 800),
-                                ),
-                                enabled: isLoading,
-                                enableSwitchAnimation: true,
-                                switchAnimationConfig:
-                                    const SwitchAnimationConfig(
-                                      duration: Duration(milliseconds: 200),
-                                      switchInCurve: Curves.linear,
-                                      switchOutCurve: Curves.linear,
-                                      transitionBuilder: AnimatedSwitcher
-                                          .defaultTransitionBuilder,
-                                      layoutBuilder:
-                                          AnimatedSwitcher.defaultLayoutBuilder,
-                                    ),
-                                child:
-                                    (suggestedPlayers.isEmpty &&
-                                        !allPlayers.isEmpty)
-                                    ? TopCenteredMessage(
-                                        icon: Icons.info,
-                                        title: 'Info',
-                                        message:
-                                            'No players found with that name.',
-                                      )
-                                    : ListView.builder(
-                                        itemCount: suggestedPlayers.length,
-                                        itemBuilder: (BuildContext context, int index) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(
-                                              horizontal: 5,
-                                              vertical: 5,
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: CustomTheme.boxColor,
-                                              border: Border.all(
-                                                color: CustomTheme.boxBorder,
+                      builder: (BuildContext context, AsyncSnapshot<List<Player>> snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: TopCenteredMessage(
+                              icon: Icons.report,
+                              title: 'Error',
+                              message: 'Player data couldn\'t\nbe loaded.',
+                            ),
+                          );
+                        }
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            (!snapshot.hasData ||
+                                snapshot.data!.isEmpty ||
+                                (selectedPlayers.isEmpty &&
+                                    allPlayers.isEmpty))) {
+                          return const Center(
+                            child: TopCenteredMessage(
+                              icon: Icons.info,
+                              title: 'Info',
+                              message: 'No players created yet.',
+                            ),
+                          );
+                        }
+                        final bool isLoading =
+                            snapshot.connectionState == ConnectionState.waiting;
+                        return Expanded(
+                          child: Skeletonizer(
+                            effect: PulseEffect(
+                              from: Colors.grey[800]!,
+                              to: Colors.grey[600]!,
+                              duration: const Duration(milliseconds: 800),
+                            ),
+                            enabled: isLoading,
+                            enableSwitchAnimation: true,
+                            switchAnimationConfig: const SwitchAnimationConfig(
+                              duration: Duration(milliseconds: 200),
+                              switchInCurve: Curves.linear,
+                              switchOutCurve: Curves.linear,
+                              transitionBuilder:
+                                  AnimatedSwitcher.defaultTransitionBuilder,
+                              layoutBuilder:
+                                  AnimatedSwitcher.defaultLayoutBuilder,
+                            ),
+                            child:
+                                (suggestedPlayers.isEmpty &&
+                                    !allPlayers.isEmpty)
+                                ? TopCenteredMessage(
+                                    icon: Icons.info,
+                                    title: 'Info',
+                                    message:
+                                        (selectedPlayers.length ==
+                                            allPlayers.length)
+                                        ? 'No more players to add.'
+                                        : 'No players found with that name.',
+                                  )
+                                : ListView.builder(
+                                    itemCount: suggestedPlayers.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 5,
+                                          vertical: 5,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: CustomTheme.boxColor,
+                                          border: Border.all(
+                                            color: CustomTheme.boxBorder,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Text(
+                                              suggestedPlayers[index].name,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Text(
-                                                  suggestedPlayers[index].name,
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(
-                                                    Icons.add,
-                                                    size: 20,
-                                                  ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      if (!selectedPlayers.contains(
-                                                        suggestedPlayers[index],
-                                                      )) {
-                                                        selectedPlayers.add(
-                                                          suggestedPlayers[index],
-                                                        );
-                                                        selectedPlayers.sort(
-                                                          (a, b) =>
-                                                              a.name.compareTo(
-                                                                b.name,
-                                                              ),
-                                                        );
-                                                        suggestedPlayers.remove(
-                                                          suggestedPlayers[index],
-                                                        );
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              ],
+                                            IconButton(
+                                              icon: Icon(Icons.add, size: 20),
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (!selectedPlayers.contains(
+                                                    suggestedPlayers[index],
+                                                  )) {
+                                                    selectedPlayers.add(
+                                                      suggestedPlayers[index],
+                                                    );
+                                                    selectedPlayers.sort(
+                                                      (a, b) => a.name
+                                                          .compareTo(b.name),
+                                                    );
+                                                    suggestedPlayers.remove(
+                                                      suggestedPlayers[index],
+                                                    );
+                                                  }
+                                                });
+                                              },
                                             ),
-                                          );
-                                        },
-                                      ),
-                              ),
-                            );
-                          },
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
