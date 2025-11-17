@@ -21,7 +21,7 @@ class SettingsView extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(24, 0, 24, 10),
                     child: Text(
                       textAlign: TextAlign.start,
-                      'Menü',
+                      'Menu',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -32,7 +32,7 @@ class SettingsView extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     child: Text(
                       textAlign: TextAlign.start,
-                      'Einstellungen',
+                      'Settings',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -44,13 +44,13 @@ class SettingsView extends StatelessWidget {
                     title: 'Export Data',
                     icon: Icons.upload_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () => print('Export Data'),
+                    onPressed: () => exportData(),
                   ),
                   SettingsListTile(
                     title: 'Import Data',
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () => print('Import Data'),
+                    onPressed: () => importData(),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
@@ -81,4 +81,10 @@ class SettingsView extends StatelessWidget {
       ),
     );
   }
+
+  // TODO: Implement export functionality
+  void exportData() {}
+
+  // TODO: Implement import functionality
+  void importData() {}
 }
