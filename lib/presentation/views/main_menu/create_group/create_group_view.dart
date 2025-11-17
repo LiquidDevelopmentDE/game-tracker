@@ -29,7 +29,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   final _searchBarController = TextEditingController();
 
   @override
-  @override
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
