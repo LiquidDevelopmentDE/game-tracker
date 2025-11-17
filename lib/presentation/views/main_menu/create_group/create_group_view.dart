@@ -50,6 +50,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(
           backgroundColor: CustomTheme.backgroundColor,
+          scrolledUnderElevation: 0,
           title: const Text(
             "Create new group",
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
