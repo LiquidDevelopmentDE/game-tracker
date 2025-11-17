@@ -35,6 +35,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     _allPlayersFuture = db.playerDao.getAllPlayers();
     _allPlayersFuture.then((loadedPlayers) {
       setState(() {
+        loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
         allPlayers = loadedPlayers;
         suggestedPlayers = loadedPlayers;
       });
@@ -171,7 +172,11 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                   child: const Icon(Icons.close, size: 20),
                                   onTap: () {
                                     setState(() {
+                                      suggestedPlayers.add(selectedPlayer);
                                       selectedPlayers.remove(selectedPlayer);
+                                      suggestedPlayers.sort(
+                                        (a, b) => a.name.compareTo(b.name),
+                                      );
                                     });
                                   },
                                 ),
@@ -295,6 +300,15 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                                         selectedPlayers.add(
                                                           suggestedPlayers[index],
                                                         );
+                                                        selectedPlayers.sort(
+                                                          (a, b) =>
+                                                              a.name.compareTo(
+                                                                b.name,
+                                                              ),
+                                                        );
+                                                        suggestedPlayers.remove(
+                                                          suggestedPlayers[index],
+                                                        );
                                                       }
                                                     });
                                                   },
@@ -321,38 +335,33 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               onPressed:
                   (_groupNameController.text.isEmpty || selectedPlayers.isEmpty)
                   ? null
-                  : () {
+                  : () async {
                       String id = "ID_" + _groupNameController.text;
                       String name = _groupNameController.text;
                       List<Player> members = selectedPlayers;
-                      db.groupDao.addGroup(
+                      bool success = await db.groupDao.addGroup(
                         group: Group(id: id, name: name, members: members),
                       );
-                      print(name);
-                      print(id);
-                      for (int i = 0; i < members.length; i++) {
-                        print(members[i].name);
-                        print(members[i].id);
-                      }
-                      if (true) {
-                        //eigentlich wenn create group erfolgreich
+                      if (success) {
                         _groupNameController.clear();
                         _searchBarController.clear();
                         selectedPlayers.clear();
+                        Navigator.pop(context);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: CustomTheme.boxColor,
+                            content: Center(
+                              child: Text(
+                                "Error while creating group, please try again",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        );
                       }
                       setState(() {});
                     },
-            ),
-            SizedBox(height: 10),
-            FullWidthButton(
-              text: "Cancel",
-              infillColor: CustomTheme.boxColor,
-              borderColor: CustomTheme.primaryColor,
-              disabledInfillColor: CustomTheme.boxColor,
-              sizeRelativeToWidth: 0.95,
-              onPressed: () {
-                Navigator.pop(context);
-              },
             ),
             SizedBox(height: 20),
           ],
@@ -363,22 +372,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
   Future<void> addSamplePlayers(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
-    /*await db.groupDao.addGroup(
-      group: Group(
-        id: "dg1",
-        name: "Debug Gruppe 1",
-        members: [
-          Player(id: '1', name: 'Spieler 1'),
-          Player(id: '2', name: 'Spieler 2'),
-          Player(id: '3', name: 'Spieler 3'),
-        ],
-      ),
-    );
-    final group = await db.groupDao.getGroupById(groupId: "dg1");
-    print(group.name);
-    print(group.id);
-    print(group.members.length);
-     */
     final playerCount = await db.playerDao.getPlayerCount();
     if (playerCount == 0) {
       for (int i = 1; i <= 10; i++) {
