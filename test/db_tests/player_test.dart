@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,6 +8,8 @@ import 'package:game_tracker/data/dto/player.dart';
 void main() {
   late AppDatabase database;
   late Player testPlayer;
+  final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
+  final fakeClock = Clock(() => fixedDate);
 
   setUp(() {
     database = AppDatabase(
@@ -17,7 +20,9 @@ void main() {
       ),
     );
 
-    testPlayer = Player(name: 'Test Player');
+    withClock(fakeClock, () {
+      testPlayer = Player(name: 'Test Player');
+    });
   });
   tearDown(() async {
     await database.close();
@@ -25,32 +30,39 @@ void main() {
 
   group('player tests', () {
     test('all players get fetched correctly', () async {
-      final testPlayer2 = Player(name: 'Second Group');
-      await database.playerDao.addPlayer(player: testPlayer);
-      await database.playerDao.addPlayer(player: testPlayer2);
+      await withClock(fakeClock, () async {
+        final testPlayer2 = Player(name: 'Second Group');
+        await database.playerDao.addPlayer(player: testPlayer);
+        await database.playerDao.addPlayer(player: testPlayer2);
 
-      final allPlayers = await database.playerDao.getAllPlayers();
-      expect(allPlayers.length, 2);
+        final allPlayers = await database.playerDao.getAllPlayers();
+        expect(allPlayers.length, 2);
 
-      final fetchedPlayer1 = allPlayers.firstWhere(
-        (g) => g.id == testPlayer.id,
-      );
-      expect(fetchedPlayer1.name, testPlayer.name);
+        final fetchedPlayer1 = allPlayers.firstWhere(
+          (g) => g.id == testPlayer.id,
+        );
+        expect(fetchedPlayer1.name, testPlayer.name);
+        expect(fetchedPlayer1.createdAt, testPlayer.createdAt);
 
-      final fetchedPlayer2 = allPlayers.firstWhere(
-        (g) => g.id == testPlayer2.id,
-      );
-      expect(fetchedPlayer2.name, testPlayer2.name);
+        final fetchedPlayer2 = allPlayers.firstWhere(
+          (g) => g.id == testPlayer2.id,
+        );
+        expect(fetchedPlayer2.name, testPlayer2.name);
+        expect(fetchedPlayer2.createdAt, testPlayer2.createdAt);
+      });
     });
 
     test('players get inserted correcly ', () async {
-      await database.playerDao.addPlayer(player: testPlayer);
-      final result = await database.playerDao.getPlayerById(
-        playerId: testPlayer.id,
-      );
+      await withClock(fakeClock, () async {
+        await database.playerDao.addPlayer(player: testPlayer);
+        final result = await database.playerDao.getPlayerById(
+          playerId: testPlayer.id,
+        );
 
-      expect(result.id, testPlayer.id);
-      expect(result.name, testPlayer.name);
+        expect(result.id, testPlayer.id);
+        expect(result.name, testPlayer.name);
+        expect(result.createdAt, testPlayer.createdAt);
+      });
     });
 
     test('players get deleted correcly ', () async {
