@@ -21,12 +21,11 @@ class _GroupsViewState extends State<GroupsView> {
   late Future<List<Group>> _allGroupsFuture;
   late final AppDatabase db;
 
-  final player = Player(id: 'p1', name: 'Sample');
+  final player = Player(name: 'Skeleton Player');
   late final List<Group> skeletonData = List.filled(
     7,
     Group(
-      id: '0',
-      name: 'Sample Game',
+      name: 'Skeleton Game',
       members: [player, player, player, player, player, player],
     ),
   );
