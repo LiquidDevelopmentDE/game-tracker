@@ -11,7 +11,6 @@ import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:uuid/uuid.dart';
 
 class CreateGroupView extends StatefulWidget {
   const CreateGroupView({super.key});
@@ -28,7 +27,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   late Future<List<Player>> _allPlayersFuture;
   late final List<Player> skeletonData = List.filled(
     7,
-    Player(id: '0', name: 'Player 0'),
+    Player(name: 'Player 0'),
   );
   final _groupNameController = TextEditingController();
   final _searchBarController = TextEditingController();
@@ -56,8 +55,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
           backgroundColor: CustomTheme.backgroundColor,
           scrolledUnderElevation: 0,
           title: const Text(
-            "Create new group",
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            'Create new group',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -94,8 +93,11 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   children: [
                     CustomSearchBar(
                       controller: _searchBarController,
-                      constraints: BoxConstraints(maxHeight: 45, minHeight: 45),
-                      hintText: "Search for players",
+                      constraints: const BoxConstraints(
+                        maxHeight: 45,
+                        minHeight: 45,
+                      ),
+                      hintText: 'Search for players',
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
@@ -115,35 +117,34 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                         });
                       },
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
-                      "Ausgewählte Spieler: (${selectedPlayers.length})",
-                      style: TextStyle(
+                      'Ausgewählte Spieler: (${selectedPlayers.length})',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Wrap(
                       alignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.start,
                       spacing: 8.0,
                       runSpacing: 8.0,
                       children: <Widget>[
-                        for (var selectedPlayer in selectedPlayers)
+                        for (var player in selectedPlayers)
                           TextIconTile(
-                            text: selectedPlayer.name,
-                            icon: Icons.close,
+                            text: player.name,
                             onIconTap: () {
                               setState(() {
                                 final currentSearch = _searchBarController.text
                                     .toLowerCase();
-                                selectedPlayers.remove(selectedPlayer);
+                                selectedPlayers.remove(player);
                                 if (currentSearch.isEmpty ||
-                                    selectedPlayer.name.toLowerCase().contains(
+                                    player.name.toLowerCase().contains(
                                       currentSearch,
                                     )) {
-                                  suggestedPlayers.add(selectedPlayer);
+                                  suggestedPlayers.add(player);
                                   suggestedPlayers.sort(
                                     (a, b) => a.name.compareTo(b.name),
                                   );
@@ -153,15 +154,15 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Alle Spieler:",
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Alle Spieler:',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     FutureBuilder(
                       future: _allPlayersFuture,
                       builder:
@@ -216,7 +217,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                     ),
                                 child:
                                     (suggestedPlayers.isEmpty &&
-                                        !allPlayers.isEmpty)
+                                        allPlayers.isNotEmpty)
                                     ? TopCenteredMessage(
                                         icon: Icons.info,
                                         title: 'Info',
@@ -230,10 +231,9 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                         itemCount: suggestedPlayers.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                              return IconListTile(
+                                              return TextIconListTile(
                                                 text: suggestedPlayers[index]
                                                     .name,
-                                                icon: Icons.add,
                                                 onPressed: () {
                                                   setState(() {
                                                     if (!selectedPlayers.contains(
@@ -264,9 +264,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               ),
             ),
             CustomWidthButton(
-              text: "Create group",
-              infillColor: CustomTheme.primaryColor,
-              borderColor: CustomTheme.primaryColor,
+              text: 'Create group',
               disabledInfillColor: CustomTheme.boxColor,
               sizeRelativeToWidth: 0.95,
               onPressed:
@@ -275,7 +273,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   : () async {
                       bool success = await db.groupDao.addGroup(
                         group: Group(
-                          id: Uuid().v4(),
                           name: _groupNameController.text,
                           members: selectedPlayers,
                         ),
@@ -284,14 +281,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                         _groupNameController.clear();
                         _searchBarController.clear();
                         selectedPlayers.clear();
+                        if (!mounted) return;
                         Navigator.pop(context);
                       } else {
+                        if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: CustomTheme.boxColor,
-                            content: Center(
+                            content: const Center(
                               child: Text(
-                                "Error while creating group, please try again",
+                                'Error while creating group, please try again',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -301,7 +300,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       setState(() {});
                     },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
