@@ -23,14 +23,14 @@ class CustomSearchBar extends StatelessWidget {
           constraints ?? const BoxConstraints(maxHeight: 45, minHeight: 45),
       hintText: hintText,
       onChanged: onChanged,
-      hintStyle: MaterialStateProperty.all(const TextStyle(fontSize: 16)),
+      hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 16)),
       leading: const Icon(Icons.search),
-      backgroundColor: MaterialStateProperty.all(CustomTheme.boxColor),
-      side: MaterialStateProperty.all(BorderSide(color: CustomTheme.boxBorder)),
-      shape: MaterialStateProperty.all(
+      backgroundColor: WidgetStateProperty.all(CustomTheme.boxColor),
+      side: WidgetStateProperty.all(BorderSide(color: CustomTheme.boxBorder)),
+      shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      elevation: MaterialStateProperty.all(0),
+      elevation: WidgetStateProperty.all(0),
     );
   }
 }
