@@ -21,16 +21,16 @@ class SettingsListTile extends StatelessWidget {
       child: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.95,
-          child: Container(
-            margin: EdgeInsets.zero,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-            decoration: BoxDecoration(
-              color: CustomTheme.boxColor,
-              border: Border.all(color: CustomTheme.boxBorder),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: GestureDetector(
-              onTap: onPressed ?? () {},
+          child: GestureDetector(
+            onTap: onPressed ?? () {},
+            child: Container(
+              margin: EdgeInsets.zero,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+              decoration: BoxDecoration(
+                color: CustomTheme.boxColor,
+                border: Border.all(color: CustomTheme.boxBorder),
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
