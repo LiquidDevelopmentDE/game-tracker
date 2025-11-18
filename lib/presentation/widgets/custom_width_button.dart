@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/custom_theme.dart';
+
+enum ButtonStyle { primary, secondary }
 
 class CustomWidthButton extends StatelessWidget {
   const CustomWidthButton({
     super.key,
     required this.text,
-    required this.borderColor,
-    required this.infillColor,
     this.disabledInfillColor,
+    this.buttonStyle = ButtonStyle.primary,
     required this.sizeRelativeToWidth,
     required this.onPressed,
   });
 
   final String text;
-  final Color borderColor;
-  final Color infillColor;
   final Color? disabledInfillColor;
   final double sizeRelativeToWidth;
   final VoidCallback? onPressed;
+  final ButtonStyle buttonStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +29,15 @@ class CustomWidthButton extends StatelessWidget {
           MediaQuery.sizeOf(context).width * sizeRelativeToWidth,
           60,
         ),
-        backgroundColor: infillColor,
-        side: BorderSide(color: borderColor, width: 2),
+        backgroundColor: buttonStyle == ButtonStyle.primary
+            ? CustomTheme.primaryColor
+            : CustomTheme.secondaryColor,
+        side: BorderSide(
+          color: buttonStyle == ButtonStyle.primary
+              ? CustomTheme.primaryColor
+              : CustomTheme.secondaryColor,
+          width: 2,
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Text(
