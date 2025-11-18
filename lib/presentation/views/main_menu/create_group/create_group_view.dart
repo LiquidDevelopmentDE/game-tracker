@@ -44,7 +44,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
   @override
   Widget build(BuildContext context) {
-    addSamplePlayers(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomTheme.backgroundColor,
@@ -381,21 +380,5 @@ class _CreateGroupViewState extends State<CreateGroupView> {
         ),
       ),
     );
-  }
-
-  Future<void> addSamplePlayers(BuildContext context) async {
-    final db = Provider.of<AppDatabase>(context, listen: false);
-    final playerCount = await db.playerDao.getPlayerCount();
-    if (playerCount == 0) {
-      for (int i = 1; i <= 10; i++) {
-        final player = Player(id: '$i', name: 'Spieler $i');
-        await db.playerDao.addPlayer(player: player);
-      }
-      print("10 Beispiel-Spieler wurden zur Datenbank hinzugefügt.");
-      final players = await db.playerDao.getAllPlayers();
-      for (int i = 0; i < players.length; i++) {
-        print(players[i]);
-      }
-    }
   }
 }
