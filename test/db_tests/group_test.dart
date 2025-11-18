@@ -22,15 +22,11 @@ void main() {
       ),
     );
 
-    player1 = Player(id: 'p1', name: 'Alice');
-    player2 = Player(id: 'p2', name: 'Bob');
-    player3 = Player(id: 'p3', name: 'Charlie');
-    player4 = Player(id: 'p4', name: 'Diana');
-    testgroup = Group(
-      id: 'gr1',
-      name: 'Test Group',
-      members: [player1, player2, player3],
-    );
+    player1 = Player(name: 'Alice');
+    player2 = Player(name: 'Bob');
+    player3 = Player(name: 'Charlie');
+    player4 = Player(name: 'Diana');
+    testgroup = Group(name: 'Test Group', members: [player1, player2, player3]);
   });
   tearDown(() async {
     await database.close();
@@ -121,12 +117,12 @@ void main() {
 
       expect(playerAdded, true);
 
-      final playerAdded2 = await database.playerGroupDao.isPlayerInGroup(
-        playerId: 'a',
+      final playerNotAdded = !await database.playerGroupDao.isPlayerInGroup(
+        playerId: '',
         groupId: testgroup.id,
       );
 
-      expect(playerAdded2, false);
+      expect(playerNotAdded, true);
 
       expect(playerAdded, true);
 
