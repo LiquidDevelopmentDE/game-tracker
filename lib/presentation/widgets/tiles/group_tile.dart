@@ -56,7 +56,8 @@ class GroupTile extends StatelessWidget {
             spacing: 12.0,
             runSpacing: 8.0,
             children: <Widget>[
-              for (var member in group.members) TextIconTile(text: member.name),
+              for (var member in group.members)
+                TextIconTile(text: member.name, iconEnabled: false),
             ],
           ),
           const SizedBox(height: 2.5),
