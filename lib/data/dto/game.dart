@@ -7,15 +7,10 @@ class Game {
   final String name;
   final List<Player>? players;
   final Group? group;
-  final String winner;
+  final String? winner;
 
-  Game({
-    String? id,
-    required this.name,
-    this.players,
-    this.group,
-    this.winner = '',
-  }) : id = id ?? const Uuid().v4();
+  Game({String? id, required this.name, this.players, this.group, this.winner})
+    : id = id ?? const Uuid().v4();
 
   @override
   String toString() {

@@ -57,7 +57,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
         GameTableCompanion.insert(
           id: game.id,
           name: game.name,
-          winnerId: game.winner,
+          winnerId: Value(game.winner),
         ),
         mode: InsertMode.insertOrReplace,
       );
