@@ -23,7 +23,9 @@ class Group {
           .toList();
 
   /// Converts the Group instance to a JSON object.
-  String toJson() {
-    return 'Group{id: $id, name: $name,members: $members}';
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'members': members.map((member) => member.toJson()).toList(),
+  };
 }

@@ -17,7 +17,5 @@ class Player {
       name = json['name'];
 
   /// Converts the Player instance to a JSON object.
-  String toJson() {
-    return 'Player{id: $id,name: $name}';
-  }
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
 }

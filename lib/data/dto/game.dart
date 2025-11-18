@@ -35,7 +35,11 @@ class Game {
       winner = json['winner'] ?? '';
 
   /// Converts the Game instance to a JSON object.
-  String toJson() {
-    return 'Game{id: $id,name: $name,players: $players,group: $group,winner: $winner}';
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'players': players?.map((player) => player.toJson()).toList(),
+    'group': group?.toJson(),
+    'winner': winner,
+  };
 }
