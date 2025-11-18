@@ -24,21 +24,12 @@ void main() {
       ),
     );
 
-    player1 = Player(id: 'p1', name: 'Alice');
-    player2 = Player(id: 'p2', name: 'Bob');
-    player3 = Player(id: 'p3', name: 'Charlie');
-    player4 = Player(id: 'p4', name: 'Diana');
-    testgroup = Group(
-      id: 'gr1',
-      name: 'Test Group',
-      members: [player1, player2, player3],
-    );
-    testgame = Game(
-      id: 'ga1',
-      name: 'Test Game',
-      group: testgroup,
-      players: [player4],
-    );
+    player1 = Player(name: 'Alice');
+    player2 = Player(name: 'Bob');
+    player3 = Player(name: 'Charlie');
+    player4 = Player(name: 'Diana');
+    testgroup = Group(name: 'Test Group', members: [player1, player2, player3]);
+    testgame = Game(name: 'Test Game', group: testgroup, players: [player4]);
   });
   tearDown(() async {
     await database.close();
