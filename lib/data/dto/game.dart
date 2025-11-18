@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:uuid/uuid.dart';
@@ -18,7 +19,7 @@ class Game {
     this.group,
     this.winner = '',
   }) : id = id ?? const Uuid().v4(),
-       createdAt = createdAt ?? DateTime.now();
+       createdAt = createdAt ?? clock.now();
 
   @override
   String toString() {
