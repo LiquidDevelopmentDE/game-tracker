@@ -1,5 +1,6 @@
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:uuid/uuid.dart';
 
 class Game {
   final String id;
@@ -9,12 +10,12 @@ class Game {
   final String winner;
 
   Game({
+    String? id,
+    required this.name,
     this.players,
     this.group,
     this.winner = '',
-    required this.id,
-    required this.name,
-  });
+  }) : id = id ?? const Uuid().v4();
 
   @override
   String toString() {
