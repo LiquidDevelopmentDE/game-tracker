@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({super.key, required this.group});
@@ -56,27 +56,7 @@ class GroupTile extends StatelessWidget {
             spacing: 12.0,
             runSpacing: 8.0,
             children: <Widget>[
-              for (var member in group.members)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: CustomTheme.onBoxColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Skeleton.ignore(
-                    child: Text(
-                      member.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+              for (var member in group.members) TextIconTile(text: member.name),
             ],
           ),
           const SizedBox(height: 2.5),
