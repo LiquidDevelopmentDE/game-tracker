@@ -4,7 +4,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_group/create_group_view.dart';
-import 'package:game_tracker/presentation/widgets/full_width_button.dart';
+import 'package:game_tracker/presentation/widgets/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
@@ -105,7 +105,7 @@ class _GroupsViewState extends State<GroupsView> {
 
           Positioned(
             bottom: 80,
-            child: FullWidthButton(
+            child: CustomWidthButton(
               text: 'Create Group',
               infillColor: CustomTheme.primaryColor,
               borderColor: CustomTheme.primaryColor,

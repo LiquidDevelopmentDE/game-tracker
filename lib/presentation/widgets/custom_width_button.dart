@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FullWidthButton extends StatelessWidget {
-  const FullWidthButton({
+class CustomWidthButton extends StatelessWidget {
+  const CustomWidthButton({
     super.key,
     required this.text,
     required this.borderColor,
