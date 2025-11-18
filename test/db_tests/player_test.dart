@@ -17,7 +17,7 @@ void main() {
       ),
     );
 
-    testPlayer = Player(id: 'test_id', name: 'Test Player');
+    testPlayer = Player(name: 'Test Player');
   });
   tearDown(() async {
     await database.close();
@@ -25,7 +25,7 @@ void main() {
 
   group('player tests', () {
     test('all players get fetched correctly', () async {
-      final testPlayer2 = Player(id: 'gr2', name: 'Second Group');
+      final testPlayer2 = Player(name: 'Second Group');
       await database.playerDao.addPlayer(player: testPlayer);
       await database.playerDao.addPlayer(player: testPlayer2);
 
