@@ -12,6 +12,7 @@ void main() {
   late Player player2;
   late Player player3;
   late Player player4;
+  late Player player5;
   late Group testgroup;
   late Game testgame;
 
@@ -28,8 +29,13 @@ void main() {
     player2 = Player(name: 'Bob');
     player3 = Player(name: 'Charlie');
     player4 = Player(name: 'Diana');
+    player5 = Player(name: 'Eve');
     testgroup = Group(name: 'Test Group', members: [player1, player2, player3]);
-    testgame = Game(name: 'Test Game', group: testgroup, players: [player4]);
+    testgame = Game(
+      name: 'Test Game',
+      group: testgroup,
+      players: [player4, player5],
+    );
   });
   tearDown(() async {
     await database.close();
