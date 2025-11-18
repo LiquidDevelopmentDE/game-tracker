@@ -33,7 +33,6 @@ class _GroupsViewState extends State<GroupsView> {
     super.initState();
     final db = Provider.of<AppDatabase>(context, listen: false);
     _allGroupsFuture = db.groupDao.getAllGroups();
-    print('Skeleton Data: $skeletonData');
   }
 
   @override
