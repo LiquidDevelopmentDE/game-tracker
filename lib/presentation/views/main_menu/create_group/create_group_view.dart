@@ -3,10 +3,15 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/widgets/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/full_width_button.dart';
+import 'package:game_tracker/presentation/widgets/text_input_field.dart';
+import 'package:game_tracker/presentation/widgets/tiles/text_icon_list_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateGroupView extends StatefulWidget {
   const CreateGroupView({super.key});
@@ -61,29 +66,12 @@ class _CreateGroupViewState extends State<CreateGroupView> {
           children: [
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              child: TextField(
+              child: TextInputField(
                 controller: _groupNameController,
+                hintText: 'Group name',
                 onChanged: (value) {
                   setState(() {});
                 },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: CustomTheme.boxColor,
-                  hint: Text(
-                    "Group name",
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    borderSide: BorderSide(color: CustomTheme.boxBorder),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    borderSide: BorderSide(color: CustomTheme.boxBorder),
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                ),
               ),
             ),
             Expanded(
@@ -104,29 +92,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SearchBar(
+                    CustomSearchBar(
                       controller: _searchBarController,
                       constraints: BoxConstraints(maxHeight: 45, minHeight: 45),
                       hintText: "Search for players",
-                      hintStyle: WidgetStateProperty.all(
-                        TextStyle(fontSize: 16),
-                      ),
-                      leading: Icon(Icons.search),
-                      backgroundColor: WidgetStateProperty.all(
-                        CustomTheme.boxColor,
-                      ),
-                      side: WidgetStateProperty.all(
-                        BorderSide(color: CustomTheme.boxBorder),
-                      ),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
-                            suggestedPlayers = [...allPlayers];
+                            suggestedPlayers = allPlayers.where((player) {
+                              return !selectedPlayers.contains(player);
+                            }).toList();
                           } else {
                             suggestedPlayers = allPlayers.where((player) {
                               final bool nameMatches = player.name
@@ -156,50 +131,25 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       runSpacing: 8.0,
                       children: <Widget>[
                         for (var selectedPlayer in selectedPlayers)
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: CustomTheme.onBoxColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(width: 12),
-                                Flexible(
-                                  child: Text(
-                                    selectedPlayer.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 3),
-                                GestureDetector(
-                                  child: const Icon(Icons.close, size: 20),
-                                  onTap: () {
-                                    setState(() {
-                                      final currentSearch = _searchBarController
-                                          .text
-                                          .toLowerCase();
-                                      selectedPlayers.remove(selectedPlayer);
-                                      if (currentSearch.isEmpty ||
-                                          selectedPlayer.name
-                                              .toLowerCase()
-                                              .contains(currentSearch)) {
-                                        suggestedPlayers.add(selectedPlayer);
-                                        suggestedPlayers.sort(
-                                          (a, b) => a.name.compareTo(b.name),
-                                        );
-                                      }
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+                          TextIconTile(
+                            text: selectedPlayer.name,
+                            icon: Icons.close,
+                            onIconTap: () {
+                              setState(() {
+                                final currentSearch = _searchBarController.text
+                                    .toLowerCase();
+                                selectedPlayers.remove(selectedPlayer);
+                                if (currentSearch.isEmpty ||
+                                    selectedPlayer.name.toLowerCase().contains(
+                                      currentSearch,
+                                    )) {
+                                  suggestedPlayers.add(selectedPlayer);
+                                  suggestedPlayers.sort(
+                                    (a, b) => a.name.compareTo(b.name),
+                                  );
+                                }
+                              });
+                            },
                           ),
                       ],
                     ),
@@ -214,125 +164,100 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                     SizedBox(height: 10),
                     FutureBuilder(
                       future: _allPlayersFuture,
-                      builder: (BuildContext context, AsyncSnapshot<List<Player>> snapshot) {
-                        if (snapshot.hasError) {
-                          return const Center(
-                            child: TopCenteredMessage(
-                              icon: Icons.report,
-                              title: 'Error',
-                              message: 'Player data couldn\'t\nbe loaded.',
-                            ),
-                          );
-                        }
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            (!snapshot.hasData ||
-                                snapshot.data!.isEmpty ||
-                                (selectedPlayers.isEmpty &&
-                                    allPlayers.isEmpty))) {
-                          return const Center(
-                            child: TopCenteredMessage(
-                              icon: Icons.info,
-                              title: 'Info',
-                              message: 'No players created yet.',
-                            ),
-                          );
-                        }
-                        final bool isLoading =
-                            snapshot.connectionState == ConnectionState.waiting;
-                        return Expanded(
-                          child: Skeletonizer(
-                            effect: PulseEffect(
-                              from: Colors.grey[800]!,
-                              to: Colors.grey[600]!,
-                              duration: const Duration(milliseconds: 800),
-                            ),
-                            enabled: isLoading,
-                            enableSwitchAnimation: true,
-                            switchAnimationConfig: const SwitchAnimationConfig(
-                              duration: Duration(milliseconds: 200),
-                              switchInCurve: Curves.linear,
-                              switchOutCurve: Curves.linear,
-                              transitionBuilder:
-                                  AnimatedSwitcher.defaultTransitionBuilder,
-                              layoutBuilder:
-                                  AnimatedSwitcher.defaultLayoutBuilder,
-                            ),
-                            child:
-                                (suggestedPlayers.isEmpty &&
-                                    !allPlayers.isEmpty)
-                                ? TopCenteredMessage(
-                                    icon: Icons.info,
-                                    title: 'Info',
-                                    message:
-                                        (selectedPlayers.length ==
-                                            allPlayers.length)
-                                        ? 'No more players to add.'
-                                        : 'No players found with that name.',
-                                  )
-                                : ListView.builder(
-                                    itemCount: suggestedPlayers.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 5,
-                                          vertical: 5,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: CustomTheme.boxColor,
-                                          border: Border.all(
-                                            color: CustomTheme.boxBorder,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Flexible(
-                                              child: Text(
-                                                suggestedPlayers[index].name,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(Icons.add, size: 20),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (!selectedPlayers.contains(
-                                                    suggestedPlayers[index],
-                                                  )) {
-                                                    selectedPlayers.add(
+                      builder:
+                          (
+                            BuildContext context,
+                            AsyncSnapshot<List<Player>> snapshot,
+                          ) {
+                            if (snapshot.hasError) {
+                              return const Center(
+                                child: TopCenteredMessage(
+                                  icon: Icons.report,
+                                  title: 'Error',
+                                  message: 'Player data couldn\'t\nbe loaded.',
+                                ),
+                              );
+                            }
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty ||
+                                    (selectedPlayers.isEmpty &&
+                                        allPlayers.isEmpty))) {
+                              return const Center(
+                                child: TopCenteredMessage(
+                                  icon: Icons.info,
+                                  title: 'Info',
+                                  message: 'No players created yet.',
+                                ),
+                              );
+                            }
+                            final bool isLoading =
+                                snapshot.connectionState ==
+                                ConnectionState.waiting;
+                            return Expanded(
+                              child: Skeletonizer(
+                                effect: PulseEffect(
+                                  from: Colors.grey[800]!,
+                                  to: Colors.grey[600]!,
+                                  duration: const Duration(milliseconds: 800),
+                                ),
+                                enabled: isLoading,
+                                enableSwitchAnimation: true,
+                                switchAnimationConfig:
+                                    const SwitchAnimationConfig(
+                                      duration: Duration(milliseconds: 200),
+                                      switchInCurve: Curves.linear,
+                                      switchOutCurve: Curves.linear,
+                                      transitionBuilder: AnimatedSwitcher
+                                          .defaultTransitionBuilder,
+                                      layoutBuilder:
+                                          AnimatedSwitcher.defaultLayoutBuilder,
+                                    ),
+                                child:
+                                    (suggestedPlayers.isEmpty &&
+                                        !allPlayers.isEmpty)
+                                    ? TopCenteredMessage(
+                                        icon: Icons.info,
+                                        title: 'Info',
+                                        message:
+                                            (selectedPlayers.length ==
+                                                allPlayers.length)
+                                            ? 'No more players to add.'
+                                            : 'No players found with that name.',
+                                      )
+                                    : ListView.builder(
+                                        itemCount: suggestedPlayers.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                              return IconListTile(
+                                                text: suggestedPlayers[index]
+                                                    .name,
+                                                icon: Icons.add,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (!selectedPlayers.contains(
                                                       suggestedPlayers[index],
-                                                    );
-                                                    selectedPlayers.sort(
-                                                      (a, b) => a.name
-                                                          .compareTo(b.name),
-                                                    );
-                                                    suggestedPlayers.remove(
-                                                      suggestedPlayers[index],
-                                                    );
-                                                  }
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                          ),
-                        );
-                      },
+                                                    )) {
+                                                      selectedPlayers.add(
+                                                        suggestedPlayers[index],
+                                                      );
+                                                      selectedPlayers.sort(
+                                                        (a, b) => a.name
+                                                            .compareTo(b.name),
+                                                      );
+                                                      suggestedPlayers.remove(
+                                                        suggestedPlayers[index],
+                                                      );
+                                                    }
+                                                  });
+                                                },
+                                              );
+                                            },
+                                      ),
+                              ),
+                            );
+                          },
                     ),
                   ],
                 ),
@@ -348,11 +273,12 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   (_groupNameController.text.isEmpty || selectedPlayers.isEmpty)
                   ? null
                   : () async {
-                      String id = "ID_" + _groupNameController.text;
-                      String name = _groupNameController.text;
-                      List<Player> members = selectedPlayers;
                       bool success = await db.groupDao.addGroup(
-                        group: Group(id: id, name: name, members: members),
+                        group: Group(
+                          id: Uuid().v4(),
+                          name: _groupNameController.text,
+                          members: selectedPlayers,
+                        ),
                       );
                       if (success) {
                         _groupNameController.clear();
