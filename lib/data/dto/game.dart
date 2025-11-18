@@ -21,4 +21,21 @@ class Game {
   String toString() {
     return 'Game{\n\tid: $id,\n\tname: $name,\n\tplayers: $players,\n\tgroup: $group,\n\twinner: $winner\n}';
   }
+
+  /// Creates a Game instance from a JSON object.
+  Game.fromJson(Map<String, dynamic> json)
+    : id = json['id'],
+      name = json['name'],
+      players = json['players'] != null
+          ? (json['players'] as List)
+                .map((playerJson) => Player.fromJson(playerJson))
+                .toList()
+          : null,
+      group = json['group'] != null ? Group.fromJson(json['group']) : null,
+      winner = json['winner'] ?? '';
+
+  /// Converts the Game instance to a JSON object.
+  String toJson() {
+    return 'Game{id: $id,name: $name,players: $players,group: $group,winner: $winner}';
+  }
 }

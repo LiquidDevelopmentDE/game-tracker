@@ -13,4 +13,17 @@ class Group {
   String toString() {
     return 'Group{id: $id, name: $name,members: $members}';
   }
+
+  /// Creates a Group instance from a JSON object.
+  Group.fromJson(Map<String, dynamic> json)
+    : id = json['id'],
+      name = json['name'],
+      members = (json['members'] as List)
+          .map((memberJson) => Player.fromJson(memberJson))
+          .toList();
+
+  /// Converts the Group instance to a JSON object.
+  String toJson() {
+    return 'Group{id: $id, name: $name,members: $members}';
+  }
 }
