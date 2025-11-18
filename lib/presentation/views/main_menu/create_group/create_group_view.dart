@@ -130,9 +130,12 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                             suggestedPlayers = [...allPlayers];
                           } else {
                             suggestedPlayers = allPlayers.where((player) {
-                              return player.name.toLowerCase().contains(
-                                value.toLowerCase(),
-                              );
+                              final bool nameMatches = player.name
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase());
+                              final bool isNotSelected = !selectedPlayers
+                                  .contains(player);
+                              return nameMatches && isNotSelected;
                             }).toList();
                           }
                         });
@@ -180,11 +183,19 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                   child: const Icon(Icons.close, size: 20),
                                   onTap: () {
                                     setState(() {
-                                      suggestedPlayers.add(selectedPlayer);
+                                      final currentSearch = _searchBarController
+                                          .text
+                                          .toLowerCase();
                                       selectedPlayers.remove(selectedPlayer);
-                                      suggestedPlayers.sort(
-                                        (a, b) => a.name.compareTo(b.name),
-                                      );
+                                      if (currentSearch.isEmpty ||
+                                          selectedPlayer.name
+                                              .toLowerCase()
+                                              .contains(currentSearch)) {
+                                        suggestedPlayers.add(selectedPlayer);
+                                        suggestedPlayers.sort(
+                                          (a, b) => a.name.compareTo(b.name),
+                                        );
+                                      }
                                     });
                                   },
                                 ),
