@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-class IconListTile extends StatelessWidget {
+class TextIconListTile extends StatelessWidget {
   final String text;
-  final IconData icon;
   final VoidCallback onPressed;
+  final bool iconEnabled;
 
-  const IconListTile({
+  const TextIconListTile({
     super.key,
     required this.text,
-    required this.icon,
     required this.onPressed,
+    this.iconEnabled = true,
   });
 
   @override
@@ -28,13 +28,23 @@ class IconListTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Flexible(
-            child: Text(
-              text,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12.5),
+              child: Text(
+                text,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
-          IconButton(icon: Icon(icon, size: 20), onPressed: onPressed),
+          if (iconEnabled)
+            IconButton(
+              icon: const Icon(Icons.add, size: 20),
+              onPressed: onPressed,
+            ),
         ],
       ),
     );

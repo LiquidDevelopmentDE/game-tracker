@@ -3,14 +3,14 @@ import 'package:game_tracker/core/custom_theme.dart';
 
 class TextIconTile extends StatelessWidget {
   final String text;
-  final IconData? icon;
+  final bool iconEnabled;
   final VoidCallback? onIconTap;
 
   const TextIconTile({
     super.key,
     required this.text,
-    this.icon,
     this.onIconTap,
+    this.iconEnabled = true,
   });
 
   @override
@@ -25,7 +25,7 @@ class TextIconTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) const SizedBox(width: 3),
+          if (iconEnabled) const SizedBox(width: 3),
           Flexible(
             child: Text(
               text,
@@ -33,9 +33,12 @@ class TextIconTile extends StatelessWidget {
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
           ),
-          if (icon != null) ...<Widget>[
+          if (iconEnabled) ...<Widget>[
             const SizedBox(width: 3),
-            GestureDetector(onTap: onIconTap, child: Icon(icon, size: 20)),
+            GestureDetector(
+              onTap: onIconTap,
+              child: const Icon(Icons.close, size: 20),
+            ),
           ],
         ],
       ),
