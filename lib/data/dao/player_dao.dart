@@ -70,4 +70,12 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
             .getSingle();
     return count ?? 0;
   }
+
+  /// Deletes all players from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteAllPlayers() async {
+    final query = delete(playerTable);
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
+  }
 }

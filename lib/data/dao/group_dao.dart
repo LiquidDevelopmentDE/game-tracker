@@ -103,4 +103,12 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
     final result = await query.getSingleOrNull();
     return result != null;
   }
+
+  /// Deletes all groups from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteAllGroups() async {
+    final query = delete(groupTable);
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
+  }
 }

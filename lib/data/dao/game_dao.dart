@@ -88,4 +88,12 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     final result = await query.getSingleOrNull();
     return result != null;
   }
+
+  /// Deletes all games from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteAllGames() async {
+    final query = delete(gameTable);
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
+  }
 }
