@@ -19,6 +19,7 @@ class GroupsView extends StatefulWidget {
 
 class _GroupsViewState extends State<GroupsView> {
   late Future<List<Group>> _allGroupsFuture;
+  late final AppDatabase db;
 
   final player = Player(id: 'p1', name: 'Sample');
   late final List<Group> skeletonData = List.filled(
@@ -33,7 +34,7 @@ class _GroupsViewState extends State<GroupsView> {
   @override
   void initState() {
     super.initState();
-    final db = Provider.of<AppDatabase>(context, listen: false);
+    db = Provider.of<AppDatabase>(context, listen: false);
     _allGroupsFuture = db.groupDao.getAllGroups();
   }
 
@@ -109,8 +110,8 @@ class _GroupsViewState extends State<GroupsView> {
               infillColor: CustomTheme.primaryColor,
               borderColor: CustomTheme.primaryColor,
               sizeRelativeToWidth: 0.90,
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
@@ -118,6 +119,9 @@ class _GroupsViewState extends State<GroupsView> {
                     },
                   ),
                 );
+                setState(() {
+                  _allGroupsFuture = db.groupDao.getAllGroups();
+                });
               },
             ),
           ),
