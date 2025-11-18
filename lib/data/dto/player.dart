@@ -3,8 +3,11 @@ import 'package:uuid/uuid.dart';
 class Player {
   final String id;
   final String name;
+  final DateTime createdAt;
 
-  Player({String? id, required this.name}) : id = id ?? const Uuid().v4();
+  Player({String? id, DateTime? createdAt, required this.name})
+    : id = id ?? const Uuid().v4(),
+      createdAt = createdAt ?? DateTime.now();
 
   @override
   String toString() {

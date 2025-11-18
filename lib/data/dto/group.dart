@@ -5,9 +5,15 @@ class Group {
   final String id;
   final String name;
   final List<Player> members;
+  final DateTime createdAt;
 
-  Group({String? id, required this.name, required this.members})
-    : id = id ?? const Uuid().v4();
+  Group({
+    String? id,
+    DateTime? createdAt,
+    required this.name,
+    required this.members,
+  }) : id = id ?? const Uuid().v4(),
+       createdAt = createdAt ?? DateTime.now();
 
   @override
   String toString() {
