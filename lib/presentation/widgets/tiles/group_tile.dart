@@ -24,24 +24,29 @@ class GroupTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                group.name,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+              Flexible(
+                child: Text(
+                  group.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Text(
-                '${group.members.length}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                ),
+              Row(
+                children: [
+                  Text(
+                    '${group.members.length}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                  const Icon(Icons.group, size: 22),
+                ],
               ),
-              const SizedBox(width: 3),
-              const Icon(Icons.group, size: 22),
             ],
           ),
           const SizedBox(height: 5),
@@ -64,6 +69,7 @@ class GroupTile extends StatelessWidget {
                   child: Skeleton.ignore(
                     child: Text(
                       member.name,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

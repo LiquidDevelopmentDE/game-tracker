@@ -70,7 +70,11 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: CustomTheme.boxColor,
-                  hint: Text("Group name", style: TextStyle(fontSize: 18)),
+                  hint: Text(
+                    "Group name",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 18),
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
                     borderSide: BorderSide(color: CustomTheme.boxBorder),
@@ -161,11 +165,14 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(width: 12),
-                                Text(
-                                  selectedPlayer.name,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                                Flexible(
+                                  child: Text(
+                                    selectedPlayer.name,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(width: 3),
@@ -277,11 +284,14 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                               MainAxisAlignment.spaceBetween,
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            Text(
-                                              suggestedPlayers[index].name,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
+                                            Flexible(
+                                              child: Text(
+                                                suggestedPlayers[index].name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
                                             ),
                                             IconButton(
