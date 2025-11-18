@@ -106,8 +106,6 @@ class _GroupsViewState extends State<GroupsView> {
             bottom: 80,
             child: CustomWidthButton(
               text: 'Create Group',
-              infillColor: CustomTheme.primaryColor,
-              borderColor: CustomTheme.primaryColor,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
                 await Navigator.push(
