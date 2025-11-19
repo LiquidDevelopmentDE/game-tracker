@@ -14,6 +14,12 @@ jobs:
         run: |
           apt-get update
           apt-get install -y jq
+          
+
+      - name: Clean Flutter Cache
+        run: |
+          rm -rf /opt/hostedtoolcache/flutter
+          rm -rf ~/flutter
 
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
