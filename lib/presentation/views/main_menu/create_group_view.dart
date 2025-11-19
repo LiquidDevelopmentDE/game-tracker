@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide ButtonStyle;
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
@@ -266,7 +267,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             CustomWidthButton(
               text: 'Create group',
               sizeRelativeToWidth: 0.95,
-              buttonStyle: ButtonStyle.secondary,
+              buttonType: ButtonType.primary,
               onPressed:
                   (_groupNameController.text.isEmpty || selectedPlayers.isEmpty)
                   ? null
