@@ -11,6 +11,17 @@ import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:provider/provider.dart';
 
+enum ImportResult {
+  success,
+  canceled,
+  fileReadError,
+  invalidSchema,
+  formatException,
+  unknownException,
+}
+
+enum ExportResult { success, canceled, unknownException }
+
 class DataTransferService {
   /// Deletes all data from the database.
   static Future<void> deleteAllData(BuildContext context) async {
@@ -18,9 +29,10 @@ class DataTransferService {
     await db.gameDao.deleteAllGames();
     await db.groupDao.deleteAllGroups();
     await db.playerDao.deleteAllPlayers();
-    print('[deleteAllData] All data deleted');
   }
 
+  /// Retrieves all application data and converts it to a JSON string.
+  /// Returns the JSON string representation of the data.
   static Future<String> getAppDataAsJson(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
     final games = await db.gameDao.getAllGames();
@@ -38,23 +50,34 @@ class DataTransferService {
   }
 
   /// Exports the given JSON string to a file with the specified name.
-  static Future<bool> exportData(String jsonString, String fileName) async {
+  /// Returns an [ExportResult] indicating the outcome.
+  ///
+  /// [jsonString] The JSON string to be exported.
+  /// [fileName] The desired name for the exported file (without extension).
+  static Future<ExportResult> exportData(
+    String jsonString,
+    String fileName,
+  ) async {
     try {
       final bytes = Uint8List.fromList(utf8.encode(jsonString));
-      await FilePicker.platform.saveFile(
+      final path = await FilePicker.platform.saveFile(
         fileName: '$fileName.json',
         bytes: bytes,
       );
-      return true;
+      if (path == null) {
+        return ExportResult.canceled;
+      } else {
+        return ExportResult.success;
+      }
     } catch (e, stack) {
       print('[exportData] $e');
       print(stack);
-      return false;
+      return ExportResult.unknownException;
     }
   }
 
   /// Imports data from a selected JSON file into the database.
-  static Future<void> importData(BuildContext context) async {
+  static Future<ImportResult> importData(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
 
     final path = await FilePicker.platform.pickFiles(
@@ -63,12 +86,14 @@ class DataTransferService {
     );
 
     if (path == null) {
-      print('[importData] No file selected');
-      return;
+      return ImportResult.canceled;
     }
 
     try {
       final jsonString = await _readFileContent(path.files.single);
+      if (jsonString == null) {
+        return ImportResult.fileReadError;
+      }
 
       if (await SettingsView.validateJsonSchema(jsonString)) {
         final Map<String, dynamic> jsonData =
@@ -107,29 +132,26 @@ class DataTransferService {
           await db.gameDao.addGame(game: game);
         }
       } else {
-        print('[importData] Invalid JSON schema');
-        return;
+        return ImportResult.invalidSchema;
       }
-      print('[importData] Data imported successfully');
-      return;
+      return ImportResult.success;
     } on FormatException catch (e, stack) {
       print('[importData] FormatException');
       print('[importData] $e');
       print(stack);
-      return;
+      return ImportResult.formatException;
     } on Exception catch (e, stack) {
       print('[importData] Exception');
       print('[importData] $e');
       print(stack);
-      return;
+      return ImportResult.unknownException;
     }
   }
 
   /// Helper method to read file content from either bytes or path
-  static Future<String> _readFileContent(PlatformFile file) async {
+  static Future<String?> _readFileContent(PlatformFile file) async {
     if (file.bytes != null) return utf8.decode(file.bytes!);
     if (file.path != null) return await File(file.path!).readAsString();
-
-    throw Exception('Die Datei hat keinen lesbaren Inhalt');
+    return null;
   }
 }

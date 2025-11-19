@@ -77,27 +77,118 @@ class _SettingsViewState extends State<SettingsView> {
                     onPressed: () async {
                       final String json =
                           await DataTransferService.getAppDataAsJson(context);
-                      await DataTransferService.exportData(
+                      final result = await DataTransferService.exportData(
                         json,
                         'exported_data',
                       );
+                      if (!context.mounted) return;
+                      showExportSnackBar(context: context, result: result);
                     },
                   ),
                   SettingsListTile(
                     title: 'Import data',
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () => DataTransferService.importData(context),
+                    onPressed: () async {
+                      final result = await DataTransferService.importData(
+                        context,
+                      );
+                      if (!context.mounted) return;
+                      showImportSnackBar(context: context, result: result);
+                    },
                   ),
                   SettingsListTile(
                     title: 'Delete all data',
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () => DataTransferService.deleteAllData(context),
+                    onPressed: () {
+                      DataTransferService.deleteAllData(context);
+                      showSnackbar(
+                        context: context,
+                        message: 'Data successfully deleted',
+                      );
+                    },
                   ),
                 ],
               ),
             ),
+      ),
+    );
+  }
+
+  /// Displays a snackbar based on the import result.
+  ///
+  /// [context] The BuildContext to show the snackbar in.
+  /// [result] The result of the import operation.
+  void showImportSnackBar({
+    required BuildContext context,
+    required ImportResult result,
+  }) {
+    switch (result) {
+      case ImportResult.success:
+        showSnackbar(context: context, message: 'Data successfully imported');
+      case ImportResult.invalidSchema:
+        showSnackbar(context: context, message: 'Invalid Schema');
+      case ImportResult.fileReadError:
+        showSnackbar(context: context, message: 'Error reading file');
+      case ImportResult.canceled:
+        showSnackbar(context: context, message: 'Import canceled');
+      case ImportResult.formatException:
+        showSnackbar(
+          context: context,
+          message: 'Format Exception (see console)',
+        );
+      case ImportResult.unknownException:
+        showSnackbar(
+          context: context,
+          message: 'Unknown Exception (see console)',
+        );
+    }
+  }
+
+  /// Displays a snackbar based on the export result.
+  ///
+  /// [context] The BuildContext to show the snackbar in.
+  /// [result] The result of the export operation.
+  void showExportSnackBar({
+    required BuildContext context,
+    required ExportResult result,
+  }) {
+    switch (result) {
+      case ExportResult.success:
+        showSnackbar(context: context, message: 'Data successfully exported');
+      case ExportResult.canceled:
+        showSnackbar(context: context, message: 'Export canceled');
+      case ExportResult.unknownException:
+        showSnackbar(
+          context: context,
+          message: 'Unknown Exception (see console)',
+        );
+    }
+  }
+
+  /// Displays a snackbar with the given message and optional action.
+  ///
+  /// [context] The BuildContext to show the snackbar in.
+  /// [message] The message to display in the snackbar.
+  /// [duration] The duration for which the snackbar is displayed.
+  /// [action] An optional callback function to execute when the action button is pressed.
+  void showSnackbar({
+    required BuildContext context,
+    required String message,
+    Duration duration = const Duration(seconds: 3),
+    VoidCallback? action,
+  }) {
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(message, style: const TextStyle(color: Colors.white)),
+        backgroundColor: CustomTheme.onBoxColor,
+        duration: duration,
+        action: action != null
+            ? SnackBarAction(label: 'Rückgängig', onPressed: action)
+            : null,
       ),
     );
   }
