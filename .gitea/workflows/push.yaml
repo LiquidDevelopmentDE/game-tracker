@@ -41,7 +41,9 @@ jobs:
         # Needs credentials, push access and the right files need to be staged
       - name: Commit Changes
         run: |
-          git status
+          git config --global user.name "Gitea Actions"
+          git config --global user.email "actions@gitea.com"
+         git status
           git add lib/
           git status
           git commit -m "Actions: Auto-formatting [skip ci]"
