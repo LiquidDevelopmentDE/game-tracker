@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-
-enum ButtonStyle { primary, secondary }
+import 'package:game_tracker/core/enums.dart';
 
 class CustomWidthButton extends StatelessWidget {
   const CustomWidthButton({
     super.key,
     required this.text,
-    this.buttonStyle = ButtonStyle.primary,
+    this.buttonType = ButtonType.primary,
     required this.sizeRelativeToWidth,
     this.onPressed,
   });
@@ -15,61 +14,101 @@ class CustomWidthButton extends StatelessWidget {
   final String text;
   final double sizeRelativeToWidth;
   final VoidCallback? onPressed;
-  final ButtonStyle buttonStyle;
+  final ButtonType buttonType;
 
   @override
   Widget build(BuildContext context) {
-
     final Color buttonBackgroundColor;
     final Color disabledBackgroundColor;
     final Color borderSideColor;
-    final Color disabledBorderSideColor;
     final Color textcolor;
     final Color disabledTextColor;
 
-
-    if(buttonStyle == ButtonStyle.primary){
-      buttonBackgroundColor = CustomTheme.primaryColor;
-      disabledBackgroundColor = CustomTheme.primaryColor.withValues(alpha: 0.24);
-      borderSideColor = Colors.transparent;
-      disabledBorderSideColor = Colors.transparent;
+    if (buttonType == ButtonType.primary) {
       textcolor = Colors.white;
       disabledTextColor = Colors.white.withValues(alpha: 0.24);
-    } else{
+      buttonBackgroundColor = CustomTheme.primaryColor;
+      disabledBackgroundColor = CustomTheme.primaryColor.withValues(
+        alpha: 0.24,
+      );
+
+      return ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: textcolor,
+          disabledForegroundColor: disabledTextColor,
+          backgroundColor: buttonBackgroundColor,
+          disabledBackgroundColor: disabledBackgroundColor,
+          animationDuration: const Duration(),
+          minimumSize: Size(
+            MediaQuery.sizeOf(context).width * sizeRelativeToWidth,
+            60,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+        ),
+      );
+    } else if (buttonType == ButtonType.secondary) {
+      textcolor = CustomTheme.primaryColor;
+      disabledTextColor = CustomTheme.primaryColor.withValues(alpha: 0.5);
       buttonBackgroundColor = Colors.transparent;
       disabledBackgroundColor = Colors.transparent;
-      borderSideColor = CustomTheme.primaryColor.withValues(alpha: 0.6 );
-      disabledBorderSideColor = Colors.transparent;
+      borderSideColor = onPressed != null
+          ? CustomTheme.primaryColor
+          : CustomTheme.primaryColor.withValues(alpha: 0.5);
+
+      return OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: textcolor,
+          disabledForegroundColor: disabledTextColor,
+          backgroundColor: buttonBackgroundColor,
+          disabledBackgroundColor: disabledBackgroundColor,
+          animationDuration: const Duration(),
+          minimumSize: Size(
+            MediaQuery.sizeOf(context).width * sizeRelativeToWidth,
+            60,
+          ),
+          side: BorderSide(color: borderSideColor, width: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+        ),
+      );
+    } else {
       textcolor = CustomTheme.primaryColor;
-      disabledTextColor = CustomTheme.primaryColor.withValues(alpha: 0.24);
+      disabledTextColor = CustomTheme.primaryColor.withValues(alpha: 0.3);
+      buttonBackgroundColor = Colors.transparent;
+      disabledBackgroundColor = Colors.transparent;
+
+      return TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: textcolor,
+          disabledForegroundColor: disabledTextColor,
+          backgroundColor: buttonBackgroundColor,
+          disabledBackgroundColor: disabledBackgroundColor,
+          animationDuration: const Duration(),
+          minimumSize: Size(
+            MediaQuery.sizeOf(context).width * sizeRelativeToWidth,
+            60,
+          ),
+          side: const BorderSide(style: BorderStyle.none),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+        ),
+      );
     }
-
-
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        disabledBackgroundColor: disabledBackgroundColor,
-        minimumSize: Size(
-          MediaQuery.sizeOf(context).width * sizeRelativeToWidth,
-          60,
-        ),
-        backgroundColor: buttonBackgroundColor,
-        side: BorderSide(
-          color: borderSideColor,
-          width: 2,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 22,
-          color: (onPressed == null)
-              ? disabledTextColor
-              : textcolor,
-        ),
-      ),
-    );
   }
 }
