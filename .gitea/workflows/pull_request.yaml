@@ -6,7 +6,6 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    container: node:18-bullseye
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,7 +32,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -60,7 +58,6 @@ jobs:
 
   format:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
