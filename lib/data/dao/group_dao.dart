@@ -74,8 +74,8 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         await Future.wait(
           group.members.map((player) => db.playerDao.addPlayer(player: player)),
         );
-        return true;
       });
+      return true;
     }
     return false;
   }
