@@ -103,11 +103,31 @@ class _SettingsViewState extends State<SettingsView> {
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
-                      DataTransferService.deleteAllData(context);
-                      showSnackbar(
+                      showDialog<bool>(
                         context: context,
-                        message: 'Data successfully deleted',
-                      );
+                        builder: (context) => AlertDialog(
+                          title: const Text('Delete all data?'),
+                          content: const Text('This can\'t be undone'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text('Abbrechen'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: const Text('Löschen'),
+                            ),
+                          ],
+                        ),
+                      ).then((confirmed) {
+                        if (confirmed == true && context.mounted) {
+                          DataTransferService.deleteAllData(context);
+                          showSnackbar(
+                            context: context,
+                            message: 'Daten erfolgreich gelöscht',
+                          );
+                        }
+                      });
                     },
                   ),
                 ],
