@@ -13,6 +13,9 @@
             "id": {
               "type": "string"
             },
+            "createdAt": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
@@ -28,6 +31,7 @@
           },
           "required": [
             "id",
+            "createdAt",
             "name",
             "players",
             "group",
@@ -45,6 +49,9 @@
             "id": {
               "type": "string"
             },
+            "createdAt": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
@@ -57,19 +64,7 @@
                     "id": {
                       "type": "string"
                     },
-                    "name": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name"
-                  ]
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "id": {
+                    "createdAt": {
                       "type": "string"
                     },
                     "name": {
@@ -78,6 +73,7 @@
                   },
                   "required": [
                     "id",
+                    "createdAt",
                     "name"
                   ]
                 }
@@ -86,6 +82,7 @@
           },
           "required": [
             "id",
+            "createdAt",
             "name",
             "members"
           ]
@@ -101,19 +98,7 @@
             "id": {
               "type": "string"
             },
-            "name": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "name"
-          ]
-        },
-        {
-          "type": "object",
-          "properties": {
-            "id": {
+            "createdAt": {
               "type": "string"
             },
             "name": {
@@ -122,16 +107,12 @@
           },
           "required": [
             "id",
+            "createdAt",
             "name"
           ]
         }
       ]
     }
-  },
-  "required": [
-    "games",
-    "groups",
-    "players"
-  ]
+  }
 }
 

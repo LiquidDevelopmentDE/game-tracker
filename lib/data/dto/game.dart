@@ -5,11 +5,11 @@ import 'package:uuid/uuid.dart';
 
 class Game {
   final String id;
+  final DateTime createdAt;
   final String name;
   final List<Player>? players;
   final Group? group;
   final String? winner;
-  final DateTime createdAt;
 
   Game({
     String? id,
@@ -30,6 +30,7 @@ class Game {
   Game.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       name = json['name'],
+      createdAt = DateTime.parse(json['createdAt']),
       players = json['players'] != null
           ? (json['players'] as List)
                 .map((playerJson) => Player.fromJson(playerJson))
@@ -41,6 +42,7 @@ class Game {
   /// Converts the Game instance to a JSON object.
   Map<String, dynamic> toJson() => {
     'id': id,
+    'createdAt': createdAt.toIso8601String(),
     'name': name,
     'players': players?.map((player) => player.toJson()).toList(),
     'group': group?.toJson(),
