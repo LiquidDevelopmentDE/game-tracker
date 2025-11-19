@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({super.key, required this.group});
@@ -24,24 +24,29 @@ class GroupTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                group.name,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+              Flexible(
+                child: Text(
+                  group.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Text(
-                '${group.members.length}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                ),
+              Row(
+                children: [
+                  Text(
+                    '${group.members.length}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                  const Icon(Icons.group, size: 22),
+                ],
               ),
-              const SizedBox(width: 3),
-              const Icon(Icons.group, size: 22),
             ],
           ),
           const SizedBox(height: 5),
@@ -52,25 +57,7 @@ class GroupTile extends StatelessWidget {
             runSpacing: 8.0,
             children: <Widget>[
               for (var member in group.members)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: CustomTheme.onBoxColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Skeleton.ignore(
-                    child: Text(
-                      member.name,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+                TextIconTile(text: member.name, iconEnabled: false),
             ],
           ),
           const SizedBox(height: 2.5),
