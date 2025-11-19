@@ -42,8 +42,8 @@ class TextIconListTile extends StatelessWidget {
           ),
           if (iconEnabled)
             GestureDetector(
-              child: const Icon(Icons.add, size: 20),
               onTap: onPressed,
+              child: const Icon(Icons.add, size: 20),
             ),
         ],
       ),
