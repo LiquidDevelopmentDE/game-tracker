@@ -6,6 +6,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    container: node:18-bullseye
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,7 +22,7 @@ jobs:
           wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.35.6-stable.tar.xz
           tar xf flutter_linux_3.35.6-stable.tar.xz
           # Flutter zum PATH hinzufügen
-          echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
+          echo "$(pwd)/flutter/bin" >> /usr/local/bin
           # Flutter Doctor ausführen (optional)
           flutter doctor -v
 
