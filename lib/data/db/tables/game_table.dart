@@ -6,6 +6,7 @@ class GameTable extends Table {
   TextColumn get name => text()();
   TextColumn get winnerId =>
       text().references(PlayerTable, #id, onDelete: KeyAction.cascade)();
+  DateTimeColumn get createdAt => dateTime()();
 
   @override
   Set<Column<Object>> get primaryKey => {id};

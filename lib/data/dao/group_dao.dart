@@ -19,7 +19,12 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         final members = await db.playerGroupDao.getPlayersOfGroupById(
           groupId: groupData.id,
         );
-        return Group(id: groupData.id, name: groupData.name, members: members);
+        return Group(
+          id: groupData.id,
+          name: groupData.name,
+          members: members,
+          createdAt: groupData.createdAt,
+        );
       }),
     );
   }
@@ -33,7 +38,12 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
       groupId: groupId,
     );
 
-    return Group(id: result.id, name: result.name, members: members);
+    return Group(
+      id: result.id,
+      name: result.name,
+      members: members,
+      createdAt: result.createdAt,
+    );
   }
 
   /// Adds a new group with the given [id] and [name] to the database.
@@ -41,9 +51,13 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
   Future<bool> addGroup({required Group group}) async {
     if (!await groupExists(groupId: group.id)) {
       await db.transaction(() async {
-        await into(
-          groupTable,
-        ).insert(GroupTableCompanion.insert(id: group.id, name: group.name));
+        await into(groupTable).insert(
+          GroupTableCompanion.insert(
+            id: group.id,
+            name: group.name,
+            createdAt: group.createdAt,
+          ),
+        );
         await db.batch(
           (b) => b.insertAll(
             db.playerGroupTable,

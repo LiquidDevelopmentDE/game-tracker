@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,8 @@ void main() {
   late Player player5;
   late Group testgroup;
   late Game testgame;
+  final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
+  final fakeClock = Clock(() => fixedDate);
 
   setUp(() {
     database = AppDatabase(
@@ -25,17 +28,22 @@ void main() {
       ),
     );
 
-    player1 = Player(name: 'Alice');
-    player2 = Player(name: 'Bob');
-    player3 = Player(name: 'Charlie');
-    player4 = Player(name: 'Diana');
-    player5 = Player(name: 'Eve');
-    testgroup = Group(name: 'Test Group', members: [player1, player2, player3]);
-    testgame = Game(
-      name: 'Test Game',
-      group: testgroup,
-      players: [player4, player5],
-    );
+    withClock(fakeClock, () {
+      player1 = Player(name: 'Alice');
+      player2 = Player(name: 'Bob');
+      player3 = Player(name: 'Charlie');
+      player4 = Player(name: 'Diana');
+      player5 = Player(name: 'Eve');
+      testgroup = Group(
+        name: 'Test Group',
+        members: [player1, player2, player3],
+      );
+      testgame = Game(
+        name: 'Test Game',
+        group: testgroup,
+        players: [player4, player5],
+      );
+    });
   });
   tearDown(() async {
     await database.close();
@@ -50,6 +58,7 @@ void main() {
       expect(result.id, testgame.id);
       expect(result.name, testgame.name);
       expect(result.winner, testgame.winner);
+      expect(result.createdAt, testgame.createdAt);
 
       if (result.group != null) {
         expect(result.group!.members.length, testgroup.members.length);
@@ -67,6 +76,7 @@ void main() {
         for (int i = 0; i < testgame.players!.length; i++) {
           expect(result.players![i].id, testgame.players![i].id);
           expect(result.players![i].name, testgame.players![i].name);
+          expect(result.players![i].createdAt, testgame.players![i].createdAt);
         }
       } else {
         fail('Players is null');

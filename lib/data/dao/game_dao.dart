@@ -15,7 +15,11 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
   Future<List<Game>> getAllGames() async {
     final query = select(gameTable);
     final result = await query.get();
-    return result.map((row) => Game(id: row.id, name: row.name)).toList();
+    return result
+        .map(
+          (row) => Game(id: row.id, name: row.name, createdAt: row.createdAt),
+        )
+        .toList();
   }
 
   /// Retrieves a [Game] by its [gameId].
@@ -38,6 +42,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
       players: players,
       group: group,
       winner: result.winnerId,
+      createdAt: result.createdAt,
     );
   }
 
@@ -58,6 +63,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
           id: game.id,
           name: game.name,
           winnerId: game.winner,
+          createdAt: game.createdAt,
         ),
         mode: InsertMode.insertOrReplace,
       );
