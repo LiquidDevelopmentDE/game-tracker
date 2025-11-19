@@ -17,7 +17,7 @@ class TextIconListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: CustomTheme.boxColor,
         border: Border.all(color: CustomTheme.boxBorder),
@@ -41,9 +41,9 @@ class TextIconListTile extends StatelessWidget {
             ),
           ),
           if (iconEnabled)
-            IconButton(
-              icon: const Icon(Icons.add, size: 20),
-              onPressed: onPressed,
+            GestureDetector(
+              child: const Icon(Icons.add, size: 20),
+              onTap: onPressed,
             ),
         ],
       ),
