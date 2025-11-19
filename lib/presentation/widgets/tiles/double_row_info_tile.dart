@@ -9,8 +9,8 @@ Widget doubleRowInfoTile(
   String titleLowerRight,
 ) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-    padding: EdgeInsets.all(10),
+    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+    padding: const EdgeInsets.all(10),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
       color: CustomTheme.secondaryColor,
@@ -22,18 +22,18 @@ Widget doubleRowInfoTile(
             Expanded(
               flex: 10,
               child: Text(
-                "$titleOneUpperLeft $titleTwoUpperLeft",
-                style: TextStyle(fontSize: 20),
+                '$titleOneUpperLeft $titleTwoUpperLeft',
+                style: const TextStyle(fontSize: 20),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Expanded(
               flex: 3,
               child: Text(
-                "$titleUpperRight",
-                style: TextStyle(fontSize: 20),
+                titleUpperRight,
+                style: const TextStyle(fontSize: 20),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 textAlign: TextAlign.end,
@@ -46,18 +46,18 @@ Widget doubleRowInfoTile(
             Expanded(
               flex: 10,
               child: Text(
-                "$titleLowerLeft",
-                style: TextStyle(fontSize: 20),
+                titleLowerLeft,
+                style: const TextStyle(fontSize: 20),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Expanded(
               flex: 4,
               child: Text(
-                "$titleLowerRight",
-                style: TextStyle(fontSize: 20),
+                titleLowerRight,
+                style: const TextStyle(fontSize: 20),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 textAlign: TextAlign.end,
