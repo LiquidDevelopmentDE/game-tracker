@@ -87,11 +87,13 @@ jobs:
 
       - name: Auto-format
         run: |
-          dart format lib 
+          dart format lib
           dart fix --apply lib 
 
       - name: Commit Changes
         run: |
-          git add .
+          git status
+          git add lib/
+          git status
           git commit -m "Actions: Auto-formatting [skip ci]"
           git push
