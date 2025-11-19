@@ -1,4 +1,4 @@
-name: Pull Request Pipeline
+name: Push Pipeline
 
 on:
   push:
