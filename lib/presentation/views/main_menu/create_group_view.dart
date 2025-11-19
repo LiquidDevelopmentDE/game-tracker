@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ButtonStyle;
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
@@ -265,8 +265,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             ),
             CustomWidthButton(
               text: 'Create group',
-              disabledInfillColor: CustomTheme.boxColor,
               sizeRelativeToWidth: 0.95,
+              buttonStyle: ButtonStyle.secondary,
               onPressed:
                   (_groupNameController.text.isEmpty || selectedPlayers.isEmpty)
                   ? null
@@ -277,14 +277,13 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           members: selectedPlayers,
                         ),
                       );
+                      if (!context.mounted) return;
                       if (success) {
                         _groupNameController.clear();
                         _searchBarController.clear();
                         selectedPlayers.clear();
-                        if (!mounted) return;
                         Navigator.pop(context);
                       } else {
-                        if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: CustomTheme.boxColor,
