@@ -11,28 +11,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install jq
+      - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y jq
+          apt-get install -y jq git wget unzip xz-utils
 
-      - name: Set Up Flutter
-        uses: flutter-actions/setup-flutter@v2
-        with:
-          flutter-version: '3.35.6'
-          channel: 'stable'
-
-      - name: Configure Git Safe Directory
+      - name: Install Flutter (lokal)
         run: |
-          git config --global --add safe.directory /workspace/liquid-development/game-tracker
-          git config --global --add safe.directory /workspace/liquid-development/game-tracker/flutter
+          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.38.2-stable.tar.xz
+          tar xf flutter_linux_3.38.2-stable.tar.xz
+          # Git-Safe-Directory für Flutter-Pfad setzen
+          git config --global --add safe.directory "$(pwd)/flutter"
+          # Flutter-Pfad setzen
+          echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
 
+      - name: Configure Git Safe Directory (für Projekt)
+        run: |
+          git config --global --add safe.directory "$(pwd)"
 
       - name: Get dependencies
-        run: flutter pub get
+        run: ./flutter/bin/flutter pub get
 
       - name: Check Formatting
-        run: flutter analyze
+        run: ./flutter/bin/flutter analyze
 
 
 
