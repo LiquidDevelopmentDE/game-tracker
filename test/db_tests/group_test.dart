@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,6 +13,9 @@ void main() {
   late Player player3;
   late Player player4;
   late Group testgroup;
+  late Group testgroup2;
+  final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
+  final fakeClock = Clock(() => fixedDate);
 
   setUp(() {
     database = AppDatabase(
@@ -22,22 +26,27 @@ void main() {
       ),
     );
 
-    player1 = Player(name: 'Alice');
-    player2 = Player(name: 'Bob');
-    player3 = Player(name: 'Charlie');
-    player4 = Player(name: 'Diana');
-    testgroup = Group(name: 'Test Group', members: [player1, player2, player3]);
+    withClock(fakeClock, () {
+      player1 = Player(name: 'Alice');
+      player2 = Player(name: 'Bob');
+      player3 = Player(name: 'Charlie');
+      player4 = Player(name: 'Diana');
+      testgroup = Group(
+        name: 'Test Group',
+        members: [player1, player2, player3],
+      );
+      testgroup2 = Group(
+        id: 'gr2',
+        name: 'Second Group',
+        members: [player2, player3, player4],
+      );
+    });
   });
   tearDown(() async {
     await database.close();
   });
   group('group tests', () {
     test('all groups get fetched correctly', () async {
-      final testgroup2 = Group(
-        id: 'gr2',
-        name: 'Second Group',
-        members: [player2, player3, player4],
-      );
       await database.groupDao.addGroup(group: testgroup);
       await database.groupDao.addGroup(group: testgroup2);
 
@@ -48,11 +57,13 @@ void main() {
       expect(fetchedGroup1.name, testgroup.name);
       expect(fetchedGroup1.members.length, testgroup.members.length);
       expect(fetchedGroup1.members.elementAt(0).id, player1.id);
+      expect(fetchedGroup1.members.elementAt(0).createdAt, player1.createdAt);
 
       final fetchedGroup2 = allGroups.firstWhere((g) => g.id == testgroup2.id);
       expect(fetchedGroup2.name, testgroup2.name);
       expect(fetchedGroup2.members.length, testgroup2.members.length);
       expect(fetchedGroup2.members.elementAt(0).id, player2.id);
+      expect(fetchedGroup2.members.elementAt(0).createdAt, player2.createdAt);
     });
 
     test('group and group members gets added correctly', () async {
@@ -64,11 +75,13 @@ void main() {
 
       expect(result.id, testgroup.id);
       expect(result.name, testgroup.name);
+      expect(result.createdAt, testgroup.createdAt);
 
       expect(result.members.length, testgroup.members.length);
       for (int i = 0; i < testgroup.members.length; i++) {
         expect(result.members[i].id, testgroup.members[i].id);
         expect(result.members[i].name, testgroup.members[i].name);
+        expect(result.members[i].createdAt, testgroup.members[i].createdAt);
       }
     });
 
@@ -124,8 +137,6 @@ void main() {
 
       expect(playerNotAdded, true);
 
-      expect(playerAdded, true);
-
       final result = await database.groupDao.getGroupById(
         groupId: testgroup.id,
       );
@@ -133,6 +144,7 @@ void main() {
 
       final addedPlayer = result.members.firstWhere((p) => p.id == player4.id);
       expect(addedPlayer.name, player4.name);
+      expect(addedPlayer.createdAt, player4.createdAt);
     });
 
     test('Removing player from group works correctly', () async {

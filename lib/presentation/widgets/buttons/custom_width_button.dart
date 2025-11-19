@@ -26,11 +26,13 @@ class CustomWidthButton extends StatelessWidget {
 
     if (buttonType == ButtonType.primary) {
       textcolor = Colors.white;
-      disabledTextColor = Colors.white.withValues(alpha: 0.24);
+      disabledTextColor = Color.lerp(textcolor, Colors.black, 0.5)!;
       buttonBackgroundColor = CustomTheme.primaryColor;
-      disabledBackgroundColor = CustomTheme.primaryColor.withValues(
-        alpha: 0.24,
-      );
+      disabledBackgroundColor = Color.lerp(
+        buttonBackgroundColor,
+        Colors.black,
+        0.5,
+      )!;
 
       return ElevatedButton(
         onPressed: onPressed,
@@ -55,12 +57,12 @@ class CustomWidthButton extends StatelessWidget {
       );
     } else if (buttonType == ButtonType.secondary) {
       textcolor = CustomTheme.primaryColor;
-      disabledTextColor = CustomTheme.primaryColor.withValues(alpha: 0.5);
+      disabledTextColor = Color.lerp(textcolor, Colors.black, 0.5)!;
       buttonBackgroundColor = Colors.transparent;
       disabledBackgroundColor = Colors.transparent;
       borderSideColor = onPressed != null
           ? CustomTheme.primaryColor
-          : CustomTheme.primaryColor.withValues(alpha: 0.5);
+          : Color.lerp(CustomTheme.primaryColor, Colors.black, 0.5)!;
 
       return OutlinedButton(
         onPressed: onPressed,
@@ -86,7 +88,11 @@ class CustomWidthButton extends StatelessWidget {
       );
     } else {
       textcolor = CustomTheme.primaryColor;
-      disabledTextColor = CustomTheme.primaryColor.withValues(alpha: 0.3);
+      disabledTextColor = Color.lerp(
+        CustomTheme.primaryColor,
+        Colors.black,
+        0.5,
+      )!;
       buttonBackgroundColor = Colors.transparent;
       disabledBackgroundColor = Colors.transparent;
 
