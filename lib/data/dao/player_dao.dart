@@ -13,14 +13,22 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   Future<List<Player>> getAllPlayers() async {
     final query = select(playerTable);
     final result = await query.get();
-    return result.map((row) => Player(id: row.id, name: row.name)).toList();
+    return result
+        .map(
+          (row) => Player(id: row.id, name: row.name, createdAt: row.createdAt),
+        )
+        .toList();
   }
 
   /// Retrieves a [Player] by their [id].
   Future<Player> getPlayerById({required String playerId}) async {
     final query = select(playerTable)..where((p) => p.id.equals(playerId));
     final result = await query.getSingle();
-    return Player(id: result.id, name: result.name);
+    return Player(
+      id: result.id,
+      name: result.name,
+      createdAt: result.createdAt,
+    );
   }
 
   /// Adds a new [player] to the database.
@@ -28,9 +36,13 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   /// the new one.
   Future<bool> addPlayer({required Player player}) async {
     if (!await playerExists(playerId: player.id)) {
-      await into(
-        playerTable,
-      ).insert(PlayerTableCompanion.insert(id: player.id, name: player.name));
+      await into(playerTable).insert(
+        PlayerTableCompanion.insert(
+          id: player.id,
+          name: player.name,
+          createdAt: player.createdAt,
+        ),
+      );
       return true;
     }
     return false;
