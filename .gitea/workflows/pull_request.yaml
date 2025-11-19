@@ -18,13 +18,12 @@ jobs:
 
       - name: Install Flutter
         run: |
-          # Flutter SDK herunterladen und entpacken
           wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.35.6-stable.tar.xz
           tar xf flutter_linux_3.35.6-stable.tar.xz
-          # Flutter zum PATH hinzufügen
-          echo "$(pwd)/flutter/bin" >> /usr/local/bin
-          # Flutter Doctor ausführen (optional)
-          flutter doctor -v
+          # Flutter-Pfad zur PATH-Variable hinzufügen
+          echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
+          # Alternativ für Docker/act:
+          echo "PATH=$(pwd)/flutter/bin:$PATH" >> $GITHUB_ENV
 
       - name: Get dependencies
         run: flutter pub get
