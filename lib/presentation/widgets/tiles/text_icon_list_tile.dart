@@ -3,13 +3,13 @@ import 'package:game_tracker/core/custom_theme.dart';
 
 class TextIconListTile extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool iconEnabled;
 
   const TextIconListTile({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.iconEnabled = true,
   });
 
