@@ -29,7 +29,7 @@ jobs:
         run: ./flutter/bin/flutter pub get
 
       - name: Analyze Formatting
-        run: ./flutter/bin/flutter analyze lib test
+        run: flutter analyze lib test
 
   test:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
           echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
 
       - name: Get dependencies
-        run: ./flutter/bin/flutter pub get
+        run: flutter pub get
 
       - name: Run tests
-        run: ./flutter/bin/flutter test
+        run: flutter test
