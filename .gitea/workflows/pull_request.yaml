@@ -25,6 +25,12 @@ jobs:
           # Alternativ für Docker/act:
           echo "PATH=$(pwd)/flutter/bin:$PATH" >> $GITHUB_ENV
 
+      - name: Configure Git Safe Directory
+        run: |
+          git config --global --add safe.directory /workspace/liquid-development/game-tracker
+          git config --global --add safe.directory /workspace/liquid-development/game-tracker/flutter
+
+
       - name: Get dependencies
         run: flutter pub get
 
