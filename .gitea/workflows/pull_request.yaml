@@ -11,12 +11,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install jq
         run: |
           apt-get update
-          apt-get install -y jq git wget unzip xz-utils
+          apt-get install -y jq 
 
-      - name: Install Flutter (lokal)
+      - name: Install Flutter (wget)
         run: |
           wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.38.2-stable.tar.xz
           tar xf flutter_linux_3.38.2-stable.tar.xz
@@ -25,17 +25,11 @@ jobs:
           # Flutter-Pfad setzen
           echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
 
-      # - name: Configure Git Safe Directory (für Projekt)
-      #   run: |
-      #     git config --global --add safe.directory "$(pwd)"
-
       - name: Get dependencies
         run: ./flutter/bin/flutter pub get
 
-      - name: Check Formatting
+      - name: Analyze Formatting
         run: ./flutter/bin/flutter analyze lib test
-
-
 
   test:
     runs-on: ubuntu-latest
@@ -47,9 +41,9 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y jq git wget unzip xz-utils
+          apt-get install -y jq 
 
-      - name: Install Flutter (lokal)
+      - name: Install Flutter (wget)
         run: |
           wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.38.2-stable.tar.xz
           tar xf flutter_linux_3.38.2-stable.tar.xz
@@ -61,5 +55,5 @@ jobs:
       - name: Get dependencies
         run: ./flutter/bin/flutter pub get
 
-      - name: Check Formatting
+      - name: Run tests
         run: ./flutter/bin/flutter test
