@@ -51,7 +51,7 @@ class PlayerGroupDao extends DatabaseAccessor<AppDatabase>
     }
 
     if (await db.playerDao.playerExists(playerId: player.id) == false) {
-      db.playerDao.addPlayer(player: player);
+      await db.playerDao.addPlayer(player: player);
     }
 
     await into(playerGroupTable).insert(
