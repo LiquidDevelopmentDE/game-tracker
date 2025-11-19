@@ -60,6 +60,7 @@ jobs:
 
   format:
     runs-on: ubuntu-latest
+    if: false #
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -85,8 +86,8 @@ jobs:
 
       - name: Auto-format
         run: |
-          dart format .
-          dart fix --apply 
+          dart format lib test
+          dart fix --apply lib test
 
       - name: Commit Changes
         if: steps.check_changes.outputs.changes_detected == 'true'
