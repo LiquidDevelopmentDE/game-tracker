@@ -8,14 +8,14 @@ void main() {
   runApp(
     Provider<AppDatabase>(
       create: (context) => AppDatabase(),
-      child: const MyApp(),
+      child: const GameTracker(),
       dispose: (context, db) => db.close(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GameTracker extends StatelessWidget {
+  const GameTracker({super.key});
 
   @override
   Widget build(BuildContext context) {
