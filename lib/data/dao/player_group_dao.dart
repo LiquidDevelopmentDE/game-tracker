@@ -56,6 +56,7 @@ class PlayerGroupDao extends DatabaseAccessor<AppDatabase>
 
     await into(playerGroupTable).insert(
       PlayerGroupTableCompanion.insert(playerId: player.id, groupId: groupId),
+      mode: InsertMode.insertOrReplace,
     );
 
     return true;

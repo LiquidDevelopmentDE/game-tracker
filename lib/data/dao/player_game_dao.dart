@@ -46,6 +46,7 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
   }) async {
     await into(playerGameTable).insert(
       PlayerGameTableCompanion.insert(playerId: playerId, gameId: gameId),
+      mode: InsertMode.insertOrReplace,
     );
   }
 }
