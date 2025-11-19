@@ -13,6 +13,7 @@ void main() {
   late Player player3;
   late Player player4;
   late Group testgroup;
+  late Group testgroup2;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -34,6 +35,11 @@ void main() {
         name: 'Test Group',
         members: [player1, player2, player3],
       );
+      testgroup2 = Group(
+        id: 'gr2',
+        name: 'Second Group',
+        members: [player2, player3, player4],
+      );
     });
   });
   tearDown(() async {
@@ -41,53 +47,42 @@ void main() {
   });
   group('group tests', () {
     test('all groups get fetched correctly', () async {
-      await withClock(fakeClock, () async {
-        final testgroup2 = Group(
-          id: 'gr2',
-          name: 'Second Group',
-          members: [player2, player3, player4],
-        );
-        await database.groupDao.addGroup(group: testgroup);
-        await database.groupDao.addGroup(group: testgroup2);
+      await database.groupDao.addGroup(group: testgroup);
+      await database.groupDao.addGroup(group: testgroup2);
 
-        final allGroups = await database.groupDao.getAllGroups();
-        expect(allGroups.length, 2);
+      final allGroups = await database.groupDao.getAllGroups();
+      expect(allGroups.length, 2);
 
-        final fetchedGroup1 = allGroups.firstWhere((g) => g.id == testgroup.id);
-        expect(fetchedGroup1.name, testgroup.name);
-        expect(fetchedGroup1.members.length, testgroup.members.length);
-        expect(fetchedGroup1.members.elementAt(0).id, player1.id);
-        expect(fetchedGroup1.members.elementAt(0).createdAt, player1.createdAt);
+      final fetchedGroup1 = allGroups.firstWhere((g) => g.id == testgroup.id);
+      expect(fetchedGroup1.name, testgroup.name);
+      expect(fetchedGroup1.members.length, testgroup.members.length);
+      expect(fetchedGroup1.members.elementAt(0).id, player1.id);
+      expect(fetchedGroup1.members.elementAt(0).createdAt, player1.createdAt);
 
-        final fetchedGroup2 = allGroups.firstWhere(
-          (g) => g.id == testgroup2.id,
-        );
-        expect(fetchedGroup2.name, testgroup2.name);
-        expect(fetchedGroup2.members.length, testgroup2.members.length);
-        expect(fetchedGroup2.members.elementAt(0).id, player2.id);
-        expect(fetchedGroup2.members.elementAt(0).createdAt, player2.createdAt);
-      });
+      final fetchedGroup2 = allGroups.firstWhere((g) => g.id == testgroup2.id);
+      expect(fetchedGroup2.name, testgroup2.name);
+      expect(fetchedGroup2.members.length, testgroup2.members.length);
+      expect(fetchedGroup2.members.elementAt(0).id, player2.id);
+      expect(fetchedGroup2.members.elementAt(0).createdAt, player2.createdAt);
     });
 
     test('group and group members gets added correctly', () async {
-      await withClock(fakeClock, () async {
-        await database.groupDao.addGroup(group: testgroup);
+      await database.groupDao.addGroup(group: testgroup);
 
-        final result = await database.groupDao.getGroupById(
-          groupId: testgroup.id,
-        );
+      final result = await database.groupDao.getGroupById(
+        groupId: testgroup.id,
+      );
 
-        expect(result.id, testgroup.id);
-        expect(result.name, testgroup.name);
-        expect(result.createdAt, testgroup.createdAt);
+      expect(result.id, testgroup.id);
+      expect(result.name, testgroup.name);
+      expect(result.createdAt, testgroup.createdAt);
 
-        expect(result.members.length, testgroup.members.length);
-        for (int i = 0; i < testgroup.members.length; i++) {
-          expect(result.members[i].id, testgroup.members[i].id);
-          expect(result.members[i].name, testgroup.members[i].name);
-          expect(result.members[i].createdAt, testgroup.members[i].createdAt);
-        }
-      });
+      expect(result.members.length, testgroup.members.length);
+      for (int i = 0; i < testgroup.members.length; i++) {
+        expect(result.members[i].id, testgroup.members[i].id);
+        expect(result.members[i].name, testgroup.members[i].name);
+        expect(result.members[i].createdAt, testgroup.members[i].createdAt);
+      }
     });
 
     test('group gets deleted correctly', () async {

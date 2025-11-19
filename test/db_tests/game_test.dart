@@ -51,41 +51,36 @@ void main() {
 
   group('game tests', () {
     test('game is added correctly', () async {
-      await withClock(fakeClock, () async {
-        await database.gameDao.addGame(game: testgame);
+      await database.gameDao.addGame(game: testgame);
 
-        final result = await database.gameDao.getGameById(gameId: testgame.id);
+      final result = await database.gameDao.getGameById(gameId: testgame.id);
 
-        expect(result.id, testgame.id);
-        expect(result.name, testgame.name);
-        expect(result.winner, testgame.winner);
-        expect(result.createdAt, testgame.createdAt);
+      expect(result.id, testgame.id);
+      expect(result.name, testgame.name);
+      expect(result.winner, testgame.winner);
+      expect(result.createdAt, testgame.createdAt);
 
-        if (result.group != null) {
-          expect(result.group!.members.length, testgroup.members.length);
+      if (result.group != null) {
+        expect(result.group!.members.length, testgroup.members.length);
 
-          for (int i = 0; i < testgroup.members.length; i++) {
-            expect(result.group!.members[i].id, testgroup.members[i].id);
-            expect(result.group!.members[i].name, testgroup.members[i].name);
-          }
-        } else {
-          fail('Group is null');
+        for (int i = 0; i < testgroup.members.length; i++) {
+          expect(result.group!.members[i].id, testgroup.members[i].id);
+          expect(result.group!.members[i].name, testgroup.members[i].name);
         }
-        if (result.players != null) {
-          expect(result.players!.length, testgame.players!.length);
+      } else {
+        fail('Group is null');
+      }
+      if (result.players != null) {
+        expect(result.players!.length, testgame.players!.length);
 
-          for (int i = 0; i < testgame.players!.length; i++) {
-            expect(result.players![i].id, testgame.players![i].id);
-            expect(result.players![i].name, testgame.players![i].name);
-            expect(
-              result.players![i].createdAt,
-              testgame.players![i].createdAt,
-            );
-          }
-        } else {
-          fail('Players is null');
+        for (int i = 0; i < testgame.players!.length; i++) {
+          expect(result.players![i].id, testgame.players![i].id);
+          expect(result.players![i].name, testgame.players![i].name);
+          expect(result.players![i].createdAt, testgame.players![i].createdAt);
         }
-      });
+      } else {
+        fail('Players is null');
+      }
     });
 
     test('game is deleted correctly', () async {
