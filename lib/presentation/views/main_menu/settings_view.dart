@@ -80,7 +80,7 @@ class _SettingsViewState extends State<SettingsView> {
                           await DataTransferService.getAppDataAsJson(context);
                       final result = await DataTransferService.exportData(
                         json,
-                        'exported_data',
+                        'game_tracker-data',
                       );
                       if (!context.mounted) return;
                       showExportSnackBar(context: context, result: result);
