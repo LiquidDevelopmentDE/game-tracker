@@ -4,23 +4,13 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:provider/provider.dart';
-
-enum ImportResult {
-  success,
-  canceled,
-  fileReadError,
-  invalidSchema,
-  formatException,
-  unknownException,
-}
-
-enum ExportResult { success, canceled, unknownException }
 
 class DataTransferService {
   /// Deletes all data from the database.

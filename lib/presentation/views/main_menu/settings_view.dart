@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
 import 'package:json_schema/json_schema.dart';
