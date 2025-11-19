@@ -116,39 +116,35 @@ void main() {
     });
 
     test('Adding player to group works correctly', () async {
-      await withClock(fakeClock, () async {
-        await database.groupDao.addGroup(group: testgroup);
+      await database.groupDao.addGroup(group: testgroup);
 
-        await database.playerGroupDao.addPlayerToGroup(
-          player: player4,
-          groupId: testgroup.id,
-        );
+      await database.playerGroupDao.addPlayerToGroup(
+        player: player4,
+        groupId: testgroup.id,
+      );
 
-        final playerAdded = await database.playerGroupDao.isPlayerInGroup(
-          playerId: player4.id,
-          groupId: testgroup.id,
-        );
+      final playerAdded = await database.playerGroupDao.isPlayerInGroup(
+        playerId: player4.id,
+        groupId: testgroup.id,
+      );
 
-        expect(playerAdded, true);
+      expect(playerAdded, true);
 
-        final playerNotAdded = !await database.playerGroupDao.isPlayerInGroup(
-          playerId: '',
-          groupId: testgroup.id,
-        );
+      final playerNotAdded = !await database.playerGroupDao.isPlayerInGroup(
+        playerId: '',
+        groupId: testgroup.id,
+      );
 
-        expect(playerNotAdded, true);
+      expect(playerNotAdded, true);
 
-        final result = await database.groupDao.getGroupById(
-          groupId: testgroup.id,
-        );
-        expect(result.members.length, testgroup.members.length + 1);
+      final result = await database.groupDao.getGroupById(
+        groupId: testgroup.id,
+      );
+      expect(result.members.length, testgroup.members.length + 1);
 
-        final addedPlayer = result.members.firstWhere(
-          (p) => p.id == player4.id,
-        );
-        expect(addedPlayer.name, player4.name);
-        expect(addedPlayer.createdAt, player4.createdAt);
-      });
+      final addedPlayer = result.members.firstWhere((p) => p.id == player4.id);
+      expect(addedPlayer.name, player4.name);
+      expect(addedPlayer.createdAt, player4.createdAt);
     });
 
     test('Removing player from group works correctly', () async {
