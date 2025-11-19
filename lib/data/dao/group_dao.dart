@@ -57,6 +57,10 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
             name: group.name,
             createdAt: group.createdAt,
           ),
+          mode: InsertMode.insertOrReplace,
+        );
+        await Future.wait(
+          group.members.map((player) => db.playerDao.addPlayer(player: player)),
         );
         await db.batch(
           (b) => b.insertAll(
@@ -69,15 +73,55 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
                   ),
                 )
                 .toList(),
+            mode: InsertMode.insertOrReplace,
           ),
-        );
-        await Future.wait(
-          group.members.map((player) => db.playerDao.addPlayer(player: player)),
         );
       });
       return true;
     }
     return false;
+  }
+
+  /// Adds multiple groups to the database.
+  /// Also adds the group's members to the [PlayerGroupTable].
+  Future<void> addGroups({required List<Group> groups}) async {
+    if (groups.isEmpty) return;
+    await db.transaction(() async {
+      await db.batch(
+        (b) => b.insertAll(
+          groupTable,
+          groups
+              .map(
+                (group) => GroupTableCompanion.insert(
+                  id: group.id,
+                  name: group.name,
+                  createdAt: group.createdAt,
+                ),
+              )
+              .toList(),
+          mode: InsertMode.insertOrReplace,
+        ),
+      );
+
+      for (final group in groups) {
+        await db.playerDao.addPlayers(players: group.members);
+
+        await db.batch(
+          (b) => b.insertAll(
+            db.playerGroupTable,
+            group.members
+                .map(
+                  (member) => PlayerGroupTableCompanion.insert(
+                    playerId: member.id,
+                    groupId: group.id,
+                  ),
+                )
+                .toList(),
+            mode: InsertMode.insertOrReplace,
+          ),
+        );
+      }
+    });
   }
 
   /// Deletes the group with the given [id] from the database.
