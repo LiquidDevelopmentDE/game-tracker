@@ -86,7 +86,7 @@ jobs:
       - name: Auto-format
         run: |
           dart format .
-          dart fix --apply
+          dart fix --apply 
 
       - name: Commit Changes
         if: steps.check_changes.outputs.changes_detected == 'true'
