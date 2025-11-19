@@ -33,7 +33,7 @@ jobs:
         run: ./flutter/bin/flutter pub get
 
       - name: Check Formatting
-        run: ./flutter/bin/flutter analyze
+        run: ./flutter/bin/flutter analyze lib test
 
 
 
