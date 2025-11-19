@@ -16,14 +16,11 @@ jobs:
           apt-get update
           apt-get install -y jq
 
-      - name: Install Flutter
-        run: |
-          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.35.6-stable.tar.xz
-          tar xf flutter_linux_3.35.6-stable.tar.xz
-          # Flutter-Pfad zur PATH-Variable hinzufügen
-          echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
-          # Alternativ für Docker/act:
-          echo "PATH=$(pwd)/flutter/bin:$PATH" >> $GITHUB_ENV
+      - name: Set Up Flutter
+        uses: flutter-actions/setup-flutter@v2
+        with:
+          flutter-version: '3.35.6'
+          channel: 'stable'
 
       - name: Configure Git Safe Directory
         run: |
