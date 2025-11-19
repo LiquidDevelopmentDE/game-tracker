@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/presentation/widgets/double_row_info_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/double_row_info_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class GameHistoryView extends StatefulWidget {

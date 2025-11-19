@@ -3,7 +3,8 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/widgets/full_width_button.dart';
+import 'package:game_tracker/presentation/views/main_menu/create_group_view.dart';
+import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class GroupsView extends StatefulWidget {
 
 class _GroupsViewState extends State<GroupsView> {
   late Future<List<Group>> _allGroupsFuture;
+  late final AppDatabase db;
 
   final player = Player(name: 'Skeleton Player');
   late final List<Group> skeletonData = List.filled(
@@ -31,7 +33,7 @@ class _GroupsViewState extends State<GroupsView> {
   @override
   void initState() {
     super.initState();
-    final db = Provider.of<AppDatabase>(context, listen: false);
+    db = Provider.of<AppDatabase>(context, listen: false);
     _allGroupsFuture = db.groupDao.getAllGroups();
   }
 
@@ -102,7 +104,23 @@ class _GroupsViewState extends State<GroupsView> {
 
           Positioned(
             bottom: 80,
-            child: FullWidthButton(text: 'Create Group', onPressed: () {}),
+            child: CustomWidthButton(
+              text: 'Create Group',
+              sizeRelativeToWidth: 0.90,
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const CreateGroupView();
+                    },
+                  ),
+                );
+                setState(() {
+                  _allGroupsFuture = db.groupDao.getAllGroups();
+                });
+              },
+            ),
           ),
         ],
       ),
