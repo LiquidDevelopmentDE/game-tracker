@@ -112,6 +112,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                         bool success = await db.playerDao.addPlayer(
                           player: Player(name: playerName),
                         );
+                        if (!context.mounted) return;
                         if (success) {
                           loadPlayerList();
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -120,7 +121,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                               content: Center(
                                 child: Text(
                                   'Successfully added player $playerName.',
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -132,7 +133,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                             content: Center(
                               child: Text(
                                 'Could not add player $playerName.',
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           );

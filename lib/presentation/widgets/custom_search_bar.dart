@@ -42,7 +42,7 @@ class CustomSearchBar extends StatelessWidget {
                       : Colors.grey.withValues(alpha: 0.2),
                 ),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
             ]
           : null,
       backgroundColor: WidgetStateProperty.all(CustomTheme.boxColor),
