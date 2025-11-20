@@ -246,46 +246,48 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                       layoutBuilder:
                                           AnimatedSwitcher.defaultLayoutBuilder,
                                     ),
-                                child:
-                                    (suggestedPlayers.isEmpty &&
-                                        allPlayers.isNotEmpty)
-                                    ? TopCenteredMessage(
-                                        icon: Icons.info,
-                                        title: 'Info',
-                                        message:
-                                            (selectedPlayers.length ==
-                                                allPlayers.length)
-                                            ? 'No more players to add.'
-                                            : 'No players found with that name.',
-                                      )
-                                    : ListView.builder(
-                                        itemCount: suggestedPlayers.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                              return TextIconListTile(
-                                                text: suggestedPlayers[index]
-                                                    .name,
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (!selectedPlayers.contains(
-                                                      suggestedPlayers[index],
-                                                    )) {
-                                                      selectedPlayers.add(
-                                                        suggestedPlayers[index],
-                                                      );
-                                                      selectedPlayers.sort(
-                                                        (a, b) => a.name
-                                                            .compareTo(b.name),
-                                                      );
-                                                      suggestedPlayers.remove(
-                                                        suggestedPlayers[index],
-                                                      );
-                                                    }
-                                                  });
-                                                },
-                                              );
+                                child: Visibility(
+                                  visible:
+                                      (suggestedPlayers.isEmpty &&
+                                      allPlayers.isNotEmpty),
+                                  replacement: ListView.builder(
+                                    itemCount: suggestedPlayers.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                          return TextIconListTile(
+                                            text: suggestedPlayers[index].name,
+                                            onPressed: () {
+                                              setState(() {
+                                                if (!selectedPlayers.contains(
+                                                  suggestedPlayers[index],
+                                                )) {
+                                                  selectedPlayers.add(
+                                                    suggestedPlayers[index],
+                                                  );
+                                                  selectedPlayers.sort(
+                                                    (a, b) => a.name.compareTo(
+                                                      b.name,
+                                                    ),
+                                                  );
+                                                  suggestedPlayers.remove(
+                                                    suggestedPlayers[index],
+                                                  );
+                                                }
+                                              });
                                             },
-                                      ),
+                                          );
+                                        },
+                                  ),
+                                  child: TopCenteredMessage(
+                                    icon: Icons.info,
+                                    title: 'Info',
+                                    message:
+                                        (selectedPlayers.length ==
+                                            allPlayers.length)
+                                        ? 'No more players to add.'
+                                        : 'No players found with that name.',
+                                  ),
+                                ),
                               ),
                             );
                           },
