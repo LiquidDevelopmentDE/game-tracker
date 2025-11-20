@@ -123,10 +123,10 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           .isNotEmpty,
                       onTrailingButtonPressed: () async {
                         addNewPlayerFromSearch(
-                          context,
-                          _searchBarController,
-                          db,
-                          loadPlayerList,
+                          context: context,
+                          searchBarController: _searchBarController,
+                          db: db,
+                          loadPlayerList: loadPlayerList,
                         );
                       },
                       onChanged: (value) {
@@ -338,12 +338,18 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   }
 }
 
-void addNewPlayerFromSearch(
-  context,
-  searchBarController,
-  db,
-  loadPlayerList,
-) async {
+/// Adds a new player to the database from the search bar input.
+/// Shows a snackbar indicating success or failure.
+/// [context] - BuildContext to show the snackbar.
+/// [searchBarController] - TextEditingController of the search bar.
+/// [db] - AppDatabase instance to interact with the database.
+/// [loadPlayerList] - Function to reload the player list after adding.
+void addNewPlayerFromSearch({
+  required BuildContext context,
+  required TextEditingController searchBarController,
+  required AppDatabase db,
+  required Function loadPlayerList,
+}) async {
   String playerName = searchBarController.text.trim();
   bool success = await db.playerDao.addPlayer(player: Player(name: playerName));
   if (!context.mounted) return;
