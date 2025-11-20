@@ -37,7 +37,21 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
+    _searchBarController.addListener(() {
+      setState(() {});
+    });
+    _groupNameController.addListener(() {
+      setState(() {});
+    });
     loadPlayerList();
+  }
+
+  @override
+  void dispose() {
+    _groupNameController.dispose();
+    _searchBarController
+        .dispose(); // Listener entfernen und Controller aufräumen
+    super.dispose();
   }
 
   void loadPlayerList() {
@@ -104,40 +118,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       ),
                       hintText: 'Search for players',
                       trailingButtonShown: true,
-                      trailingButtonEnabled:
-                          _searchBarController.text.isNotEmpty,
+                      trailingButtonEnabled: _searchBarController.text
+                          .trim()
+                          .isNotEmpty,
                       onTrailingButtonPressed: () async {
-                        String playerName = _searchBarController.text.trim();
-                        if (playerName.isEmpty) return;
-                        bool success = await db.playerDao.addPlayer(
-                          player: Player(name: playerName),
+                        addNewPlayerFromSearch(
+                          context,
+                          _searchBarController,
+                          db,
+                          loadPlayerList,
                         );
-                        if (!context.mounted) return;
-                        if (success) {
-                          loadPlayerList();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: CustomTheme.boxColor,
-                              content: Center(
-                                child: Text(
-                                  'Successfully added player $playerName.',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          );
-                          _searchBarController.clear();
-                        } else {
-                          SnackBar(
-                            backgroundColor: CustomTheme.boxColor,
-                            content: Center(
-                              child: Text(
-                                'Could not add player $playerName.',
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          );
-                        }
                       },
                       onChanged: (value) {
                         setState(() {
@@ -342,6 +332,44 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             ),
             const SizedBox(height: 20),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+void addNewPlayerFromSearch(
+  context,
+  searchBarController,
+  db,
+  loadPlayerList,
+) async {
+  String playerName = searchBarController.text.trim();
+  bool success = await db.playerDao.addPlayer(player: Player(name: playerName));
+  if (!context.mounted) return;
+  if (success) {
+    loadPlayerList();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: CustomTheme.boxColor,
+        content: Center(
+          child: Text(
+            'Successfully added player $playerName.',
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+    searchBarController.clear();
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: CustomTheme.boxColor,
+        content: Center(
+          child: Text(
+            'Could not add player $playerName.',
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );

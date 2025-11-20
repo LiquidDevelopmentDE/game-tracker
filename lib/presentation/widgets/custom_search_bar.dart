@@ -28,23 +28,24 @@ class CustomSearchBar extends StatelessWidget {
       constraints:
           constraints ?? const BoxConstraints(maxHeight: 45, minHeight: 45),
       hintText: hintText,
-      onChanged: onChanged,
+      onChanged: trailingButtonEnabled ? onChanged : null,
       hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 16)),
       leading: const Icon(Icons.search),
-      trailing: trailingButtonShown
-          ? [
-              GestureDetector(
-                onTap: onTrailingButtonPressed,
-                child: Icon(
-                  Icons.add_circle,
-                  color: trailingButtonEnabled
-                      ? null
-                      : Colors.grey.withValues(alpha: 0.2),
-                ),
-              ),
-              const SizedBox(width: 5),
-            ]
-          : null,
+      trailing: [
+        Visibility(
+          visible: trailingButtonShown,
+          child: GestureDetector(
+            onTap: onTrailingButtonPressed,
+            child: Icon(
+              Icons.add_circle,
+              color: trailingButtonEnabled
+                  ? null
+                  : Colors.grey.withValues(alpha: 0.2),
+            ),
+          ),
+        ),
+        const SizedBox(width: 5),
+      ],
       backgroundColor: WidgetStateProperty.all(CustomTheme.boxColor),
       side: WidgetStateProperty.all(BorderSide(color: CustomTheme.boxBorder)),
       shape: WidgetStateProperty.all(
