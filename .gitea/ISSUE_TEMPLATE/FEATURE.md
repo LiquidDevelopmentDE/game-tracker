@@ -1,22 +1,19 @@
 ---
 name: Feature
-about: New feature for the app
+about: Neues Feature für die App
 title: ''
 labels: 'Task\Feature'
 assignees: ''
 
 ---
 
-# 🚀 Feature  
+# Feature  
 
-## Description
-[Detailed explanation of the proposed feature]  
+## Beschreibung
+[Ausführliche Erläuterung der vorgeschlagenen Funktion]  
 
-## Why is this feature needed?
-[Explain the problem or use case this feature would solve]  
+## Vorgeschlagene Lösung
+[Beschreibe, wie die Feature funktionieren soll]  
 
-## Proposed Solution
-[Describe how the feature should work]  
-
-## Related Issues (Optional)
-[Links to related discussions or requests]
+## Zugehörige Issues
+[Links zu verwandten oder blockierenden Issues]

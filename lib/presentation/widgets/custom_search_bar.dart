@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:game_tracker/core/custom_theme.dart';
+
+class CustomSearchBar extends StatelessWidget {
+  final TextEditingController controller;
+  final String hintText;
+  final ValueChanged<String>? onChanged;
+  final BoxConstraints? constraints;
+
+  const CustomSearchBar({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.onChanged,
+    this.constraints,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SearchBar(
+      controller: controller,
+      constraints:
+          constraints ?? const BoxConstraints(maxHeight: 45, minHeight: 45),
+      hintText: hintText,
+      onChanged: onChanged,
+      hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 16)),
+      leading: const Icon(Icons.search),
+      backgroundColor: WidgetStateProperty.all(CustomTheme.boxColor),
+      side: WidgetStateProperty.all(BorderSide(color: CustomTheme.boxBorder)),
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      elevation: WidgetStateProperty.all(0),
+    );
+  }
+}

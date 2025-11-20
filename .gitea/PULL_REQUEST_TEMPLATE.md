@@ -1,16 +1,16 @@
-# [PR Title]
+# [PR Titel]
 
-**Related Issue(s):**  
+**Zugehörige Issue(s):**  
 Closes `<issue-no>`
 
-## Description  
-*A clear and concise overview of the changes made. Explain the "why" behind the PR, not just the "what".*  
+## Beschreibung  
+*Eine klare und prägnante Übersicht über die vorgenommenen Änderungen. Erläutere nicht nur das was gemacht wurde, sondern auch warum.*
 
-## Changes Made  
-- [ ] Added new feature X  
-- [ ] Fixed bug in component Y  
-- [ ] Refactored module Z for better performance  
-- [ ] Updated dependencies
+## Änderungen  
+- [ ] Neue Funktion X hinzugefügt
+- [ ] Bug in Komponente Y behoben
+- [ ] Modul Z für bessere Leistung refactored
+- [ ] Dependencies aktualisiert
 
-## Additional Notes  
-*Any extra context, limitations, or decisions that reviewers should know about?*  
+## Zusätzliche Anmerkungen  
+*Gibt es zusätzlichen Kontext, Einschränkungen oder Informationen, die Reviewer wissen sollten?*  

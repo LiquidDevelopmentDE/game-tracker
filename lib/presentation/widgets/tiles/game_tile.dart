@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class GameTile extends StatefulWidget {
   final String gameTitle;
@@ -48,9 +49,11 @@ class _GameTileState extends State<GameTile> {
             borderRadius: BorderRadius.circular(4),
             color: CustomTheme.primaryColor,
           ),
-          child: Text(
-            widget.ruleset,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          child: Skeleton.ignore(
+            child: Text(
+              widget.ruleset,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         Center(
@@ -68,19 +71,21 @@ class _GameTileState extends State<GameTile> {
               borderRadius: BorderRadius.circular(4),
               color: Colors.yellow.shade300,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.emoji_events, color: Colors.black, size: 20),
-                Text(
-                  widget.winner,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+            child: Skeleton.ignore(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.emoji_events, color: Colors.black, size: 20),
+                  Text(
+                    widget.winner,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

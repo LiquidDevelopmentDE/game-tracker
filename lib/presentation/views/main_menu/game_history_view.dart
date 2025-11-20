@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/presentation/widgets/tiles/double_row_info_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
-import 'package:game_tracker/presentation/widgets/double_row_info_tile.dart';
 
 class GameHistoryView extends StatefulWidget {
   const GameHistoryView({super.key});
@@ -134,16 +134,16 @@ class _GameHistoryViewState extends State<GameHistoryView> {
         children: [
           Column(
             children: [
-              Container(margin: EdgeInsets.only(bottom: 75)),
+              Container(margin: const EdgeInsets.only(bottom: 75)),
               Expanded(
                 child: gameHistoryListView(allGameData, suggestedGameData),
               ),
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+            margin: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
             child: SearchBar(
-              leading: Icon(Icons.search),
+              leading: const Icon(Icons.search),
               onChanged: (value) {
                 if (value.isEmpty) {
                   setState(() {
@@ -178,18 +178,26 @@ class _GameHistoryViewState extends State<GameHistoryView> {
 
 Widget gameHistoryListView(allGameData, suggestedGameData) {
   if (suggestedGameData.isEmpty && allGameData.isEmpty) {
-    return TopCenteredMessage("Keine Spiele erstellt");
+    return const TopCenteredMessage(
+      icon: Icons.info,
+      title: 'Info',
+      message: 'Keine Spiele erstellt',
+    );
   } else if (suggestedGameData.isEmpty) {
-    return TopCenteredMessage("Kein Spiel mit den Suchparametern gefunden.");
+    return const TopCenteredMessage(
+      icon: Icons.search,
+      title: 'Info',
+      message: 'Kein Spiel mit den Suchparametern gefunden.',
+    );
   }
   return ListView.builder(
     itemCount: suggestedGameData.length,
     itemBuilder: (context, index) {
       final currentGame = suggestedGameData[index];
       return doubleRowInfoTile(
-        currentGame['game'] + ": ",
+        currentGame['game'] + ': ',
         currentGame['title'],
-        currentGame['players'].toString() + " Spieler",
+        "${currentGame['players']} Spieler",
         currentGame['group'],
         currentGame['date'],
       );

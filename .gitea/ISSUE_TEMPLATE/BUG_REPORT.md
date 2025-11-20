@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report for something does not work as it should
+about: Erstelle eine Meldung für etwas, das nicht Funktioniert, wie es soll.
 title: ''
 labels: 'Task/Bug'
 assignees: ''
@@ -9,28 +9,27 @@ assignees: ''
 
 # Bug Report  
 
-## Description
-[A clear and concise description of the bug]  
+## Beschreibung
+[Eine klare und prägnante Beschreibung des Bugs]  
 
-## Steps to Reproduce
-1. Step 1  
-2. Step 2  
+## Schritte zur Reproduktion
+1. Schritt 1  
+2. Schritt 2  
 3. ...  
 
-## Expected Behavior
-[What should have happened]  
+## Erwartetes Verhalten
+[Was hätte passieren sollen]  
 
-## Actual Behavior
-[What actually happened]  
+## Tatsächliches Verhalten
+[Was tatsächlich passiert ist]   
 
-## Screenshots/Logs
-[If applicable, add screenshots, error logs, or stack traces]  
+## Screenshots/Protokolle
+[Falls zutreffend, füge Screenshots, Error Logs oder Stack Traces hinzu]   
 
-## Environment
-- OS: [e.g., iOS 18.5, Android 14]  
+## Umgebung
+- Plattform: Android, iOS, Web
+- OS: [z. B. iOS 18.5, Android 14]  
+- Flutter Version: [z.B. 3.35.6]
 
-## Possible Fix (Optional)
-[Any suggestions on how to resolve the issue]  
-
-## Related Issues (Optional)
-[Reference similar issues or PRs]
+## Verwandte Issues
+[Verweisen Sie auf ähnliche Issues oder PRs]
