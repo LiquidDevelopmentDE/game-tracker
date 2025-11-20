@@ -16,7 +16,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
     final result = await query.get();
     return Future.wait(
       result.map((groupData) async {
-        final members = await db.playerGroupDao.getPlayersOfGroupById(
+        final members = await db.playerGroupDao.getPlayersOfGroup(
           groupId: groupData.id,
         );
         return Group(
@@ -34,7 +34,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
     final query = select(groupTable)..where((g) => g.id.equals(groupId));
     final result = await query.getSingle();
 
-    List<Player> members = await db.playerGroupDao.getPlayersOfGroupById(
+    List<Player> members = await db.playerGroupDao.getPlayersOfGroup(
       groupId: groupId,
     );
 

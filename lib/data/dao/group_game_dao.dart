@@ -21,7 +21,7 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
 
   /// Retrieves the [Group] associated with the given [gameId].
   /// Returns `null` if no group is found.
-  Future<Group?> getGroupByGameId({required String gameId}) async {
+  Future<Group?> getGroupOfGame({required String gameId}) async {
     final result = await (select(
       groupGameTable,
     )..where((g) => g.gameId.equals(gameId))).getSingleOrNull();
