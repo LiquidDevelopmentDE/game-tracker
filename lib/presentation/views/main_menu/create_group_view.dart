@@ -37,6 +37,10 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
+    loadPlayerList();
+  }
+
+  void loadPlayerList() {
     _allPlayersFuture = db.playerDao.getAllPlayers();
     _allPlayersFuture.then((loadedPlayers) {
       setState(() {
@@ -99,6 +103,41 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                         minHeight: 45,
                       ),
                       hintText: 'Search for players',
+                      trailingButtonShown: true,
+                      trailingButtonEnabled:
+                          _searchBarController.text.isNotEmpty,
+                      onTrailingButtonPressed: () async {
+                        String playerName = _searchBarController.text;
+                        if (playerName.isEmpty) return;
+                        bool success = await db.playerDao.addPlayer(
+                          player: Player(name: playerName),
+                        );
+                        if (success) {
+                          loadPlayerList();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: CustomTheme.boxColor,
+                              content: Center(
+                                child: Text(
+                                  'Successfully added player $playerName.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          );
+                          _searchBarController.clear();
+                        } else {
+                          SnackBar(
+                            backgroundColor: CustomTheme.boxColor,
+                            content: Center(
+                              child: Text(
+                                'Could not add player $playerName.',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
