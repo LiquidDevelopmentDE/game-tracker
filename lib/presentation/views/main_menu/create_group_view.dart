@@ -107,7 +107,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       trailingButtonEnabled:
                           _searchBarController.text.isNotEmpty,
                       onTrailingButtonPressed: () async {
-                        String playerName = _searchBarController.text;
+                        String playerName = _searchBarController.text.trim();
                         if (playerName.isEmpty) return;
                         bool success = await db.playerDao.addPlayer(
                           player: Player(name: playerName),
@@ -314,7 +314,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   : () async {
                       bool success = await db.groupDao.addGroup(
                         group: Group(
-                          name: _groupNameController.text,
+                          name: _groupNameController.text.trim(),
                           members: selectedPlayers,
                         ),
                       );
