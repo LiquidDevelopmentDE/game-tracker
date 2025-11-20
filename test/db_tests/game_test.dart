@@ -15,7 +15,9 @@ void main() {
   late Player player4;
   late Player player5;
   late Group testgroup;
+  late Group testgroup2;
   late Game testgame;
+  late Game testgame2;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -38,10 +40,19 @@ void main() {
         name: 'Test Group',
         members: [player1, player2, player3],
       );
+      testgroup2 = Group(
+        name: 'Test Group',
+        members: [player1, player2, player3],
+      );
       testgame = Game(
         name: 'Test Game',
         group: testgroup,
         players: [player4, player5],
+      );
+      testgame2 = Game(
+        name: 'Second Test Game',
+        group: testgroup2,
+        players: [player1, player2, player3],
       );
     });
   });
@@ -49,8 +60,8 @@ void main() {
     await database.close();
   });
 
-  group('game tests', () {
-    test('game is added correctly', () async {
+  group('Game Tests', () {
+    test('Adding and fetching single game works correclty', () async {
       await database.gameDao.addGame(game: testgame);
 
       final result = await database.gameDao.getGameById(gameId: testgame.id);
@@ -83,7 +94,116 @@ void main() {
       }
     });
 
-    test('game is deleted correctly', () async {
+    // TODO: Use upcoming addGames() method
+    test('Adding and fetching multiple games works correclty', () async {
+      await database.gameDao.addGame(game: testgame);
+      await database.gameDao.addGame(game: testgame2);
+
+      final allGames = await database.gameDao.getAllGames();
+      expect(allGames.length, 2);
+
+      final fetchedGame1 = allGames.firstWhere((g) => g.id == testgame.id);
+      // game checks
+      expect(fetchedGame1.id, testgame.id);
+      expect(fetchedGame1.name, testgame.name);
+      expect(fetchedGame1.createdAt, testgame.createdAt);
+      expect(fetchedGame1.winner, testgame.winner);
+
+      // group checks
+      expect(fetchedGame1.group!.id, testgame.group!.id);
+      expect(fetchedGame1.group!.name, testgame.group!.name);
+      expect(fetchedGame1.group!.createdAt, testgame.group!.createdAt);
+      // group members checks
+      expect(
+        fetchedGame1.group!.members.length,
+        testgame.group!.members.length,
+      );
+      for (int i = 0; i < testgame.group!.members.length; i++) {
+        expect(
+          fetchedGame1.group!.members[i].id,
+          testgame.group!.members[i].id,
+        );
+        expect(
+          fetchedGame1.group!.members[i].name,
+          testgame.group!.members[i].name,
+        );
+        expect(
+          fetchedGame1.group!.members[i].createdAt,
+          testgame.group!.members[i].createdAt,
+        );
+      }
+
+      // players checks
+      for (int i = 0; i < fetchedGame1.players!.length; i++) {
+        expect(fetchedGame1.players![i].id, testgame.players![i].id);
+        expect(fetchedGame1.players![i].name, testgame.players![i].name);
+        expect(
+          fetchedGame1.players![i].createdAt,
+          testgame.players![i].createdAt,
+        );
+      }
+
+      final fetchedGame2 = allGames.firstWhere((g) => g.id == testgame2.id);
+      // game checks
+      expect(fetchedGame2.id, testgame2.id);
+      expect(fetchedGame2.name, testgame2.name);
+      expect(fetchedGame2.createdAt, testgame2.createdAt);
+      expect(fetchedGame2.winner, testgame2.winner);
+
+      // group checks
+      expect(fetchedGame2.group!.id, testgame2.group!.id);
+      expect(fetchedGame2.group!.name, testgame2.group!.name);
+      expect(fetchedGame2.group!.createdAt, testgame2.group!.createdAt);
+      // group members checks
+      expect(
+        fetchedGame2.group!.members.length,
+        testgame2.group!.members.length,
+      );
+      for (int i = 0; i < testgame2.group!.members.length; i++) {
+        expect(
+          fetchedGame2.group!.members[i].id,
+          testgame2.group!.members[i].id,
+        );
+        expect(
+          fetchedGame2.group!.members[i].name,
+          testgame2.group!.members[i].name,
+        );
+        expect(
+          fetchedGame2.group!.members[i].createdAt,
+          testgame2.group!.members[i].createdAt,
+        );
+      }
+
+      // players checks
+      for (int i = 0; i < fetchedGame2.players!.length; i++) {
+        expect(fetchedGame2.players![i].id, testgame2.players![i].id);
+        expect(fetchedGame2.players![i].name, testgame2.players![i].name);
+        expect(
+          fetchedGame2.players![i].createdAt,
+          testgame2.players![i].createdAt,
+        );
+      }
+    });
+
+    test('Adding the same game twice does not create duplicates', () async {
+      await database.gameDao.addGame(game: testgame);
+      await database.gameDao.addGame(game: testgame);
+
+      final gameCount = await database.gameDao.getGameCount();
+      expect(gameCount, 1);
+    });
+
+    test('Game existence check works correctly', () async {
+      var gameExists = await database.gameDao.gameExists(gameId: testgame.id);
+      expect(gameExists, false);
+
+      await database.gameDao.addGame(game: testgame);
+
+      gameExists = await database.gameDao.gameExists(gameId: testgame.id);
+      expect(gameExists, true);
+    });
+
+    test('Deleting a game works correclty', () async {
       await database.gameDao.addGame(game: testgame);
 
       final gameDeleted = await database.gameDao.deleteGame(
@@ -95,22 +215,35 @@ void main() {
       expect(gameExists, false);
     });
 
-    test('get game count works correctly', () async {
-      final initialCount = await database.gameDao.getGameCount();
-      expect(initialCount, 0);
+    test('Getting the game count works correctly', () async {
+      var gameCount = await database.gameDao.getGameCount();
+      expect(gameCount, 0);
 
       await database.gameDao.addGame(game: testgame);
 
-      final gameAdded = await database.gameDao.getGameCount();
-      expect(gameAdded, 1);
+      gameCount = await database.gameDao.getGameCount();
+      expect(gameCount, 1);
 
-      final gameRemoved = await database.gameDao.deleteGame(
-        gameId: testgame.id,
-      );
-      expect(gameRemoved, true);
+      await database.gameDao.addGame(game: testgame2);
 
-      final finalCount = await database.gameDao.getGameCount();
-      expect(finalCount, 0);
+      gameCount = await database.gameDao.getGameCount();
+      expect(gameCount, 2);
+
+      await database.gameDao.deleteGame(gameId: testgame.id);
+
+      gameCount = await database.gameDao.getGameCount();
+      expect(gameCount, 1);
+
+      await database.gameDao.deleteGame(gameId: testgame2.id);
+
+      gameCount = await database.gameDao.getGameCount();
+      expect(gameCount, 0);
     });
+
+    // TODO: Implement
+    test('Adding a player to a game works correclty', () async {});
+
+    // TODO: Implement
+    test('Adding a group to a game works correclty', () async {});
   });
 }
