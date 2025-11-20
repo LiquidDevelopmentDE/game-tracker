@@ -42,6 +42,6 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
   Future<void> addGroupToGame(String gameId, String groupId) async {
     await into(
       groupGameTable,
-    ).insert(GroupGameTableCompanion.insert(groupId: groupId, gameId: gameId));
+    ).insert(GroupGameTableCompanion.insert(groupId: groupId, gameId: gameId), mode:  InsertMode.insertOrReplace);
   }
 }
