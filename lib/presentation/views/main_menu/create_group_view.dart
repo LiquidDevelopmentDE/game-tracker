@@ -118,6 +118,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       ),
                       hintText: 'Search for players',
                       trailingButtonShown: true,
+                      trailingButtonicon: Icons.add_circle,
                       trailingButtonEnabled: _searchBarController.text
                           .trim()
                           .isNotEmpty,

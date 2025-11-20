@@ -6,15 +6,17 @@ class CustomSearchBar extends StatelessWidget {
   final String hintText;
   final ValueChanged<String>? onChanged;
   final BoxConstraints? constraints;
-  final bool trailingButtonEnabled;
   final bool trailingButtonShown;
+  final bool trailingButtonEnabled;
   final VoidCallback? onTrailingButtonPressed;
+  final IconData trailingButtonicon;
 
   const CustomSearchBar({
     super.key,
     required this.controller,
     required this.hintText,
     this.trailingButtonShown = false,
+    this.trailingButtonicon = Icons.clear,
     this.trailingButtonEnabled = true,
     this.onTrailingButtonPressed,
     this.onChanged,
@@ -37,7 +39,7 @@ class CustomSearchBar extends StatelessWidget {
           child: GestureDetector(
             onTap: trailingButtonEnabled ? onTrailingButtonPressed : null,
             child: Icon(
-              Icons.add_circle,
+              trailingButtonicon,
               color: trailingButtonEnabled
                   ? null
                   : Colors.grey.withValues(alpha: 0.2),
