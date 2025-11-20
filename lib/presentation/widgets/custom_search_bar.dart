@@ -35,7 +35,7 @@ class CustomSearchBar extends StatelessWidget {
         Visibility(
           visible: trailingButtonShown,
           child: GestureDetector(
-            onTap: onTrailingButtonPressed,
+            onTap: trailingButtonEnabled ? onTrailingButtonPressed : null,
             child: Icon(
               Icons.add_circle,
               color: trailingButtonEnabled
