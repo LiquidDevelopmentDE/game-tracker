@@ -14,10 +14,12 @@ void main() {
   late Player player3;
   late Player player4;
   late Player player5;
+  late Player player6;
   late Group testgroup;
   late Group testgroup2;
   late Game testgame;
   late Game testgame2;
+  late Game testgame3;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -36,6 +38,7 @@ void main() {
       player3 = Player(name: 'Charlie');
       player4 = Player(name: 'Diana');
       player5 = Player(name: 'Eve');
+      player6 = Player(name: 'Frank');
       testgroup = Group(
         name: 'Test Group',
         members: [player1, player2, player3],
@@ -54,6 +57,7 @@ void main() {
         group: testgroup2,
         players: [player1, player2, player3],
       );
+      testgame3 = Game(name: 'Third Test Game', players: [player4, player5]);
     });
   });
   tearDown(() async {
@@ -240,10 +244,57 @@ void main() {
       expect(gameCount, 0);
     });
 
-    // TODO: Implement
-    test('Adding a player to a game works correclty', () async {});
+    test(
+      'Adding and removing player to and from a game works correclty',
+      () async {
+        database.gameDao.addGame(game: testgame);
+        database.playerDao.addPlayer(player: player6);
+        database.playerGameDao.addPlayerToGame(
+          gameId: testgame.id,
+          playerId: player6.id,
+        );
 
-    // TODO: Implement
-    test('Adding a group to a game works correclty', () async {});
+        var playerInGame = await database.playerGameDao.isPlayerInGame(
+          gameId: testgame.id,
+          playerId: player6.id,
+        );
+
+        expect(playerInGame, true);
+
+        final playerRemoved = await database.playerGameDao.removePlayerFromGame(
+          gameId: testgame.id,
+          playerId: player6.id,
+        );
+
+        expect(playerRemoved, true);
+
+        playerInGame = await database.playerGameDao.isPlayerInGame(
+          gameId: testgame.id,
+          playerId: player6.id,
+        );
+        expect(playerInGame, false);
+      },
+    );
+
+    test(
+      'Adding and removing a group to and from a game works correclty',
+      () async {
+        database.gameDao.addGame(game: testgame3);
+        database.groupDao.addGroup(group: testgroup);
+        database.groupGameDao.addGroupToGame(testgame3.id, testgroup.id);
+        var gameHasGroup = await database.groupGameDao.gameHasGroup(
+          gameId: testgame3.id,
+        );
+        expect(gameHasGroup, true);
+        final groupRemoved = await database.groupGameDao.removeGroupFromGame(
+          gameId: testgame3.id,
+        );
+        expect(groupRemoved, true);
+        gameHasGroup = await database.groupGameDao.gameHasGroup(
+          gameId: testgame3.id,
+        );
+        expect(gameHasGroup, false);
+      },
+    );
   });
 }
