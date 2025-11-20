@@ -37,6 +37,24 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
+    _searchBarController.addListener(() {
+      setState(() {});
+    });
+    _groupNameController.addListener(() {
+      setState(() {});
+    });
+    loadPlayerList();
+  }
+
+  @override
+  void dispose() {
+    _groupNameController.dispose();
+    _searchBarController
+        .dispose(); // Listener entfernen und Controller aufräumen
+    super.dispose();
+  }
+
+  void loadPlayerList() {
     _allPlayersFuture = db.playerDao.getAllPlayers();
     _allPlayersFuture.then((loadedPlayers) {
       setState(() {
@@ -99,6 +117,19 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                         minHeight: 45,
                       ),
                       hintText: 'Search for players',
+                      trailingButtonShown: true,
+                      trailingButtonicon: Icons.add_circle,
+                      trailingButtonEnabled: _searchBarController.text
+                          .trim()
+                          .isNotEmpty,
+                      onTrailingButtonPressed: () async {
+                        addNewPlayerFromSearch(
+                          context: context,
+                          searchBarController: _searchBarController,
+                          db: db,
+                          loadPlayerList: loadPlayerList,
+                        );
+                      },
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
@@ -216,46 +247,48 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                       layoutBuilder:
                                           AnimatedSwitcher.defaultLayoutBuilder,
                                     ),
-                                child:
-                                    (suggestedPlayers.isEmpty &&
-                                        allPlayers.isNotEmpty)
-                                    ? TopCenteredMessage(
-                                        icon: Icons.info,
-                                        title: 'Info',
-                                        message:
-                                            (selectedPlayers.length ==
-                                                allPlayers.length)
-                                            ? 'No more players to add.'
-                                            : 'No players found with that name.',
-                                      )
-                                    : ListView.builder(
-                                        itemCount: suggestedPlayers.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                              return TextIconListTile(
-                                                text: suggestedPlayers[index]
-                                                    .name,
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (!selectedPlayers.contains(
-                                                      suggestedPlayers[index],
-                                                    )) {
-                                                      selectedPlayers.add(
-                                                        suggestedPlayers[index],
-                                                      );
-                                                      selectedPlayers.sort(
-                                                        (a, b) => a.name
-                                                            .compareTo(b.name),
-                                                      );
-                                                      suggestedPlayers.remove(
-                                                        suggestedPlayers[index],
-                                                      );
-                                                    }
-                                                  });
-                                                },
-                                              );
+                                child: Visibility(
+                                  visible:
+                                      (suggestedPlayers.isEmpty &&
+                                      allPlayers.isNotEmpty),
+                                  replacement: ListView.builder(
+                                    itemCount: suggestedPlayers.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                          return TextIconListTile(
+                                            text: suggestedPlayers[index].name,
+                                            onPressed: () {
+                                              setState(() {
+                                                if (!selectedPlayers.contains(
+                                                  suggestedPlayers[index],
+                                                )) {
+                                                  selectedPlayers.add(
+                                                    suggestedPlayers[index],
+                                                  );
+                                                  selectedPlayers.sort(
+                                                    (a, b) => a.name.compareTo(
+                                                      b.name,
+                                                    ),
+                                                  );
+                                                  suggestedPlayers.remove(
+                                                    suggestedPlayers[index],
+                                                  );
+                                                }
+                                              });
                                             },
-                                      ),
+                                          );
+                                        },
+                                  ),
+                                  child: TopCenteredMessage(
+                                    icon: Icons.info,
+                                    title: 'Info',
+                                    message:
+                                        (selectedPlayers.length ==
+                                            allPlayers.length)
+                                        ? 'No more players to add.'
+                                        : 'No players found with that name.',
+                                  ),
+                                ),
                               ),
                             );
                           },
@@ -274,7 +307,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   : () async {
                       bool success = await db.groupDao.addGroup(
                         group: Group(
-                          name: _groupNameController.text,
+                          name: _groupNameController.text.trim(),
                           members: selectedPlayers,
                         ),
                       );
@@ -302,6 +335,50 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             ),
             const SizedBox(height: 20),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Adds a new player to the database from the search bar input.
+/// Shows a snackbar indicating success or failure.
+/// [context] - BuildContext to show the snackbar.
+/// [searchBarController] - TextEditingController of the search bar.
+/// [db] - AppDatabase instance to interact with the database.
+/// [loadPlayerList] - Function to reload the player list after adding.
+void addNewPlayerFromSearch({
+  required BuildContext context,
+  required TextEditingController searchBarController,
+  required AppDatabase db,
+  required Function loadPlayerList,
+}) async {
+  String playerName = searchBarController.text.trim();
+  bool success = await db.playerDao.addPlayer(player: Player(name: playerName));
+  if (!context.mounted) return;
+  if (success) {
+    loadPlayerList();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: CustomTheme.boxColor,
+        content: Center(
+          child: Text(
+            'Successfully added player $playerName.',
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+    searchBarController.clear();
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: CustomTheme.boxColor,
+        content: Center(
+          child: Text(
+            'Could not add player $playerName.',
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
