@@ -94,10 +94,8 @@ void main() {
       }
     });
 
-    // TODO: Use upcoming addGames() method
     test('Adding and fetching multiple games works correclty', () async {
-      await database.gameDao.addGame(game: testgame);
-      await database.gameDao.addGame(game: testgame2);
+      await database.gameDao.addGames(games: [testgame, testgame2]);
 
       final allGames = await database.gameDao.getAllGames();
       expect(allGames.length, 2);

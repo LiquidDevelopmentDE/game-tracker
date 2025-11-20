@@ -51,10 +51,8 @@ void main() {
       expect(fetchedPlayer2.createdAt, testPlayer2.createdAt);
     });
 
-    // TODO: Use upcoming addPlayers() method
     test('Adding and fetching multiple players works correclty', () async {
-      await database.playerDao.addPlayer(player: testPlayer);
-      await database.playerDao.addPlayer(player: testPlayer2);
+      await database.playerDao.addPlayers(players: [testPlayer, testPlayer2]);
 
       final allPlayers = await database.playerDao.getAllPlayers();
       expect(allPlayers.length, 2);

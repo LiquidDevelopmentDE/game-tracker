@@ -68,10 +68,8 @@ void main() {
       }
     });
 
-    // TODO: Use upcoming addGroups() method
     test('Adding and fetching a single group works correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
-      await database.groupDao.addGroup(group: testgroup2);
+      await database.groupDao.addGroups(groups: [testgroup, testgroup2]);
 
       final allGroups = await database.groupDao.getAllGroups();
       expect(allGroups.length, 2);
