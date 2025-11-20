@@ -23,19 +23,19 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
   }
 
   /// Retrieves a list of [Player]s associated with the given [gameId].
-  /// Returns an empty list if no players are found.
-  Future<List<Player>> getPlayersByGameId({required String gameId}) async {
+  /// Returns null if no players are found.
+  Future<List<Player>?> getPlayersByGameId({required String gameId}) async {
     final result = await (select(
       playerGameTable,
     )..where((p) => p.gameId.equals(gameId))).get();
 
-    if (result.isEmpty) return <Player>[];
+    if (result.isEmpty) return null;
 
     final futures = result.map(
       (row) => db.playerDao.getPlayerById(playerId: row.playerId),
     );
     final players = await Future.wait(futures);
-    return players.whereType<Player>().toList();
+    return players;
   }
 
   /// Associates a player with a game by inserting a record into the

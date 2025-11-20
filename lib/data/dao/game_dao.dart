@@ -15,11 +15,23 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
   Future<List<Game>> getAllGames() async {
     final query = select(gameTable);
     final result = await query.get();
-    return result
-        .map(
-          (row) => Game(id: row.id, name: row.name, createdAt: row.createdAt),
-        )
-        .toList();
+
+    return Future.wait(
+      result.map((row) async {
+        final group = await db.groupGameDao.getGroupByGameId(gameId: row.id);
+        final player = await db.playerGameDao.getPlayersByGameId(
+          gameId: row.id,
+        );
+        return Game(
+          id: row.id,
+          name: row.name,
+          group: group,
+          players: player,
+          createdAt: row.createdAt,
+          winner: row.winnerId,
+        );
+      }),
+    );
   }
 
   /// Retrieves a [Game] by its [gameId].
