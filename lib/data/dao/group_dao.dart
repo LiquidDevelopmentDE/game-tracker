@@ -87,10 +87,17 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
   Future<void> addGroups({required List<Group> groups}) async {
     if (groups.isEmpty) return;
     await db.transaction(() async {
+      // Deduplicate groups by id - keep first occurrence
+      final Map<String, Group> uniqueGroups = {};
+      for (final g in groups) {
+        uniqueGroups.putIfAbsent(g.id, () => g);
+      }
+
+      // Insert unique groups in batch
       await db.batch(
         (b) => b.insertAll(
           groupTable,
-          groups
+          uniqueGroups.values
               .map(
                 (group) => GroupTableCompanion.insert(
                   id: group.id,
@@ -103,23 +110,53 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         ),
       );
 
-      for (final group in groups) {
-        await db.playerDao.addPlayers(players: group.members);
+      // Collect unique players from all groups
+      final uniquePlayers = <String, Player>{};
+      for (final g in uniqueGroups.values) {
+        for (final m in g.members) {
+          uniquePlayers[m.id] = m;
+        }
+      }
 
+      if (uniquePlayers.isNotEmpty) {
         await db.batch(
           (b) => b.insertAll(
-            db.playerGroupTable,
-            group.members
+            db.playerTable,
+            uniquePlayers.values
                 .map(
-                  (member) => PlayerGroupTableCompanion.insert(
-                    playerId: member.id,
-                    groupId: group.id,
+                  (p) => PlayerTableCompanion.insert(
+                    id: p.id,
+                    name: p.name,
+                    createdAt: p.createdAt,
                   ),
                 )
                 .toList(),
             mode: InsertMode.insertOrReplace,
           ),
         );
+      }
+
+      // Prepare all player-group associations in one list (unique pairs)
+      final Set<String> seenPairs = {};
+      final List<PlayerGroupTableCompanion> pgRows = [];
+      for (final g in uniqueGroups.values) {
+        for (final m in g.members) {
+          final key = '${m.id}|${g.id}';
+          if (!seenPairs.contains(key)) {
+            seenPairs.add(key);
+            pgRows.add(
+              PlayerGroupTableCompanion.insert(playerId: m.id, groupId: g.id),
+            );
+          }
+        }
+      }
+
+      if (pgRows.isNotEmpty) {
+        await db.batch((b) {
+          for (final pg in pgRows) {
+            b.insert(db.playerGroupTable, pg, mode: InsertMode.insertOrReplace);
+          }
+        });
       }
     });
   }
