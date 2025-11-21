@@ -107,6 +107,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
           mode: InsertMode.insertOrReplace,
         ),
       );
+
       // Add all groups of the games in batch
       await db.batch(
         (b) => b.insertAll(
@@ -125,8 +126,42 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
         ),
       );
 
-      // Add all players of the games in batch
-      await db.batch((b) async {
+      // Add all players of the games in batch (unique)
+      final uniquePlayers = <String, Player>{};
+      for (final game in games) {
+        if (game.players != null) {
+          for (final p in game.players!) {
+            uniquePlayers[p.id] = p;
+          }
+        }
+        // Also include members of groups
+        if (game.group != null) {
+          for (final m in game.group!.members) {
+            uniquePlayers[m.id] = m;
+          }
+        }
+      }
+
+      if (uniquePlayers.isNotEmpty) {
+        await db.batch(
+          (b) => b.insertAll(
+            db.playerTable,
+            uniquePlayers.values
+                .map(
+                  (p) => PlayerTableCompanion.insert(
+                    id: p.id,
+                    name: p.name,
+                    createdAt: p.createdAt,
+                  ),
+                )
+                .toList(),
+            mode: InsertMode.insertOrReplace,
+          ),
+        );
+      }
+
+      // Add all player-game associations in batch
+      await db.batch((b) {
         for (final game in games) {
           if (game.players != null) {
             for (final p in game.players ?? []) {
@@ -143,8 +178,26 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
         }
       });
 
+      // Add all player-group associations in batch
+      await db.batch((b) {
+        for (final game in games) {
+          if (game.group != null) {
+            for (final m in game.group!.members) {
+              b.insert(
+                db.playerGroupTable,
+                PlayerGroupTableCompanion.insert(
+                  playerId: m.id,
+                  groupId: game.group!.id,
+                ),
+                mode: InsertMode.insertOrReplace,
+              );
+            }
+          }
+        }
+      });
+
       // Add all group-game associations in batch
-      await db.batch((b) async {
+      await db.batch((b) {
         for (final game in games) {
           if (game.group != null) {
             b.insert(
@@ -155,25 +208,6 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
               ),
               mode: InsertMode.insertOrReplace,
             );
-          }
-        }
-      });
-
-      // Add all player-game associations in batch
-      await db.batch((b) async {
-        for (final game in games) {
-          if (game.players != null) {
-            for (final p in game.players ?? []) {
-              b.insert(
-                db.playerTable,
-                PlayerTableCompanion.insert(
-                  id: p.id,
-                  name: p.name,
-                  createdAt: p.createdAt,
-                ),
-                mode: InsertMode.insertOrReplace,
-              );
-            }
           }
         }
       });
