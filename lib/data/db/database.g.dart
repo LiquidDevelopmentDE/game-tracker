@@ -27,8 +27,19 @@ class $PlayerTableTable extends PlayerTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, name];
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -54,6 +65,14 @@ class $PlayerTableTable extends PlayerTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
     return context;
   }
 
@@ -71,6 +90,10 @@ class $PlayerTableTable extends PlayerTable
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -83,17 +106,27 @@ class $PlayerTableTable extends PlayerTable
 class PlayerTableData extends DataClass implements Insertable<PlayerTableData> {
   final String id;
   final String name;
-  const PlayerTableData({required this.id, required this.name});
+  final DateTime createdAt;
+  const PlayerTableData({
+    required this.id,
+    required this.name,
+    required this.createdAt,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
   PlayerTableCompanion toCompanion(bool nullToAbsent) {
-    return PlayerTableCompanion(id: Value(id), name: Value(name));
+    return PlayerTableCompanion(
+      id: Value(id),
+      name: Value(name),
+      createdAt: Value(createdAt),
+    );
   }
 
   factory PlayerTableData.fromJson(
@@ -104,6 +137,7 @@ class PlayerTableData extends DataClass implements Insertable<PlayerTableData> {
     return PlayerTableData(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -112,15 +146,21 @@ class PlayerTableData extends DataClass implements Insertable<PlayerTableData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  PlayerTableData copyWith({String? id, String? name}) =>
-      PlayerTableData(id: id ?? this.id, name: name ?? this.name);
+  PlayerTableData copyWith({String? id, String? name, DateTime? createdAt}) =>
+      PlayerTableData(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        createdAt: createdAt ?? this.createdAt,
+      );
   PlayerTableData copyWithCompanion(PlayerTableCompanion data) {
     return PlayerTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -128,44 +168,52 @@ class PlayerTableData extends DataClass implements Insertable<PlayerTableData> {
   String toString() {
     return (StringBuffer('PlayerTableData(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name);
+  int get hashCode => Object.hash(id, name, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PlayerTableData &&
           other.id == this.id &&
-          other.name == this.name);
+          other.name == this.name &&
+          other.createdAt == this.createdAt);
 }
 
 class PlayerTableCompanion extends UpdateCompanion<PlayerTableData> {
   final Value<String> id;
   final Value<String> name;
+  final Value<DateTime> createdAt;
   final Value<int> rowid;
   const PlayerTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   PlayerTableCompanion.insert({
     required String id,
     required String name,
+    required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       name = Value(name);
+       name = Value(name),
+       createdAt = Value(createdAt);
   static Insertable<PlayerTableData> custom({
     Expression<String>? id,
     Expression<String>? name,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -173,11 +221,13 @@ class PlayerTableCompanion extends UpdateCompanion<PlayerTableData> {
   PlayerTableCompanion copyWith({
     Value<String>? id,
     Value<String>? name,
+    Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
     return PlayerTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -191,6 +241,9 @@ class PlayerTableCompanion extends UpdateCompanion<PlayerTableData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -202,6 +255,7 @@ class PlayerTableCompanion extends UpdateCompanion<PlayerTableData> {
     return (StringBuffer('PlayerTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -232,8 +286,19 @@ class $GroupTableTable extends GroupTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, name];
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -259,6 +324,14 @@ class $GroupTableTable extends GroupTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
     return context;
   }
 
@@ -276,6 +349,10 @@ class $GroupTableTable extends GroupTable
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -288,17 +365,27 @@ class $GroupTableTable extends GroupTable
 class GroupTableData extends DataClass implements Insertable<GroupTableData> {
   final String id;
   final String name;
-  const GroupTableData({required this.id, required this.name});
+  final DateTime createdAt;
+  const GroupTableData({
+    required this.id,
+    required this.name,
+    required this.createdAt,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
   GroupTableCompanion toCompanion(bool nullToAbsent) {
-    return GroupTableCompanion(id: Value(id), name: Value(name));
+    return GroupTableCompanion(
+      id: Value(id),
+      name: Value(name),
+      createdAt: Value(createdAt),
+    );
   }
 
   factory GroupTableData.fromJson(
@@ -309,6 +396,7 @@ class GroupTableData extends DataClass implements Insertable<GroupTableData> {
     return GroupTableData(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -317,15 +405,21 @@ class GroupTableData extends DataClass implements Insertable<GroupTableData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  GroupTableData copyWith({String? id, String? name}) =>
-      GroupTableData(id: id ?? this.id, name: name ?? this.name);
+  GroupTableData copyWith({String? id, String? name, DateTime? createdAt}) =>
+      GroupTableData(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        createdAt: createdAt ?? this.createdAt,
+      );
   GroupTableData copyWithCompanion(GroupTableCompanion data) {
     return GroupTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -333,44 +427,52 @@ class GroupTableData extends DataClass implements Insertable<GroupTableData> {
   String toString() {
     return (StringBuffer('GroupTableData(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name);
+  int get hashCode => Object.hash(id, name, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GroupTableData &&
           other.id == this.id &&
-          other.name == this.name);
+          other.name == this.name &&
+          other.createdAt == this.createdAt);
 }
 
 class GroupTableCompanion extends UpdateCompanion<GroupTableData> {
   final Value<String> id;
   final Value<String> name;
+  final Value<DateTime> createdAt;
   final Value<int> rowid;
   const GroupTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   GroupTableCompanion.insert({
     required String id,
     required String name,
+    required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       name = Value(name);
+       name = Value(name),
+       createdAt = Value(createdAt);
   static Insertable<GroupTableData> custom({
     Expression<String>? id,
     Expression<String>? name,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -378,11 +480,13 @@ class GroupTableCompanion extends UpdateCompanion<GroupTableData> {
   GroupTableCompanion copyWith({
     Value<String>? id,
     Value<String>? name,
+    Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
     return GroupTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -396,6 +500,9 @@ class GroupTableCompanion extends UpdateCompanion<GroupTableData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -407,6 +514,7 @@ class GroupTableCompanion extends UpdateCompanion<GroupTableData> {
     return (StringBuffer('GroupTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -451,8 +559,19 @@ class $GameTableTable extends GameTable
       'REFERENCES player_table (id) ON DELETE CASCADE',
     ),
   );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, name, winnerId];
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, winnerId, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -486,6 +605,14 @@ class $GameTableTable extends GameTable
     } else if (isInserting) {
       context.missing(_winnerIdMeta);
     }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
     return context;
   }
 
@@ -507,6 +634,10 @@ class $GameTableTable extends GameTable
         DriftSqlType.string,
         data['${effectivePrefix}winner_id'],
       )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -520,10 +651,12 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
   final String id;
   final String name;
   final String winnerId;
+  final DateTime createdAt;
   const GameTableData({
     required this.id,
     required this.name,
     required this.winnerId,
+    required this.createdAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -531,6 +664,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
     map['winner_id'] = Variable<String>(winnerId);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
@@ -539,6 +673,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
       id: Value(id),
       name: Value(name),
       winnerId: Value(winnerId),
+      createdAt: Value(createdAt),
     );
   }
 
@@ -551,6 +686,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       winnerId: serializer.fromJson<String>(json['winnerId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -560,20 +696,27 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
       'winnerId': serializer.toJson<String>(winnerId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  GameTableData copyWith({String? id, String? name, String? winnerId}) =>
-      GameTableData(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        winnerId: winnerId ?? this.winnerId,
-      );
+  GameTableData copyWith({
+    String? id,
+    String? name,
+    String? winnerId,
+    DateTime? createdAt,
+  }) => GameTableData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    winnerId: winnerId ?? this.winnerId,
+    createdAt: createdAt ?? this.createdAt,
+  );
   GameTableData copyWithCompanion(GameTableCompanion data) {
     return GameTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       winnerId: data.winnerId.present ? data.winnerId.value : this.winnerId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -582,51 +725,59 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
     return (StringBuffer('GameTableData(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('winnerId: $winnerId')
+          ..write('winnerId: $winnerId, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, winnerId);
+  int get hashCode => Object.hash(id, name, winnerId, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GameTableData &&
           other.id == this.id &&
           other.name == this.name &&
-          other.winnerId == this.winnerId);
+          other.winnerId == this.winnerId &&
+          other.createdAt == this.createdAt);
 }
 
 class GameTableCompanion extends UpdateCompanion<GameTableData> {
   final Value<String> id;
   final Value<String> name;
   final Value<String> winnerId;
+  final Value<DateTime> createdAt;
   final Value<int> rowid;
   const GameTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.winnerId = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   GameTableCompanion.insert({
     required String id,
     required String name,
     required String winnerId,
+    required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
-       winnerId = Value(winnerId);
+       winnerId = Value(winnerId),
+       createdAt = Value(createdAt);
   static Insertable<GameTableData> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? winnerId,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (winnerId != null) 'winner_id': winnerId,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -635,12 +786,14 @@ class GameTableCompanion extends UpdateCompanion<GameTableData> {
     Value<String>? id,
     Value<String>? name,
     Value<String>? winnerId,
+    Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
     return GameTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       winnerId: winnerId ?? this.winnerId,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -657,6 +810,9 @@ class GameTableCompanion extends UpdateCompanion<GameTableData> {
     if (winnerId.present) {
       map['winner_id'] = Variable<String>(winnerId.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -669,6 +825,7 @@ class GameTableCompanion extends UpdateCompanion<GameTableData> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('winnerId: $winnerId, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1437,12 +1594,14 @@ typedef $$PlayerTableTableCreateCompanionBuilder =
     PlayerTableCompanion Function({
       required String id,
       required String name,
+      required DateTime createdAt,
       Value<int> rowid,
     });
 typedef $$PlayerTableTableUpdateCompanionBuilder =
     PlayerTableCompanion Function({
       Value<String> id,
       Value<String> name,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 
@@ -1531,6 +1690,11 @@ class $$PlayerTableTableFilterComposer
 
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1628,6 +1792,11 @@ class $$PlayerTableTableOrderingComposer
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$PlayerTableTableAnnotationComposer
@@ -1644,6 +1813,9 @@ class $$PlayerTableTableAnnotationComposer
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   Expression<T> gameTableRefs<T extends Object>(
     Expression<T> Function($$GameTableTableAnnotationComposer a) f,
@@ -1755,15 +1927,26 @@ class $$PlayerTableTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => PlayerTableCompanion(id: id, name: name, rowid: rowid),
+              }) => PlayerTableCompanion(
+                id: id,
+                name: name,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
           createCompanionCallback:
               ({
                 required String id,
                 required String name,
+                required DateTime createdAt,
                 Value<int> rowid = const Value.absent(),
-              }) =>
-                  PlayerTableCompanion.insert(id: id, name: name, rowid: rowid),
+              }) => PlayerTableCompanion.insert(
+                id: id,
+                name: name,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
@@ -1881,12 +2064,14 @@ typedef $$GroupTableTableCreateCompanionBuilder =
     GroupTableCompanion Function({
       required String id,
       required String name,
+      required DateTime createdAt,
       Value<int> rowid,
     });
 typedef $$GroupTableTableUpdateCompanionBuilder =
     GroupTableCompanion Function({
       Value<String> id,
       Value<String> name,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 
@@ -1955,6 +2140,11 @@ class $$GroupTableTableFilterComposer
 
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2027,6 +2217,11 @@ class $$GroupTableTableOrderingComposer
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$GroupTableTableAnnotationComposer
@@ -2043,6 +2238,9 @@ class $$GroupTableTableAnnotationComposer
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   Expression<T> playerGroupTableRefs<T extends Object>(
     Expression<T> Function($$PlayerGroupTableTableAnnotationComposer a) f,
@@ -2128,15 +2326,26 @@ class $$GroupTableTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => GroupTableCompanion(id: id, name: name, rowid: rowid),
+              }) => GroupTableCompanion(
+                id: id,
+                name: name,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
           createCompanionCallback:
               ({
                 required String id,
                 required String name,
+                required DateTime createdAt,
                 Value<int> rowid = const Value.absent(),
-              }) =>
-                  GroupTableCompanion.insert(id: id, name: name, rowid: rowid),
+              }) => GroupTableCompanion.insert(
+                id: id,
+                name: name,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
@@ -2228,6 +2437,7 @@ typedef $$GameTableTableCreateCompanionBuilder =
       required String id,
       required String name,
       required String winnerId,
+      required DateTime createdAt,
       Value<int> rowid,
     });
 typedef $$GameTableTableUpdateCompanionBuilder =
@@ -2235,6 +2445,7 @@ typedef $$GameTableTableUpdateCompanionBuilder =
       Value<String> id,
       Value<String> name,
       Value<String> winnerId,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 
@@ -2316,6 +2527,11 @@ class $$GameTableTableFilterComposer
 
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2412,6 +2628,11 @@ class $$GameTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$PlayerTableTableOrderingComposer get winnerId {
     final $$PlayerTableTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -2450,6 +2671,9 @@ class $$GameTableTableAnnotationComposer
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   $$PlayerTableTableAnnotationComposer get winnerId {
     final $$PlayerTableTableAnnotationComposer composer = $composerBuilder(
@@ -2560,11 +2784,13 @@ class $$GameTableTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> winnerId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GameTableCompanion(
                 id: id,
                 name: name,
                 winnerId: winnerId,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -2572,11 +2798,13 @@ class $$GameTableTableTableManager
                 required String id,
                 required String name,
                 required String winnerId,
+                required DateTime createdAt,
                 Value<int> rowid = const Value.absent(),
               }) => GameTableCompanion.insert(
                 id: id,
                 name: name,
                 winnerId: winnerId,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
