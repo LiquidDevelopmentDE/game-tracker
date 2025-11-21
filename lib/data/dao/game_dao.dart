@@ -18,10 +18,8 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
 
     return Future.wait(
       result.map((row) async {
-        final group = await db.groupGameDao.getGroupByGameId(gameId: row.id);
-        final player = await db.playerGameDao.getPlayersByGameId(
-          gameId: row.id,
-        );
+        final group = await db.groupGameDao.getGroupOfGame(gameId: row.id);
+        final player = await db.playerGameDao.getPlayersOfGame(gameId: row.id);
         return Game(
           id: row.id,
           name: row.name,
@@ -41,11 +39,11 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
 
     List<Player>? players;
     if (await db.playerGameDao.gameHasPlayers(gameId: gameId)) {
-      players = await db.playerGameDao.getPlayersByGameId(gameId: gameId);
+      players = await db.playerGameDao.getPlayersOfGame(gameId: gameId);
     }
     Group? group;
-    if (await db.groupGameDao.hasGameGroup(gameId: gameId)) {
-      group = await db.groupGameDao.getGroupByGameId(gameId: gameId);
+    if (await db.groupGameDao.gameHasGroup(gameId: gameId)) {
+      group = await db.groupGameDao.getGroupOfGame(gameId: gameId);
     }
 
     return Game(
