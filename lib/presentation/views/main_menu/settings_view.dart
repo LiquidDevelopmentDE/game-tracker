@@ -1,39 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
-import 'package:json_schema/json_schema.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
 
   @override
   State<SettingsView> createState() => _SettingsViewState();
-
-  static Future<bool> validateJsonSchema(String jsonString) async {
-    final String schemaString;
-
-    schemaString = await rootBundle.loadString('assets/schema.json');
-
-    try {
-      final schema = JsonSchema.create(json.decode(schemaString));
-      final jsonData = json.decode(jsonString);
-      final result = schema.validate(jsonData);
-
-      if (result.isValid) {
-        return true;
-      }
-      return false;
-    } catch (e, stack) {
-      print('[validateJsonSchema] $e');
-      print(stack);
-      return false;
-    }
-  }
 }
 
 class _SettingsViewState extends State<SettingsView> {

@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
+import 'package:json_schema/json_schema.dart';
 import 'package:provider/provider.dart';
 
 class DataTransferService {
@@ -85,7 +85,7 @@ class DataTransferService {
         return ImportResult.fileReadError;
       }
 
-      if (await SettingsView.validateJsonSchema(jsonString)) {
+      if (await _validateJsonSchema(jsonString)) {
         final Map<String, dynamic> jsonData =
             json.decode(jsonString) as Map<String, dynamic>;
 
@@ -135,5 +135,27 @@ class DataTransferService {
     if (file.bytes != null) return utf8.decode(file.bytes!);
     if (file.path != null) return await File(file.path!).readAsString();
     return null;
+  }
+
+  /// Validates the given JSON string against the predefined schema.
+  static Future<bool> _validateJsonSchema(String jsonString) async {
+    final String schemaString;
+
+    schemaString = await rootBundle.loadString('assets/schema.json');
+
+    try {
+      final schema = JsonSchema.create(json.decode(schemaString));
+      final jsonData = json.decode(jsonString);
+      final result = schema.validate(jsonData);
+
+      if (result.isValid) {
+        return true;
+      }
+      return false;
+    } catch (e, stack) {
+      print('[validateJsonSchema] $e');
+      print(stack);
+      return false;
+    }
   }
 }
