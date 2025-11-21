@@ -51,8 +51,8 @@ void main() {
   });
   group('Group-Game Tests', () {
     test('Game has group works correctly', () async {
-      database.gameDao.addGame(game: testgameWithPlayers);
-      database.groupDao.addGroup(group: testgroup);
+      await database.gameDao.addGame(game: testgameWithPlayers);
+      await database.groupDao.addGroup(group: testgroup);
 
       var gameHasGroup = await database.groupGameDao.gameHasGroup(
         gameId: testgameWithPlayers.id,
@@ -60,7 +60,7 @@ void main() {
 
       expect(gameHasGroup, false);
 
-      database.groupGameDao.addGroupToGame(
+      await database.groupGameDao.addGroupToGame(
         testgameWithPlayers.id,
         testgroup.id,
       );
@@ -73,9 +73,9 @@ void main() {
     });
 
     test('Adding a group to a game works correctly', () async {
-      database.gameDao.addGame(game: testgameWithPlayers);
-      database.groupDao.addGroup(group: testgroup);
-      database.groupGameDao.addGroupToGame(
+      await database.gameDao.addGame(game: testgameWithPlayers);
+      await database.groupDao.addGroup(group: testgroup);
+      await database.groupGameDao.addGroupToGame(
         testgameWithPlayers.id,
         testgroup.id,
       );
