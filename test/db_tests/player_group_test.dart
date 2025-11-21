@@ -41,6 +41,9 @@ void main() {
   });
 
   group('Player-Group Tests', () {
+    /// No need to test if group has players since the members attribute is
+    /// not nullable
+
     test('Adding a player to a group works correctly', () async {
       await database.groupDao.addGroup(group: testgroup);
       await database.playerDao.addPlayer(player: player4);

@@ -10,6 +10,9 @@ class PlayerGroupDao extends DatabaseAccessor<AppDatabase>
     with _$PlayerGroupDaoMixin {
   PlayerGroupDao(super.db);
 
+  /// No need for a groupHasPlayers method since the members attribute is
+  /// not nullable
+
   /// Adds a [player] to a group with the given [groupId].
   /// If the player is already in the group, no action is taken.
   /// If the player does not exist in the player table, they are added.
