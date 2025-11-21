@@ -14,6 +14,8 @@ void main() {
   late Player player4;
   late Group testgroup;
   late Group testgroup2;
+  late Group testgroup3;
+  late Group testgroup4;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -39,6 +41,16 @@ void main() {
         id: 'gr2',
         name: 'Second Group',
         members: [player2, player3, player4],
+      );
+      testgroup3 = Group(
+        id: 'gr2',
+        name: 'Second Group',
+        members: [player2, player4],
+      );
+      testgroup4 = Group(
+        id: 'gr2',
+        name: 'Second Group',
+        members: [player1, player2, player3, player4],
       );
     });
   });
@@ -68,28 +80,37 @@ void main() {
       }
     });
 
-    test('Adding and fetching a single group works correctly', () async {
+    test('Adding and fetching multiple groups works correctly', () async {
+      // TODO: Use upcoming addGroups() method
       await database.groupDao.addGroup(group: testgroup);
       await database.groupDao.addGroup(group: testgroup2);
+      await database.groupDao.addGroup(group: testgroup3);
+      await database.groupDao.addGroup(group: testgroup4);
 
       final allGroups = await database.groupDao.getAllGroups();
       expect(allGroups.length, 2);
 
-      final fetchedGroup1 = allGroups.firstWhere((g) => g.id == testgroup.id);
-      expect(fetchedGroup1.name, testgroup.name);
-      expect(fetchedGroup1.members.length, testgroup.members.length);
-      expect(fetchedGroup1.members.elementAt(0).id, player1.id);
-      expect(fetchedGroup1.members.elementAt(0).createdAt, player1.createdAt);
+      final testGroups = {testgroup.id: testgroup, testgroup2.id: testgroup2};
 
-      final fetchedGroup2 = allGroups.firstWhere((g) => g.id == testgroup2.id);
-      expect(fetchedGroup2.name, testgroup2.name);
-      expect(fetchedGroup2.members.length, testgroup2.members.length);
-      expect(fetchedGroup2.members.elementAt(0).id, player2.id);
-      expect(fetchedGroup2.members.elementAt(0).createdAt, player2.createdAt);
+      for (final group in allGroups) {
+        final expectedGroup = testGroups[group.id]!;
+
+        expect(group.id, expectedGroup.id);
+        expect(group.name, expectedGroup.name);
+        expect(group.createdAt, expectedGroup.createdAt);
+
+        expect(group.members.length, expectedGroup.members.length);
+        for (int i = 0; i < expectedGroup.members.length; i++) {
+          expect(group.members[i].id, expectedGroup.members[i].id);
+          expect(group.members[i].name, expectedGroup.members[i].name);
+          expect(
+            group.members[i].createdAt,
+            expectedGroup.members[i].createdAt,
+          );
+        }
+      }
     });
 
-    // TODO: Use upcoming addGroups() method
-    // TODO: An Test in Game Tests orientieren
     test('Adding the same group twice does not create duplicates', () async {
       await database.groupDao.addGroup(group: testgroup);
       await database.groupDao.addGroup(group: testgroup);
