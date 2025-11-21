@@ -15,8 +15,8 @@ void main() {
   late Player player4;
   late Player player5;
   late Group testgroup;
-  late Game gameWithGroup;
-  late Game gameWithPlayers;
+  late Game testgameWithGroup;
+  late Game testgameWithPlayers;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -39,11 +39,11 @@ void main() {
         name: 'Test Group',
         members: [player1, player2, player3],
       );
-      gameWithPlayers = Game(
+      testgameWithPlayers = Game(
         name: 'Game with Players',
         players: [player4, player5],
       );
-      gameWithGroup = Game(name: 'Game with Group', group: testgroup);
+      testgameWithGroup = Game(name: 'Game with Group', group: testgroup);
     });
   });
   tearDown(() async {
@@ -51,63 +51,69 @@ void main() {
   });
   group('Group-Game Tests', () {
     test('Game has group works correctly', () async {
-      database.gameDao.addGame(game: gameWithPlayers);
+      database.gameDao.addGame(game: testgameWithPlayers);
       database.groupDao.addGroup(group: testgroup);
 
       var gameHasGroup = await database.groupGameDao.gameHasGroup(
-        gameId: gameWithPlayers.id,
+        gameId: testgameWithPlayers.id,
       );
 
       expect(gameHasGroup, false);
 
-      database.groupGameDao.addGroupToGame(gameWithPlayers.id, testgroup.id);
+      database.groupGameDao.addGroupToGame(
+        testgameWithPlayers.id,
+        testgroup.id,
+      );
 
       gameHasGroup = await database.groupGameDao.gameHasGroup(
-        gameId: gameWithPlayers.id,
+        gameId: testgameWithPlayers.id,
       );
 
       expect(gameHasGroup, true);
     });
 
     test('Adding a group to a game works correctly', () async {
-      database.gameDao.addGame(game: gameWithPlayers);
+      database.gameDao.addGame(game: testgameWithPlayers);
       database.groupDao.addGroup(group: testgroup);
-      database.groupGameDao.addGroupToGame(gameWithPlayers.id, testgroup.id);
+      database.groupGameDao.addGroupToGame(
+        testgameWithPlayers.id,
+        testgroup.id,
+      );
 
       var groupAdded = await database.groupGameDao.isGroupInGame(
-        gameId: gameWithPlayers.id,
+        gameId: testgameWithPlayers.id,
         groupId: testgroup.id,
       );
       expect(groupAdded, true);
 
       groupAdded = await database.groupGameDao.isGroupInGame(
-        gameId: gameWithPlayers.id,
+        gameId: testgameWithPlayers.id,
         groupId: '',
       );
       expect(groupAdded, false);
     });
 
     test('Removing group from game works correctly', () async {
-      await database.gameDao.addGame(game: gameWithGroup);
+      await database.gameDao.addGame(game: testgameWithGroup);
 
-      final groupToRemove = gameWithGroup.group!;
+      final groupToRemove = testgameWithGroup.group!;
 
       final removed = await database.groupGameDao.removeGroupFromGame(
         groupId: groupToRemove.id,
-        gameId: gameWithGroup.id,
+        gameId: testgameWithGroup.id,
       );
       expect(removed, true);
 
       final result = await database.gameDao.getGameById(
-        gameId: gameWithGroup.id,
+        gameId: testgameWithGroup.id,
       );
       expect(result.group, null);
     });
 
     test('Retrieving group of a game works correctly', () async {
-      await database.gameDao.addGame(game: gameWithGroup);
+      await database.gameDao.addGame(game: testgameWithGroup);
       final group = await database.groupGameDao.getGroupOfGame(
-        gameId: gameWithGroup.id,
+        gameId: testgameWithGroup.id,
       );
 
       if (group == null) {

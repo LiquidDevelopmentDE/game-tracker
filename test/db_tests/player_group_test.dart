@@ -87,7 +87,17 @@ void main() {
       expect(playerExists, false);
     });
 
-    //TODO: test getPlayersOfGroup()
-    test('Retrieving players of a group works correctly', () async {});
+    test('Retrieving players of a group works correctly', () async {
+      await database.groupDao.addGroup(group: testgroup);
+      final players = await database.playerGroupDao.getPlayersOfGroup(
+        groupId: testgroup.id,
+      );
+
+      for (int i = 0; i < players.length; i++) {
+        expect(players[i].id, testgroup.members[i].id);
+        expect(players[i].name, testgroup.members[i].name);
+        expect(players[i].createdAt, testgroup.members[i].createdAt);
+      }
+    });
   });
 }

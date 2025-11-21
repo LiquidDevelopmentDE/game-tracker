@@ -120,7 +120,21 @@ void main() {
       expect(playerExists, false);
     });
 
-    //TODO: test getPlayersOfGame()
-    test('Retrieving players of a game works correctly', () async {});
+    test('Retrieving players of a game works correctly', () async {
+      await database.gameDao.addGame(game: testgameWithPlayers);
+      final players = await database.playerGameDao.getPlayersOfGame(
+        gameId: testgameWithPlayers.id,
+      );
+
+      if (players == null) {
+        fail('Players should not be null');
+      }
+
+      for (int i = 0; i < players.length; i++) {
+        expect(players[i].id, testgameWithPlayers.players![i].id);
+        expect(players[i].name, testgameWithPlayers.players![i].name);
+        expect(players[i].createdAt, testgameWithPlayers.players![i].createdAt);
+      }
+    });
   });
 }
