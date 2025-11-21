@@ -54,8 +54,8 @@ void main() {
 
   group('Player-Game Tests', () {
     test('Game has player works correctly', () async {
-      database.gameDao.addGame(game: testGameOnlyGroup);
-      database.playerDao.addPlayer(player: testPlayer1);
+      await database.gameDao.addGame(game: testGameOnlyGroup);
+      await database.playerDao.addPlayer(player: testPlayer1);
 
       var gameHasPlayers = await database.playerGameDao.gameHasPlayers(
         gameId: testGameOnlyGroup.id,
@@ -76,9 +76,9 @@ void main() {
     });
 
     test('Adding a player to a game works correctly', () async {
-      database.gameDao.addGame(game: testGameOnlyGroup);
-      database.playerDao.addPlayer(player: testPlayer5);
-      database.playerGameDao.addPlayerToGame(
+      await database.gameDao.addGame(game: testGameOnlyGroup);
+      await database.playerDao.addPlayer(player: testPlayer5);
+      await database.playerGameDao.addPlayerToGame(
         gameId: testGameOnlyGroup.id,
         playerId: testPlayer5.id,
       );
