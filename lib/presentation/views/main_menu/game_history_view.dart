@@ -134,16 +134,16 @@ class _GameHistoryViewState extends State<GameHistoryView> {
         children: [
           Column(
             children: [
-              Container(margin: EdgeInsets.only(bottom: 75)),
+              Container(margin: const EdgeInsets.only(bottom: 75)),
               Expanded(
                 child: gameHistoryListView(allGameData, suggestedGameData),
               ),
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+            margin: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
             child: SearchBar(
-              leading: Icon(Icons.search),
+              leading: const Icon(Icons.search),
               onChanged: (value) {
                 if (value.isEmpty) {
                   setState(() {
@@ -195,9 +195,9 @@ Widget gameHistoryListView(allGameData, suggestedGameData) {
       return GameHistoryTile(
         gameTitle: currentGame['title'],
         gameType: currentGame['game'],
-        ruleset: currentGame['date'],
+        date: currentGame['date'],
         groupName: currentGame['group'],
-        winner: "ich",
+        winner: 'ich',
       );
     },
   );
