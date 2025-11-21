@@ -9,15 +9,15 @@ import 'package:game_tracker/data/dto/player.dart';
 
 void main() {
   late AppDatabase database;
-  late Player player1;
-  late Player player2;
-  late Player player3;
-  late Player player4;
-  late Player player5;
-  late Player player6;
+  late Player testPlayer1;
+  late Player testPlayer2;
+  late Player testPlayer3;
+  late Player testPlayer4;
+  late Player testPlayer5;
+  late Player testPlayer6;
   late Group testgroup;
-  late Game testgameWithGroup;
-  late Game testgameWithPlayers;
+  late Game testGameOnlyGroup;
+  late Game testGameOnlyPlayers;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -31,20 +31,20 @@ void main() {
     );
 
     withClock(fakeClock, () {
-      player1 = Player(name: 'Alice');
-      player2 = Player(name: 'Bob');
-      player3 = Player(name: 'Charlie');
-      player4 = Player(name: 'Diana');
-      player5 = Player(name: 'Eve');
-      player6 = Player(name: 'Frank');
+      testPlayer1 = Player(name: 'Alice');
+      testPlayer2 = Player(name: 'Bob');
+      testPlayer3 = Player(name: 'Charlie');
+      testPlayer4 = Player(name: 'Diana');
+      testPlayer5 = Player(name: 'Eve');
+      testPlayer6 = Player(name: 'Frank');
       testgroup = Group(
         name: 'Test Group',
-        members: [player1, player2, player3],
+        members: [testPlayer1, testPlayer2, testPlayer3],
       );
-      testgameWithGroup = Game(name: 'Test Game', group: testgroup);
-      testgameWithPlayers = Game(
+      testGameOnlyGroup = Game(name: 'Test Game with Group', group: testgroup);
+      testGameOnlyPlayers = Game(
         name: 'Test Game with Players',
-        players: [player4, player5, player6],
+        players: [testPlayer4, testPlayer5, testPlayer6],
       );
     });
   });
@@ -54,44 +54,44 @@ void main() {
 
   group('Player-Game Tests', () {
     test('Game has player works correctly', () async {
-      database.gameDao.addGame(game: testgameWithGroup);
-      database.playerDao.addPlayer(player: player1);
+      database.gameDao.addGame(game: testGameOnlyGroup);
+      database.playerDao.addPlayer(player: testPlayer1);
 
       var gameHasPlayers = await database.playerGameDao.gameHasPlayers(
-        gameId: testgameWithGroup.id,
+        gameId: testGameOnlyGroup.id,
       );
 
       expect(gameHasPlayers, false);
 
       database.playerGameDao.addPlayerToGame(
-        gameId: testgameWithGroup.id,
-        playerId: player1.id,
+        gameId: testGameOnlyGroup.id,
+        playerId: testPlayer1.id,
       );
 
       gameHasPlayers = await database.playerGameDao.gameHasPlayers(
-        gameId: testgameWithGroup.id,
+        gameId: testGameOnlyGroup.id,
       );
 
       expect(gameHasPlayers, true);
     });
 
     test('Adding a player to a game works correctly', () async {
-      database.gameDao.addGame(game: testgameWithGroup);
-      database.playerDao.addPlayer(player: player5);
+      database.gameDao.addGame(game: testGameOnlyGroup);
+      database.playerDao.addPlayer(player: testPlayer5);
       database.playerGameDao.addPlayerToGame(
-        gameId: testgameWithGroup.id,
-        playerId: player5.id,
+        gameId: testGameOnlyGroup.id,
+        playerId: testPlayer5.id,
       );
 
       var playerAdded = await database.playerGameDao.isPlayerInGame(
-        gameId: testgameWithGroup.id,
-        playerId: player5.id,
+        gameId: testGameOnlyGroup.id,
+        playerId: testPlayer5.id,
       );
 
       expect(playerAdded, true);
 
       playerAdded = await database.playerGameDao.isPlayerInGame(
-        gameId: testgameWithGroup.id,
+        gameId: testGameOnlyGroup.id,
         playerId: '',
       );
 
@@ -99,20 +99,20 @@ void main() {
     });
 
     test('Removing player from game works correctly', () async {
-      await database.gameDao.addGame(game: testgameWithPlayers);
+      await database.gameDao.addGame(game: testGameOnlyPlayers);
 
-      final playerToRemove = testgameWithPlayers.players![0];
+      final playerToRemove = testGameOnlyPlayers.players![0];
 
       final removed = await database.playerGameDao.removePlayerFromGame(
         playerId: playerToRemove.id,
-        gameId: testgameWithPlayers.id,
+        gameId: testGameOnlyPlayers.id,
       );
       expect(removed, true);
 
       final result = await database.gameDao.getGameById(
-        gameId: testgameWithPlayers.id,
+        gameId: testGameOnlyPlayers.id,
       );
-      expect(result.players!.length, testgameWithPlayers.players!.length - 1);
+      expect(result.players!.length, testGameOnlyPlayers.players!.length - 1);
 
       final playerExists = result.players!.any(
         (p) => p.id == playerToRemove.id,
@@ -121,9 +121,9 @@ void main() {
     });
 
     test('Retrieving players of a game works correctly', () async {
-      await database.gameDao.addGame(game: testgameWithPlayers);
+      await database.gameDao.addGame(game: testGameOnlyPlayers);
       final players = await database.playerGameDao.getPlayersOfGame(
-        gameId: testgameWithPlayers.id,
+        gameId: testGameOnlyPlayers.id,
       );
 
       if (players == null) {
@@ -131,9 +131,9 @@ void main() {
       }
 
       for (int i = 0; i < players.length; i++) {
-        expect(players[i].id, testgameWithPlayers.players![i].id);
-        expect(players[i].name, testgameWithPlayers.players![i].name);
-        expect(players[i].createdAt, testgameWithPlayers.players![i].createdAt);
+        expect(players[i].id, testGameOnlyPlayers.players![i].id);
+        expect(players[i].name, testGameOnlyPlayers.players![i].name);
+        expect(players[i].createdAt, testGameOnlyPlayers.players![i].createdAt);
       }
     });
   });

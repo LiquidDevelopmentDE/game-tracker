@@ -9,11 +9,11 @@ import 'package:game_tracker/data/dto/player.dart';
 
 void main() {
   late AppDatabase database;
-  late Player player1;
-  late Player player2;
-  late Player player3;
-  late Player player4;
-  late Player player5;
+  late Player testPlayer1;
+  late Player testPlayer2;
+  late Player testPlayer3;
+  late Player testPlayer4;
+  late Player testPlayer5;
   late Group testgroup;
   late Game testgameWithGroup;
   late Game testgameWithPlayers;
@@ -30,20 +30,20 @@ void main() {
     );
 
     withClock(fakeClock, () {
-      player1 = Player(name: 'Alice');
-      player2 = Player(name: 'Bob');
-      player3 = Player(name: 'Charlie');
-      player4 = Player(name: 'Diana');
-      player5 = Player(name: 'Eve');
+      testPlayer1 = Player(name: 'Alice');
+      testPlayer2 = Player(name: 'Bob');
+      testPlayer3 = Player(name: 'Charlie');
+      testPlayer4 = Player(name: 'Diana');
+      testPlayer5 = Player(name: 'Eve');
       testgroup = Group(
         name: 'Test Group',
-        members: [player1, player2, player3],
+        members: [testPlayer1, testPlayer2, testPlayer3],
       );
       testgameWithPlayers = Game(
-        name: 'Game with Players',
-        players: [player4, player5],
+        name: 'Test Game with Players',
+        players: [testPlayer4, testPlayer5],
       );
-      testgameWithGroup = Game(name: 'Game with Group', group: testgroup);
+      testgameWithGroup = Game(name: 'Test Game with Group', group: testgroup);
     });
   });
   tearDown(() async {

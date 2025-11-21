@@ -8,10 +8,10 @@ import 'package:game_tracker/data/dto/player.dart';
 
 void main() {
   late AppDatabase database;
-  late Player player1;
-  late Player player2;
-  late Player player3;
-  late Player player4;
+  late Player testPlayer1;
+  late Player testPlayer2;
+  late Player testPlayer3;
+  late Player testPlayer4;
   late Group testgroup;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
@@ -26,13 +26,13 @@ void main() {
     );
 
     withClock(fakeClock, () {
-      player1 = Player(name: 'Alice');
-      player2 = Player(name: 'Bob');
-      player3 = Player(name: 'Charlie');
-      player4 = Player(name: 'Diana');
+      testPlayer1 = Player(name: 'Alice');
+      testPlayer2 = Player(name: 'Bob');
+      testPlayer3 = Player(name: 'Charlie');
+      testPlayer4 = Player(name: 'Diana');
       testgroup = Group(
         name: 'Test Group',
-        members: [player1, player2, player3],
+        members: [testPlayer1, testPlayer2, testPlayer3],
       );
     });
   });
@@ -46,15 +46,15 @@ void main() {
 
     test('Adding a player to a group works correctly', () async {
       await database.groupDao.addGroup(group: testgroup);
-      await database.playerDao.addPlayer(player: player4);
+      await database.playerDao.addPlayer(player: testPlayer4);
       await database.playerGroupDao.addPlayerToGroup(
         groupId: testgroup.id,
-        player: player4,
+        player: testPlayer4,
       );
 
       var playerAdded = await database.playerGroupDao.isPlayerInGroup(
         groupId: testgroup.id,
-        playerId: player4.id,
+        playerId: testPlayer4.id,
       );
 
       expect(playerAdded, true);
