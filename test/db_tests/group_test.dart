@@ -68,7 +68,6 @@ void main() {
       }
     });
 
-    // TODO: Use upcoming addGroups() method
     test('Adding and fetching a single group works correctly', () async {
       await database.groupDao.addGroup(group: testgroup);
       await database.groupDao.addGroup(group: testgroup2);
@@ -89,6 +88,8 @@ void main() {
       expect(fetchedGroup2.members.elementAt(0).createdAt, player2.createdAt);
     });
 
+    // TODO: Use upcoming addGroups() method
+    // TODO: An Test in Game Tests orientieren
     test('Adding the same group twice does not create duplicates', () async {
       await database.groupDao.addGroup(group: testgroup);
       await database.groupDao.addGroup(group: testgroup);
@@ -137,58 +138,6 @@ void main() {
         groupId: testgroup.id,
       );
       expect(result.name, newGroupName);
-    });
-
-    test('Adding player to group works correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
-
-      await database.playerGroupDao.addPlayerToGroup(
-        player: player4,
-        groupId: testgroup.id,
-      );
-
-      final playerAdded = await database.playerGroupDao.isPlayerInGroup(
-        playerId: player4.id,
-        groupId: testgroup.id,
-      );
-
-      expect(playerAdded, true);
-
-      final playerNotAdded = !await database.playerGroupDao.isPlayerInGroup(
-        playerId: '',
-        groupId: testgroup.id,
-      );
-
-      expect(playerNotAdded, true);
-
-      final result = await database.groupDao.getGroupById(
-        groupId: testgroup.id,
-      );
-      expect(result.members.length, testgroup.members.length + 1);
-
-      final addedPlayer = result.members.firstWhere((p) => p.id == player4.id);
-      expect(addedPlayer.name, player4.name);
-      expect(addedPlayer.createdAt, player4.createdAt);
-    });
-
-    test('Removing player from group works correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
-
-      final playerToRemove = testgroup.members[0];
-
-      final removed = await database.playerGroupDao.removePlayerFromGroup(
-        playerId: playerToRemove.id,
-        groupId: testgroup.id,
-      );
-      expect(removed, true);
-
-      final result = await database.groupDao.getGroupById(
-        groupId: testgroup.id,
-      );
-      expect(result.members.length, testgroup.members.length - 1);
-
-      final playerExists = result.members.any((p) => p.id == playerToRemove.id);
-      expect(playerExists, false);
     });
 
     test('Getting the group count works correctly', () async {

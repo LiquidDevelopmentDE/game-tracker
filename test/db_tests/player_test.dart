@@ -23,7 +23,7 @@ void main() {
 
     withClock(fakeClock, () {
       testPlayer = Player(name: 'Test Player');
-      testPlayer2 = Player(name: 'Second Group');
+      testPlayer2 = Player(name: 'Second Player');
     });
   });
   tearDown(() async {
@@ -52,6 +52,7 @@ void main() {
     });
 
     // TODO: Use upcoming addPlayers() method
+    // TODO: An Tests in Game orientieren
     test('Adding and fetching multiple players works correclty', () async {
       await database.playerDao.addPlayer(player: testPlayer);
       await database.playerDao.addPlayer(player: testPlayer2);

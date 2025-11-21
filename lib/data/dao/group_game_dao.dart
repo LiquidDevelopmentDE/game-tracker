@@ -64,8 +64,15 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
     return (count ?? 0) > 0;
   }
 
-  Future<bool> removeGroupFromGame({required String gameId}) async {
-    final query = delete(groupGameTable)..where((g) => g.gameId.equals(gameId));
+  /// Removes the association of a group from a game based on [groupId] and
+  /// [gameId].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> removeGroupFromGame({
+    required String gameId,
+    required String groupId,
+  }) async {
+    final query = delete(groupGameTable)
+      ..where((g) => g.gameId.equals(gameId) & g.groupId.equals(groupId));
     final rowsAffected = await query.go();
     return rowsAffected > 0;
   }
