@@ -104,7 +104,25 @@ void main() {
       expect(result.group, null);
     });
 
-    // TODO: test getGroupOfGame()
-    test('Retrieving group of a game works correctly', () async {});
+    test('Retrieving group of a game works correctly', () async {
+      await database.gameDao.addGame(game: gameWithGroup);
+      final group = await database.groupGameDao.getGroupOfGame(
+        gameId: gameWithGroup.id,
+      );
+
+      if (group == null) {
+        fail('Group should not be null');
+      }
+
+      expect(group.id, testgroup.id);
+      expect(group.name, testgroup.name);
+      expect(group.createdAt, testgroup.createdAt);
+      expect(group.members.length, testgroup.members.length);
+      for (int i = 0; i < group.members.length; i++) {
+        expect(group.members[i].id, testgroup.members[i].id);
+        expect(group.members[i].name, testgroup.members[i].name);
+        expect(group.members[i].createdAt, testgroup.members[i].createdAt);
+      }
+    });
   });
 }
