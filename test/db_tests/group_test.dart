@@ -131,7 +131,7 @@ void main() {
       expect(groupExists, true);
     });
 
-    test('Deleting a group works correclty', () async {
+    test('Deleting a group works correctly', () async {
       await database.groupDao.addGroup(group: testGroup1);
 
       final groupDeleted = await database.groupDao.deleteGroup(

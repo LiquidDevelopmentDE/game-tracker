@@ -35,7 +35,7 @@ void main() {
   });
 
   group('Player Tests', () {
-    test('Adding and fetching single player works correclty', () async {
+    test('Adding and fetching single player works correctly', () async {
       await database.playerDao.addPlayer(player: testPlayer1);
       await database.playerDao.addPlayer(player: testPlayer2);
 
@@ -55,7 +55,7 @@ void main() {
       expect(fetchedPlayer2.createdAt, testPlayer2.createdAt);
     });
 
-    test('Adding and fetching multiple players works correclty', () async {
+    test('Adding and fetching multiple players works correctly', () async {
       // TODO: Use upcoming addPlayers() method
       await database.playerDao.addPlayer(player: testPlayer1);
       await database.playerDao.addPlayer(player: testPlayer2);
@@ -104,7 +104,7 @@ void main() {
       expect(playerExists, true);
     });
 
-    test('Deleting a player works correclty', () async {
+    test('Deleting a player works correctly', () async {
       await database.playerDao.addPlayer(player: testPlayer1);
       final playerDeleted = await database.playerDao.deletePlayer(
         playerId: testPlayer1.id,

@@ -68,7 +68,7 @@ void main() {
   });
 
   group('Game Tests', () {
-    test('Adding and fetching single game works correclty', () async {
+    test('Adding and fetching single game works correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
       final result = await database.gameDao.getGameById(gameId: testGame1.id);
@@ -187,7 +187,7 @@ void main() {
       expect(gameExists, true);
     });
 
-    test('Deleting a game works correclty', () async {
+    test('Deleting a game works correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
       final gameDeleted = await database.gameDao.deleteGame(
