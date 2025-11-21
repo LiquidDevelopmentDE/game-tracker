@@ -110,9 +110,9 @@ void main() {
       expect(removed, true);
 
       final result = await database.gameDao.getGameById(
-        gameId: testgameWithGroup.id,
+        gameId: testgameWithPlayers.id,
       );
-      expect(result.players!.length, testgameWithGroup.players!.length - 1);
+      expect(result.players!.length, testgameWithPlayers.players!.length - 1);
 
       final playerExists = result.players!.any(
         (p) => p.id == playerToRemove.id,
