@@ -60,23 +60,157 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
   /// Also adds associated players and group if they exist.
   Future<void> addGame({required Game game}) async {
     await db.transaction(() async {
-      for (final p in game.players ?? []) {
-        await db.playerDao.addPlayer(player: p);
-        await db.playerGameDao.addPlayerToGame(gameId: game.id, playerId: p.id);
-      }
-      if (game.group != null) {
-        await db.groupDao.addGroup(group: game.group!);
-        await db.groupGameDao.addGroupToGame(game.id, game.group!.id);
-      }
       await into(gameTable).insert(
         GameTableCompanion.insert(
           id: game.id,
           name: game.name,
-          winnerId: game.winner,
+          winnerId: Value(game.winner),
           createdAt: game.createdAt,
         ),
         mode: InsertMode.insertOrReplace,
       );
+
+      if (game.players != null) {
+        await db.playerDao.addPlayers(players: game.players!);
+        for (final p in game.players ?? []) {
+          await db.playerGameDao.addPlayerToGame(
+            gameId: game.id,
+            playerId: p.id,
+          );
+        }
+      }
+
+      if (game.group != null) {
+        await db.groupDao.addGroup(group: game.group!);
+        await db.groupGameDao.addGroupToGame(game.id, game.group!.id);
+      }
+    });
+  }
+
+  Future<void> addGames({required List<Game> games}) async {
+    if (games.isEmpty) return;
+    await db.transaction(() async {
+      // Add all games in batch
+      await db.batch(
+        (b) => b.insertAll(
+          gameTable,
+          games
+              .map(
+                (game) => GameTableCompanion.insert(
+                  id: game.id,
+                  name: game.name,
+                  createdAt: game.createdAt,
+                  winnerId: Value(game.winner),
+                ),
+              )
+              .toList(),
+          mode: InsertMode.insertOrReplace,
+        ),
+      );
+
+      // Add all groups of the games in batch
+      await db.batch(
+        (b) => b.insertAll(
+          db.groupTable,
+          games
+              .where((game) => game.group != null)
+              .map(
+                (game) => GroupTableCompanion.insert(
+                  id: game.group!.id,
+                  name: game.group!.name,
+                  createdAt: game.group!.createdAt,
+                ),
+              )
+              .toList(),
+          mode: InsertMode.insertOrReplace,
+        ),
+      );
+
+      // Add all players of the games in batch (unique)
+      final uniquePlayers = <String, Player>{};
+      for (final game in games) {
+        if (game.players != null) {
+          for (final p in game.players!) {
+            uniquePlayers[p.id] = p;
+          }
+        }
+        // Also include members of groups
+        if (game.group != null) {
+          for (final m in game.group!.members) {
+            uniquePlayers[m.id] = m;
+          }
+        }
+      }
+
+      if (uniquePlayers.isNotEmpty) {
+        await db.batch(
+          (b) => b.insertAll(
+            db.playerTable,
+            uniquePlayers.values
+                .map(
+                  (p) => PlayerTableCompanion.insert(
+                    id: p.id,
+                    name: p.name,
+                    createdAt: p.createdAt,
+                  ),
+                )
+                .toList(),
+            mode: InsertMode.insertOrReplace,
+          ),
+        );
+      }
+
+      // Add all player-game associations in batch
+      await db.batch((b) {
+        for (final game in games) {
+          if (game.players != null) {
+            for (final p in game.players ?? []) {
+              b.insert(
+                db.playerGameTable,
+                PlayerGameTableCompanion.insert(
+                  gameId: game.id,
+                  playerId: p.id,
+                ),
+                mode: InsertMode.insertOrReplace,
+              );
+            }
+          }
+        }
+      });
+
+      // Add all player-group associations in batch
+      await db.batch((b) {
+        for (final game in games) {
+          if (game.group != null) {
+            for (final m in game.group!.members) {
+              b.insert(
+                db.playerGroupTable,
+                PlayerGroupTableCompanion.insert(
+                  playerId: m.id,
+                  groupId: game.group!.id,
+                ),
+                mode: InsertMode.insertOrReplace,
+              );
+            }
+          }
+        }
+      });
+
+      // Add all group-game associations in batch
+      await db.batch((b) {
+        for (final game in games) {
+          if (game.group != null) {
+            b.insert(
+              db.groupGameTable,
+              GroupGameTableCompanion.insert(
+                gameId: game.id,
+                groupId: game.group!.id,
+              ),
+              mode: InsertMode.insertOrReplace,
+            );
+          }
+        }
+      });
     });
   }
 
@@ -103,5 +237,13 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     final query = select(gameTable)..where((g) => g.id.equals(gameId));
     final result = await query.getSingleOrNull();
     return result != null;
+  }
+
+  /// Deletes all games from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteAllGames() async {
+    final query = delete(gameTable);
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
   }
 }

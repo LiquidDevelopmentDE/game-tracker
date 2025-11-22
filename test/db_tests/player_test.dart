@@ -56,11 +56,9 @@ void main() {
     });
 
     test('Adding and fetching multiple players works correctly', () async {
-      // TODO: Use upcoming addPlayers() method
-      await database.playerDao.addPlayer(player: testPlayer1);
-      await database.playerDao.addPlayer(player: testPlayer2);
-      await database.playerDao.addPlayer(player: testPlayer3);
-      await database.playerDao.addPlayer(player: testPlayer4);
+      await database.playerDao.addPlayers(
+        players: [testPlayer1, testPlayer2, testPlayer3, testPlayer4],
+      );
 
       final allPlayers = await database.playerDao.getAllPlayers();
       expect(allPlayers.length, 4);

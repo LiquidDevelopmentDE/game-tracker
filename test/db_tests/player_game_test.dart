@@ -63,7 +63,7 @@ void main() {
 
       expect(gameHasPlayers, false);
 
-      database.playerGameDao.addPlayerToGame(
+      await database.playerGameDao.addPlayerToGame(
         gameId: testGameOnlyGroup.id,
         playerId: testPlayer1.id,
       );
