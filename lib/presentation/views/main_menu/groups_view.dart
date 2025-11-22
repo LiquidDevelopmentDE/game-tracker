@@ -93,7 +93,9 @@ class _GroupsViewState extends State<GroupsView> {
                       itemCount: groups.length + 1,
                       itemBuilder: (BuildContext context, int index) {
                         if (index == groups.length) {
-                          return const SizedBox(height: 60);
+                          return SizedBox(
+                            height: MediaQuery.paddingOf(context).bottom - 20,
+                          );
                         }
                         return GroupTile(group: groups[index]);
                       },
