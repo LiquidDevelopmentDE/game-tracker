@@ -91,20 +91,17 @@ void main() {
       final testGroups = {testGroup1.id: testGroup1, testGroup2.id: testGroup2};
 
       for (final group in allGroups) {
-        final expectedGroup = testGroups[group.id]!;
+        final testGroup = testGroups[group.id]!;
 
-        expect(group.id, expectedGroup.id);
-        expect(group.name, expectedGroup.name);
-        expect(group.createdAt, expectedGroup.createdAt);
+        expect(group.id, testGroup.id);
+        expect(group.name, testGroup.name);
+        expect(group.createdAt, testGroup.createdAt);
 
-        expect(group.members.length, expectedGroup.members.length);
-        for (int i = 0; i < expectedGroup.members.length; i++) {
-          expect(group.members[i].id, expectedGroup.members[i].id);
-          expect(group.members[i].name, expectedGroup.members[i].name);
-          expect(
-            group.members[i].createdAt,
-            expectedGroup.members[i].createdAt,
-          );
+        expect(group.members.length, testGroup.members.length);
+        for (int i = 0; i < testGroup.members.length; i++) {
+          expect(group.members[i].id, testGroup.members[i].id);
+          expect(group.members[i].name, testGroup.members[i].name);
+          expect(group.members[i].createdAt, testGroup.members[i].createdAt);
         }
       }
     });

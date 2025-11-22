@@ -64,7 +64,7 @@ void main() {
       expect(allPlayers.length, 4);
 
       // Map for connencting fetched players with expected players
-      final testPlayer = {
+      final testPlayers = {
         testPlayer1.id: testPlayer1,
         testPlayer2.id: testPlayer2,
         testPlayer3.id: testPlayer3,
@@ -72,11 +72,11 @@ void main() {
       };
 
       for (final player in allPlayers) {
-        final expectedPlayer = testPlayer[player.id]!;
+        final testPlayer = testPlayers[player.id]!;
 
-        expect(player.id, expectedPlayer.id);
-        expect(player.name, expectedPlayer.name);
-        expect(player.createdAt, expectedPlayer.createdAt);
+        expect(player.id, testPlayer.id);
+        expect(player.name, testPlayer.name);
+        expect(player.createdAt, testPlayer.createdAt);
       }
     });
 
