@@ -57,7 +57,7 @@ class _StatisticsViewState extends State<StatisticsView> {
             enabled: isLoading,
             enableSwitchAnimation: true,
             switchAnimationConfig: SwitchAnimationConfig(
-              duration: const Duration(milliseconds: 1000),
+              duration: const Duration(milliseconds: 200),
               switchInCurve: Curves.linear,
               switchOutCurve: Curves.linear,
               transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
