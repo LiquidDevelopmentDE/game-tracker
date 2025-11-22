@@ -55,50 +55,49 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       body: tabs[currentIndex],
       extendBody: true,
       bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              color: CustomTheme.primaryColor,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: SizedBox(
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    NavbarItem(
-                      index: 0,
-                      isSelected: currentIndex == 0,
-                      icon: Icons.home_rounded,
-                      label: 'Home',
-                      onTabTapped: onTabTapped,
-                    ),
-                    NavbarItem(
-                      index: 1,
-                      isSelected: currentIndex == 1,
-                      icon: Icons.gamepad_rounded,
-                      label: 'Games',
-                      onTabTapped: onTabTapped,
-                    ),
-                    NavbarItem(
-                      index: 2,
-                      isSelected: currentIndex == 2,
-                      icon: Icons.group_rounded,
-                      label: 'Groups',
-                      onTabTapped: onTabTapped,
-                    ),
-                    NavbarItem(
-                      index: 3,
-                      isSelected: currentIndex == 3,
-                      icon: Icons.bar_chart_rounded,
-                      label: 'Stats',
-                      onTabTapped: onTabTapped,
-                    ),
-                  ],
-                ),
+        minimum: const EdgeInsets.only(bottom: 30),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: CustomTheme.primaryColor,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: SizedBox(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  NavbarItem(
+                    index: 0,
+                    isSelected: currentIndex == 0,
+                    icon: Icons.home_rounded,
+                    label: 'Home',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 1,
+                    isSelected: currentIndex == 1,
+                    icon: Icons.gamepad_rounded,
+                    label: 'Games',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 2,
+                    isSelected: currentIndex == 2,
+                    icon: Icons.group_rounded,
+                    label: 'Groups',
+                    onTabTapped: onTabTapped,
+                  ),
+                  NavbarItem(
+                    index: 3,
+                    isSelected: currentIndex == 3,
+                    icon: Icons.bar_chart_rounded,
+                    label: 'Stats',
+                    onTabTapped: onTabTapped,
+                  ),
+                ],
               ),
             ),
           ),
