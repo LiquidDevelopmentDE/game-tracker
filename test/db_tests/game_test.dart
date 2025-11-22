@@ -50,15 +50,18 @@ void main() {
         name: 'First Test Game',
         group: testGroup1,
         players: [testPlayer4, testPlayer5],
+        winner: testPlayer4,
       );
       testGame2 = Game(
         name: 'Second Test Game',
         group: testGroup2,
         players: [testPlayer1, testPlayer2, testPlayer3],
+        winner: testPlayer2,
       );
       testGameOnlyPlayers = Game(
         name: 'Test Game with Players',
         players: [testPlayer1, testPlayer2, testPlayer3],
+        winner: testPlayer3,
       );
       testGameOnlyGroup = Game(name: 'Test Game with Group', group: testGroup2);
     });
@@ -75,8 +78,15 @@ void main() {
 
       expect(result.id, testGame1.id);
       expect(result.name, testGame1.name);
-      expect(result.winner, testGame1.winner);
       expect(result.createdAt, testGame1.createdAt);
+
+      if (result.winner != null && testGame1.winner != null) {
+        expect(result.winner!.id, testGame1.winner!.id);
+        expect(result.winner!.name, testGame1.winner!.name);
+        expect(result.winner!.createdAt, testGame1.winner!.createdAt);
+      } else {
+        expect(result.winner, testGame1.winner);
+      }
 
       if (result.group != null) {
         expect(result.group!.members.length, testGroup1.members.length);
@@ -123,7 +133,13 @@ void main() {
         expect(game.id, testGame.id);
         expect(game.name, testGame.name);
         expect(game.createdAt, testGame.createdAt);
-        expect(game.winner, testGame.winner);
+        if (game.winner != null && testGame.winner != null) {
+          expect(game.winner!.id, testGame.winner!.id);
+          expect(game.winner!.name, testGame.winner!.name);
+          expect(game.winner!.createdAt, testGame.winner!.createdAt);
+        } else {
+          expect(game.winner, testGame.winner);
+        }
 
         // Group-Checks
         if (testGame.group != null) {
