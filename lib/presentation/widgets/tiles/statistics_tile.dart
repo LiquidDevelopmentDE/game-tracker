@@ -17,13 +17,13 @@ class StatisticsTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final double width;
-  final List<(String, int)> values;
+  final List<(String, num)> values;
   final int itemCount;
   final Color barColor;
 
   @override
   Widget build(BuildContext context) {
-    final maxBarWidth = MediaQuery.of(context).size.width * 0.7;
+    final maxBarWidth = MediaQuery.of(context).size.width * 0.65;
 
     return InfoTile(
       width: width,
