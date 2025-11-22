@@ -103,7 +103,7 @@ class _GroupsViewState extends State<GroupsView> {
           ),
 
           Positioned(
-            bottom: 80,
+            bottom: MediaQuery.paddingOf(context).bottom + 15,
             child: CustomWidthButton(
               text: 'Create Group',
               sizeRelativeToWidth: 0.90,
