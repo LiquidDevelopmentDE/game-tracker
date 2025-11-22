@@ -70,12 +70,14 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       backgroundColor: CustomTheme.backgroundColor,
       body: tabs[currentIndex],
       extendBody: true,
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 8.0),
-        child: Material(
-          elevation: 10,
-          borderRadius: BorderRadius.circular(24),
-          color: CustomTheme.primaryColor,
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 30),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: CustomTheme.primaryColor,
+          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
             child: SizedBox(
