@@ -19,7 +19,7 @@
             },
             "players": {
               "type": [
-                "object",
+                "array",
                 "null"
               ],
               "properties": {
@@ -88,7 +88,7 @@
             ]
           },
           "winner": {
-            "type": "string"
+            "type": ["string","null"]
           },
           "required": [
             "id",
