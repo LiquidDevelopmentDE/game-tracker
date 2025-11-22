@@ -66,19 +66,19 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: CustomTheme.backgroundColor,
+      appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
-        appBar: AppBar(
-          backgroundColor: CustomTheme.backgroundColor,
-          scrolledUnderElevation: 0,
-          title: const Text(
-            'Create new group',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+        scrolledUnderElevation: 0,
+        title: const Text(
+          'Create new group',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        body: Column(
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
