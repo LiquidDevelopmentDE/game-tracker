@@ -69,9 +69,9 @@ class _GroupsViewState extends State<GroupsView> {
                   }
                   final bool isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
-                  final List<Group> groups = isLoading
-                      ? skeletonData
-                      : (snapshot.data ?? []);
+                  final List<Group> groups =
+                      isLoading ? skeletonData : (snapshot.data ?? [])
+                        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
                   return Skeletonizer(
                     effect: PulseEffect(
                       from: Colors.grey[800]!,
