@@ -84,7 +84,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                     title: 'Wins per Player',
                     width: constraints.maxWidth * 0.95,
                     values: winCounts,
-                    itemCount: 6,
+                    itemCount: 3,
                     barColor: Colors.blue,
                   ),
                   SizedBox(height: constraints.maxHeight * 0.02),
@@ -93,7 +93,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                     title: 'Winrate per Player',
                     width: constraints.maxWidth * 0.95,
                     values: winRates,
-                    itemCount: 6,
+                    itemCount: 5,
                     barColor: Colors.orange[700]!,
                   ),
                   SizedBox(height: constraints.maxHeight * 0.02),
@@ -102,7 +102,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                     title: 'Games per Player',
                     width: constraints.maxWidth * 0.95,
                     values: gameCounts,
-                    itemCount: 6,
+                    itemCount: 10,
                     barColor: Colors.green,
                   ),
 
@@ -127,7 +127,6 @@ class _StatisticsViewState extends State<StatisticsView> {
     // Getting the winners
     for (var game in games) {
       final winner = game.winner;
-      print('Game: ${game.id}, Winner: $winner');
       if (winner != null && winner.isNotEmpty) {
         final index = winCounts.indexWhere((entry) => entry.$1 == winner);
         if (index != -1) {
@@ -223,17 +222,21 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   // dart
   List<(String, double)> computeWinRatePercent({
-    required List<(String, int)> wins, // [(name, wins)]
-    required List<(String, int)> games, // [(name, games)]
+    required List<(String, int)> wins,
+    required List<(String, int)> games,
   }) {
     final Map<String, int> winsMap = {for (var e in wins) e.$1: e.$2};
     final Map<String, int> gamesMap = {for (var e in games) e.$1: e.$2};
 
+    // Get all unique player names
     final names = {...winsMap.keys, ...gamesMap.keys};
 
+    // Calculate win rates
     final result = names.map((name) {
       final int w = winsMap[name] ?? 0;
       final int g = gamesMap[name] ?? 0;
+      // Calculate percentage and round to 2 decimal places
+      // Avoid division by zero
       final double percent = (g > 0)
           ? double.parse(((w / g)).toStringAsFixed(2))
           : 0;
