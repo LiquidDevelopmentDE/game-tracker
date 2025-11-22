@@ -119,52 +119,47 @@ void main() {
       };
 
       for (final game in allGames) {
-        final expectedGame = testGames[game.id]!;
+        final testGame = testGames[game.id]!;
 
         // Game-Checks
-        expect(game.id, expectedGame.id);
-        expect(game.name, expectedGame.name);
-        expect(game.createdAt, expectedGame.createdAt);
-        expect(game.winner, expectedGame.winner);
+        expect(game.id, testGame.id);
+        expect(game.name, testGame.name);
+        expect(game.createdAt, testGame.createdAt);
+        expect(game.winner, testGame.winner);
 
         // Group-Checks
-        if (expectedGame.group != null) {
-          expect(game.group!.id, expectedGame.group!.id);
-          expect(game.group!.name, expectedGame.group!.name);
-          expect(game.group!.createdAt, expectedGame.group!.createdAt);
+        if (testGame.group != null) {
+          expect(game.group!.id, testGame.group!.id);
+          expect(game.group!.name, testGame.group!.name);
+          expect(game.group!.createdAt, testGame.group!.createdAt);
 
           // Group Members-Checks
-          expect(
-            game.group!.members.length,
-            expectedGame.group!.members.length,
-          );
-          for (int i = 0; i < expectedGame.group!.members.length; i++) {
-            expect(
-              game.group!.members[i].id,
-              expectedGame.group!.members[i].id,
-            );
+          expect(game.group!.members.length, testGame.group!.members.length);
+          for (int i = 0; i < testGame.group!.members.length; i++) {
+            expect(game.group!.members[i].id, testGame.group!.members[i].id);
             expect(
               game.group!.members[i].name,
-              expectedGame.group!.members[i].name,
+              testGame.group!.members[i].name,
             );
             expect(
               game.group!.members[i].createdAt,
-              expectedGame.group!.members[i].createdAt,
+              testGame.group!.members[i].createdAt,
             );
           }
+        } else {
+          expect(game.group, null);
         }
 
         // Players-Checks
-        if (expectedGame.players != null) {
-          expect(game.players!.length, expectedGame.players!.length);
-          for (int i = 0; i < expectedGame.players!.length; i++) {
-            expect(game.players![i].id, expectedGame.players![i].id);
-            expect(game.players![i].name, expectedGame.players![i].name);
-            expect(
-              game.players![i].createdAt,
-              expectedGame.players![i].createdAt,
-            );
+        if (testGame.players != null) {
+          expect(game.players!.length, testGame.players!.length);
+          for (int i = 0; i < testGame.players!.length; i++) {
+            expect(game.players![i].id, testGame.players![i].id);
+            expect(game.players![i].name, testGame.players![i].name);
+            expect(game.players![i].createdAt, testGame.players![i].createdAt);
           }
+        } else {
+          expect(game.players, null);
         }
       }
     });
