@@ -49,8 +49,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   @override
   void dispose() {
     _groupNameController.dispose();
-    _searchBarController
-        .dispose(); // Listener entfernen und Controller aufräumen
+    _searchBarController.dispose();
     super.dispose();
   }
 
@@ -123,12 +122,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           .trim()
                           .isNotEmpty,
                       onTrailingButtonPressed: () async {
-                        addNewPlayerFromSearch(
-                          context: context,
-                          searchBarController: _searchBarController,
-                          db: db,
-                          loadPlayerList: loadPlayerList,
-                        );
+                        addNewPlayerFromSearch(context: context);
                       },
                       onChanged: (value) {
                         setState(() {
@@ -339,48 +333,47 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       ),
     );
   }
-}
 
-/// Adds a new player to the database from the search bar input.
-/// Shows a snackbar indicating success or failure.
-/// [context] - BuildContext to show the snackbar.
-/// [searchBarController] - TextEditingController of the search bar.
-/// [db] - AppDatabase instance to interact with the database.
-/// [loadPlayerList] - Function to reload the player list after adding.
-void addNewPlayerFromSearch({
-  required BuildContext context,
-  required TextEditingController searchBarController,
-  required AppDatabase db,
-  required Function loadPlayerList,
-}) async {
-  String playerName = searchBarController.text.trim();
-  bool success = await db.playerDao.addPlayer(player: Player(name: playerName));
-  if (!context.mounted) return;
-  if (success) {
-    loadPlayerList();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: CustomTheme.boxColor,
-        content: Center(
-          child: Text(
-            'Successfully added player $playerName.',
-            style: const TextStyle(color: Colors.white),
+  /// Adds a new player to the database from the search bar input.
+  /// Shows a snackbar indicating success or failure.
+  /// [context] - BuildContext to show the snackbar.
+  void addNewPlayerFromSearch({required BuildContext context}) async {
+    String playerName = _searchBarController.text.trim();
+    Player createdPlayer = Player(name: playerName);
+    bool success = await db.playerDao.addPlayer(player: createdPlayer);
+    if (!context.mounted) return;
+    if (success) {
+      selectedPlayers.add(createdPlayer);
+      allPlayers.add(createdPlayer);
+      setState(() {
+        _searchBarController.clear();
+        suggestedPlayers = allPlayers.where((player) {
+          return !selectedPlayers.contains(player);
+        }).toList();
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: CustomTheme.boxColor,
+          content: Center(
+            child: Text(
+              'Successfully added player $playerName.',
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
         ),
-      ),
-    );
-    searchBarController.clear();
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: CustomTheme.boxColor,
-        content: Center(
-          child: Text(
-            'Could not add player $playerName.',
-            style: const TextStyle(color: Colors.white),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: CustomTheme.boxColor,
+          content: Center(
+            child: Text(
+              'Could not add player $playerName.',
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
