@@ -16,7 +16,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
     final result = await query.get();
     return Future.wait(
       result.map((groupData) async {
-        final members = await db.playerGroupDao.getPlayersOfGroupById(
+        final members = await db.playerGroupDao.getPlayersOfGroup(
           groupId: groupData.id,
         );
         return Group(
@@ -34,7 +34,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
     final query = select(groupTable)..where((g) => g.id.equals(groupId));
     final result = await query.getSingle();
 
-    List<Player> members = await db.playerGroupDao.getPlayersOfGroupById(
+    List<Player> members = await db.playerGroupDao.getPlayersOfGroup(
       groupId: groupId,
     );
 
@@ -57,6 +57,10 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
             name: group.name,
             createdAt: group.createdAt,
           ),
+          mode: InsertMode.insertOrReplace,
+        );
+        await Future.wait(
+          group.members.map((player) => db.playerDao.addPlayer(player: player)),
         );
         await db.batch(
           (b) => b.insertAll(
@@ -69,15 +73,92 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
                   ),
                 )
                 .toList(),
+            mode: InsertMode.insertOrReplace,
           ),
-        );
-        await Future.wait(
-          group.members.map((player) => db.playerDao.addPlayer(player: player)),
         );
       });
       return true;
     }
     return false;
+  }
+
+  /// Adds multiple groups to the database.
+  /// Also adds the group's members to the [PlayerGroupTable].
+  Future<void> addGroups({required List<Group> groups}) async {
+    if (groups.isEmpty) return;
+    await db.transaction(() async {
+      // Deduplicate groups by id - keep first occurrence
+      final Map<String, Group> uniqueGroups = {};
+      for (final g in groups) {
+        uniqueGroups.putIfAbsent(g.id, () => g);
+      }
+
+      // Insert unique groups in batch
+      await db.batch(
+        (b) => b.insertAll(
+          groupTable,
+          uniqueGroups.values
+              .map(
+                (group) => GroupTableCompanion.insert(
+                  id: group.id,
+                  name: group.name,
+                  createdAt: group.createdAt,
+                ),
+              )
+              .toList(),
+          mode: InsertMode.insertOrReplace,
+        ),
+      );
+
+      // Collect unique players from all groups
+      final uniquePlayers = <String, Player>{};
+      for (final g in uniqueGroups.values) {
+        for (final m in g.members) {
+          uniquePlayers[m.id] = m;
+        }
+      }
+
+      if (uniquePlayers.isNotEmpty) {
+        await db.batch(
+          (b) => b.insertAll(
+            db.playerTable,
+            uniquePlayers.values
+                .map(
+                  (p) => PlayerTableCompanion.insert(
+                    id: p.id,
+                    name: p.name,
+                    createdAt: p.createdAt,
+                  ),
+                )
+                .toList(),
+            mode: InsertMode.insertOrReplace,
+          ),
+        );
+      }
+
+      // Prepare all player-group associations in one list (unique pairs)
+      final Set<String> seenPairs = {};
+      final List<PlayerGroupTableCompanion> pgRows = [];
+      for (final g in uniqueGroups.values) {
+        for (final m in g.members) {
+          final key = '${m.id}|${g.id}';
+          if (!seenPairs.contains(key)) {
+            seenPairs.add(key);
+            pgRows.add(
+              PlayerGroupTableCompanion.insert(playerId: m.id, groupId: g.id),
+            );
+          }
+        }
+      }
+
+      if (pgRows.isNotEmpty) {
+        await db.batch((b) {
+          for (final pg in pgRows) {
+            b.insert(db.playerGroupTable, pg, mode: InsertMode.insertOrReplace);
+          }
+        });
+      }
+    });
   }
 
   /// Deletes the group with the given [id] from the database.
@@ -116,5 +197,13 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
     final query = select(groupTable)..where((g) => g.id.equals(groupId));
     final result = await query.getSingleOrNull();
     return result != null;
+  }
+
+  /// Deletes all groups from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteAllGroups() async {
+    final query = delete(groupTable);
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
   }
 }

@@ -42,10 +42,34 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
           name: player.name,
           createdAt: player.createdAt,
         ),
+        mode: InsertMode.insertOrReplace,
       );
       return true;
     }
     return false;
+  }
+
+  /// Adds multiple [players] to the database in a batch operation.
+  Future<bool> addPlayers({required List<Player> players}) async {
+    if (players.isEmpty) return false;
+
+    await db.batch(
+      (b) => b.insertAll(
+        playerTable,
+        players
+            .map(
+              (player) => PlayerTableCompanion.insert(
+                id: player.id,
+                name: player.name,
+                createdAt: player.createdAt,
+              ),
+            )
+            .toList(),
+        mode: InsertMode.insertOrReplace,
+      ),
+    );
+
+    return true;
   }
 
   /// Deletes the player with the given [id] from the database.
@@ -81,5 +105,13 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
             .map((row) => row.read(playerTable.id.count()))
             .getSingle();
     return count ?? 0;
+  }
+
+  /// Deletes all players from the database.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> deleteAllPlayers() async {
+    final query = delete(playerTable);
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
   }
 }

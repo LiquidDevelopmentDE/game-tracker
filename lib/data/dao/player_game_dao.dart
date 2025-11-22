@@ -10,6 +10,34 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
     with _$PlayerGameDaoMixin {
   PlayerGameDao(super.db);
 
+  /// Associates a player with a game by inserting a record into the
+  /// [PlayerGameTable].
+  Future<void> addPlayerToGame({
+    required String gameId,
+    required String playerId,
+  }) async {
+    await into(playerGameTable).insert(
+      PlayerGameTableCompanion.insert(playerId: playerId, gameId: gameId),
+      mode: InsertMode.insertOrReplace,
+    );
+  }
+
+  /// Retrieves a list of [Player]s associated with the given [gameId].
+  /// Returns null if no players are found.
+  Future<List<Player>?> getPlayersOfGame({required String gameId}) async {
+    final result = await (select(
+      playerGameTable,
+    )..where((p) => p.gameId.equals(gameId))).get();
+
+    if (result.isEmpty) return null;
+
+    final futures = result.map(
+      (row) => db.playerDao.getPlayerById(playerId: row.playerId),
+    );
+    final players = await Future.wait(futures);
+    return players;
+  }
+
   /// Checks if there are any players associated with the given [gameId].
   /// Returns `true` if there are players, otherwise `false`.
   Future<bool> gameHasPlayers({required String gameId}) async {
@@ -22,30 +50,33 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
     return (count ?? 0) > 0;
   }
 
-  /// Retrieves a list of [Player]s associated with the given [gameId].
-  /// Returns an empty list if no players are found.
-  Future<List<Player>> getPlayersByGameId({required String gameId}) async {
-    final result = await (select(
-      playerGameTable,
-    )..where((p) => p.gameId.equals(gameId))).get();
-
-    if (result.isEmpty) return <Player>[];
-
-    final futures = result.map(
-      (row) => db.playerDao.getPlayerById(playerId: row.playerId),
-    );
-    final players = await Future.wait(futures);
-    return players.whereType<Player>().toList();
-  }
-
-  /// Associates a player with a game by inserting a record into the
-  /// [PlayerGameTable].
-  Future<void> addPlayerToGame({
+  /// Checks if a specific player is associated with a specific game.
+  /// Returns `true` if the player is in the game, otherwise `false`.
+  Future<bool> isPlayerInGame({
     required String gameId,
     required String playerId,
   }) async {
-    await into(playerGameTable).insert(
-      PlayerGameTableCompanion.insert(playerId: playerId, gameId: gameId),
-    );
+    final count =
+        await (selectOnly(playerGameTable)
+              ..where(playerGameTable.gameId.equals(gameId))
+              ..where(playerGameTable.playerId.equals(playerId))
+              ..addColumns([playerGameTable.playerId.count()]))
+            .map((row) => row.read(playerGameTable.playerId.count()))
+            .getSingle();
+    return (count ?? 0) > 0;
+  }
+
+  /// Removes the association of a player with a game by deleting the record
+  /// from the [PlayerGameTable].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> removePlayerFromGame({
+    required String gameId,
+    required String playerId,
+  }) async {
+    final query = delete(playerGameTable)
+      ..where((pg) => pg.gameId.equals(gameId))
+      ..where((pg) => pg.playerId.equals(playerId));
+    final rowsAffected = await query.go();
+    return rowsAffected > 0;
   }
 }

@@ -17,12 +17,7 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar>
     with SingleTickerProviderStateMixin {
   int currentIndex = 0;
-  final List<Widget> tabs = [
-    const HomeView(),
-    const GameHistoryView(),
-    const GroupsView(),
-    const StatisticsView(),
-  ];
+  int tabKeyCount = 0;
 
   @override
   void initState() {
@@ -31,6 +26,22 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
 
   @override
   Widget build(BuildContext context) {
+    // Pretty ugly but works
+    final List<Widget> tabs = [
+      KeyedSubtree(key: ValueKey('home_$tabKeyCount'), child: const HomeView()),
+      KeyedSubtree(
+        key: ValueKey('games_$tabKeyCount'),
+        child: const GameHistoryView(),
+      ),
+      KeyedSubtree(
+        key: ValueKey('groups_$tabKeyCount'),
+        child: const GroupsView(),
+      ),
+      KeyedSubtree(
+        key: ValueKey('stats_$tabKeyCount'),
+        child: const StatisticsView(),
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -42,10 +53,15 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
         scrolledUnderElevation: 0,
         actions: [
           IconButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsView()),
-            ),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsView()),
+              );
+              setState(() {
+                tabKeyCount++;
+              });
+            },
             icon: const Icon(Icons.settings),
           ),
         ],
