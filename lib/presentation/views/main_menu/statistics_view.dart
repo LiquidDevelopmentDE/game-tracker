@@ -16,9 +16,9 @@ class StatisticsView extends StatefulWidget {
 class _StatisticsViewState extends State<StatisticsView> {
   late Future<List<Game>> _gamesFuture;
   late Future<List<Player>> _playersFuture;
-  List<(String, int)> winCounts = List.filled(6, ('Skeleton Player', 5));
-  List<(String, int)> gameCounts = List.filled(6, ('Skeleton Player', 5));
-
+  List<(String, int)> winCounts = List.filled(6, ('Skeleton Player', 1));
+  List<(String, int)> gameCounts = List.filled(6, ('Skeleton Player', 1));
+  List<(String, double)> winRates = List.filled(6, ('Skeleton Player', 1));
   bool isLoading = true;
 
   @override
@@ -29,11 +29,12 @@ class _StatisticsViewState extends State<StatisticsView> {
     _playersFuture = db.playerDao.getAllPlayers();
 
     Future.wait([_gamesFuture, _playersFuture]).then((results) async {
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 200));
       final games = results[0] as List<Game>;
       final players = results[1] as List<Player>;
       winCounts = _calculateWinsForAllPlayers(games, players);
       gameCounts = _calculateGameAmountsForAllPlayers(games, players);
+      winRates = computeWinRatePercent(wins: winCounts, games: gameCounts);
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -46,22 +47,31 @@ class _StatisticsViewState extends State<StatisticsView> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return Skeletonizer(
-          effect: PulseEffect(
-            from: Colors.grey[800]!,
-            to: Colors.grey[600]!,
-            duration: const Duration(milliseconds: 800),
-          ),
-          enabled: isLoading,
-          enableSwitchAnimation: true,
-          switchAnimationConfig: const SwitchAnimationConfig(
-            duration: Duration(milliseconds: 200),
-            switchInCurve: Curves.linear,
-            switchOutCurve: Curves.linear,
-            transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
-            layoutBuilder: AnimatedSwitcher.defaultLayoutBuilder,
-          ),
-          child: SingleChildScrollView(
+        return SingleChildScrollView(
+          child: Skeletonizer(
+            effect: PulseEffect(
+              from: Colors.grey[800]!,
+              to: Colors.grey[600]!,
+              duration: const Duration(milliseconds: 800),
+            ),
+            enabled: isLoading,
+            enableSwitchAnimation: true,
+            switchAnimationConfig: SwitchAnimationConfig(
+              duration: const Duration(milliseconds: 1000),
+              switchInCurve: Curves.linear,
+              switchOutCurve: Curves.linear,
+              transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
+              layoutBuilder:
+                  (Widget? currentChild, List<Widget> previousChildren) {
+                    return Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        ...previousChildren,
+                        if (currentChild != null) currentChild,
+                      ],
+                    );
+                  },
+            ),
             child: ConstrainedBox(
               constraints: BoxConstraints(minWidth: constraints.maxWidth),
               child: Column(
@@ -80,12 +90,22 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: constraints.maxHeight * 0.02),
                   StatisticsTile(
                     icon: Icons.casino,
+                    title: 'Winrate per Player',
+                    width: constraints.maxWidth * 0.95,
+                    values: winRates,
+                    itemCount: 6,
+                    barColor: Colors.orange[700]!,
+                  ),
+                  SizedBox(height: constraints.maxHeight * 0.02),
+                  StatisticsTile(
+                    icon: Icons.casino,
                     title: 'Games per Player',
                     width: constraints.maxWidth * 0.95,
                     values: gameCounts,
                     itemCount: 6,
                     barColor: Colors.green,
                   ),
+
                   SizedBox(height: MediaQuery.paddingOf(context).bottom),
                 ],
               ),
@@ -199,5 +219,37 @@ class _StatisticsViewState extends State<StatisticsView> {
     gameCounts.sort((a, b) => b.$2.compareTo(a.$2));
 
     return gameCounts;
+  }
+
+  // dart
+  List<(String, double)> computeWinRatePercent({
+    required List<(String, int)> wins, // [(name, wins)]
+    required List<(String, int)> games, // [(name, games)]
+  }) {
+    final Map<String, int> winsMap = {for (var e in wins) e.$1: e.$2};
+    final Map<String, int> gamesMap = {for (var e in games) e.$1: e.$2};
+
+    final names = {...winsMap.keys, ...gamesMap.keys};
+
+    final result = names.map((name) {
+      final int w = winsMap[name] ?? 0;
+      final int g = gamesMap[name] ?? 0;
+      final double percent = (g > 0)
+          ? double.parse(((w / g)).toStringAsFixed(2))
+          : 0;
+      return (name, percent);
+    }).toList();
+
+    // Sort the result: first by winrate descending,
+    // then by wins descending in case of a tie
+    result.sort((a, b) {
+      final cmp = b.$2.compareTo(a.$2);
+      if (cmp != 0) return cmp;
+      final wa = winsMap[a.$1] ?? 0;
+      final wb = winsMap[b.$1] ?? 0;
+      return wb.compareTo(wa);
+    });
+
+    return result;
   }
 }
