@@ -171,7 +171,7 @@ class _HomeViewState extends State<HomeView> {
                                         ))
                                       .take(2)
                                       .toList();
-                              if (games.length > 0)
+                              if (games.isNotEmpty) {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,11 +212,12 @@ class _HomeViewState extends State<HomeView> {
                                     ],
                                   ],
                                 );
-                              else
+                              } else {
                                 return const Center(
                                   heightFactor: 4,
                                   child: Text('No recent games available.'),
                                 );
+                              }
                             },
                       ),
                     ),
