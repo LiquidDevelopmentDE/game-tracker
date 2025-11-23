@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/data/dto/game.dart';
+import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/game_history_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
@@ -57,7 +60,24 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const GameResultView(),
+                  builder: (_) => GameResultView(
+                    game: Game(
+                      name: "Test Game",
+                      players: [
+                        Player(name: "Petrus"),
+                        Player(name: "Peter"),
+                        Player(name: "Petra"),
+                      ],
+                      group: Group(
+                        name: "Die Petris",
+                        members: [
+                          Player(name: "Petralia"),
+                          Player(name: "Petrenlia"),
+                          Player(name: "Petrumlia"),
+                        ],
+                      ),
+                    ),
+                  ),
                 ), //TODO Replace with Settingsview
               );
               setState(() {
