@@ -29,7 +29,7 @@ class _StatisticsViewState extends State<StatisticsView> {
     _playersFuture = db.playerDao.getAllPlayers();
 
     Future.wait([_gamesFuture, _playersFuture]).then((results) async {
-      await Future.delayed(const Duration(milliseconds: 200));
+      await Future.delayed(const Duration(milliseconds: 250));
       final games = results[0] as List<Game>;
       final players = results[1] as List<Player>;
       winCounts = _calculateWinsForAllPlayers(games, players);
