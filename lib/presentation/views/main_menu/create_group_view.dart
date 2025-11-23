@@ -54,7 +54,11 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   }
 
   void loadPlayerList() {
-    _allPlayersFuture = db.playerDao.getAllPlayers();
+    _allPlayersFuture = Future.delayed(
+      const Duration(milliseconds: 400),
+      () => db.playerDao.getAllPlayers(),
+    );
+    suggestedPlayers = skeletonData;
     _allPlayersFuture.then((loadedPlayers) {
       setState(() {
         loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
