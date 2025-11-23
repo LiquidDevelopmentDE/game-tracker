@@ -129,6 +129,7 @@ class _StatisticsViewState extends State<StatisticsView> {
       final winner = game.winner;
       if (winner != null && winner.isNotEmpty) {
         final index = winCounts.indexWhere((entry) => entry.$1 == winner);
+        // -1 means winner not found in winCounts
         if (index != -1) {
           final current = winCounts[index].$2;
           winCounts[index] = (winner, current + 1);
@@ -141,6 +142,7 @@ class _StatisticsViewState extends State<StatisticsView> {
     // Adding all players with zero wins
     for (var player in players) {
       final index = winCounts.indexWhere((entry) => entry.$1 == player.id);
+      // -1 means player not found in winCounts
       if (index == -1) {
         winCounts.add((player.id, 0));
       }
@@ -175,6 +177,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         final members = game.group!.members.map((p) => p.id).toList();
         for (var playerId in members) {
           final index = gameCounts.indexWhere((entry) => entry.$1 == playerId);
+          // -1 means player not found in gameCounts
           if (index != -1) {
             final current = gameCounts[index].$2;
             gameCounts[index] = (playerId, current + 1);
@@ -187,6 +190,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         final members = game.players!.map((p) => p.id).toList();
         for (var playerId in members) {
           final index = gameCounts.indexWhere((entry) => entry.$1 == playerId);
+          // -1 means player not found in gameCounts
           if (index != -1) {
             final current = gameCounts[index].$2;
             gameCounts[index] = (playerId, current + 1);
@@ -200,6 +204,7 @@ class _StatisticsViewState extends State<StatisticsView> {
     // Adding all players with zero games
     for (var player in players) {
       final index = gameCounts.indexWhere((entry) => entry.$1 == player.id);
+      // -1 means player not found in gameCounts
       if (index == -1) {
         gameCounts.add((player.id, 0));
       }
