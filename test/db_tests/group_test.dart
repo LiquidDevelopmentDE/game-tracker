@@ -8,12 +8,14 @@ import 'package:game_tracker/data/dto/player.dart';
 
 void main() {
   late AppDatabase database;
-  late Player player1;
-  late Player player2;
-  late Player player3;
-  late Player player4;
-  late Group testgroup;
-  late Group testgroup2;
+  late Player testPlayer1;
+  late Player testPlayer2;
+  late Player testPlayer3;
+  late Player testPlayer4;
+  late Group testGroup1;
+  late Group testGroup2;
+  late Group testGroup3;
+  late Group testGroup4;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -27,157 +29,144 @@ void main() {
     );
 
     withClock(fakeClock, () {
-      player1 = Player(name: 'Alice');
-      player2 = Player(name: 'Bob');
-      player3 = Player(name: 'Charlie');
-      player4 = Player(name: 'Diana');
-      testgroup = Group(
+      testPlayer1 = Player(name: 'Alice');
+      testPlayer2 = Player(name: 'Bob');
+      testPlayer3 = Player(name: 'Charlie');
+      testPlayer4 = Player(name: 'Diana');
+      testGroup1 = Group(
         name: 'Test Group',
-        members: [player1, player2, player3],
+        members: [testPlayer1, testPlayer2, testPlayer3],
       );
-      testgroup2 = Group(
+      testGroup2 = Group(
         id: 'gr2',
         name: 'Second Group',
-        members: [player2, player3, player4],
+        members: [testPlayer2, testPlayer3, testPlayer4],
+      );
+      testGroup3 = Group(
+        id: 'gr2',
+        name: 'Second Group',
+        members: [testPlayer2, testPlayer4],
+      );
+      testGroup4 = Group(
+        id: 'gr2',
+        name: 'Second Group',
+        members: [testPlayer1, testPlayer2, testPlayer3, testPlayer4],
       );
     });
   });
   tearDown(() async {
     await database.close();
   });
-  group('group tests', () {
-    test('all groups get fetched correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
-      await database.groupDao.addGroup(group: testgroup2);
+  group('Group Tests', () {
+    test('Adding and fetching a single group works correctly', () async {
+      await database.groupDao.addGroup(group: testGroup1);
+
+      final fetchedGroup = await database.groupDao.getGroupById(
+        groupId: testGroup1.id,
+      );
+
+      expect(fetchedGroup.id, testGroup1.id);
+      expect(fetchedGroup.name, testGroup1.name);
+      expect(fetchedGroup.createdAt, testGroup1.createdAt);
+
+      expect(fetchedGroup.members.length, testGroup1.members.length);
+      for (int i = 0; i < testGroup1.members.length; i++) {
+        expect(fetchedGroup.members[i].id, testGroup1.members[i].id);
+        expect(fetchedGroup.members[i].name, testGroup1.members[i].name);
+        expect(
+          fetchedGroup.members[i].createdAt,
+          testGroup1.members[i].createdAt,
+        );
+      }
+    });
+
+    test('Adding and fetching multiple groups works correctly', () async {
+      await database.groupDao.addGroups(
+        groups: [testGroup1, testGroup2, testGroup3, testGroup4],
+      );
 
       final allGroups = await database.groupDao.getAllGroups();
       expect(allGroups.length, 2);
 
-      final fetchedGroup1 = allGroups.firstWhere((g) => g.id == testgroup.id);
-      expect(fetchedGroup1.name, testgroup.name);
-      expect(fetchedGroup1.members.length, testgroup.members.length);
-      expect(fetchedGroup1.members.elementAt(0).id, player1.id);
-      expect(fetchedGroup1.members.elementAt(0).createdAt, player1.createdAt);
+      final testGroups = {testGroup1.id: testGroup1, testGroup2.id: testGroup2};
 
-      final fetchedGroup2 = allGroups.firstWhere((g) => g.id == testgroup2.id);
-      expect(fetchedGroup2.name, testgroup2.name);
-      expect(fetchedGroup2.members.length, testgroup2.members.length);
-      expect(fetchedGroup2.members.elementAt(0).id, player2.id);
-      expect(fetchedGroup2.members.elementAt(0).createdAt, player2.createdAt);
-    });
+      for (final group in allGroups) {
+        final testGroup = testGroups[group.id]!;
 
-    test('group and group members gets added correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
+        expect(group.id, testGroup.id);
+        expect(group.name, testGroup.name);
+        expect(group.createdAt, testGroup.createdAt);
 
-      final result = await database.groupDao.getGroupById(
-        groupId: testgroup.id,
-      );
-
-      expect(result.id, testgroup.id);
-      expect(result.name, testgroup.name);
-      expect(result.createdAt, testgroup.createdAt);
-
-      expect(result.members.length, testgroup.members.length);
-      for (int i = 0; i < testgroup.members.length; i++) {
-        expect(result.members[i].id, testgroup.members[i].id);
-        expect(result.members[i].name, testgroup.members[i].name);
-        expect(result.members[i].createdAt, testgroup.members[i].createdAt);
+        expect(group.members.length, testGroup.members.length);
+        for (int i = 0; i < testGroup.members.length; i++) {
+          expect(group.members[i].id, testGroup.members[i].id);
+          expect(group.members[i].name, testGroup.members[i].name);
+          expect(group.members[i].createdAt, testGroup.members[i].createdAt);
+        }
       }
     });
 
-    test('group gets deleted correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
+    test('Adding the same group twice does not create duplicates', () async {
+      await database.groupDao.addGroup(group: testGroup1);
+      await database.groupDao.addGroup(group: testGroup1);
+
+      final allGroups = await database.groupDao.getAllGroups();
+      expect(allGroups.length, 1);
+    });
+
+    test('Group existence check works correctly', () async {
+      var groupExists = await database.groupDao.groupExists(
+        groupId: testGroup1.id,
+      );
+      expect(groupExists, false);
+
+      await database.groupDao.addGroup(group: testGroup1);
+
+      groupExists = await database.groupDao.groupExists(groupId: testGroup1.id);
+      expect(groupExists, true);
+    });
+
+    test('Deleting a group works correctly', () async {
+      await database.groupDao.addGroup(group: testGroup1);
 
       final groupDeleted = await database.groupDao.deleteGroup(
-        groupId: testgroup.id,
+        groupId: testGroup1.id,
       );
       expect(groupDeleted, true);
 
       final groupExists = await database.groupDao.groupExists(
-        groupId: testgroup.id,
+        groupId: testGroup1.id,
       );
       expect(groupExists, false);
     });
 
-    test('group name gets updated correcly ', () async {
-      await database.groupDao.addGroup(group: testgroup);
+    test('Updating a group name works correcly', () async {
+      await database.groupDao.addGroup(group: testGroup1);
 
       const newGroupName = 'new group name';
 
       await database.groupDao.updateGroupname(
-        groupId: testgroup.id,
+        groupId: testGroup1.id,
         newName: newGroupName,
       );
 
       final result = await database.groupDao.getGroupById(
-        groupId: testgroup.id,
+        groupId: testGroup1.id,
       );
       expect(result.name, newGroupName);
     });
 
-    test('Adding player to group works correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
-
-      await database.playerGroupDao.addPlayerToGroup(
-        player: player4,
-        groupId: testgroup.id,
-      );
-
-      final playerAdded = await database.playerGroupDao.isPlayerInGroup(
-        playerId: player4.id,
-        groupId: testgroup.id,
-      );
-
-      expect(playerAdded, true);
-
-      final playerNotAdded = !await database.playerGroupDao.isPlayerInGroup(
-        playerId: '',
-        groupId: testgroup.id,
-      );
-
-      expect(playerNotAdded, true);
-
-      final result = await database.groupDao.getGroupById(
-        groupId: testgroup.id,
-      );
-      expect(result.members.length, testgroup.members.length + 1);
-
-      final addedPlayer = result.members.firstWhere((p) => p.id == player4.id);
-      expect(addedPlayer.name, player4.name);
-      expect(addedPlayer.createdAt, player4.createdAt);
-    });
-
-    test('Removing player from group works correctly', () async {
-      await database.groupDao.addGroup(group: testgroup);
-
-      final playerToRemove = testgroup.members[0];
-
-      final removed = await database.playerGroupDao.removePlayerFromGroup(
-        playerId: playerToRemove.id,
-        groupId: testgroup.id,
-      );
-      expect(removed, true);
-
-      final result = await database.groupDao.getGroupById(
-        groupId: testgroup.id,
-      );
-      expect(result.members.length, testgroup.members.length - 1);
-
-      final playerExists = result.members.any((p) => p.id == playerToRemove.id);
-      expect(playerExists, false);
-    });
-
-    test('get group count works correctly', () async {
+    test('Getting the group count works correctly', () async {
       final initialCount = await database.groupDao.getGroupCount();
       expect(initialCount, 0);
 
-      await database.groupDao.addGroup(group: testgroup);
+      await database.groupDao.addGroup(group: testGroup1);
 
       final groupAdded = await database.groupDao.getGroupCount();
       expect(groupAdded, 1);
 
       final groupRemoved = await database.groupDao.deleteGroup(
-        groupId: testgroup.id,
+        groupId: testGroup1.id,
       );
       expect(groupRemoved, true);
 

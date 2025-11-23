@@ -5,11 +5,11 @@ import 'package:uuid/uuid.dart';
 
 class Game {
   final String id;
+  final DateTime createdAt;
   final String name;
   final List<Player>? players;
   final Group? group;
-  final String winner;
-  final DateTime createdAt;
+  final Player? winner;
 
   Game({
     String? id,
@@ -17,7 +17,7 @@ class Game {
     required this.name,
     this.players,
     this.group,
-    this.winner = '',
+    this.winner,
   }) : id = id ?? const Uuid().v4(),
        createdAt = createdAt ?? clock.now();
 
@@ -25,4 +25,27 @@ class Game {
   String toString() {
     return 'Game{\n\tid: $id,\n\tname: $name,\n\tplayers: $players,\n\tgroup: $group,\n\twinner: $winner\n}';
   }
+
+  /// Creates a Game instance from a JSON object.
+  Game.fromJson(Map<String, dynamic> json)
+    : id = json['id'],
+      name = json['name'],
+      createdAt = DateTime.parse(json['createdAt']),
+      players = json['players'] != null
+          ? (json['players'] as List)
+                .map((playerJson) => Player.fromJson(playerJson))
+                .toList()
+          : null,
+      group = json['group'] != null ? Group.fromJson(json['group']) : null,
+      winner = json['winner'] != null ? Player.fromJson(json['winner']) : null;
+
+  /// Converts the Game instance to a JSON object.
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'createdAt': createdAt.toIso8601String(),
+    'name': name,
+    'players': players?.map((player) => player.toJson()).toList(),
+    'group': group?.toJson(),
+    'winner': winner?.toJson(),
+  };
 }

@@ -34,7 +34,10 @@ class _GroupsViewState extends State<GroupsView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _allGroupsFuture = db.groupDao.getAllGroups();
+    _allGroupsFuture = Future.delayed(
+      const Duration(milliseconds: 250),
+      () => db.groupDao.getAllGroups(),
+    );
   }
 
   @override
@@ -69,9 +72,9 @@ class _GroupsViewState extends State<GroupsView> {
                   }
                   final bool isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
-                  final List<Group> groups = isLoading
-                      ? skeletonData
-                      : (snapshot.data ?? []);
+                  final List<Group> groups =
+                      isLoading ? skeletonData : (snapshot.data ?? [])
+                        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
                   return Skeletonizer(
                     effect: PulseEffect(
                       from: Colors.grey[800]!,
@@ -93,7 +96,9 @@ class _GroupsViewState extends State<GroupsView> {
                       itemCount: groups.length + 1,
                       itemBuilder: (BuildContext context, int index) {
                         if (index == groups.length) {
-                          return const SizedBox(height: 60);
+                          return SizedBox(
+                            height: MediaQuery.paddingOf(context).bottom - 20,
+                          );
                         }
                         return GroupTile(group: groups[index]);
                       },
@@ -103,7 +108,7 @@ class _GroupsViewState extends State<GroupsView> {
           ),
 
           Positioned(
-            bottom: 80,
+            bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(
               text: 'Create Group',
               sizeRelativeToWidth: 0.90,

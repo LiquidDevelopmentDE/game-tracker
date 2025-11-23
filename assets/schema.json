@@ -1,0 +1,179 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "games": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "players": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "createdAt",
+                "name"
+              ]
+            }
+          },
+          "group": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "members": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "name"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "createdAt",
+              "name",
+              "members"
+            ]
+          },
+          "winner": {
+            "type": ["object","null"]
+          },
+          "required": [
+            "id",
+            "createdAt",
+            "name"
+          ]
+        }
+      ]
+    },
+    "groups": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "members": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "createdAt",
+                    "name"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "createdAt",
+            "name",
+            "members"
+          ]
+        }
+      ]
+    },
+    "players": {
+      "type": "array",
+      "items": [
+        {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "createdAt",
+            "name"
+          ]
+        }
+      ]
+    }
+  }
+}
+
