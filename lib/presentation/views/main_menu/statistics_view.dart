@@ -89,7 +89,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   ),
                   SizedBox(height: constraints.maxHeight * 0.02),
                   StatisticsTile(
-                    icon: Icons.casino,
+                    icon: Icons.percent,
                     title: 'Winrate per Player',
                     width: constraints.maxWidth * 0.95,
                     values: winRates,
