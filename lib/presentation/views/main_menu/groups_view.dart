@@ -34,7 +34,10 @@ class _GroupsViewState extends State<GroupsView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _allGroupsFuture = db.groupDao.getAllGroups();
+    _allGroupsFuture = Future.delayed(
+      const Duration(milliseconds: 400),
+      () => db.groupDao.getAllGroups(),
+    );
   }
 
   @override
