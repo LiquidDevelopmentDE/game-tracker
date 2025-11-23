@@ -138,66 +138,86 @@ class _HomeViewState extends State<HomeView> {
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: FutureBuilder(
                         future: _recentGamesFuture,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                              heightFactor: 4,
-                              child: Text('Error while loading recent games.'),
-                            );
-                          }
-                          if (snapshot.connectionState ==
-                                  ConnectionState.done &&
-                              (!snapshot.hasData || snapshot.data!.isEmpty)) {
-                            return const Center(
-                              heightFactor: 4,
-                              child: Text('No recent games available.'),
-                            );
-                          }
-                          final List<Game> games =
-                              (isLoading ? skeletonData : (snapshot.data ?? [])
-                                    ..sort(
-                                      (a, b) =>
-                                          b.createdAt.compareTo(a.createdAt),
-                                    ))
-                                  .take(2)
-                                  .toList();
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GameTile(
-                                gameTitle: games[0].name,
-                                gameType: 'Winner',
-                                ruleset: 'Ruleset',
-                                players: _getPlayerText(games[0]),
-                                winner: games[0].winner == null
-                                    ? 'Game in progress...'
-                                    : games[0].winner!.name,
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
-                                child: Divider(),
-                              ),
-                              if (games.length >= 2) ...[
-                                GameTile(
-                                  gameTitle: games[1].name,
-                                  gameType: 'Winner',
-                                  ruleset: 'Ruleset',
-                                  players: _getPlayerText(games[1]),
-                                  winner: games[1].winner == null
-                                      ? 'Game in progress...'
-                                      : games[1].winner!.name,
-                                ),
-                                const SizedBox(height: 8),
-                              ] else ...[
-                                const Center(
+                        builder:
+                            (
+                              BuildContext context,
+                              AsyncSnapshot<List<Game>> snapshot,
+                            ) {
+                              if (snapshot.hasError) {
+                                return const Center(
                                   heightFactor: 4,
-                                  child: Text('No second game available.'),
-                                ),
-                              ],
-                            ],
-                          );
-                        },
+                                  child: Text(
+                                    'Error while loading recent games.',
+                                  ),
+                                );
+                              }
+                              if (snapshot.connectionState ==
+                                      ConnectionState.done &&
+                                  (!snapshot.hasData ||
+                                      snapshot.data!.isEmpty)) {
+                                return const Center(
+                                  heightFactor: 4,
+                                  child: Text('No recent games available.'),
+                                );
+                              }
+                              final List<Game> games =
+                                  (isLoading
+                                            ? skeletonData
+                                            : (snapshot.data ?? [])
+                                        ..sort(
+                                          (a, b) => b.createdAt.compareTo(
+                                            a.createdAt,
+                                          ),
+                                        ))
+                                      .take(2)
+                                      .toList();
+                              if (games.length > 0)
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    GameTile(
+                                      gameTitle: games[0].name,
+                                      gameType: 'Winner',
+                                      ruleset: 'Ruleset',
+                                      players: _getPlayerText(games[0]),
+                                      winner: games[0].winner == null
+                                          ? 'Game in progress...'
+                                          : games[0].winner!.name,
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      child: Divider(),
+                                    ),
+                                    if (games.length > 1) ...[
+                                      GameTile(
+                                        gameTitle: games[1].name,
+                                        gameType: 'Winner',
+                                        ruleset: 'Ruleset',
+                                        players: _getPlayerText(games[1]),
+                                        winner: games[1].winner == null
+                                            ? 'Game in progress...'
+                                            : games[1].winner!.name,
+                                      ),
+                                      const SizedBox(height: 8),
+                                    ] else ...[
+                                      const Center(
+                                        heightFactor: 4,
+                                        child: Text(
+                                          'No second game available.',
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                );
+                              else
+                                return const Center(
+                                  heightFactor: 4,
+                                  child: Text('No recent games available.'),
+                                );
+                            },
                       ),
                     ),
                   ),
