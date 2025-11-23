@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/presentation/views/main_menu/game_history_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
 import 'package:game_tracker/presentation/widgets/navbar_item.dart';
 
@@ -56,7 +56,9 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             onPressed: () async {
               await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const SettingsView()),
+                MaterialPageRoute(
+                  builder: (_) => const GameResultView(),
+                ), //TODO Replace with Settingsview
               );
               setState(() {
                 tabKeyCount++;
