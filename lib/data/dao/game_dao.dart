@@ -20,13 +20,16 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
       result.map((row) async {
         final group = await db.groupGameDao.getGroupOfGame(gameId: row.id);
         final players = await db.playerGameDao.getPlayersOfGame(gameId: row.id);
+        final winner = row.winnerId != null
+            ? await db.playerDao.getPlayerById(playerId: row.winnerId!)
+            : null;
         return Game(
           id: row.id,
           name: row.name,
           group: group,
           players: players,
           createdAt: row.createdAt,
-          winner: row.winnerId,
+          winner: winner,
         );
       }),
     );
@@ -45,13 +48,17 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     if (await db.groupGameDao.gameHasGroup(gameId: gameId)) {
       group = await db.groupGameDao.getGroupOfGame(gameId: gameId);
     }
+    Player? winner;
+    if (result.winnerId != null) {
+      winner = await db.playerDao.getPlayerById(playerId: result.winnerId!);
+    }
 
     return Game(
       id: result.id,
       name: result.name,
       players: players,
       group: group,
-      winner: result.winnerId,
+      winner: winner,
       createdAt: result.createdAt,
     );
   }
@@ -64,7 +71,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
         GameTableCompanion.insert(
           id: game.id,
           name: game.name,
-          winnerId: Value(game.winner),
+          winnerId: Value(game.winner?.id),
           createdAt: game.createdAt,
         ),
         mode: InsertMode.insertOrReplace,
@@ -100,7 +107,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
                   id: game.id,
                   name: game.name,
                   createdAt: game.createdAt,
-                  winnerId: Value(game.winner),
+                  winnerId: Value(game.winner?.id),
                 ),
               )
               .toList(),
