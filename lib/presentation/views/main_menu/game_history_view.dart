@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/presentation/views/main_menu/create_game/create_game_view.dart';
+import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/double_row_info_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
@@ -141,7 +143,12 @@ class _GameHistoryViewState extends State<GameHistoryView> {
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+            margin: const EdgeInsets.only(
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 10,
+            ),
             child: SearchBar(
               leading: const Icon(Icons.search),
               onChanged: (value) {
@@ -168,6 +175,23 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                   suggestedGameData.addAll(suggestions);
                 });
               },
+            ),
+          ),
+          Positioned(
+            bottom: 110,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: CustomWidthButton(
+                text: 'Create Game',
+                sizeRelativeToWidth: 0.95,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CreateGameView(),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],
