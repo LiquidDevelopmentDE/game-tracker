@@ -93,7 +93,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                     title: 'Winrate per Player',
                     width: constraints.maxWidth * 0.95,
                     values: winRates,
-                    itemCount: 5,
+                    itemCount: 115,
                     barColor: Colors.orange[700]!,
                   ),
                   SizedBox(height: constraints.maxHeight * 0.02),
@@ -105,7 +105,6 @@ class _StatisticsViewState extends State<StatisticsView> {
                     itemCount: 10,
                     barColor: Colors.green,
                   ),
-
                   SizedBox(height: MediaQuery.paddingOf(context).bottom),
                 ],
               ),

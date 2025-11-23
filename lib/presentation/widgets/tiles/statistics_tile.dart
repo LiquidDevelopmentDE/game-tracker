@@ -80,7 +80,9 @@ class StatisticsTile extends StatelessWidget {
                     const Spacer(),
                     Center(
                       child: Text(
-                        values[index].$2.toString(),
+                        values[index].$2 <= 1
+                            ? values[index].$2.toStringAsFixed(2)
+                            : values[index].$2.toString(),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 16,
