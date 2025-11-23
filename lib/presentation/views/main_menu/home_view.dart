@@ -7,7 +7,6 @@ import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.da
 import 'package:game_tracker/presentation/widgets/tiles/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
-import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -35,8 +34,7 @@ class _HomeViewState extends State<HomeView> {
           Player(name: 'Skeleton Player 2'),
         ],
       ),
-      winner:
-          "Winner ID", //TODO: Should be player object, but isnt yet, waiting for pr
+      winner: Player(name: 'Skeleton Player 1'),
     ),
   );
 
@@ -73,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
           enabled: isLoading,
           enableSwitchAnimation: true,
           switchAnimationConfig: SwitchAnimationConfig(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             switchInCurve: Curves.linear,
             switchOutCurve: Curves.linear,
             transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
@@ -130,70 +128,79 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ],
                 ),
-                FutureBuilder(
-                  future: _recentGamesFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: TopCenteredMessage(
-                          icon: Icons.report,
-                          title: 'Error',
-                          message: 'Group data couldn\'t\nbe loaded.',
-                        ),
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        (!snapshot.hasData || snapshot.data!.isEmpty)) {
-                      return const Center(
-                        child: TopCenteredMessage(
-                          icon: Icons.info,
-                          title: 'Info',
-                          message: 'No games created yet.',
-                        ),
-                      );
-                    }
-                    final List<Game> games =
-                        isLoading ? skeletonData : (snapshot.data ?? [])
-                          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: InfoTile(
-                        width: constraints.maxWidth * 0.95,
-                        title: 'Recent Games',
-                        icon: Icons.timer,
-                        content: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.0),
-                          child: Column(
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: InfoTile(
+                    width: constraints.maxWidth * 0.95,
+                    title: 'Recent Games',
+                    icon: Icons.timer,
+                    content: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                      child: FutureBuilder(
+                        future: _recentGamesFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              heightFactor: 4,
+                              child: Text('Error while loading recent games.'),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              (!snapshot.hasData || snapshot.data!.isEmpty)) {
+                            return const Center(
+                              heightFactor: 4,
+                              child: Text('No recent games available.'),
+                            );
+                          }
+                          final List<Game> games =
+                              (isLoading ? skeletonData : (snapshot.data ?? [])
+                                    ..sort(
+                                      (a, b) =>
+                                          b.createdAt.compareTo(a.createdAt),
+                                    ))
+                                  .take(2)
+                                  .toList();
+                          return Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               GameTile(
                                 gameTitle: games[0].name,
-                                gameType: "Gametype",
+                                gameType: 'Winner',
                                 ruleset: 'Ruleset',
                                 players: _getPlayerText(games[0]),
-                                winner:
-                                    'Leonard', //TODO: Replace Winner with real Winner
+                                winner: games[0].winner == null
+                                    ? 'No winner set.'
+                                    : games[0].winner!.name,
                               ),
-                              Padding(
+                              const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0),
                                 child: Divider(),
                               ),
-                              GameTile(
-                                gameTitle: games[1].name,
-                                gameType: 'Gametype',
-                                ruleset: 'Ruleset',
-                                players: _getPlayerText(games[1]),
-                                winner:
-                                    'Lina', //TODO: Replace Winner with real Winner
-                              ),
-                              SizedBox(height: 8),
+                              if (games.length >= 2) ...[
+                                GameTile(
+                                  gameTitle: games[1].name,
+                                  gameType: 'Winner',
+                                  ruleset: 'Ruleset',
+                                  players: _getPlayerText(games[1]),
+                                  winner: games[1].winner == null
+                                      ? 'No winner set.'
+                                      : games[1].winner!.name,
+                                ),
+                                const SizedBox(height: 8),
+                              ] else ...[
+                                const Center(
+                                  heightFactor: 4,
+                                  child: Text('No second game available.'),
+                                ),
+                              ],
                             ],
-                          ),
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
                 InfoTile(
                   width: constraints.maxWidth * 0.95,
@@ -254,7 +261,8 @@ class _HomeViewState extends State<HomeView> {
 
   String _getPlayerText(Game game) {
     if (game.group == null) {
-      return game.players?.map((p) => p.name).join(', ') ?? 'No Players';
+      final playerCount = game.players?.length ?? 0;
+      return '$playerCount Player(s)';
     }
     if (game.players == null || game.players!.isEmpty) {
       return game.group!.name;
