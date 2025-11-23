@@ -9,7 +9,7 @@ class Game {
   final String name;
   final List<Player>? players;
   final Group? group;
-  final String? winner;
+  final Player? winner;
 
   Game({
     String? id,
@@ -17,7 +17,7 @@ class Game {
     required this.name,
     this.players,
     this.group,
-    this.winner = '',
+    this.winner,
   }) : id = id ?? const Uuid().v4(),
        createdAt = createdAt ?? clock.now();
 
@@ -37,7 +37,7 @@ class Game {
                 .toList()
           : null,
       group = json['group'] != null ? Group.fromJson(json['group']) : null,
-      winner = json['winner'] ?? '';
+      winner = json['winner'] != null ? Player.fromJson(json['winner']) : null;
 
   /// Converts the Game instance to a JSON object.
   Map<String, dynamic> toJson() => {
@@ -46,6 +46,6 @@ class Game {
     'name': name,
     'players': players?.map((player) => player.toJson()).toList(),
     'group': group?.toJson(),
-    'winner': winner,
+    'winner': winner?.toJson(),
   };
 }

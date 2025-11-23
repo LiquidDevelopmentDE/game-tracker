@@ -127,14 +127,14 @@ class _StatisticsViewState extends State<StatisticsView> {
     // Getting the winners
     for (var game in games) {
       final winner = game.winner;
-      if (winner != null && winner.isNotEmpty) {
-        final index = winCounts.indexWhere((entry) => entry.$1 == winner);
+      if (winner != null) {
+        final index = winCounts.indexWhere((entry) => entry.$1 == winner.id);
         // -1 means winner not found in winCounts
         if (index != -1) {
           final current = winCounts[index].$2;
-          winCounts[index] = (winner, current + 1);
+          winCounts[index] = (winner.id, current + 1);
         } else {
-          winCounts.add((winner, 1));
+          winCounts.add((winner.id, 1));
         }
       }
     }
