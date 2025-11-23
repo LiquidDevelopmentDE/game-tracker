@@ -55,7 +55,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
   void loadPlayerList() {
     _allPlayersFuture = Future.delayed(
-      const Duration(milliseconds: 400),
+      const Duration(milliseconds: 250),
       () => db.playerDao.getAllPlayers(),
     );
     suggestedPlayers = skeletonData;

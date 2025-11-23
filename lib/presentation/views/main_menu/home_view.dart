@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
     _groupCountFuture = db.groupDao.getGroupCount();
 
     Future.wait([_gameCountFuture, _groupCountFuture]).then((_) async {
-      await Future.delayed(const Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 250));
       if (mounted) {
         setState(() {
           isLoading = false;
