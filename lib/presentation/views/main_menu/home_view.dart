@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
 
     Future.wait([_gameCountFuture, _groupCountFuture, _recentGamesFuture]).then(
       (_) async {
-        await Future.delayed(const Duration(milliseconds: 50));
+        await Future.delayed(const Duration(milliseconds: 250));
         if (mounted) {
           setState(() {
             isLoading = false;
