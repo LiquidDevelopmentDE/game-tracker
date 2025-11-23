@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/game.dart';
-import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 
 class GameResultView extends StatefulWidget {
-  const GameResultView({super.key});
+  final Game game;
 
-  //TODO: Handle given game
+  const GameResultView({super.key, required this.game});
 
   @override
   State<GameResultView> createState() => _GameResultViewState();
@@ -16,26 +15,10 @@ class GameResultView extends StatefulWidget {
 
 class _GameResultViewState extends State<GameResultView> {
   late final List<Player> allPlayers;
-  final exampleGame = Game(
-    name: "Test Game",
-    players: [
-      Player(name: "Petrus"),
-      Player(name: "Peter"),
-      Player(name: "Petra"),
-    ],
-    group: Group(
-      name: "Die Petris",
-      members: [
-        Player(name: "Petralia"),
-        Player(name: "Petrenlia"),
-        Player(name: "Petrumlia"),
-      ],
-    ),
-  );
 
   @override
   void initState() {
-    allPlayers = getAllPlayers(exampleGame);
+    allPlayers = getAllPlayers(widget.game);
     super.initState();
   }
 
