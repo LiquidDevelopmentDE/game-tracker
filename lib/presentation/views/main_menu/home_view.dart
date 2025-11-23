@@ -171,7 +171,7 @@ class _HomeViewState extends State<HomeView> {
                                 ruleset: 'Ruleset',
                                 players: _getPlayerText(games[0]),
                                 winner: games[0].winner == null
-                                    ? 'No winner set.'
+                                    ? 'Game in progress...'
                                     : games[0].winner!.name,
                               ),
                               const Padding(
@@ -185,7 +185,7 @@ class _HomeViewState extends State<HomeView> {
                                   ruleset: 'Ruleset',
                                   players: _getPlayerText(games[1]),
                                   winner: games[1].winner == null
-                                      ? 'No winner set.'
+                                      ? 'Game in progress...'
                                       : games[1].winner!.name,
                                 ),
                                 const SizedBox(height: 8),
@@ -262,7 +262,7 @@ class _HomeViewState extends State<HomeView> {
   String _getPlayerText(Game game) {
     if (game.group == null) {
       final playerCount = game.players?.length ?? 0;
-      return '$playerCount Player(s)';
+      return '$playerCount Players';
     }
     if (game.players == null || game.players!.isEmpty) {
       return game.group!.name;
