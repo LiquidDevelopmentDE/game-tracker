@@ -74,7 +74,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                 searchBarController: _searchBarController,
                 onChanged: (value) {
                   selectedPlayers = [...value];
-                  print(selectedPlayers);
                 },
               ),
             ),
