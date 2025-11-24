@@ -105,11 +105,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   vertical: 10,
                   horizontal: 10,
                 ),
-                decoration: BoxDecoration(
-                  color: CustomTheme.boxColor,
-                  border: Border.all(color: CustomTheme.boxBorder),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: CustomTheme.standardBoxDecoration,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

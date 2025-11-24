@@ -9,13 +9,13 @@ class CustomTheme {
   static Color boxBorder = const Color(0xFF272727);
 
   static BoxDecoration standardBoxDecoration = BoxDecoration(
-    color: CustomTheme.boxColor,
-    border: Border.all(color: CustomTheme.boxBorder),
+    color: boxColor,
+    border: Border.all(color: boxBorder),
     borderRadius: BorderRadius.circular(12),
   );
 
   static BoxDecoration highlightedBoxDecoration = BoxDecoration(
-    color: CustomTheme.boxColor,
+    color: boxColor,
     border: Border.all(color: Colors.blue),
     borderRadius: BorderRadius.circular(12),
     boxShadow: [BoxShadow(color: Colors.blue.withAlpha(120), blurRadius: 12)],

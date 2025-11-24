@@ -134,11 +134,7 @@ class _CreateGameViewState extends State<CreateGameView> {
                   vertical: 10,
                   horizontal: 15,
                 ),
-                decoration: BoxDecoration(
-                  color: CustomTheme.boxColor,
-                  border: Border.all(color: CustomTheme.boxBorder),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: CustomTheme.standardBoxDecoration,
                 child: Row(
                   children: [
                     const Text(
@@ -180,11 +176,7 @@ class _CreateGameViewState extends State<CreateGameView> {
                   vertical: 10,
                   horizontal: 15,
                 ),
-                decoration: BoxDecoration(
-                  color: CustomTheme.boxColor,
-                  border: Border.all(color: CustomTheme.boxBorder),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: CustomTheme.standardBoxDecoration,
                 child: Row(
                   children: [
                     const Text(
