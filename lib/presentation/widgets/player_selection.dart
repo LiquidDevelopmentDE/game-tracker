@@ -27,7 +27,8 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   List<Player> selectedPlayers = [];
   List<Player> suggestedPlayers = [];
   List<Player> allPlayers = [];
-  late final TextEditingController _searchBarController;
+  late final TextEditingController _searchBarController =
+      TextEditingController();
   late final AppDatabase db;
   late Future<List<Player>> _allPlayersFuture;
   late final List<Player> skeletonData = List.filled(
@@ -39,7 +40,6 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _searchBarController = widget.controller;
     loadPlayerList();
   }
 
