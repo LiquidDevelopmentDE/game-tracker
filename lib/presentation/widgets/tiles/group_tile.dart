@@ -15,19 +15,8 @@ class GroupTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: isHighlighted
-          ? BoxDecoration(
-              color: CustomTheme.boxColor,
-              border: Border.all(color: Colors.blue),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(color: Colors.blue.withAlpha(120), blurRadius: 12),
-              ],
-            )
-          : BoxDecoration(
-              color: CustomTheme.boxColor,
-              border: Border.all(color: CustomTheme.boxBorder),
-              borderRadius: BorderRadius.circular(12),
-            ),
+          ? CustomTheme.highlightedBoxDecoration
+          : CustomTheme.standardBoxDecoration,
       duration: const Duration(milliseconds: 150),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
