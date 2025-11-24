@@ -25,13 +25,16 @@ class _GameHistoryViewState extends State<GameHistoryView> {
       group: Group(
         name: 'Skeleton Group',
         members: [
-          Player(name: 'Skeleton Player 1'),
-          Player(name: 'Skeleton Player 2'),
+          Player(name: 'Player 1'),
+          Player(name: 'Player 2'),
+          Player(name: 'Player 3'),
+          Player(name: 'Long Name Player 4'),
+          Player(name: 'Player 5'),
         ],
       ),
       winner: Player(name: 'Skeleton Player 1'),
       players: [
-        Player(name: 'Skeleton Player 3')
+        Player(name: 'Skeleton Player 6')
       ],
     ),
   );
