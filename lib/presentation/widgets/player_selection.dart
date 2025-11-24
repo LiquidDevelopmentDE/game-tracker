@@ -10,14 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class PlayerSelection extends StatefulWidget {
-  final TextEditingController controller;
   final Function(List<Player> value) onChanged;
 
-  const PlayerSelection({
-    super.key,
-    required this.controller,
-    required this.onChanged,
-  });
+  const PlayerSelection({super.key, required this.onChanged});
 
   @override
   State<PlayerSelection> createState() => _PlayerSelectionState();
