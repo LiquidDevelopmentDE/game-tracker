@@ -17,7 +17,6 @@ class RulesetListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use the callback directly so a null onPressed disables taps
     return GestureDetector(
       onTap: onPressed,
       child: AnimatedContainer(
