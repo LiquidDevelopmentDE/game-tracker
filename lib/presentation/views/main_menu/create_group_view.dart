@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart' hide ButtonStyle;
+import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
-import 'package:game_tracker/presentation/widgets/select_player_widget.dart';
+import 'package:game_tracker/presentation/widgets/player_selection.dart';
 import 'package:game_tracker/presentation/widgets/text_input_field.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +69,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               ),
             ),
             Expanded(
-              child: SelectPlayerWidget(
+              child: PlayerSelection(
                 groupNameController: _groupNameController,
                 searchBarController: _searchBarController,
                 onChanged: (value) {
