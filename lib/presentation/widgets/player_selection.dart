@@ -78,11 +78,15 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             },
             onChanged: (value) {
               setState(() {
+                // Filters the list of suggested players based on the search input.
                 if (value.isEmpty) {
+                  // If the search is empty, it shows all unselected players.
                   suggestedPlayers = allPlayers.where((player) {
                     return !selectedPlayers.contains(player);
                   }).toList();
                 } else {
+                  // If there is input, it filters by name match (case-insensitive) and ensures
+                  // that already selected players are excluded from the results.
                   suggestedPlayers = allPlayers.where((player) {
                     final bool nameMatches = player.name.toLowerCase().contains(
                       value.toLowerCase(),
@@ -108,21 +112,22 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             spacing: 8.0,
             runSpacing: 8.0,
             children: <Widget>[
+              // Generates a TextIconTile for each selected player.
               for (var player in selectedPlayers)
                 TextIconTile(
                   text: player.name,
                   onIconTap: () {
                     setState(() {
+                      // Removes the player from the selection and notifies the parent.
                       final currentSearch = _searchBarController.text
                           .toLowerCase();
                       selectedPlayers.remove(player);
                       widget.onChanged([...selectedPlayers]);
+                      // If the player matches the current search query (or search is empty),
+                      // they are added back to the suggestions and the list is re-sorted.
                       if (currentSearch.isEmpty ||
                           player.name.toLowerCase().contains(currentSearch)) {
                         suggestedPlayers.add(player);
-                        suggestedPlayers.sort(
-                          (a, b) => a.name.compareTo(b.name),
-                        );
                       }
                     });
                   },
