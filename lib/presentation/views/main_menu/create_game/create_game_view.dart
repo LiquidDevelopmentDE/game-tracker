@@ -6,10 +6,10 @@ import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_ruleset_view.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CreateGameView extends StatefulWidget {
   const CreateGameView({super.key});
@@ -100,21 +100,8 @@ class _CreateGameViewState extends State<CreateGameView> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Skeletonizer(
-          effect: PulseEffect(
-            from: Colors.grey[800]!,
-            to: Colors.grey[600]!,
-            duration: const Duration(milliseconds: 800),
-          ),
+        child: AppSkeleton(
           enabled: isLoading,
-          enableSwitchAnimation: true,
-          switchAnimationConfig: const SwitchAnimationConfig(
-            duration: Duration(milliseconds: 200),
-            switchInCurve: Curves.linear,
-            switchOutCurve: Curves.linear,
-            transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
-            layoutBuilder: AnimatedSwitcher.defaultLayoutBuilder,
-          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
