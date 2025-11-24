@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
@@ -25,6 +26,7 @@ class _CreateGameViewState extends State<CreateGameView> {
   late final List<Group> groupsList;
 
   Group? selectedGroup;
+  int selectedGroupIndex = -1;
   Ruleset? selectedRuleset;
 
   bool isLoading = true;
@@ -128,8 +130,14 @@ class _CreateGameViewState extends State<CreateGameView> {
               onTap: () async {
                 selectedGroup = await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => ChooseGroupView(groups: groupsList),
+                    builder: (context) => ChooseGroupView(
+                      groups: groupsList,
+                      selectedGroupIndex: selectedGroupIndex,
+                    ),
                   ),
+                );
+                selectedGroupIndex = groupsList.indexWhere(
+                  (g) => g.id == selectedGroup?.id,
                 );
                 setState(() {});
               },
@@ -175,7 +183,12 @@ class _CreateGameViewState extends State<CreateGameView> {
                       selectedRuleset == null)
                   ? null
                   : () async {
-                      print('Create game pressed');
+                      Game game = Game(
+                        name: _gameNameController.text.trim(),
+                        createdAt: DateTime.now(),
+                        group: selectedGroup!,
+                      );
+                      print('Creating game: ${game.name}');
                     },
             ),
             const SizedBox(height: 20),

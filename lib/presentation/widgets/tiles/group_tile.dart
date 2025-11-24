@@ -4,20 +4,31 @@ import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 
 class GroupTile extends StatelessWidget {
-  const GroupTile({super.key, required this.group});
+  const GroupTile({super.key, required this.group, this.isHighlighted = false});
 
   final Group group;
+  final bool isHighlighted;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      decoration: BoxDecoration(
-        color: CustomTheme.boxColor,
-        border: Border.all(color: CustomTheme.boxBorder),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: isHighlighted
+          ? BoxDecoration(
+              color: CustomTheme.boxColor,
+              border: Border.all(color: Colors.blue),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(color: Colors.blue.withAlpha(120), blurRadius: 12),
+              ],
+            )
+          : BoxDecoration(
+              color: CustomTheme.boxColor,
+              border: Border.all(color: CustomTheme.boxBorder),
+              borderRadius: BorderRadius.circular(12),
+            ),
+      duration: const Duration(milliseconds: 150),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
