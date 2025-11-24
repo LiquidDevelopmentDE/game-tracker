@@ -10,12 +10,12 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class PlayerSelection extends StatefulWidget {
-  final TextEditingController searchBarController;
+  final TextEditingController controller;
   final Function(List<Player> value) onChanged;
 
   const PlayerSelection({
     super.key,
-    required this.searchBarController,
+    required this.controller,
     required this.onChanged,
   });
 
@@ -39,7 +39,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _searchBarController = widget.searchBarController;
+    _searchBarController = widget.controller;
     loadPlayerList();
   }
 
