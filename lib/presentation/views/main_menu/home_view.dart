@@ -151,15 +151,6 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 );
                               }
-                              if (snapshot.connectionState ==
-                                      ConnectionState.done &&
-                                  (!snapshot.hasData ||
-                                      snapshot.data!.isEmpty)) {
-                                return const Center(
-                                  heightFactor: 4,
-                                  child: Text('No recent games available.'),
-                                );
-                              }
                               final List<Game> games =
                                   (isLoading
                                             ? skeletonData
@@ -214,7 +205,7 @@ class _HomeViewState extends State<HomeView> {
                                 );
                               } else {
                                 return const Center(
-                                  heightFactor: 4,
+                                  heightFactor: 12,
                                   child: Text('No recent games available.'),
                                 );
                               }

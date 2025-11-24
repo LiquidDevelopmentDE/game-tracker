@@ -209,12 +209,13 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                 ),
                               );
                             }
-                            if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                (!snapshot.hasData ||
-                                    snapshot.data!.isEmpty ||
-                                    (selectedPlayers.isEmpty &&
-                                        allPlayers.isEmpty))) {
+                            bool doneLoading =
+                                snapshot.connectionState ==
+                                ConnectionState.done;
+                            bool snapshotDataEmpty =
+                                !snapshot.hasData || snapshot.data!.isEmpty;
+                            if (doneLoading &&
+                                (snapshotDataEmpty && allPlayers.isEmpty)) {
                               return const Center(
                                 child: TopCenteredMessage(
                                   icon: Icons.info,
