@@ -28,8 +28,32 @@ class _CreateGameViewState extends State<CreateGameView> {
   Group? selectedGroup;
   int selectedGroupIndex = -1;
   Ruleset? selectedRuleset;
+  int selectedRulesetIndex = -1;
 
   bool isLoading = true;
+
+  List<(Ruleset, String, String)> rulesets = [
+    (
+      Ruleset.singleWinner,
+      'Single Winner',
+      'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.',
+    ),
+    (
+      Ruleset.singleLoser,
+      'Single Loser',
+      'Exactly one loser is determined; last place receives the penalty or consequence.',
+    ),
+    (
+      Ruleset.mostPoints,
+      'Most Points',
+      'Traditional ruleset: the player with the most points wins.',
+    ),
+    (
+      Ruleset.lastPoints,
+      'Least Points',
+      'Inverse scoring: the player with the fewest points wins.',
+    ),
+  ];
 
   late final List<Player> skeletonData = List.filled(
     7,
@@ -90,8 +114,14 @@ class _CreateGameViewState extends State<CreateGameView> {
               onTap: () async {
                 selectedRuleset = await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const ChooseRulesetView(),
+                    builder: (context) => ChooseRulesetView(
+                      rulesets: rulesets,
+                      initialRulesetIndex: selectedRulesetIndex,
+                    ),
                   ),
+                );
+                selectedRulesetIndex = rulesets.indexWhere(
+                  (r) => r.$1 == selectedRuleset,
                 );
                 setState(() {});
               },
@@ -132,7 +162,7 @@ class _CreateGameViewState extends State<CreateGameView> {
                   MaterialPageRoute(
                     builder: (context) => ChooseGroupView(
                       groups: groupsList,
-                      selectedGroupIndex: selectedGroupIndex,
+                      initialGroupIndex: selectedGroupIndex,
                     ),
                   ),
                 );
