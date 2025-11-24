@@ -9,12 +9,12 @@ import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class SelectPlayerWidget extends StatefulWidget {
+class PlayerSelection extends StatefulWidget {
   final TextEditingController groupNameController;
   final TextEditingController searchBarController;
   final Function(List<Player> value) onChanged;
 
-  const SelectPlayerWidget({
+  const PlayerSelection({
     super.key,
     required this.groupNameController,
     required this.searchBarController,
@@ -22,10 +22,10 @@ class SelectPlayerWidget extends StatefulWidget {
   });
 
   @override
-  State<SelectPlayerWidget> createState() => _SelectPlayerWidgetState();
+  State<PlayerSelection> createState() => _PlayerSelectionState();
 }
 
-class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
+class _PlayerSelectionState extends State<PlayerSelection> {
   List<Player> selectedPlayers = [];
   List<Player> suggestedPlayers = [];
   List<Player> allPlayers = [];
