@@ -3,7 +3,7 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
-import 'package:game_tracker/presentation/widgets/custom_search_bar.dart';
+import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_list_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
@@ -58,11 +58,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      decoration: BoxDecoration(
-        color: CustomTheme.boxColor,
-        border: Border.all(color: CustomTheme.boxBorder),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: CustomTheme.standardBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
