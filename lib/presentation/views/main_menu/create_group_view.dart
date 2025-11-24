@@ -18,7 +18,6 @@ class CreateGroupView extends StatefulWidget {
 
 class _CreateGroupViewState extends State<CreateGroupView> {
   final _groupNameController = TextEditingController();
-  final _searchBarController = TextEditingController();
   late final AppDatabase db;
   List<Player> selectedPlayers = [];
 
@@ -29,15 +28,11 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     _groupNameController.addListener(() {
       setState(() {});
     });
-    _searchBarController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
   void dispose() {
     _groupNameController.dispose();
-    _searchBarController.dispose();
     super.dispose();
   }
 
@@ -70,7 +65,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             ),
             Expanded(
               child: PlayerSelection(
-                controller: _searchBarController,
                 onChanged: (value) {
                   selectedPlayers = [...value];
                 },
@@ -92,8 +86,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       );
                       if (!context.mounted) return;
                       if (success) {
-                        _groupNameController.clear();
-                        _searchBarController.clear();
                         Navigator.pop(context);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
