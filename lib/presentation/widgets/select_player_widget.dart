@@ -12,14 +12,12 @@ import 'package:skeletonizer/skeletonizer.dart';
 class SelectPlayerWidget extends StatefulWidget {
   final TextEditingController groupNameController;
   final TextEditingController searchBarController;
-  final List<Player> selectedPlayers;
   final Function(List<Player> value) onChanged;
 
   const SelectPlayerWidget({
     super.key,
     required this.groupNameController,
     required this.searchBarController,
-    required this.selectedPlayers,
     required this.onChanged,
   });
 
@@ -28,6 +26,7 @@ class SelectPlayerWidget extends StatefulWidget {
 }
 
 class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
+  List<Player> selectedPlayers = [];
   List<Player> suggestedPlayers = [];
   List<Player> allPlayers = [];
   late final TextEditingController _searchBarController;
@@ -88,14 +87,14 @@ class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
               setState(() {
                 if (value.isEmpty) {
                   suggestedPlayers = allPlayers.where((player) {
-                    return !widget.selectedPlayers.contains(player);
+                    return !selectedPlayers.contains(player);
                   }).toList();
                 } else {
                   suggestedPlayers = allPlayers.where((player) {
                     final bool nameMatches = player.name.toLowerCase().contains(
                       value.toLowerCase(),
                     );
-                    final bool isNotSelected = !widget.selectedPlayers.contains(
+                    final bool isNotSelected = !selectedPlayers.contains(
                       player,
                     );
                     return nameMatches && isNotSelected;
@@ -106,7 +105,7 @@ class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
           ),
           const SizedBox(height: 10),
           Text(
-            'Ausgewählte Spieler: (${widget.selectedPlayers.length})',
+            'Ausgewählte Spieler: (${selectedPlayers.length})',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -116,19 +115,15 @@ class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
             spacing: 8.0,
             runSpacing: 8.0,
             children: <Widget>[
-              for (var player in widget.selectedPlayers)
+              for (var player in selectedPlayers)
                 TextIconTile(
                   text: player.name,
                   onIconTap: () {
                     setState(() {
                       final currentSearch = _searchBarController.text
                           .toLowerCase();
-                      //widget.selectedPlayers.remove(player);
-                      widget.onChanged(
-                        widget.selectedPlayers
-                            .where((p) => p != player)
-                            .toList(),
-                      );
+                      selectedPlayers.remove(player);
+                      widget.onChanged([...selectedPlayers]);
                       if (currentSearch.isEmpty ||
                           player.name.toLowerCase().contains(currentSearch)) {
                         suggestedPlayers.add(player);
@@ -203,16 +198,13 @@ class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
                               text: suggestedPlayers[index].name,
                               onPressed: () {
                                 setState(() {
-                                  if (!widget.selectedPlayers.contains(
+                                  if (!selectedPlayers.contains(
                                     suggestedPlayers[index],
                                   )) {
-                                    /*widget.selectedPlayers.add(
+                                    selectedPlayers.add(
                                       suggestedPlayers[index],
-                                    );*/
-                                    widget.onChanged([
-                                      ...widget.selectedPlayers,
-                                      suggestedPlayers[index],
-                                    ]);
+                                    );
+                                    widget.onChanged([...selectedPlayers]);
                                     suggestedPlayers.remove(
                                       suggestedPlayers[index],
                                     );
@@ -225,9 +217,7 @@ class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
                         child: TopCenteredMessage(
                           icon: Icons.info,
                           title: 'Info',
-                          message:
-                              (widget.selectedPlayers.length ==
-                                  allPlayers.length)
+                          message: (selectedPlayers.length == allPlayers.length)
                               ? 'No more players to add.'
                               : 'No players found with that name.',
                         ),
@@ -250,13 +240,13 @@ class _SelectPlayerWidgetState extends State<SelectPlayerWidget> {
     bool success = await db.playerDao.addPlayer(player: createdPlayer);
     if (!context.mounted) return;
     if (success) {
-      //widget.selectedPlayers.add(createdPlayer);
-      widget.onChanged([...widget.selectedPlayers, createdPlayer]);
+      selectedPlayers.add(createdPlayer);
+      widget.onChanged([...selectedPlayers]);
       allPlayers.add(createdPlayer);
       setState(() {
         _searchBarController.clear();
         suggestedPlayers = allPlayers.where((player) {
-          return !widget.selectedPlayers.contains(player);
+          return !selectedPlayers.contains(player);
         }).toList();
       });
       ScaffoldMessenger.of(context).showSnackBar(

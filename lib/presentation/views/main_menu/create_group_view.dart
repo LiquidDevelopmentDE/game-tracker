@@ -72,11 +72,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               child: SelectPlayerWidget(
                 groupNameController: _groupNameController,
                 searchBarController: _searchBarController,
-                selectedPlayers: selectedPlayers,
                 onChanged: (value) {
-                  setState(() {
-                    selectedPlayers = [...value];
-                  });
+                  selectedPlayers = [...value];
                   print(selectedPlayers);
                 },
               ),
@@ -99,7 +96,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       if (success) {
                         _groupNameController.clear();
                         _searchBarController.clear();
-                        selectedPlayers.clear();
                         Navigator.pop(context);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
