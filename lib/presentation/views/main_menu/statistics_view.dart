@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/tiles/statistics_tile.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class StatisticsView extends StatefulWidget {
   const StatisticsView({super.key});
@@ -48,30 +48,9 @@ class _StatisticsViewState extends State<StatisticsView> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SingleChildScrollView(
-          child: Skeletonizer(
-            effect: PulseEffect(
-              from: Colors.grey[800]!,
-              to: Colors.grey[600]!,
-              duration: const Duration(milliseconds: 800),
-            ),
+          child: AppSkeleton(
             enabled: isLoading,
-            enableSwitchAnimation: true,
-            switchAnimationConfig: SwitchAnimationConfig(
-              duration: const Duration(milliseconds: 200),
-              switchInCurve: Curves.linear,
-              switchOutCurve: Curves.linear,
-              transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
-              layoutBuilder:
-                  (Widget? currentChild, List<Widget> previousChildren) {
-                    return Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        ...previousChildren,
-                        if (currentChild != null) currentChild,
-                      ],
-                    );
-                  },
-            ),
+            fixLayoutBuilder: true,
             child: ConstrainedBox(
               constraints: BoxConstraints(minWidth: constraints.maxWidth),
               child: Column(
