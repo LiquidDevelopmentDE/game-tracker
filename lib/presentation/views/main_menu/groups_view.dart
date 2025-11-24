@@ -4,11 +4,11 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_group_view.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class GroupsView extends StatefulWidget {
   const GroupsView({super.key});
@@ -75,22 +75,8 @@ class _GroupsViewState extends State<GroupsView> {
                   final List<Group> groups =
                       isLoading ? skeletonData : (snapshot.data ?? [])
                         ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-                  return Skeletonizer(
-                    effect: PulseEffect(
-                      from: Colors.grey[800]!,
-                      to: Colors.grey[600]!,
-                      duration: const Duration(milliseconds: 800),
-                    ),
+                  return AppSkeleton(
                     enabled: isLoading,
-                    enableSwitchAnimation: true,
-                    switchAnimationConfig: const SwitchAnimationConfig(
-                      duration: Duration(milliseconds: 200),
-                      switchInCurve: Curves.linear,
-                      switchOutCurve: Curves.linear,
-                      transitionBuilder:
-                          AnimatedSwitcher.defaultTransitionBuilder,
-                      layoutBuilder: AnimatedSwitcher.defaultLayoutBuilder,
-                    ),
                     child: ListView.builder(
                       padding: const EdgeInsets.only(bottom: 85),
                       itemCount: groups.length + 1,

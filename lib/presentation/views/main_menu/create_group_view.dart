@@ -4,6 +4,7 @@ import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/text_input_field.dart';
@@ -11,7 +12,6 @@ import 'package:game_tracker/presentation/widgets/tiles/text_icon_list_tile.dart
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CreateGroupView extends StatefulWidget {
   const CreateGroupView({super.key});
@@ -228,24 +228,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                                 snapshot.connectionState ==
                                 ConnectionState.waiting;
                             return Expanded(
-                              child: Skeletonizer(
-                                effect: PulseEffect(
-                                  from: Colors.grey[800]!,
-                                  to: Colors.grey[600]!,
-                                  duration: const Duration(milliseconds: 800),
-                                ),
+                              child: AppSkeleton(
                                 enabled: isLoading,
-                                enableSwitchAnimation: true,
-                                switchAnimationConfig:
-                                    const SwitchAnimationConfig(
-                                      duration: Duration(milliseconds: 200),
-                                      switchInCurve: Curves.linear,
-                                      switchOutCurve: Curves.linear,
-                                      transitionBuilder: AnimatedSwitcher
-                                          .defaultTransitionBuilder,
-                                      layoutBuilder:
-                                          AnimatedSwitcher.defaultLayoutBuilder,
-                                    ),
                                 child: Visibility(
                                   visible:
                                       (suggestedPlayers.isEmpty &&
