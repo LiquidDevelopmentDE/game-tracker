@@ -5,12 +5,12 @@ import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 
 class ChooseGroupView extends StatefulWidget {
   final List<Group> groups;
-  final int? selectedGroupIndex;
+  final int initialGroupIndex;
 
   const ChooseGroupView({
     super.key,
     required this.groups,
-    this.selectedGroupIndex,
+    required this.initialGroupIndex,
   });
 
   @override
@@ -18,11 +18,11 @@ class ChooseGroupView extends StatefulWidget {
 }
 
 class _ChooseGroupViewState extends State<ChooseGroupView> {
-  late int selectedGroup;
+  late int selectedGroupIndex;
 
   @override
   void initState() {
-    selectedGroup = widget.selectedGroupIndex ?? -1;
+    selectedGroupIndex = widget.initialGroupIndex;
     super.initState();
   }
 
@@ -46,16 +46,17 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
           return GestureDetector(
             onTap: () {
               setState(() {
-                selectedGroup = index;
+                selectedGroupIndex = index;
               });
 
               Future.delayed(const Duration(milliseconds: 500), () {
+                if (!context.mounted) return;
                 Navigator.of(context).pop(widget.groups[index]);
               });
             },
             child: GroupTile(
               group: widget.groups[index],
-              isHighlighted: selectedGroup == index,
+              isHighlighted: selectedGroupIndex == index,
             ),
           );
         },
