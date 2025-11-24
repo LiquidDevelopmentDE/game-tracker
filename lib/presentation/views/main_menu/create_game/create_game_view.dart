@@ -7,7 +7,7 @@ import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_ruleset_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
-import 'package:game_tracker/presentation/widgets/text_input/custom_text_input_field.dart';
+import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -118,13 +118,20 @@ class _CreateGameViewState extends State<CreateGameView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CustomTextInputField(
-                controller: _gameNameController,
-                hintText: 'Game name',
-                onChanged: (value) {
-                  setState(() {});
-                },
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                child: TextInputField(
+                  controller: _gameNameController,
+                  hintText: 'Game name',
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
               ),
+
               GestureDetector(
                 onTap: () async {
                   selectedRuleset = await Navigator.of(context).push(
