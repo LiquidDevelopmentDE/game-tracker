@@ -7,7 +7,7 @@ import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_ruleset_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
-import 'package:game_tracker/presentation/widgets/text_input_field.dart';
+import 'package:game_tracker/presentation/widgets/text_input/custom_text_input_field.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -19,19 +19,31 @@ class CreateGameView extends StatefulWidget {
 }
 
 class _CreateGameViewState extends State<CreateGameView> {
-  final TextEditingController _gameNameController = TextEditingController();
   late final AppDatabase db;
   late Future<List<Group>> _allGroupsFuture;
+  final TextEditingController _gameNameController = TextEditingController();
 
+  /// List of all groups from the database
   late final List<Group> groupsList;
 
+  /// The currently selected group
   Group? selectedGroup;
+
+  /// The index of the currently selected group in [groupsList] to mark it in
+  /// the [ChooseGroupView]
   int selectedGroupIndex = -1;
+
+  /// The currently selected ruleset
   Ruleset? selectedRuleset;
+
+  /// The index of the currently selected ruleset in [rulesets] to mark it in
+  /// the [ChooseRulesetView]
   int selectedRulesetIndex = -1;
 
   bool isLoading = true;
 
+  /// List of available rulesets with their display names and descriptions
+  /// as tuples of (Ruleset, String, String)
   List<(Ruleset, String, String)> rulesets = [
     (
       Ruleset.singleWinner,
@@ -106,18 +118,12 @@ class _CreateGameViewState extends State<CreateGameView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                child: TextInputField(
-                  controller: _gameNameController,
-                  hintText: 'Game name',
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                ),
+              CustomTextInputField(
+                controller: _gameNameController,
+                hintText: 'Game name',
+                onChanged: (value) {
+                  setState(() {});
+                },
               ),
               GestureDetector(
                 onTap: () async {
