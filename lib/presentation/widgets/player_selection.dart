@@ -98,7 +98,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
           const SizedBox(height: 10),
           Text(
-            'Ausgewählte Spieler: (${selectedPlayers.length})',
+            'Selected players: (${selectedPlayers.length})',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -131,7 +131,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
           const SizedBox(height: 10),
           const Text(
-            'Alle Spieler:',
+            'All players:',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
