@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_list_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class PlayerSelection extends StatefulWidget {
   final Function(List<Player> value) onChanged;
@@ -170,22 +170,8 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                   final bool isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
                   return Expanded(
-                    child: Skeletonizer(
-                      effect: PulseEffect(
-                        from: Colors.grey[800]!,
-                        to: Colors.grey[600]!,
-                        duration: const Duration(milliseconds: 800),
-                      ),
+                    child: AppSkeleton(
                       enabled: isLoading,
-                      enableSwitchAnimation: true,
-                      switchAnimationConfig: const SwitchAnimationConfig(
-                        duration: Duration(milliseconds: 200),
-                        switchInCurve: Curves.linear,
-                        switchOutCurve: Curves.linear,
-                        transitionBuilder:
-                            AnimatedSwitcher.defaultTransitionBuilder,
-                        layoutBuilder: AnimatedSwitcher.defaultLayoutBuilder,
-                      ),
                       child: Visibility(
                         visible:
                             (suggestedPlayers.isEmpty && allPlayers.isNotEmpty),
