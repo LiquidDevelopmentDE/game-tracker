@@ -70,7 +70,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             ),
             Expanded(
               child: PlayerSelection(
-                groupNameController: _groupNameController,
                 searchBarController: _searchBarController,
                 onChanged: (value) {
                   selectedPlayers = [...value];

@@ -10,13 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class PlayerSelection extends StatefulWidget {
-  final TextEditingController groupNameController;
   final TextEditingController searchBarController;
   final Function(List<Player> value) onChanged;
 
   const PlayerSelection({
     super.key,
-    required this.groupNameController,
     required this.searchBarController,
     required this.onChanged,
   });
