@@ -19,7 +19,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
   late final AppDatabase db;
 
   late final List<Game> skeletonData = List.filled(
-    2,
+    10,
     Game(
       name: 'Skeleton Game',
       group: Group(
@@ -30,6 +30,9 @@ class _GameHistoryViewState extends State<GameHistoryView> {
         ],
       ),
       winner: Player(name: 'Skeleton Player 1'),
+      players: [
+        Player(name: 'Skeleton Player 3')
+      ],
     ),
   );
 
@@ -37,10 +40,11 @@ class _GameHistoryViewState extends State<GameHistoryView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _gameListFuture = Future.delayed(
-      const Duration(milliseconds: 250),
-          () => db.gameDao.getAllGames(),
-    );
+    _gameListFuture = db.gameDao.getAllGames();
+
+    Future.wait([_gameListFuture]).then((result) async {
+      await Future.delayed(const Duration(milliseconds: 250));
+    });
   }
 
   @override
@@ -69,7 +73,6 @@ class _GameHistoryViewState extends State<GameHistoryView> {
             ? skeletonData
             : (snapshot.data ?? [])
           ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
-            .take(2)
             .toList();
 
         return Skeletonizer(
