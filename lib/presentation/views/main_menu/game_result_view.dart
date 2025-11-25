@@ -3,6 +3,8 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
+import 'package:game_tracker/presentation/widgets/tiles/custom_radio_list_tile.dart';
+import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class GameResultView extends StatefulWidget {
   final Game game;
@@ -15,6 +17,7 @@ class GameResultView extends StatefulWidget {
 
 class _GameResultViewState extends State<GameResultView> {
   late final List<Player> allPlayers;
+  Player? _player;
 
   @override
   void initState() {
@@ -64,16 +67,36 @@ class _GameResultViewState extends State<GameResultView> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: allPlayers.length,
-                        itemBuilder: (context, index) {
-                          //TODO: Implement Custom RadioListTile, see text_icon_list_tile
-                          return RadioListTile<Player>(
-                            title: Text(allPlayers[index].name),
-                            value: allPlayers[index],
-                          );
-                        },
+                    Visibility(
+                      visible: allPlayers.isNotEmpty,
+                      replacement: TopCenteredMessage(
+                        icon: Icons.info,
+                        title: "Info",
+                        message: "No players in this game.",
+                      ),
+                      child: Expanded(
+                        child: RadioGroup<Player>(
+                          groupValue: _player,
+                          onChanged: (Player? value) {
+                            setState(() {
+                              _player = value;
+                            });
+                          },
+                          child: ListView.builder(
+                            itemCount: allPlayers.length,
+                            itemBuilder: (context, index) {
+                              return CustomRadioListTile(
+                                text: allPlayers[index].name,
+                                value: allPlayers[index],
+                                onContainerTap: (value) {
+                                  setState(() {
+                                    _player = value;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -83,7 +106,12 @@ class _GameResultViewState extends State<GameResultView> {
             CustomWidthButton(
               text: "Save",
               sizeRelativeToWidth: 0.95,
-              onPressed: null,
+              onPressed: _player != null
+                  ? () {
+                      print("Selected Winner: ${_player!.name}");
+                      Navigator.pop(context);
+                    }
+                  : null,
             ),
             SizedBox(height: 10),
           ],
