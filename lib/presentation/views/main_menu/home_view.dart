@@ -3,12 +3,12 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -62,30 +62,8 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return Skeletonizer(
-          effect: PulseEffect(
-            from: Colors.grey[800]!,
-            to: Colors.grey[600]!,
-            duration: const Duration(milliseconds: 800),
-          ),
+        return AppSkeleton(
           enabled: isLoading,
-          enableSwitchAnimation: true,
-          switchAnimationConfig: SwitchAnimationConfig(
-            duration: const Duration(milliseconds: 200),
-            switchInCurve: Curves.linear,
-            switchOutCurve: Curves.linear,
-            transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
-            layoutBuilder:
-                (Widget? currentChild, List<Widget> previousChildren) {
-                  return Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      ...previousChildren,
-                      if (currentChild != null) currentChild,
-                    ],
-                  );
-                },
-          ),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -151,15 +129,6 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 );
                               }
-                              if (snapshot.connectionState ==
-                                      ConnectionState.done &&
-                                  (!snapshot.hasData ||
-                                      snapshot.data!.isEmpty)) {
-                                return const Center(
-                                  heightFactor: 4,
-                                  child: Text('No recent games available.'),
-                                );
-                              }
                               final List<Game> games =
                                   (isLoading
                                             ? skeletonData
@@ -214,7 +183,7 @@ class _HomeViewState extends State<HomeView> {
                                 );
                               } else {
                                 return const Center(
-                                  heightFactor: 4,
+                                  heightFactor: 12,
                                   child: Text('No recent games available.'),
                                 );
                               }
