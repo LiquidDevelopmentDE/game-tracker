@@ -34,7 +34,7 @@ class _GameResultViewState extends State<GameResultView> {
         scrolledUnderElevation: 0,
         title: Text(
           widget.game.name,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             overflow: TextOverflow.ellipsis,
@@ -71,7 +71,7 @@ class _GameResultViewState extends State<GameResultView> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Visibility(
                       visible: allPlayers.isNotEmpty,
                       replacement: const TopCenteredMessage(
