@@ -11,8 +11,13 @@ import 'package:provider/provider.dart';
 
 class PlayerSelection extends StatefulWidget {
   final Function(List<Player> value) onChanged;
+  final List<Player> initialPlayers;
 
-  const PlayerSelection({super.key, required this.onChanged});
+  const PlayerSelection({
+    super.key,
+    required this.onChanged,
+    this.initialPlayers = const [],
+  });
 
   @override
   State<PlayerSelection> createState() => _PlayerSelectionState();
@@ -46,9 +51,14 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     suggestedPlayers = skeletonData;
     _allPlayersFuture.then((loadedPlayers) {
       setState(() {
-        loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
-        allPlayers = [...loadedPlayers];
-        suggestedPlayers = [...loadedPlayers];
+        if (widget.initialPlayers.isNotEmpty) {
+          allPlayers = [...widget.initialPlayers];
+          suggestedPlayers = [...widget.initialPlayers];
+        } else {
+          loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
+          allPlayers = [...loadedPlayers];
+          suggestedPlayers = [...loadedPlayers];
+        }
       });
     });
   }
