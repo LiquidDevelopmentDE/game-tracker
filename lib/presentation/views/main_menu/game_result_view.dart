@@ -61,7 +61,7 @@ class _GameResultViewState extends State<GameResultView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Select Winner:",
+                      'Select Winner:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -69,10 +69,10 @@ class _GameResultViewState extends State<GameResultView> {
                     ),
                     Visibility(
                       visible: allPlayers.isNotEmpty,
-                      replacement: TopCenteredMessage(
+                      replacement: const TopCenteredMessage(
                         icon: Icons.info,
-                        title: "Info",
-                        message: "No players in this game.",
+                        title: 'Info',
+                        message: 'No players in this game.',
                       ),
                       child: Expanded(
                         child: RadioGroup<Player>(
@@ -104,18 +104,18 @@ class _GameResultViewState extends State<GameResultView> {
               ),
             ),
             CustomWidthButton(
-              text: "Save",
+              text: 'Save',
               sizeRelativeToWidth: 0.95,
               onPressed: _player != null
                   ? () {
                       print(
-                        "Selected Winner: ${_player!.name}",
+                        'Selected Winner: ${_player!.name}',
                       ); //TODO: Add winner to db
                       Navigator.pop(context);
                     }
                   : null,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
         ),
       ),

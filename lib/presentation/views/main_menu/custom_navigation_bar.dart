@@ -62,18 +62,18 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
                 MaterialPageRoute(
                   builder: (_) => GameResultView(
                     game: Game(
-                      name: "Test Game",
+                      name: 'Test Game',
                       players: [
-                        Player(name: "Petrus"),
-                        Player(name: "Peter"),
-                        Player(name: "Petra"),
+                        Player(name: 'Petrus'),
+                        Player(name: 'Peter'),
+                        Player(name: 'Petra'),
                       ],
                       group: Group(
-                        name: "Die Petris",
+                        name: 'Die Petris',
                         members: [
-                          Player(name: "Petralia"),
-                          Player(name: "Petrenlia"),
-                          Player(name: "Petrumlia"),
+                          Player(name: 'Petralia'),
+                          Player(name: 'Petrenlia'),
+                          Player(name: 'Petrumlia'),
                         ],
                       ),
                     ),
