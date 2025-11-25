@@ -17,7 +17,7 @@ class GameResultView extends StatefulWidget {
 
 class _GameResultViewState extends State<GameResultView> {
   late final List<Player> allPlayers;
-  Player? _player;
+  Player? _player; //TODO: Set last winner as selected
 
   @override
   void initState() {
@@ -32,8 +32,8 @@ class _GameResultViewState extends State<GameResultView> {
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
-        title: const Text(
-          'Game Result',
+        title: Text(
+          widget.game.name,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -67,6 +67,7 @@ class _GameResultViewState extends State<GameResultView> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(height: 2),
                     Visibility(
                       visible: allPlayers.isNotEmpty,
                       replacement: const TopCenteredMessage(
