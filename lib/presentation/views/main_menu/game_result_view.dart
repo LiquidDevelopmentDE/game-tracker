@@ -34,7 +34,11 @@ class _GameResultViewState extends State<GameResultView> {
         scrolledUnderElevation: 0,
         title: Text(
           widget.game.name,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         centerTitle: true,
       ),
