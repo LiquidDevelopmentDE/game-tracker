@@ -108,7 +108,9 @@ class _GameResultViewState extends State<GameResultView> {
               sizeRelativeToWidth: 0.95,
               onPressed: _player != null
                   ? () {
-                      print("Selected Winner: ${_player!.name}");
+                      print(
+                        "Selected Winner: ${_player!.name}",
+                      ); //TODO: Add winner to db
                       Navigator.pop(context);
                     }
                   : null,
