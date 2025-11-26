@@ -52,6 +52,9 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// the [ChooseRulesetView]
   int selectedRulesetIndex = -1;
 
+  /// The currently selected players
+  List<Player>? selectedPlayers;
+
   /// List of available rulesets with their display names and descriptions
   /// as tuples of (Ruleset, String, String)
   List<(Ruleset, String, String)> rulesets = [
@@ -213,7 +216,9 @@ class _CreateGameViewState extends State<CreateGameView> {
                           )
                           .toList(),
                 onChanged: (value) {
-                  print(value);
+                  setState(() {
+                    selectedPlayers = value;
+                  });
                 },
               ),
             ),
@@ -222,21 +227,19 @@ class _CreateGameViewState extends State<CreateGameView> {
               text: 'Create game',
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
-              onPressed:
-                  (_gameNameController.text.isEmpty ||
-                      selectedGroup == null ||
-                      selectedRuleset == null)
-                  ? null
-                  : () async {
+              onPressed: _enableCreateGameButton()
+                  ? () async {
                       Game game = Game(
                         name: _gameNameController.text.trim(),
                         createdAt: DateTime.now(),
                         group: selectedGroup!,
+                        players: selectedPlayers,
                       );
                       // TODO: Replace with navigation to GameResultView()
                       print('Created game: $game');
                       Navigator.pop(context);
-                    },
+                    }
+                  : null,
             ),
             const SizedBox(height: 20),
           ],
@@ -257,5 +260,14 @@ class _CreateGameViewState extends State<CreateGameView> {
       case Ruleset.lastPoints:
         return 'Least Points';
     }
+  }
+
+  /// Determines whether the "Create Game" button should be enabled based on
+  /// the current state of the input fields.
+  bool _enableCreateGameButton() {
+    return _gameNameController.text.isNotEmpty &&
+        (selectedGroup != null ||
+            (selectedPlayers != null && selectedPlayers!.isNotEmpty)) &&
+        selectedRuleset != null;
   }
 }
