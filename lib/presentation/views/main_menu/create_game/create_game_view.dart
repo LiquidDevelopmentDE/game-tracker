@@ -174,14 +174,6 @@ class _CreateGameViewState extends State<CreateGameView> {
                 selectedGroupIndex = groupsList.indexWhere(
                   (g) => g.id == selectedGroup?.id,
                 );
-                print('selectedGroup: $selectedGroup');
-                print(
-                  playerList
-                      .where(
-                        (p) => !selectedGroup!.members.any((m) => m.id == p.id),
-                      )
-                      .toList(),
-                );
                 setState(() {});
               },
               child: Container(
