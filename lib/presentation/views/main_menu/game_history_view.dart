@@ -178,12 +178,12 @@ class _GameHistoryViewState extends State<GameHistoryView> {
             ),
           ),
           Positioned(
-            bottom: 110,
+            bottom: MediaQuery.paddingOf(context).bottom,
             width: MediaQuery.of(context).size.width,
             child: Center(
               child: CustomWidthButton(
                 text: 'Create Game',
-                sizeRelativeToWidth: 0.95,
+                sizeRelativeToWidth: 0.90,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
