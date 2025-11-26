@@ -136,5 +136,49 @@ void main() {
         expect(players[i].createdAt, testGameOnlyPlayers.players![i].createdAt);
       }
     });
+
+    test('Updating the games players works coreclty', () async {
+      await database.gameDao.addGame(game: testGameOnlyPlayers);
+
+      final newPlayers = [testPlayer1, testPlayer2, testPlayer4];
+      await database.playerDao.addPlayers(players: newPlayers);
+
+      // First, remove all existing players
+      final existingPlayers = await database.playerGameDao.getPlayersOfGame(
+        gameId: testGameOnlyPlayers.id,
+      );
+
+      print('existingPlayers: $existingPlayers');
+      if (existingPlayers == null || existingPlayers.isEmpty) {
+        fail('Existing players should not be null or empty');
+      }
+
+      await database.playerGameDao.updatePlayersFromGame(
+        gameId: testGameOnlyPlayers.id,
+        newPlayer: newPlayers,
+      );
+
+      final updatedPlayers = await database.playerGameDao.getPlayersOfGame(
+        gameId: testGameOnlyPlayers.id,
+      );
+
+      if (updatedPlayers == null) {
+        fail('Updated players should not be null');
+      }
+
+      expect(updatedPlayers.length, newPlayers.length);
+
+      /// Create a map of new players for easy lookup
+      final testPlayers = {for (var p in newPlayers) p.id: p};
+
+      /// Verify each updated player matches the new players
+      for (final player in updatedPlayers) {
+        final testPlayer = testPlayers[player.id]!;
+
+        expect(player.id, testPlayer.id);
+        expect(player.name, testPlayer.name);
+        expect(player.createdAt, testPlayer.createdAt);
+      }
+    });
   });
 }

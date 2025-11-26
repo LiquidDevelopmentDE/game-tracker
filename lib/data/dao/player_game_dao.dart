@@ -79,4 +79,50 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
     final rowsAffected = await query.go();
     return rowsAffected > 0;
   }
+
+  /// Updates the players associated with a game based on the provided
+  /// [newPlayer] list. It adds new players and removes players that are no
+  /// longer associated with the game.
+  Future<void> updatePlayersFromGame({
+    required String gameId,
+    required List<Player> newPlayer,
+  }) async {
+    final currentPlayers = await getPlayersOfGame(gameId: gameId);
+    // Create sets of player IDs for easy comparison
+    final currentPlayerIds = currentPlayers?.map((p) => p.id).toSet() ?? {};
+    final newPlayerIdsSet = newPlayer.map((p) => p.id).toSet();
+
+    // Determine players to add and remove
+    final playersToAdd = newPlayerIdsSet.difference(currentPlayerIds);
+    final playersToRemove = currentPlayerIds.difference(newPlayerIdsSet);
+
+    db.transaction(() async {
+      // Remove old players
+      if (playersToRemove.isNotEmpty) {
+        await (delete(playerGameTable)..where(
+              (pg) =>
+                  pg.gameId.equals(gameId) &
+                  pg.playerId.isIn(playersToRemove.toList()),
+            ))
+            .go();
+      }
+
+      // Add new players
+      if (playersToAdd.isNotEmpty) {
+        final inserts = playersToAdd
+            .map(
+              (id) =>
+                  PlayerGameTableCompanion.insert(playerId: id, gameId: gameId),
+            )
+            .toList();
+        await Future.wait(
+          inserts.map(
+            (c) => into(
+              playerGameTable,
+            ).insert(c, mode: InsertMode.insertOrReplace),
+          ),
+        );
+      }
+    });
+  }
 }
