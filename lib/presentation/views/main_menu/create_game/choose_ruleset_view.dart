@@ -36,7 +36,7 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
           backgroundColor: CustomTheme.backgroundColor,
           scrolledUnderElevation: 0,
           title: const Text(
-            'Choose Gametype',
+            'Choose Ruleset',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
