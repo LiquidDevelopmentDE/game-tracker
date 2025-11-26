@@ -16,9 +16,9 @@ class CustomTheme {
 
   static BoxDecoration highlightedBoxDecoration = BoxDecoration(
     color: boxColor,
-    border: Border.all(color: Colors.blue),
+    border: Border.all(color: primaryColor),
     borderRadius: BorderRadius.circular(12),
-    boxShadow: [BoxShadow(color: Colors.blue.withAlpha(120), blurRadius: 12)],
+    boxShadow: [BoxShadow(color: primaryColor.withAlpha(120), blurRadius: 12)],
   );
 
   static AppBarTheme appBarTheme = AppBarTheme(
