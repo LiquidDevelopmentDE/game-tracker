@@ -308,5 +308,23 @@ void main() {
 
       expect(removedWinner, null);
     });
+
+    test('Renaming a game works correctly', () async {
+      await database.gameDao.addGame(game: testGame1);
+
+      var fetchedGame = await database.gameDao.getGameById(
+        gameId: testGame1.id,
+      );
+      expect(fetchedGame.name, testGame1.name);
+
+      const newName = 'Updated Game Name';
+      await database.gameDao.updateGameName(
+        gameId: testGame1.id,
+        newName: newName,
+      );
+
+      fetchedGame = await database.gameDao.getGameById(gameId: testGame1.id);
+      expect(fetchedGame.name, newName);
+    });
   });
 }

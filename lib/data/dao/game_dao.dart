@@ -306,4 +306,17 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     final result = await query.getSingleOrNull();
     return result != null;
   }
+
+  /// Changes the title of the game with the given [gameId] to [newName].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> updateGameName({
+    required String gameId,
+    required String newName,
+  }) async {
+    final query = update(gameTable)..where((g) => g.id.equals(gameId));
+    final rowsAffected = await query.write(
+      GameTableCompanion(name: Value(newName)),
+    );
+    return rowsAffected > 0;
+  }
 }
