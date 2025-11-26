@@ -56,7 +56,7 @@ void main() {
     });
 
     test('Adding and fetching multiple players works correctly', () async {
-      await database.playerDao.addPlayers(
+      await database.playerDao.addPlayersAsList(
         players: [testPlayer1, testPlayer2, testPlayer3, testPlayer4],
       );
 

@@ -79,7 +79,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
       );
 
       if (game.players != null) {
-        await db.playerDao.addPlayers(players: game.players!);
+        await db.playerDao.addPlayersAsList(players: game.players!);
         for (final p in game.players ?? []) {
           await db.playerGameDao.addPlayerToGame(
             gameId: game.id,
@@ -102,7 +102,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
   /// Also adds associated players and groups if they exist.
   /// If the [games] list is empty, the method returns immediately.
   /// If a game, player, or group already exists, it will be replaced.
-  Future<void> addGames({required List<Game> games}) async {
+  Future<void> addGamesAsList({required List<Game> games}) async {
     if (games.isEmpty) return;
     await db.transaction(() async {
       // Add all games in batch

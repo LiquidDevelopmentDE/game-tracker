@@ -81,7 +81,7 @@ void main() {
     });
 
     test('Adding and fetching multiple groups works correctly', () async {
-      await database.groupDao.addGroups(
+      await database.groupDao.addGroupsAsList(
         groups: [testGroup1, testGroup2, testGroup3, testGroup4],
       );
 

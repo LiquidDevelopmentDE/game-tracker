@@ -112,7 +112,7 @@ void main() {
     });
 
     test('Adding and fetching multiple games works correctly', () async {
-      await database.gameDao.addGames(
+      await database.gameDao.addGamesAsList(
         games: [testGame1, testGame2, testGameOnlyGroup, testGameOnlyPlayers],
       );
 

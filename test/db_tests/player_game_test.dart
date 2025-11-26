@@ -141,7 +141,7 @@ void main() {
       await database.gameDao.addGame(game: testGameOnlyPlayers);
 
       final newPlayers = [testPlayer1, testPlayer2, testPlayer4];
-      await database.playerDao.addPlayers(players: newPlayers);
+      await database.playerDao.addPlayersAsList(players: newPlayers);
 
       // First, remove all existing players
       final existingPlayers = await database.playerGameDao.getPlayersOfGame(
