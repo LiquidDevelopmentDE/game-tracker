@@ -234,5 +234,79 @@ void main() {
       gameCount = await database.gameDao.getGameCount();
       expect(gameCount, 0);
     });
+
+    test('Checking if game has winner works correclty', () async {
+      await database.gameDao.addGame(game: testGame1);
+      await database.gameDao.addGame(game: testGameOnlyGroup);
+
+      var hasWinner = await database.gameDao.hasWinner(gameId: testGame1.id);
+      expect(hasWinner, true);
+
+      hasWinner = await database.gameDao.hasWinner(
+        gameId: testGameOnlyGroup.id,
+      );
+      expect(hasWinner, false);
+    });
+
+    test('Fetching the winner of a game works correctly', () async {
+      await database.gameDao.addGame(game: testGame1);
+
+      final winner = await database.gameDao.getWinner(gameId: testGame1.id);
+      if (winner == null) {
+        fail('Winner is null');
+      } else {
+        expect(winner.id, testGame1.winner!.id);
+        expect(winner.name, testGame1.winner!.name);
+        expect(winner.createdAt, testGame1.winner!.createdAt);
+      }
+    });
+
+    test('Updating the winner of a game works correctly', () async {
+      await database.gameDao.addGame(game: testGame1);
+
+      final winner = await database.gameDao.getWinner(gameId: testGame1.id);
+      if (winner == null) {
+        fail('Winner is null');
+      } else {
+        expect(winner.id, testGame1.winner!.id);
+        expect(winner.name, testGame1.winner!.name);
+        expect(winner.createdAt, testGame1.winner!.createdAt);
+        expect(winner.id, testPlayer4.id);
+        expect(winner.id != testPlayer5.id, true);
+      }
+
+      await database.gameDao.setWinner(
+        gameId: testGame1.id,
+        winnerId: testPlayer5.id,
+      );
+
+      final newWinner = await database.gameDao.getWinner(gameId: testGame1.id);
+
+      if (newWinner == null) {
+        fail('New winner is null');
+      } else {
+        expect(newWinner.id, testPlayer5.id);
+        expect(newWinner.name, testPlayer5.name);
+        expect(newWinner.createdAt, testPlayer5.createdAt);
+      }
+    });
+
+    test('Removing a winner works correctly', () async {
+      await database.gameDao.addGame(game: testGame2);
+
+      var hasWinner = await database.gameDao.hasWinner(gameId: testGame2.id);
+      expect(hasWinner, true);
+
+      await database.gameDao.removeWinner(gameId: testGame2.id);
+
+      hasWinner = await database.gameDao.hasWinner(gameId: testGame2.id);
+      expect(hasWinner, false);
+
+      final removedWinner = await database.gameDao.getWinner(
+        gameId: testGame2.id,
+      );
+
+      expect(removedWinner, null);
+    });
   });
 }

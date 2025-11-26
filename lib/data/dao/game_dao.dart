@@ -253,4 +253,49 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     final rowsAffected = await query.go();
     return rowsAffected > 0;
   }
+
+  /// Sets the winner of the game with the given [gameId] to the player with
+  /// the given [winnerId].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> setWinner({
+    required String gameId,
+    required String winnerId,
+  }) async {
+    final query = update(gameTable)..where((g) => g.id.equals(gameId));
+    final rowsAffected = await query.write(
+      GameTableCompanion(winnerId: Value(winnerId)),
+    );
+    return rowsAffected > 0;
+  }
+
+  /// Retrieves the winner of the game with the given [gameId].
+  /// Returns the [Player] who won the game, or `null` if no winner is set.
+  Future<Player?> getWinner({required String gameId}) async {
+    final query = select(gameTable)..where((g) => g.id.equals(gameId));
+    final result = await query.getSingleOrNull();
+    if (result == null || result.winnerId == null) {
+      return null;
+    }
+    final winner = await db.playerDao.getPlayerById(playerId: result.winnerId!);
+    return winner;
+  }
+
+  /// Removes the winner of the game with the given [gameId].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> removeWinner({required String gameId}) async {
+    final query = update(gameTable)..where((g) => g.id.equals(gameId));
+    final rowsAffected = await query.write(
+      const GameTableCompanion(winnerId: Value(null)),
+    );
+    return rowsAffected > 0;
+  }
+
+  /// Checks if the game with the given [gameId] has a winner set.
+  /// Returns `true` if a winner is set, otherwise `false`.
+  Future<bool> hasWinner({required String gameId}) async {
+    final query = select(gameTable)
+      ..where((g) => g.id.equals(gameId) & g.winnerId.isNotNull());
+    final result = await query.getSingleOrNull();
+    return result != null;
+  }
 }
