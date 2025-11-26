@@ -10,6 +10,7 @@ import 'package:game_tracker/presentation/views/main_menu/create_game/choose_rul
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/player_selection.dart';
 import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
+import 'package:game_tracker/presentation/widgets/tiles/choose_tile.dart';
 import 'package:provider/provider.dart';
 
 class CreateGameView extends StatefulWidget {
@@ -121,8 +122,12 @@ class _CreateGameViewState extends State<CreateGameView> {
                 },
               ),
             ),
-            GestureDetector(
-              onTap: () async {
+            ChooseTile(
+              title: 'Ruleset',
+              trailingText: selectedRuleset == null
+                  ? 'None'
+                  : translateRulesetToString(selectedRuleset!),
+              onPressed: () async {
                 selectedRuleset = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChooseRulesetView(
@@ -136,36 +141,13 @@ class _CreateGameViewState extends State<CreateGameView> {
                 );
                 setState(() {});
               },
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15,
-                ),
-                decoration: CustomTheme.standardBoxDecoration,
-                child: Row(
-                  children: [
-                    const Text(
-                      'Ruleset',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      selectedRuleset == null
-                          ? 'None'
-                          : translateRulesetToString(selectedRuleset!),
-                    ),
-                    const SizedBox(width: 10),
-                    const Icon(Icons.arrow_forward_ios, size: 16),
-                  ],
-                ),
-              ),
             ),
-            GestureDetector(
-              onTap: () async {
+            ChooseTile(
+              title: 'Group',
+              trailingText: selectedGroup == null
+                  ? 'None'
+                  : selectedGroup!.name,
+              onPressed: () async {
                 selectedGroup = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChooseGroupView(
@@ -179,29 +161,6 @@ class _CreateGameViewState extends State<CreateGameView> {
                 );
                 setState(() {});
               },
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15,
-                ),
-                decoration: CustomTheme.standardBoxDecoration,
-                child: Row(
-                  children: [
-                    const Text(
-                      'Group',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(selectedGroup == null ? 'None' : selectedGroup!.name),
-                    const SizedBox(width: 10),
-                    const Icon(Icons.arrow_forward_ios, size: 16),
-                  ],
-                ),
-              ),
             ),
             Expanded(
               child: PlayerSelection(
