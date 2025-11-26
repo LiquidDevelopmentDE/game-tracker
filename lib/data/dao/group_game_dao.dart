@@ -11,8 +11,12 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
   GroupGameDao(super.db);
 
   /// Associates a group with a game by inserting a record into the
-  /// [GroupGameTable].
-  Future<void> addGroupToGame(String gameId, String groupId) async {
+  /// [GroupGameTable]. If there is already group associated to the game,
+  /// it will be replaced.
+  Future<void> addGroupToGame({
+    required String gameId,
+    required String groupId,
+  }) async {
     await into(groupGameTable).insert(
       GroupGameTableCompanion.insert(groupId: groupId, gameId: gameId),
       mode: InsertMode.insertOrReplace,
@@ -75,5 +79,18 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
       ..where((g) => g.gameId.equals(gameId) & g.groupId.equals(groupId));
     final rowsAffected = await query.go();
     return rowsAffected > 0;
+  }
+
+  /// Updates the group associated with a game to [newGroupId] based on
+  /// [gameId].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> updateGroupOfGame({
+    required String gameId,
+    required String newGroupId,
+  }) async {
+    final updatedRows =
+        await (update(groupGameTable)..where((g) => g.gameId.equals(gameId)))
+            .write(GroupGameTableCompanion(groupId: Value(newGroupId)));
+    return updatedRows > 0;
   }
 }
