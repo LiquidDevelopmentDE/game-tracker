@@ -17,47 +17,6 @@ class GameHistoryTile extends StatefulWidget {
 }
 
 class _GameHistoryTileState extends State<GameHistoryTile> {
-  String _formatDate(DateTime dateTime) {
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
-
-    if (difference.inDays == 0) {
-      return 'Today at ${DateFormat('HH:mm').format(dateTime)}';
-    } else if (difference.inDays == 1) {
-      return 'Yesterday at ${DateFormat('HH:mm').format(dateTime)}';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
-    } else {
-      return DateFormat('MMM d, yyyy').format(dateTime);
-    }
-  }
-
-  List<dynamic> _getAllPlayers() {
-    final allPlayers = <dynamic>[];
-    final playerIds = <String>{};
-
-    // Add players from game.players
-    if (widget.game.players != null) {
-      for (var player in widget.game.players!) {
-        if (!playerIds.contains(player.id)) {
-          allPlayers.add(player);
-          playerIds.add(player.id);
-        }
-      }
-    }
-
-    // Add players from game.group.players
-    if (widget.game.group?.members != null) {
-      for (var player in widget.game.group!.members) {
-        if (!playerIds.contains(player.id)) {
-          allPlayers.add(player);
-          playerIds.add(player.id);
-        }
-      }
-    }
-
-    return allPlayers;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +131,6 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
               spacing: 6,
               runSpacing: 6,
               children: allPlayers.map((player) {
-                final isWinner = winner != null && player.id == winner.id;
                 return TextIconTile(
                   text: player.name,
                   iconEnabled: false,
@@ -184,4 +142,47 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
       ),
     );
   }
+
+  String _formatDate(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays == 0) {
+      return 'Today at ${DateFormat('HH:mm').format(dateTime)}';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday at ${DateFormat('HH:mm').format(dateTime)}';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} days ago';
+    } else {
+      return DateFormat('MMM d, yyyy').format(dateTime);
+    }
+  }
+
+  List<dynamic> _getAllPlayers() {
+    final allPlayers = <dynamic>[];
+    final playerIds = <String>{};
+
+    // Add players from game.players
+    if (widget.game.players != null) {
+      for (var player in widget.game.players!) {
+        if (!playerIds.contains(player.id)) {
+          allPlayers.add(player);
+          playerIds.add(player.id);
+        }
+      }
+    }
+
+    // Add players from game.group.players
+    if (widget.game.group?.members != null) {
+      for (var player in widget.game.group!.members) {
+        if (!playerIds.contains(player.id)) {
+          allPlayers.add(player);
+          playerIds.add(player.id);
+        }
+      }
+    }
+
+    return allPlayers;
+  }
+
 }
