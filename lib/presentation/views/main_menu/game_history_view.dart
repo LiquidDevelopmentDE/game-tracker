@@ -4,6 +4,7 @@ import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/tiles/game_history_tile.dart';
+import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -61,17 +62,21 @@ class _GameHistoryViewState extends State<GameHistoryView> {
       builder: (BuildContext context, AsyncSnapshot<List<Game>> snapshot) {
         if (snapshot.hasError) {
           return const Center(
-            heightFactor: 4,
-            child: Text(
-              'Error while loading games.',
+            child: TopCenteredMessage(
+              icon: Icons.report,
+              title: 'Error',
+              message: 'Game data could not be loaded',
             ),
           );
         }
         if (snapshot.connectionState == ConnectionState.done &&
             (!snapshot.hasData || snapshot.data!.isEmpty)) {
           return const Center(
-            heightFactor: 4,
-            child: Text('No games available.'),
+            child: TopCenteredMessage(
+              icon: Icons.report,
+              title: 'Error',
+              message: 'No Games Available',
+            ),
           );
         }
 
