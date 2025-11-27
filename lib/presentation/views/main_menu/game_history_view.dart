@@ -107,7 +107,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
             itemBuilder: (BuildContext context, int index) {
               if (index == games.length) {
                 return SizedBox(
-                  height: MediaQuery.paddingOf(context).bottom - 20,
+                  height: MediaQuery.paddingOf(context).bottom - 80,
                 );
               }
               return GameHistoryTile(game: games[index]);
