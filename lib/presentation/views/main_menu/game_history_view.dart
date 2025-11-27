@@ -19,7 +19,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
   late final AppDatabase db;
 
   late final List<Game> skeletonData = List.filled(
-    10,
+    4,
     Game(
       name: 'Skeleton Game',
       group: Group(
