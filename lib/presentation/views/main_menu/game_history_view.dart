@@ -17,6 +17,7 @@ class GameHistoryView extends StatefulWidget {
 class _GameHistoryViewState extends State<GameHistoryView> {
   late Future<List<Game>> _gameListFuture;
   late final AppDatabase db;
+  late bool isLoading = true;
 
   late final List<Game> skeletonData = List.filled(
     4,
@@ -47,6 +48,9 @@ class _GameHistoryViewState extends State<GameHistoryView> {
 
     Future.wait([_gameListFuture]).then((result) async {
       await Future.delayed(const Duration(milliseconds: 250));
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -71,7 +75,6 @@ class _GameHistoryViewState extends State<GameHistoryView> {
           );
         }
 
-        final bool isLoading = snapshot.connectionState == ConnectionState.waiting;
         final List<Game> games = (isLoading
             ? skeletonData
             : (snapshot.data ?? [])
