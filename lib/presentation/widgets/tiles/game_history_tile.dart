@@ -103,12 +103,15 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
                     color: Colors.amber,
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    'Winner: ${winner.name}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                  Expanded(
+                    child: Text(
+                      'Winner: ${winner.name}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
