@@ -60,7 +60,7 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
 
           const SizedBox(height: 8),
 
-          if (group != null)
+          if (group != null) ...[
             Row(
               children: [
                 const Icon(
@@ -81,10 +81,10 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+          ],
 
-          if (group != null) const SizedBox(height: 12),
-
-          if (winner != null)
+          if (winner != null) ...[
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               decoration: BoxDecoration(
@@ -114,8 +114,8 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
                 ],
               ),
             ),
-
-          if (winner != null) const SizedBox(height: 12),
+            const SizedBox(height: 12),
+          ],
 
           if (allPlayers.isNotEmpty) ...[
             const Text(
