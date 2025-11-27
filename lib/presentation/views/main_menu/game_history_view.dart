@@ -63,7 +63,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
           return const Center(
             heightFactor: 4,
             child: Text(
-              'Error while loading recent games.',
+              'Error while loading games.',
             ),
           );
         }
@@ -71,7 +71,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
             (!snapshot.hasData || snapshot.data!.isEmpty)) {
           return const Center(
             heightFactor: 4,
-            child: Text('No recent games available.'),
+            child: Text('No games available.'),
           );
         }
 
