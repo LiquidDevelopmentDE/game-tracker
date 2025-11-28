@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/views/main_menu/create_group_view.dart';
 import 'package:game_tracker/presentation/widgets/tiles/game_history_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
-import 'package:game_tracker/presentation/widgets/app_skeleton.dart'; // Add this import
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
+import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:provider/provider.dart';
 
 class GameHistoryView extends StatefulWidget {
@@ -57,51 +60,79 @@ class _GameHistoryViewState extends State<GameHistoryView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Game>>(
-      future: _gameListFuture,
-      builder: (BuildContext context, AsyncSnapshot<List<Game>> snapshot) {
-        if (snapshot.hasError) {
-          return const Center(
-            child: TopCenteredMessage(
-              icon: Icons.report,
-              title: 'Error',
-              message: 'Game data could not be loaded',
-            ),
-          );
-        }
-        if (snapshot.connectionState == ConnectionState.done &&
-            (!snapshot.hasData || snapshot.data!.isEmpty)) {
-          return const Center(
-            child: TopCenteredMessage(
-              icon: Icons.report,
-              title: 'Error',
-              message: 'No Games Available',
-            ),
-          );
-        }
-
-        final List<Game> games = (isLoading
-            ? skeletonData
-            : (snapshot.data ?? [])
-          ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
-            .toList();
-
-        return AppSkeleton(
-          enabled: isLoading,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 85),
-            itemCount: games.length + 1,
-            itemBuilder: (BuildContext context, int index) {
-              if (index == games.length) {
-                return SizedBox(
-                  height: MediaQuery.paddingOf(context).bottom - 80,
+    return Scaffold(
+      backgroundColor: CustomTheme.backgroundColor,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          FutureBuilder<List<Game>>(
+            future: _gameListFuture,
+            builder: (BuildContext context, AsyncSnapshot<List<Game>> snapshot) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: TopCenteredMessage(
+                    icon: Icons.report,
+                    title: 'Error',
+                    message: 'Game data could not be loaded',
+                  ),
                 );
               }
-              return GameHistoryTile(game: games[index]);
+              if (snapshot.connectionState == ConnectionState.done &&
+                  (!snapshot.hasData || snapshot.data!.isEmpty)) {
+                return const Center(
+                  child: TopCenteredMessage(
+                    icon: Icons.report,
+                    title: 'Error',
+                    message: 'No Games Available',
+                  ),
+                );
+              }
+
+              final List<Game> games = (isLoading
+                  ? skeletonData
+                  : (snapshot.data ?? [])
+                ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
+                  .toList();
+
+              return AppSkeleton(
+                enabled: isLoading,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 85),
+                  itemCount: games.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == games.length) {
+                      return SizedBox(
+                        height: MediaQuery.paddingOf(context).bottom - 80,
+                      );
+                    }
+                    return GameHistoryTile(game: games[index]); // Placeholder
+                  },
+                ),
+              );
             },
           ),
-        );
-      },
+          Positioned(
+            bottom: MediaQuery.paddingOf(context).bottom,
+            child: CustomWidthButton(
+              text: 'Create Game',
+              sizeRelativeToWidth: 0.90,
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const CreateGroupView();
+                    },
+                  ),
+                );
+                setState(() {
+                  _gameListFuture = db.gameDao.getAllGames();
+                });
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
