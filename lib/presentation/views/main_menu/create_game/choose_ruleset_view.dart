@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
-import 'package:game_tracker/presentation/widgets/tiles/ruleset_list_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
 class ChooseRulesetView extends StatefulWidget {
   final List<(Ruleset, String, String)> rulesets;
@@ -85,7 +85,7 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
                     padding: const EdgeInsets.only(bottom: 85),
                     itemCount: widget.rulesets.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return RulesetListTile(
+                      return TitleDescriptionListTile(
                         onPressed: () async {
                           setState(() {
                             selectedRulesetIndex = index;

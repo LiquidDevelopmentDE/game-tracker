@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-class RulesetListTile extends StatelessWidget {
+class TitleDescriptionListTile extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback? onPressed;
   final bool isHighlighted;
 
-  const RulesetListTile({
+  const TitleDescriptionListTile({
     super.key,
     required this.title,
     required this.description,
