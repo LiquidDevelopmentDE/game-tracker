@@ -5,6 +5,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/views/main_menu/create_game/choose_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_ruleset_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
@@ -53,6 +54,8 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// the [ChooseRulesetView]
   int selectedRulesetIndex = -1;
 
+  int selectedGameIndex = -1;
+
   /// The currently selected players
   List<Player>? selectedPlayers;
 
@@ -75,10 +78,15 @@ class _CreateGameViewState extends State<CreateGameView> {
       'Traditional ruleset: the player with the most points wins.',
     ),
     (
-      Ruleset.lastPoints,
+      Ruleset.leastPoints,
       'Least Points',
       'Inverse scoring: the player with the fewest points wins.',
     ),
+  ];
+
+  List<(String, String, Ruleset)> games = [
+    ('Cabo', 'A memory card game', Ruleset.leastPoints),
+    ('Uno', 'The Classic', Ruleset.singleWinner),
   ];
 
   @override
@@ -123,6 +131,27 @@ class _CreateGameViewState extends State<CreateGameView> {
               ),
             ),
             ChooseTile(
+              title: 'Game',
+              trailingText: selectedGameIndex == -1
+                  ? 'None'
+                  : games[selectedGameIndex].$1,
+              onPressed: () async {
+                selectedGameIndex = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ChooseGameView(
+                      games: games,
+                      initialGameIndex: selectedGameIndex,
+                    ),
+                  ),
+                );
+                selectedRuleset = games[selectedGameIndex].$3;
+                selectedRulesetIndex = rulesets.indexWhere(
+                  (r) => r.$1 == selectedRuleset,
+                );
+                setState(() {});
+              },
+            ),
+            ChooseTile(
               title: 'Ruleset',
               trailingText: selectedRuleset == null
                   ? 'None'
@@ -139,6 +168,7 @@ class _CreateGameViewState extends State<CreateGameView> {
                 selectedRulesetIndex = rulesets.indexWhere(
                   (r) => r.$1 == selectedRuleset,
                 );
+                selectedGameIndex = -1;
                 setState(() {});
               },
             ),
@@ -205,20 +235,6 @@ class _CreateGameViewState extends State<CreateGameView> {
         ),
       ),
     );
-  }
-
-  /// Translates a [Ruleset] enum value to its corresponding string representation.
-  String translateRulesetToString(Ruleset ruleset) {
-    switch (ruleset) {
-      case Ruleset.singleWinner:
-        return 'Single Winner';
-      case Ruleset.singleLoser:
-        return 'Single Loser';
-      case Ruleset.mostPoints:
-        return 'Most Points';
-      case Ruleset.lastPoints:
-        return 'Least Points';
-    }
   }
 
   /// Determines whether the "Create Game" button should be enabled based on

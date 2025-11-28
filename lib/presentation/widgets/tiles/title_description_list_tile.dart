@@ -6,6 +6,8 @@ class TitleDescriptionListTile extends StatelessWidget {
   final String description;
   final VoidCallback? onPressed;
   final bool isHighlighted;
+  final String? badgeText;
+  final Color? badgeColor;
 
   const TitleDescriptionListTile({
     super.key,
@@ -13,6 +15,8 @@ class TitleDescriptionListTile extends StatelessWidget {
     required this.description,
     this.onPressed,
     this.isHighlighted = false,
+    this.badgeText,
+    this.badgeColor,
   });
 
   @override
@@ -28,20 +32,42 @@ class TitleDescriptionListTile extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Flexible(
-                  child: Text(
-                    title,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
+                if (badgeText != null) ...[
+                  const Spacer(),
+                  Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 2,
+                      horizontal: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: badgeColor ?? CustomTheme.primaryColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      badgeText!,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
             const SizedBox(height: 5),
