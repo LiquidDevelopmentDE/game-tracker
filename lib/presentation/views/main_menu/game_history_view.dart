@@ -5,8 +5,8 @@ import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/tiles/game_history_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart'; // Add this import
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class GameHistoryView extends StatefulWidget {
   const GameHistoryView({super.key});
@@ -86,21 +86,8 @@ class _GameHistoryViewState extends State<GameHistoryView> {
           ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
             .toList();
 
-        return Skeletonizer(
-          effect: PulseEffect(
-            from: Colors.grey[800]!,
-            to: Colors.grey[600]!,
-            duration: const Duration(milliseconds: 800),
-          ),
+        return AppSkeleton(
           enabled: isLoading,
-          enableSwitchAnimation: true,
-          switchAnimationConfig: const SwitchAnimationConfig(
-            duration: Duration(milliseconds: 200),
-            switchInCurve: Curves.linear,
-            switchOutCurve: Curves.linear,
-            transitionBuilder: AnimatedSwitcher.defaultTransitionBuilder,
-            layoutBuilder: AnimatedSwitcher.defaultLayoutBuilder,
-          ),
           child: ListView.builder(
             padding: const EdgeInsets.only(bottom: 85),
             itemCount: games.length + 1,
