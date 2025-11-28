@@ -16,6 +16,9 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
     required String gameId,
     required String groupId,
   }) async {
+    if (await gameHasGroup(gameId: gameId)) {
+      throw Exception('Game already has a group');
+    }
     await into(groupGameTable).insert(
       GroupGameTableCompanion.insert(groupId: groupId, gameId: gameId),
       mode: InsertMode.insertOrReplace,
