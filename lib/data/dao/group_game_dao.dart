@@ -11,8 +11,7 @@ class GroupGameDao extends DatabaseAccessor<AppDatabase>
   GroupGameDao(super.db);
 
   /// Associates a group with a game by inserting a record into the
-  /// [GroupGameTable]. If there is already group associated to the game,
-  /// it will be replaced.
+  /// [GroupGameTable].
   Future<void> addGroupToGame({
     required String gameId,
     required String groupId,
