@@ -122,7 +122,7 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
 
           if (allPlayers.isNotEmpty) ...[
             const Text(
-              'Players:',
+              'Players',
               style: TextStyle(
                 fontSize: 13,
                 color: Colors.grey,
