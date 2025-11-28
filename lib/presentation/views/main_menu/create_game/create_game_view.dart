@@ -61,6 +61,7 @@ class _CreateGameViewState extends State<CreateGameView> {
 
   /// List of available rulesets with their display names and descriptions
   /// as tuples of (Ruleset, String, String)
+  /// TODO: Replace when rulesets are implemented
   List<(Ruleset, String, String)> rulesets = [
     (
       Ruleset.singleWinner,
@@ -84,9 +85,10 @@ class _CreateGameViewState extends State<CreateGameView> {
     ),
   ];
 
+  // TODO: Replace when games are implemented
   List<(String, String, Ruleset)> games = [
-    ('Cabo', 'A memory card game', Ruleset.leastPoints),
-    ('Uno', 'The Classic', Ruleset.singleWinner),
+    ('Example Game 1', 'This is a discription', Ruleset.leastPoints),
+    ('Example Game 2', '', Ruleset.singleWinner),
   ];
 
   @override
