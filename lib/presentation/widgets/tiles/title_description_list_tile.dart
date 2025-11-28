@@ -32,7 +32,7 @@ class TitleDescriptionListTile extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -70,9 +70,11 @@ class TitleDescriptionListTile extends StatelessWidget {
                 ],
               ],
             ),
-            const SizedBox(height: 5),
-            Text(description, style: const TextStyle(fontSize: 14)),
-            const SizedBox(height: 2.5),
+            if (description.isNotEmpty) ...[
+              const SizedBox(height: 5),
+              Text(description, style: const TextStyle(fontSize: 14)),
+              const SizedBox(height: 2.5),
+            ],
           ],
         ),
       ),
