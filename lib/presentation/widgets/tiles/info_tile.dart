@@ -29,11 +29,7 @@ class _InfoTileState extends State<InfoTile> {
       padding: widget.padding ?? const EdgeInsets.all(12),
       height: widget.height,
       width: widget.width ?? 380,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: CustomTheme.boxColor,
-        border: Border.all(color: CustomTheme.boxBorder),
-      ),
+      decoration: CustomTheme.standardBoxDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

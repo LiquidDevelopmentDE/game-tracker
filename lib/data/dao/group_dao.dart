@@ -84,7 +84,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
 
   /// Adds multiple groups to the database.
   /// Also adds the group's members to the [PlayerGroupTable].
-  Future<void> addGroups({required List<Group> groups}) async {
+  Future<void> addGroupsAsList({required List<Group> groups}) async {
     if (groups.isEmpty) return;
     await db.transaction(() async {
       // Deduplicate groups by id - keep first occurrence

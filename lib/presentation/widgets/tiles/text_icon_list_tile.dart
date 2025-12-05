@@ -18,11 +18,7 @@ class TextIconListTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        color: CustomTheme.boxColor,
-        border: Border.all(color: CustomTheme.boxBorder),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: CustomTheme.standardBoxDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,

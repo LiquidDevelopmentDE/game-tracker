@@ -110,9 +110,9 @@ class DataTransferService {
                 .toList() ??
             [];
 
-        await db.playerDao.addPlayers(players: importedPlayers);
-        await db.groupDao.addGroups(groups: importedGroups);
-        await db.gameDao.addGames(games: importedGames);
+        await db.playerDao.addPlayersAsList(players: importedPlayers);
+        await db.groupDao.addGroupsAsList(groups: importedGroups);
+        await db.gameDao.addGamesAsList(games: importedGames);
       } else {
         return ImportResult.invalidSchema;
       }

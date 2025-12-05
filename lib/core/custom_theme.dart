@@ -8,6 +8,19 @@ class CustomTheme {
   static Color onBoxColor = const Color(0xFF181818);
   static Color boxBorder = const Color(0xFF272727);
 
+  static BoxDecoration standardBoxDecoration = BoxDecoration(
+    color: boxColor,
+    border: Border.all(color: boxBorder),
+    borderRadius: BorderRadius.circular(12),
+  );
+
+  static BoxDecoration highlightedBoxDecoration = BoxDecoration(
+    color: boxColor,
+    border: Border.all(color: primaryColor),
+    borderRadius: BorderRadius.circular(12),
+    boxShadow: [BoxShadow(color: primaryColor.withAlpha(120), blurRadius: 12)],
+  );
+
   static AppBarTheme appBarTheme = AppBarTheme(
     backgroundColor: backgroundColor,
     foregroundColor: Colors.white,
