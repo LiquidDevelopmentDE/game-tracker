@@ -120,7 +120,6 @@ class _GameResultViewState extends State<GameResultView> {
               sizeRelativeToWidth: 0.95,
               onPressed: _player != null
                   ? () async {
-                      print('Selected Winner: ${_player!.name}');
                       bool success = await db.gameDao.setWinner(
                         gameId: widget.game.id,
                         winnerId: _player!.id,
