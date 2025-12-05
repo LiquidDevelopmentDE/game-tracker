@@ -56,7 +56,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             onPressed: () async {
               await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => SettingsView()),
+                MaterialPageRoute(builder: (_) => const SettingsView()),
               );
               setState(() {
                 tabKeyCount++;
