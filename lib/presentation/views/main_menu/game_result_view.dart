@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/custom_radio_list_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
+import 'package:provider/provider.dart';
 
 class GameResultView extends StatefulWidget {
   final Game game;
@@ -17,11 +19,16 @@ class GameResultView extends StatefulWidget {
 
 class _GameResultViewState extends State<GameResultView> {
   late final List<Player> allPlayers;
+  late final AppDatabase db;
   Player? _player; //TODO: Set last winner as selected
 
   @override
   void initState() {
+    db = Provider.of<AppDatabase>(context, listen: false);
     allPlayers = getAllPlayers(widget.game);
+    if (widget.game.winner != null) {
+      _player = allPlayers.firstWhere((p) => p.id == widget.game.winner!.id);
+    }
     super.initState();
   }
 
@@ -112,11 +119,29 @@ class _GameResultViewState extends State<GameResultView> {
               text: 'Save',
               sizeRelativeToWidth: 0.95,
               onPressed: _player != null
-                  ? () {
-                      print(
-                        'Selected Winner: ${_player!.name}',
-                      ); //TODO: Add winner to db
-                      Navigator.pop(context);
+                  ? () async {
+                      print('Selected Winner: ${_player!.name}');
+                      bool success = await db.gameDao.setWinner(
+                        gameId: widget.game.id,
+                        winnerId: _player!.id,
+                      );
+                      if (!context.mounted) return;
+                      if (success) {
+                        Navigator.pop(context);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: CustomTheme.boxColor,
+                            content: const Center(
+                              child: Text(
+                                'Error while setting winner, please try again',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      setState(() {});
                     }
                   : null,
             ),
