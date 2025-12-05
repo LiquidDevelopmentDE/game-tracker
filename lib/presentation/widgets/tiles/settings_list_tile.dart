@@ -26,11 +26,7 @@ class SettingsListTile extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.zero,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-              decoration: BoxDecoration(
-                color: CustomTheme.boxColor,
-                border: Border.all(color: CustomTheme.boxBorder),
-                borderRadius: BorderRadius.circular(12),
-              ),
+              decoration: CustomTheme.standardBoxDecoration,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

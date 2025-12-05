@@ -22,3 +22,10 @@ enum ImportResult {
 /// - [ExportResult.canceled]: The export operation was canceled by the user.
 /// - [ExportResult.unknownException]: An exception occurred during export.
 enum ExportResult { success, canceled, unknownException }
+
+/// Different rulesets available for games
+/// - [Ruleset.singleWinner]: The game is won by a single player
+/// - [Ruleset.singleLoser]: The game is lost by a single player
+/// - [Ruleset.mostPoints]: The player with the most points wins.
+/// - [Ruleset.lastPoints]: The player with the fewest points wins.
+enum Ruleset { singleWinner, singleLoser, mostPoints, lastPoints }

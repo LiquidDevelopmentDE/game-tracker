@@ -92,7 +92,6 @@ class _GroupsViewState extends State<GroupsView> {
                   );
                 },
           ),
-
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(

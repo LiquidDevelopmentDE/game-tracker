@@ -50,7 +50,7 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   }
 
   /// Adds multiple [players] to the database in a batch operation.
-  Future<bool> addPlayers({required List<Player> players}) async {
+  Future<bool> addPlayersAsList({required List<Player> players}) async {
     if (players.isEmpty) return false;
 
     await db.batch(

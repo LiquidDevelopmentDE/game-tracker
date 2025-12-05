@@ -29,11 +29,7 @@ class _QuickInfoTileState extends State<QuickInfoTile> {
       padding: widget.padding ?? const EdgeInsets.all(12),
       height: widget.height ?? 110,
       width: widget.width ?? 180,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: CustomTheme.boxColor,
-        border: Border.all(color: CustomTheme.boxBorder),
-      ),
+      decoration: CustomTheme.standardBoxDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
