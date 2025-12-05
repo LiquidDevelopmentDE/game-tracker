@@ -46,11 +46,10 @@ class _GameHistoryViewState extends State<GameHistoryView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _gameListFuture = db.gameDao.getAllGames();
-
-    Future.wait([_gameListFuture]).then((result) async {
-      await Future.delayed(const Duration(milliseconds: 250));
-    });
+    _gameListFuture = Future.delayed(
+      const Duration(milliseconds: 250),
+      () => db.gameDao.getAllGames(),
+    );
   }
 
   @override
@@ -78,8 +77,8 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                     return const Center(
                       child: TopCenteredMessage(
                         icon: Icons.report,
-                        title: 'Error',
-                        message: 'No Games Available',
+                        title: 'Info',
+                        message: 'No games created yet.',
                       ),
                     );
                   }
