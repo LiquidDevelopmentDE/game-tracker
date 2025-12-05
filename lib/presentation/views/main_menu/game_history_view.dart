@@ -115,9 +115,12 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                                     GameResultView(game: games[index]),
                               ),
                             );
+                            setState(() {
+                              _gameListFuture = db.gameDao.getAllGames();
+                            });
                           },
                           game: games[index],
-                        ); // Placeholder
+                        );
                       },
                     ),
                   );
