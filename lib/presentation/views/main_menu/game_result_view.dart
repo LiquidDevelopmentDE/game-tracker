@@ -20,7 +20,7 @@ class GameResultView extends StatefulWidget {
 class _GameResultViewState extends State<GameResultView> {
   late final List<Player> allPlayers;
   late final AppDatabase db;
-  Player? _player; //TODO: Set last winner as selected
+  Player? _player;
 
   @override
   void initState() {
