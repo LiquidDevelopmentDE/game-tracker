@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/data/dto/game.dart';
-import 'package:game_tracker/data/dto/group.dart';
-import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/game_history_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
 import 'package:game_tracker/presentation/widgets/navbar_item.dart';
 
@@ -59,26 +56,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             onPressed: () async {
               await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => GameResultView(
-                    game: Game(
-                      name: 'Test Game',
-                      players: [
-                        Player(name: 'Petrus'),
-                        Player(name: 'Peter'),
-                        Player(name: 'Petra'),
-                      ],
-                      group: Group(
-                        name: 'Die Petris',
-                        members: [
-                          Player(name: 'Petralia'),
-                          Player(name: 'Petrenlia'),
-                          Player(name: 'Petrumlia'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ), //TODO Replace with Settingsview
+                MaterialPageRoute(builder: (_) => SettingsView()),
               );
               setState(() {
                 tabKeyCount++;
