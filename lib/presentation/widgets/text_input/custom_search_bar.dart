@@ -30,7 +30,7 @@ class CustomSearchBar extends StatelessWidget {
       constraints:
           constraints ?? const BoxConstraints(maxHeight: 45, minHeight: 45),
       hintText: hintText,
-      onChanged: trailingButtonEnabled ? onChanged : null,
+      onChanged: onChanged,
       hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 16)),
       leading: const Icon(Icons.search),
       trailing: [
