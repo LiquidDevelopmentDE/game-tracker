@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
@@ -8,6 +9,7 @@ import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_ruleset_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/player_selection.dart';
 import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
@@ -225,9 +227,20 @@ class _CreateGameViewState extends State<CreateGameView> {
                         group: selectedGroup!,
                         players: selectedPlayers,
                       );
-                      // TODO: Replace with navigation to GameResultView()
-                      print('Created game: $game');
-                      Navigator.pop(context);
+                      final db = Provider.of<AppDatabase>(
+                        context,
+                        listen: false,
+                      );
+                      await db.gameDao.addGame(game: game);
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => GameResultView(game: game),
+                          ),
+                        );
+                      }
                     }
                   : null,
             ),
