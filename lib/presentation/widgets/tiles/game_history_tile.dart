@@ -6,142 +6,132 @@ import 'package:intl/intl.dart';
 
 class GameHistoryTile extends StatefulWidget {
   final Game game;
+  final VoidCallback onTap;
 
-  const GameHistoryTile({
-    super.key,
-    required this.game,
-  });
+  const GameHistoryTile({super.key, required this.game, required this.onTap});
 
   @override
   State<GameHistoryTile> createState() => _GameHistoryTileState();
 }
 
 class _GameHistoryTileState extends State<GameHistoryTile> {
-
   @override
   Widget build(BuildContext context) {
     final group = widget.game.group;
     final winner = widget.game.winner;
     final allPlayers = _getAllPlayers();
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: CustomTheme.boxColor,
-        border: Border.all(color: CustomTheme.boxBorder),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  widget.game.name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Text(
-                _formatDate(widget.game.createdAt),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 8),
-
-          if (group != null) ...[
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: CustomTheme.boxColor,
+          border: Border.all(color: CustomTheme.boxBorder),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(
-                  Icons.group,
-                  size: 16,
-                  color: Colors.grey,
-                ),
-                const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    group.name,
+                    widget.game.name,
                     style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                Text(
+                  _formatDate(widget.game.createdAt),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
               ],
             ),
-            const SizedBox(height: 12),
-          ],
 
-          if (winner != null) ...[
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: Colors.green.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-              ),
-              child: Row(
+            const SizedBox(height: 8),
+
+            if (group != null) ...[
+              Row(
                 children: [
-                  const Icon(
-                    Icons.emoji_events,
-                    size: 20,
-                    color: Colors.amber,
-                  ),
-                  const SizedBox(width: 8),
+                  const Icon(Icons.group, size: 16, color: Colors.grey),
+                  const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'Winner: ${winner.name}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                      group.name,
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 12),
-          ],
+              const SizedBox(height: 12),
+            ],
 
-          if (allPlayers.isNotEmpty) ...[
-            const Text(
-              'Players',
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey,
-                fontWeight: FontWeight.w500,
+            if (winner != null) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.green.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.green.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.emoji_events,
+                      size: 20,
+                      color: Colors.amber,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Winner: ${winner.name}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: allPlayers.map((player) {
-                return TextIconTile(
-                  text: player.name,
-                  iconEnabled: false,
-                );
-              }).toList(),
-            ),
+              const SizedBox(height: 12),
+            ],
+
+            if (allPlayers.isNotEmpty) ...[
+              const Text(
+                'Players',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: allPlayers.map((player) {
+                  return TextIconTile(text: player.name, iconEnabled: false);
+                }).toList(),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -187,5 +177,4 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
 
     return allPlayers;
   }
-
 }
