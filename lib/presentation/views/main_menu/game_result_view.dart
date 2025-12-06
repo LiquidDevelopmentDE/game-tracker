@@ -3,7 +3,6 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/custom_radio_list_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -94,10 +93,24 @@ class _GameResultViewState extends State<GameResultView> {
                             return CustomRadioListTile(
                               text: allPlayers[index].name,
                               value: allPlayers[index],
-                              onContainerTap: (value) {
+                              onContainerTap: (value) async {
                                 setState(() {
-                                  _selectedPlayer = value;
+                                  if (_selectedPlayer == value) {
+                                    _selectedPlayer = null;
+                                  } else {
+                                    _selectedPlayer = value;
+                                  }
                                 });
+                                if (_selectedPlayer == null) {
+                                  await db.gameDao.removeWinner(
+                                    gameId: widget.game.id,
+                                  );
+                                } else {
+                                  await db.gameDao.setWinner(
+                                    gameId: widget.game.id,
+                                    winnerId: _selectedPlayer!.id,
+                                  );
+                                }
                               },
                             );
                           },
@@ -108,36 +121,6 @@ class _GameResultViewState extends State<GameResultView> {
                 ),
               ),
             ),
-            CustomWidthButton(
-              text: 'Save',
-              sizeRelativeToWidth: 0.95,
-              onPressed: _selectedPlayer != null
-                  ? () async {
-                      bool success = await db.gameDao.setWinner(
-                        gameId: widget.game.id,
-                        winnerId: _selectedPlayer!.id,
-                      );
-                      if (!context.mounted) return;
-                      if (success) {
-                        Navigator.pop(context);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: CustomTheme.boxColor,
-                            content: const Center(
-                              child: Text(
-                                'Error while setting winner, please try again',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      setState(() {});
-                    }
-                  : null,
-            ),
-            const SizedBox(height: 10),
           ],
         ),
       ),
