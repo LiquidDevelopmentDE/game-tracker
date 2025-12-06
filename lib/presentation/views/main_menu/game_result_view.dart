@@ -100,9 +100,10 @@ class _GameResultViewState extends State<GameResultView> {
                                   if (_selectedPlayer == value) {
                                     // If yes deselected the player by setting it to null.
                                     _selectedPlayer = null;
-                                  } else
+                                  } else {
                                     // If no assign the newly tapped player to the selected player.
                                     (_selectedPlayer = value);
+                                  }
                                 });
                                 await _handleWinnerSaving();
                               },
