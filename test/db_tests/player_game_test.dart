@@ -148,7 +148,6 @@ void main() {
         gameId: testGameOnlyPlayers.id,
       );
 
-      print('existingPlayers: $existingPlayers');
       if (existingPlayers == null || existingPlayers.isEmpty) {
         fail('Existing players should not be null or empty');
       }
