@@ -24,7 +24,7 @@ class TitleDescriptionListTile extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: AnimatedContainer(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
         decoration: isHighlighted
             ? CustomTheme.highlightedBoxDecoration

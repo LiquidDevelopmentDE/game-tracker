@@ -123,7 +123,7 @@ class _CreateGameViewState extends State<CreateGameView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: TextInputField(
                 controller: _gameNameController,
                 hintText: 'Game name',
@@ -213,7 +213,6 @@ class _CreateGameViewState extends State<CreateGameView> {
                 },
               ),
             ),
-
             CustomWidthButton(
               text: 'Create game',
               sizeRelativeToWidth: 0.95,
@@ -232,7 +231,6 @@ class _CreateGameViewState extends State<CreateGameView> {
                     }
                   : null,
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
