@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -105,7 +106,8 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                           onTap: () async {
                             await Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
+                                fullscreenDialog: true,
                                 builder: (context) =>
                                     GameResultView(game: games[index]),
                               ),
