@@ -78,7 +78,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                       child: TopCenteredMessage(
                         icon: Icons.report,
                         title: 'Info',
-                        message: 'No games created yet.',
+                        message: 'No games created yet',
                       ),
                     );
                   }
