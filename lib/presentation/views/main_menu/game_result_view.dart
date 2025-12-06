@@ -5,7 +5,6 @@ import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/custom_radio_list_tile.dart';
-import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
 class GameResultView extends StatefulWidget {
@@ -20,14 +19,16 @@ class GameResultView extends StatefulWidget {
 class _GameResultViewState extends State<GameResultView> {
   late final List<Player> allPlayers;
   late final AppDatabase db;
-  Player? _player;
+  Player? _selectedPlayer;
 
   @override
   void initState() {
     db = Provider.of<AppDatabase>(context, listen: false);
     allPlayers = getAllPlayers(widget.game);
     if (widget.game.winner != null) {
-      _player = allPlayers.firstWhere((p) => p.id == widget.game.winner!.id);
+      _selectedPlayer = allPlayers.firstWhere(
+        (p) => p.id == widget.game.winner!.id,
+      );
     }
     super.initState();
   }
@@ -78,36 +79,28 @@ class _GameResultViewState extends State<GameResultView> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 2),
-                    Visibility(
-                      visible: allPlayers.isNotEmpty,
-                      replacement: const TopCenteredMessage(
-                        icon: Icons.info,
-                        title: 'Info',
-                        message: 'No players in this game.',
-                      ),
-                      child: Expanded(
-                        child: RadioGroup<Player>(
-                          groupValue: _player,
-                          onChanged: (Player? value) {
-                            setState(() {
-                              _player = value;
-                            });
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: RadioGroup<Player>(
+                        groupValue: _selectedPlayer,
+                        onChanged: (Player? value) {
+                          setState(() {
+                            _selectedPlayer = value;
+                          });
+                        },
+                        child: ListView.builder(
+                          itemCount: allPlayers.length,
+                          itemBuilder: (context, index) {
+                            return CustomRadioListTile(
+                              text: allPlayers[index].name,
+                              value: allPlayers[index],
+                              onContainerTap: (value) {
+                                setState(() {
+                                  _selectedPlayer = value;
+                                });
+                              },
+                            );
                           },
-                          child: ListView.builder(
-                            itemCount: allPlayers.length,
-                            itemBuilder: (context, index) {
-                              return CustomRadioListTile(
-                                text: allPlayers[index].name,
-                                value: allPlayers[index],
-                                onContainerTap: (value) {
-                                  setState(() {
-                                    _player = value;
-                                  });
-                                },
-                              );
-                            },
-                          ),
                         ),
                       ),
                     ),
@@ -118,11 +111,11 @@ class _GameResultViewState extends State<GameResultView> {
             CustomWidthButton(
               text: 'Save',
               sizeRelativeToWidth: 0.95,
-              onPressed: _player != null
+              onPressed: _selectedPlayer != null
                   ? () async {
                       bool success = await db.gameDao.setWinner(
                         gameId: widget.game.id,
-                        winnerId: _player!.id,
+                        winnerId: _selectedPlayer!.id,
                       );
                       if (!context.mounted) return;
                       if (success) {
