@@ -49,36 +49,35 @@ class _ChooseGameViewState extends State<ChooseGameView> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        decoration: CustomTheme.standardBoxDecoration,
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            CustomSearchBar(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: CustomSearchBar(
               controller: searchBarController,
               hintText: 'Game Name',
             ),
-            const SizedBox(height: 5),
-            Expanded(
-              child: ListView.builder(
-                itemCount: widget.games.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return TitleDescriptionListTile(
-                    title: widget.games[index].$1,
-                    description: widget.games[index].$2,
-                    badgeText: translateRulesetToString(widget.games[index].$3),
-                    isHighlighted: selectedGameIndex == index,
-                    onPressed: () async {
-                      setState(() {
-                        selectedGameIndex = index;
-                      });
-                    },
-                  );
-                },
-              ),
+          ),
+          const SizedBox(height: 5),
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.games.length,
+              itemBuilder: (BuildContext context, int index) {
+                return TitleDescriptionListTile(
+                  title: widget.games[index].$1,
+                  description: widget.games[index].$2,
+                  badgeText: translateRulesetToString(widget.games[index].$3),
+                  isHighlighted: selectedGameIndex == index,
+                  onPressed: () async {
+                    setState(() {
+                      selectedGameIndex = index;
+                    });
+                  },
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
