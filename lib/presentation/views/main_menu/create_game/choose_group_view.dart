@@ -33,6 +33,16 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop(
+              selectedGroupIndex == -1
+                  ? null
+                  : widget.groups[selectedGroupIndex],
+            );
+          },
+        ),
         title: const Text(
           'Choose Group',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -46,12 +56,11 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
           return GestureDetector(
             onTap: () {
               setState(() {
-                selectedGroupIndex = index;
-              });
-
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (!context.mounted) return;
-                Navigator.of(context).pop(widget.groups[index]);
+                if (selectedGroupIndex == index) {
+                  selectedGroupIndex = -1;
+                } else {
+                  selectedGroupIndex = index;
+                }
               });
             },
             child: GroupTile(

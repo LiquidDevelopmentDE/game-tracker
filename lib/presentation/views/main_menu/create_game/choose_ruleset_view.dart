@@ -36,6 +36,16 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
         appBar: AppBar(
           backgroundColor: CustomTheme.backgroundColor,
           scrolledUnderElevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.of(context).pop(
+                selectedRulesetIndex == -1
+                    ? null
+                    : widget.rulesets[selectedRulesetIndex].$1,
+              );
+            },
+          ),
           title: const Text(
             'Choose Ruleset',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -49,11 +59,11 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
             return TitleDescriptionListTile(
               onPressed: () async {
                 setState(() {
-                  selectedRulesetIndex = index;
-                });
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  if (!context.mounted) return;
-                  Navigator.of(context).pop(widget.rulesets[index].$1);
+                  if (selectedRulesetIndex == index) {
+                    selectedRulesetIndex = -1;
+                  } else {
+                    selectedRulesetIndex = index;
+                  }
                 });
               },
               title: widget.rulesets[index].$2,

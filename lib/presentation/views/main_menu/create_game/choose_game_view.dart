@@ -35,42 +35,50 @@ class _ChooseGameViewState extends State<ChooseGameView> {
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(
+              context,
+            ).pop(selectedGameIndex == -1 ? null : selectedGameIndex);
+          },
+        ),
         title: const Text(
           'Choose Game',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          CustomSearchBar(
-            controller: searchBarController,
-            hintText: 'Game Name',
-          ),
-          const SizedBox(height: 5),
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.games.length,
-              itemBuilder: (BuildContext context, int index) {
-                return TitleDescriptionListTile(
-                  title: widget.games[index].$1,
-                  description: widget.games[index].$2,
-                  badgeText: translateRulesetToString(widget.games[index].$3),
-                  isHighlighted: selectedGameIndex == index,
-                  onPressed: () async {
-                    setState(() {
-                      selectedGameIndex = index;
-                    });
-                    Future.delayed(const Duration(milliseconds: 500), () {
-                      if (!context.mounted) return;
-                      Navigator.of(context).pop(selectedGameIndex);
-                    });
-                  },
-                );
-              },
+      body: Container(
+        decoration: CustomTheme.standardBoxDecoration,
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            CustomSearchBar(
+              controller: searchBarController,
+              hintText: 'Game Name',
             ),
-          ),
-        ],
+            const SizedBox(height: 5),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.games.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return TitleDescriptionListTile(
+                    title: widget.games[index].$1,
+                    description: widget.games[index].$2,
+                    badgeText: translateRulesetToString(widget.games[index].$3),
+                    isHighlighted: selectedGameIndex == index,
+                    onPressed: () async {
+                      setState(() {
+                        selectedGameIndex = index;
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
