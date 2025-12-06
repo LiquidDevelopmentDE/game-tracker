@@ -5,7 +5,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/views/main_menu/create_group_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/create_game/create_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
@@ -133,7 +133,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return const CreateGroupView();
+                      return const CreateGameView();
                     },
                   ),
                 );
