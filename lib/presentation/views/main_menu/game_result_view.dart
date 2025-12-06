@@ -82,10 +82,11 @@ class _GameResultViewState extends State<GameResultView> {
                     Expanded(
                       child: RadioGroup<Player>(
                         groupValue: _selectedPlayer,
-                        onChanged: (Player? value) {
+                        onChanged: (Player? value) async {
                           setState(() {
                             _selectedPlayer = value;
                           });
+                          await _handleWinnerSaving();
                         },
                         child: ListView.builder(
                           itemCount: allPlayers.length,
@@ -95,22 +96,15 @@ class _GameResultViewState extends State<GameResultView> {
                               value: allPlayers[index],
                               onContainerTap: (value) async {
                                 setState(() {
+                                  // Check if the already selected player is the same as the newly tapped player.
                                   if (_selectedPlayer == value) {
+                                    // If yes deselected the player by setting it to null.
                                     _selectedPlayer = null;
-                                  } else {
-                                    _selectedPlayer = value;
-                                  }
+                                  } else
+                                    // If no assign the newly tapped player to the selected player.
+                                    (_selectedPlayer = value);
                                 });
-                                if (_selectedPlayer == null) {
-                                  await db.gameDao.removeWinner(
-                                    gameId: widget.game.id,
-                                  );
-                                } else {
-                                  await db.gameDao.setWinner(
-                                    gameId: widget.game.id,
-                                    winnerId: _selectedPlayer!.id,
-                                  );
-                                }
+                                await _handleWinnerSaving();
                               },
                             );
                           },
@@ -125,6 +119,17 @@ class _GameResultViewState extends State<GameResultView> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleWinnerSaving() async {
+    if (_selectedPlayer == null) {
+      await db.gameDao.removeWinner(gameId: widget.game.id);
+    } else {
+      await db.gameDao.setWinner(
+        gameId: widget.game.id,
+        winnerId: _selectedPlayer!.id,
+      );
+    }
   }
 
   List<Player> getAllPlayers(Game game) {
