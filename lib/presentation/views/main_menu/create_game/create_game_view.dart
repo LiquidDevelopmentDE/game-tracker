@@ -221,10 +221,6 @@ class _CreateGameViewState extends State<CreateGameView> {
                         group: selectedGroup!,
                         players: selectedPlayers,
                       );
-                      final db = Provider.of<AppDatabase>(
-                        context,
-                        listen: false,
-                      );
                       await db.gameDao.addGame(game: game);
                       if (context.mounted) {
                         Navigator.pushReplacement(
