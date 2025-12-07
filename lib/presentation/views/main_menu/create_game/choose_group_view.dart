@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 
 class ChooseGroupView extends StatefulWidget {
@@ -19,6 +20,8 @@ class ChooseGroupView extends StatefulWidget {
 
 class _ChooseGroupViewState extends State<ChooseGroupView> {
   late int selectedGroupIndex;
+  final TextEditingController controller = TextEditingController();
+  final String hintText = 'Group Name';
 
   @override
   void initState() {
@@ -49,26 +52,36 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.only(bottom: 85),
-        itemCount: widget.groups.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                if (selectedGroupIndex == index) {
-                  selectedGroupIndex = -1;
-                } else {
-                  selectedGroupIndex = index;
-                }
-              });
-            },
-            child: GroupTile(
-              group: widget.groups[index],
-              isHighlighted: selectedGroupIndex == index,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: CustomSearchBar(controller: controller, hintText: hintText),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.only(bottom: 85),
+              itemCount: widget.groups.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (selectedGroupIndex == index) {
+                        selectedGroupIndex = -1;
+                      } else {
+                        selectedGroupIndex = index;
+                      }
+                    });
+                  },
+                  child: GroupTile(
+                    group: widget.groups[index],
+                    isHighlighted: selectedGroupIndex == index,
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
