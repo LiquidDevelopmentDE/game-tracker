@@ -38,17 +38,23 @@ class TitleDescriptionListTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                SizedBox(
+                  width: 230,
+                  child: Text(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
                 if (badgeText != null) ...[
                   const Spacer(),
                   Container(
+                    constraints: const BoxConstraints(maxWidth: 100),
                     margin: const EdgeInsets.only(top: 4),
                     padding: const EdgeInsets.symmetric(
                       vertical: 2,
@@ -60,6 +66,9 @@ class TitleDescriptionListTile extends StatelessWidget {
                     ),
                     child: Text(
                       badgeText!,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
