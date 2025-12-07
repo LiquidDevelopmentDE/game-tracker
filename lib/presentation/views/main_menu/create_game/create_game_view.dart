@@ -125,9 +125,6 @@ class _CreateGameViewState extends State<CreateGameView> {
               child: TextInputField(
                 controller: _gameNameController,
                 hintText: 'Game name',
-                onChanged: (value) {
-                  setState(() {});
-                },
               ),
             ),
             ChooseTile(
