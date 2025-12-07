@@ -56,7 +56,7 @@ class _GroupsViewState extends State<GroupsView> {
                       child: TopCenteredMessage(
                         icon: Icons.report,
                         title: 'Error',
-                        message: 'Group data couldn\'t\nbe loaded.',
+                        message: 'Group data couldn\'t\nbe loaded',
                       ),
                     );
                   }
@@ -66,7 +66,7 @@ class _GroupsViewState extends State<GroupsView> {
                       child: TopCenteredMessage(
                         icon: Icons.info,
                         title: 'Info',
-                        message: 'No groups created yet.',
+                        message: 'No groups created yet',
                       ),
                     );
                   }
