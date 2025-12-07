@@ -196,7 +196,8 @@ class _CreateGameViewState extends State<CreateGameView> {
             Expanded(
               child: PlayerSelection(
                 key: ValueKey(selectedGroup?.id ?? 'no_group'),
-                initialPlayers: selectedGroup == null
+                initialSelectedPlayers: selectedPlayers ?? [],
+                availablePlayers: selectedGroup == null
                     ? playerList
                     : playerList
                           .where(
