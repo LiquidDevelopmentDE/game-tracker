@@ -66,7 +66,9 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             Expanded(
               child: PlayerSelection(
                 onChanged: (value) {
-                  selectedPlayers = [...value];
+                  setState(() {
+                    selectedPlayers = [...value];
+                  });
                 },
               ),
             ),
@@ -75,7 +77,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
               onPressed:
-                  (_groupNameController.text.isEmpty || selectedPlayers.isEmpty)
+                  (_groupNameController.text.isEmpty ||
+                      (selectedPlayers.length < 2))
                   ? null
                   : () async {
                       bool success = await db.groupDao.addGroup(
