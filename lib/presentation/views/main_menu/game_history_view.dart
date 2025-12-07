@@ -27,19 +27,13 @@ class _GameHistoryViewState extends State<GameHistoryView> {
   late final List<Game> skeletonData = List.filled(
     4,
     Game(
-      name: 'Skeleton Game',
+      name: 'Skeleton Gamename',
       group: Group(
-        name: 'Skeleton Group',
-        members: [
-          Player(name: 'Player 1'),
-          Player(name: 'Player 2'),
-          Player(name: 'Player 3'),
-          Player(name: 'Long Name Player 4'),
-          Player(name: 'Player 5'),
-        ],
+        name: 'Groupname',
+        members: List.generate(5, (index) => Player(name: 'Player')),
       ),
-      winner: Player(name: 'Skeleton Player 1'),
-      players: [Player(name: 'Skeleton Player 6')],
+      winner: Player(name: 'Player'),
+      players: [Player(name: 'Player')],
     ),
   );
 
