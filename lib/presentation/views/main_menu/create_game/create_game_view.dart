@@ -61,28 +61,24 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// The currently selected players
   List<Player>? selectedPlayers;
 
-  /// List of available rulesets with their display names and descriptions
-  /// as tuples of (Ruleset, String, String)
+  /// List of available rulesets with their descriptions
+  /// as tuples of (Ruleset, String)
   /// TODO: Replace when rulesets are implemented
-  List<(Ruleset, String, String)> rulesets = [
+  List<(Ruleset, String)> rulesets = [
     (
       Ruleset.singleWinner,
-      'Single Winner',
       'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.',
     ),
     (
       Ruleset.singleLoser,
-      'Single Loser',
       'Exactly one loser is determined; last place receives the penalty or consequence.',
     ),
     (
       Ruleset.mostPoints,
-      'Most Points',
       'Traditional ruleset: the player with the most points wins.',
     ),
     (
       Ruleset.leastPoints,
-      'Least Points',
       'Inverse scoring: the player with the fewest points wins.',
     ),
   ];

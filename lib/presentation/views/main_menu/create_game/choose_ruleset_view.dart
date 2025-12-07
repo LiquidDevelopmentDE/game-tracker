@@ -4,7 +4,7 @@ import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
 class ChooseRulesetView extends StatefulWidget {
-  final List<(Ruleset, String, String)> rulesets;
+  final List<(Ruleset, String)> rulesets;
   final int initialRulesetIndex;
 
   const ChooseRulesetView({
@@ -66,8 +66,8 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
                   }
                 });
               },
-              title: widget.rulesets[index].$2,
-              description: widget.rulesets[index].$3,
+              title: translateRulesetToString(widget.rulesets[index].$1),
+              description: widget.rulesets[index].$2,
               isHighlighted: selectedRulesetIndex == index,
             );
           },
