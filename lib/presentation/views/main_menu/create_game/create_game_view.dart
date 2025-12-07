@@ -141,14 +141,17 @@ class _CreateGameViewState extends State<CreateGameView> {
                     ),
                   ),
                 );
-                if (selectedGameIndex != -1) {
-                  setState(() {
+                setState(() {
+                  if (selectedGameIndex != -1) {
+                    print('selectedGameIndex: $selectedGameIndex');
                     selectedRuleset = games[selectedGameIndex].$3;
                     selectedRulesetIndex = rulesets.indexWhere(
                       (r) => r.$1 == selectedRuleset,
                     );
-                  });
-                }
+                  } else {
+                    selectedRuleset = null;
+                  }
+                });
               },
             ),
             ChooseTile(
