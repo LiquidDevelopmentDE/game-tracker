@@ -38,9 +38,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.of(
-              context,
-            ).pop(selectedGameIndex == -1 ? null : selectedGameIndex);
+            Navigator.of(context).pop(selectedGameIndex);
           },
         ),
         title: const Text(
@@ -70,7 +68,11 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                   isHighlighted: selectedGameIndex == index,
                   onPressed: () async {
                     setState(() {
-                      selectedGameIndex = index;
+                      if (selectedGameIndex == index) {
+                        selectedGameIndex = -1;
+                      } else {
+                        selectedGameIndex = index;
+                      }
                     });
                   },
                 );

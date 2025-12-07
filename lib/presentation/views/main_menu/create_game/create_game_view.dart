@@ -148,11 +148,14 @@ class _CreateGameViewState extends State<CreateGameView> {
                     ),
                   ),
                 );
-                selectedRuleset = games[selectedGameIndex].$3;
-                selectedRulesetIndex = rulesets.indexWhere(
-                  (r) => r.$1 == selectedRuleset,
-                );
-                setState(() {});
+                if (selectedGameIndex != -1) {
+                  setState(() {
+                    selectedRuleset = games[selectedGameIndex].$3;
+                    selectedRulesetIndex = rulesets.indexWhere(
+                      (r) => r.$1 == selectedRuleset,
+                    );
+                  });
+                }
               },
             ),
             ChooseTile(
