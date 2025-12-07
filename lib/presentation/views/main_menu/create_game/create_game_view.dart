@@ -245,7 +245,7 @@ class _CreateGameViewState extends State<CreateGameView> {
   bool _enableCreateGameButton() {
     return _gameNameController.text.isNotEmpty &&
         (selectedGroup != null ||
-            (selectedPlayers != null && selectedPlayers!.isNotEmpty)) &&
+            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
         selectedRuleset != null;
   }
 }
