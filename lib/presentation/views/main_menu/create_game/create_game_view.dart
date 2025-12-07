@@ -47,7 +47,7 @@ class _CreateGameViewState extends State<CreateGameView> {
 
   /// The index of the currently selected group in [groupsList] to mark it in
   /// the [ChooseGroupView]
-  int selectedGroupIndex = -1;
+  String selectedGroupId = '';
 
   /// The currently selected ruleset
   Ruleset? selectedRuleset;
@@ -189,13 +189,11 @@ class _CreateGameViewState extends State<CreateGameView> {
                   MaterialPageRoute(
                     builder: (context) => ChooseGroupView(
                       groups: groupsList,
-                      initialGroupIndex: selectedGroupIndex,
+                      initialGroupId: selectedGroupId,
                     ),
                   ),
                 );
-                selectedGroupIndex = groupsList.indexWhere(
-                  (g) => g.id == selectedGroup?.id,
-                );
+                selectedGroupId = selectedGroup?.id ?? '';
                 setState(() {});
               },
             ),

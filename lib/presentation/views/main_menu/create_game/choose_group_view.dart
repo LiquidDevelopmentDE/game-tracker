@@ -6,12 +6,12 @@ import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 
 class ChooseGroupView extends StatefulWidget {
   final List<Group> groups;
-  final int initialGroupIndex;
+  final String initialGroupId;
 
   const ChooseGroupView({
     super.key,
     required this.groups,
-    required this.initialGroupIndex,
+    required this.initialGroupId,
   });
 
   @override
@@ -19,13 +19,15 @@ class ChooseGroupView extends StatefulWidget {
 }
 
 class _ChooseGroupViewState extends State<ChooseGroupView> {
-  late int selectedGroupIndex;
+  late String selectedGroupId;
   final TextEditingController controller = TextEditingController();
   final String hintText = 'Group Name';
+  late final List<Group> filteredGroups;
 
   @override
   void initState() {
-    selectedGroupIndex = widget.initialGroupIndex;
+    selectedGroupId = widget.initialGroupId;
+    filteredGroups = [...widget.groups];
     super.initState();
   }
 
@@ -40,9 +42,11 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.of(context).pop(
-              selectedGroupIndex == -1
+              selectedGroupId == ''
                   ? null
-                  : widget.groups[selectedGroupIndex],
+                  : widget.groups.firstWhere(
+                      (group) => group.id == selectedGroupId,
+                    ),
             );
           },
         ),
@@ -56,26 +60,34 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: CustomSearchBar(controller: controller, hintText: hintText),
+            child: CustomSearchBar(
+              controller: controller,
+              hintText: hintText,
+              onChanged: (value) {
+                setState(() {
+                  filterGroups(value);
+                });
+              },
+            ),
           ),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.only(bottom: 85),
-              itemCount: widget.groups.length,
+              itemCount: filteredGroups.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      if (selectedGroupIndex == index) {
-                        selectedGroupIndex = -1;
+                      if (selectedGroupId != filteredGroups[index].id) {
+                        selectedGroupId = filteredGroups[index].id;
                       } else {
-                        selectedGroupIndex = index;
+                        selectedGroupId = '';
                       }
                     });
                   },
                   child: GroupTile(
-                    group: widget.groups[index],
-                    isHighlighted: selectedGroupIndex == index,
+                    group: filteredGroups[index],
+                    isHighlighted: selectedGroupId == filteredGroups[index].id,
                   ),
                 );
               },
@@ -84,5 +96,23 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
         ],
       ),
     );
+  }
+
+  /// Filters the groups based on the search query.
+  /// TODO: Maybe implement also targetting player names?
+  void filterGroups(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredGroups.clear();
+        filteredGroups.addAll(widget.groups);
+      } else {
+        filteredGroups.clear();
+        filteredGroups.addAll(
+          widget.groups.where(
+            (group) => group.name.toLowerCase().contains(query.toLowerCase()),
+          ),
+        );
+      }
+    });
   }
 }
