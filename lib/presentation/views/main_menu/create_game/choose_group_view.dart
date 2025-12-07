@@ -3,6 +3,7 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
+import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class ChooseGroupView extends StatefulWidget {
   final List<Group> groups;
@@ -71,26 +72,35 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(bottom: 85),
-              itemCount: filteredGroups.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (selectedGroupId != filteredGroups[index].id) {
-                        selectedGroupId = filteredGroups[index].id;
-                      } else {
-                        selectedGroupId = '';
-                      }
-                    });
-                  },
-                  child: GroupTile(
-                    group: filteredGroups[index],
-                    isHighlighted: selectedGroupId == filteredGroups[index].id,
-                  ),
-                );
-              },
+            child: Visibility(
+              visible: filteredGroups.isNotEmpty,
+              replacement: const TopCenteredMessage(
+                icon: Icons.info,
+                title: 'No group',
+                message: 'There is no group matching your search.',
+              ),
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 85),
+                itemCount: filteredGroups.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (selectedGroupId != filteredGroups[index].id) {
+                          selectedGroupId = filteredGroups[index].id;
+                        } else {
+                          selectedGroupId = '';
+                        }
+                      });
+                    },
+                    child: GroupTile(
+                      group: filteredGroups[index],
+                      isHighlighted:
+                          selectedGroupId == filteredGroups[index].id,
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],
