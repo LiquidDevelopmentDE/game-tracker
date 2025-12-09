@@ -93,6 +93,10 @@ class _CreateGameViewState extends State<CreateGameView> {
   @override
   void initState() {
     super.initState();
+    _gameNameController.addListener(() {
+      setState(() {});
+    });
+
     db = Provider.of<AppDatabase>(context, listen: false);
 
     _allGroupsFuture = db.groupDao.getAllGroups();
@@ -126,11 +130,6 @@ class _CreateGameViewState extends State<CreateGameView> {
               child: TextInputField(
                 controller: _gameNameController,
                 hintText: 'Game name',
-                onChanged: (value) {
-                  setState(() {
-                    _gameNameController;
-                  });
-                },
               ),
             ),
             ChooseTile(
