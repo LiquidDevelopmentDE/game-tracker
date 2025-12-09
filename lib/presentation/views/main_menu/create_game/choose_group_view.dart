@@ -76,8 +76,8 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
               visible: filteredGroups.isNotEmpty,
               replacement: const TopCenteredMessage(
                 icon: Icons.info,
-                title: 'No group',
-                message: 'There is no group matching your search.',
+                title: 'Info',
+                message: 'There is no group matching your search',
               ),
               child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 85),
