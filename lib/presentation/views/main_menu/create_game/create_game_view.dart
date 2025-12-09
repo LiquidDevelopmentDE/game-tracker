@@ -255,12 +255,9 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// Determines whether the "Create Game" button should be enabled based on
   /// the current state of the input fields.
   bool _enableCreateGameButton() {
-    final value =
-        _gameNameController.text.isNotEmpty &&
+    return _gameNameController.text.isNotEmpty &&
         (selectedGroup != null ||
             (selectedPlayers != null && selectedPlayers!.length > 1)) &&
         selectedRuleset != null;
-    print('button: $value');
-    return value;
   }
 }
