@@ -17,7 +17,8 @@ import 'package:game_tracker/presentation/widgets/tiles/choose_tile.dart';
 import 'package:provider/provider.dart';
 
 class CreateGameView extends StatefulWidget {
-  const CreateGameView({super.key});
+  final VoidCallback? onWinnerChanged;
+  const CreateGameView({super.key, this.onWinnerChanged});
 
   @override
   State<CreateGameView> createState() => _CreateGameViewState();
@@ -231,7 +232,10 @@ class _CreateGameViewState extends State<CreateGameView> {
                           context,
                           CupertinoPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => GameResultView(game: game),
+                            builder: (context) => GameResultView(
+                              game: game,
+                              onWinnerChanged: widget.onWinnerChanged,
+                            ),
                           ),
                         );
                       }

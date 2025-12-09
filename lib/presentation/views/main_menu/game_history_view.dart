@@ -98,17 +98,16 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                         }
                         return GameHistoryTile(
                           onTap: () async {
-                            await Navigator.push(
+                            Navigator.push(
                               context,
                               CupertinoPageRoute(
                                 fullscreenDialog: true,
-                                builder: (context) =>
-                                    GameResultView(game: games[index]),
+                                builder: (context) => GameResultView(
+                                  game: games[index],
+                                  onWinnerChanged: refreshGameList,
+                                ),
                               ),
                             );
-                            setState(() {
-                              _gameListFuture = db.gameDao.getAllGames();
-                            });
                           },
                           game: games[index],
                         );
@@ -123,22 +122,24 @@ class _GameHistoryViewState extends State<GameHistoryView> {
               text: 'Create Game',
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
-                await Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) {
-                      return const CreateGameView();
-                    },
+                    builder: (context) =>
+                        CreateGameView(onWinnerChanged: refreshGameList),
                   ),
                 );
-                setState(() {
-                  _gameListFuture = db.gameDao.getAllGames();
-                });
               },
             ),
           ),
         ],
       ),
     );
+  }
+
+  void refreshGameList() {
+    setState(() {
+      _gameListFuture = db.gameDao.getAllGames();
+    });
   }
 }
