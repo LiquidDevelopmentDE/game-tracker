@@ -126,6 +126,11 @@ class _CreateGameViewState extends State<CreateGameView> {
               child: TextInputField(
                 controller: _gameNameController,
                 hintText: 'Game name',
+                onChanged: (value) {
+                  setState(() {
+                    _gameNameController;
+                  });
+                },
               ),
             ),
             ChooseTile(
@@ -144,7 +149,6 @@ class _CreateGameViewState extends State<CreateGameView> {
                 );
                 setState(() {
                   if (selectedGameIndex != -1) {
-                    print('selectedGameIndex: $selectedGameIndex');
                     selectedRuleset = games[selectedGameIndex].$3;
                     selectedRulesetIndex = rulesets.indexWhere(
                       (r) => r.$1 == selectedRuleset,
@@ -251,9 +255,12 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// Determines whether the "Create Game" button should be enabled based on
   /// the current state of the input fields.
   bool _enableCreateGameButton() {
-    return _gameNameController.text.isNotEmpty &&
+    final value =
+        _gameNameController.text.isNotEmpty &&
         (selectedGroup != null ||
             (selectedPlayers != null && selectedPlayers!.length > 1)) &&
         selectedRuleset != null;
+    print('button: $value');
+    return value;
   }
 }
