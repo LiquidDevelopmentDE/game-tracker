@@ -55,8 +55,9 @@ class _PlayerSelectionState extends State<PlayerSelection> {
       setState(() {
         // If a list of available players is provided, use that list.
         if (widget.availablePlayers.isNotEmpty) {
+          widget.availablePlayers.sort((a, b) => a.name.compareTo(b.name));
           allPlayers = [...widget.availablePlayers];
-          suggestedPlayers = [...widget.availablePlayers];
+          suggestedPlayers = [...allPlayers];
 
           if (widget.initialSelectedPlayers != null) {
             // Ensures that only players available for selection are pre-selected.
