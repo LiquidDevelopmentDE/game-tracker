@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
+import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class ChooseGroupView extends StatefulWidget {
   final List<Group> groups;
-  final int initialGroupIndex;
+  final String initialGroupId;
 
   const ChooseGroupView({
     super.key,
     required this.groups,
-    required this.initialGroupIndex,
+    required this.initialGroupId,
   });
 
   @override
@@ -18,11 +20,15 @@ class ChooseGroupView extends StatefulWidget {
 }
 
 class _ChooseGroupViewState extends State<ChooseGroupView> {
-  late int selectedGroupIndex;
+  late String selectedGroupId;
+  final TextEditingController controller = TextEditingController();
+  final String hintText = 'Group Name';
+  late final List<Group> filteredGroups;
 
   @override
   void initState() {
-    selectedGroupIndex = widget.initialGroupIndex;
+    selectedGroupId = widget.initialGroupId;
+    filteredGroups = [...widget.groups];
     super.initState();
   }
 
@@ -33,34 +39,90 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop(
+              selectedGroupId == ''
+                  ? null
+                  : widget.groups.firstWhere(
+                      (group) => group.id == selectedGroupId,
+                    ),
+            );
+          },
+        ),
         title: const Text(
           'Choose Group',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.only(bottom: 85),
-        itemCount: widget.groups.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedGroupIndex = index;
-              });
-
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (!context.mounted) return;
-                Navigator.of(context).pop(widget.groups[index]);
-              });
-            },
-            child: GroupTile(
-              group: widget.groups[index],
-              isHighlighted: selectedGroupIndex == index,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: CustomSearchBar(
+              controller: controller,
+              hintText: hintText,
+              onChanged: (value) {
+                setState(() {
+                  filterGroups(value);
+                });
+              },
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: Visibility(
+              visible: filteredGroups.isNotEmpty,
+              replacement: const TopCenteredMessage(
+                icon: Icons.info,
+                title: 'Info',
+                message: 'There is no group matching your search',
+              ),
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 85),
+                itemCount: filteredGroups.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (selectedGroupId != filteredGroups[index].id) {
+                          selectedGroupId = filteredGroups[index].id;
+                        } else {
+                          selectedGroupId = '';
+                        }
+                      });
+                    },
+                    child: GroupTile(
+                      group: filteredGroups[index],
+                      isHighlighted:
+                          selectedGroupId == filteredGroups[index].id,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  /// Filters the groups based on the search query.
+  /// TODO: Maybe implement also targetting player names?
+  void filterGroups(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredGroups.clear();
+        filteredGroups.addAll(widget.groups);
+      } else {
+        filteredGroups.clear();
+        filteredGroups.addAll(
+          widget.groups.where(
+            (group) => group.name.toLowerCase().contains(query.toLowerCase()),
+          ),
+        );
+      }
+    });
   }
 }

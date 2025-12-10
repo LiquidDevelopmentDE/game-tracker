@@ -5,7 +5,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/views/main_menu/create_group_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/create_game/create_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
@@ -98,17 +98,16 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                         }
                         return GameHistoryTile(
                           onTap: () async {
-                            await Navigator.push(
+                            Navigator.push(
                               context,
                               CupertinoPageRoute(
                                 fullscreenDialog: true,
-                                builder: (context) =>
-                                    GameResultView(game: games[index]),
+                                builder: (context) => GameResultView(
+                                  game: games[index],
+                                  onWinnerChanged: refreshGameList,
+                                ),
                               ),
                             );
-                            setState(() {
-                              _gameListFuture = db.gameDao.getAllGames();
-                            });
                           },
                           game: games[index],
                         );
@@ -123,22 +122,24 @@ class _GameHistoryViewState extends State<GameHistoryView> {
               text: 'Create Game',
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
-                await Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) {
-                      return const CreateGroupView();
-                    },
+                    builder: (context) =>
+                        CreateGameView(onWinnerChanged: refreshGameList),
                   ),
                 );
-                setState(() {
-                  _gameListFuture = db.gameDao.getAllGames();
-                });
               },
             ),
           ),
         ],
       ),
     );
+  }
+
+  void refreshGameList() {
+    setState(() {
+      _gameListFuture = db.gameDao.getAllGames();
+    });
   }
 }

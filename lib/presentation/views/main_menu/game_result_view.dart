@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 class GameResultView extends StatefulWidget {
   final Game game;
 
-  const GameResultView({super.key, required this.game});
+  final VoidCallback? onWinnerChanged;
 
+  const GameResultView({super.key, required this.game, this.onWinnerChanged});
   @override
   State<GameResultView> createState() => _GameResultViewState();
 }
@@ -131,6 +132,7 @@ class _GameResultViewState extends State<GameResultView> {
         winnerId: _selectedPlayer!.id,
       );
     }
+    widget.onWinnerChanged?.call();
   }
 
   List<Player> getAllPlayers(Game game) {

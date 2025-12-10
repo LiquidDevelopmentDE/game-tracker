@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
@@ -5,8 +6,10 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/presentation/views/main_menu/create_game/choose_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/create_game/choose_ruleset_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/player_selection.dart';
 import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
@@ -14,7 +17,8 @@ import 'package:game_tracker/presentation/widgets/tiles/choose_tile.dart';
 import 'package:provider/provider.dart';
 
 class CreateGameView extends StatefulWidget {
-  const CreateGameView({super.key});
+  final VoidCallback? onWinnerChanged;
+  const CreateGameView({super.key, this.onWinnerChanged});
 
   @override
   State<CreateGameView> createState() => _CreateGameViewState();
@@ -39,12 +43,18 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// List of all players from the database
   List<Player> playerList = [];
 
+  /// List of players filtered based on the selected group
+  /// If a group is selected, this list contains all players from [playerList]
+  /// who are not members of the selected group. If no group is selected,
+  /// this list is identical to [playerList].
+  List<Player> filteredPlayerList = [];
+
   /// The currently selected group
   Group? selectedGroup;
 
   /// The index of the currently selected group in [groupsList] to mark it in
   /// the [ChooseGroupView]
-  int selectedGroupIndex = -1;
+  String selectedGroupId = '';
 
   /// The currently selected ruleset
   Ruleset? selectedRuleset;
@@ -53,37 +63,48 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// the [ChooseRulesetView]
   int selectedRulesetIndex = -1;
 
+  /// The index of the currently selected game in [games] to mark it in
+  /// the [ChooseGameView]
+  int selectedGameIndex = -1;
+
   /// The currently selected players
   List<Player>? selectedPlayers;
 
-  /// List of available rulesets with their display names and descriptions
-  /// as tuples of (Ruleset, String, String)
-  List<(Ruleset, String, String)> rulesets = [
+  /// List of available rulesets with their descriptions
+  /// as tuples of (Ruleset, String)
+  /// TODO: Replace when rulesets are implemented
+  List<(Ruleset, String)> rulesets = [
     (
       Ruleset.singleWinner,
-      'Single Winner',
       'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.',
     ),
     (
       Ruleset.singleLoser,
-      'Single Loser',
       'Exactly one loser is determined; last place receives the penalty or consequence.',
     ),
     (
       Ruleset.mostPoints,
-      'Most Points',
       'Traditional ruleset: the player with the most points wins.',
     ),
     (
-      Ruleset.lastPoints,
-      'Least Points',
+      Ruleset.leastPoints,
       'Inverse scoring: the player with the fewest points wins.',
     ),
+  ];
+
+  // TODO: Replace when games are implemented
+  List<(String, String, Ruleset)> games = [
+    ('Example Game 1', 'This is a discription', Ruleset.leastPoints),
+    ('Example Game 2', '', Ruleset.singleWinner),
   ];
 
   @override
   void initState() {
     super.initState();
+    _gameNameController.addListener(() {
+      setState(() {});
+    });
+
     db = Provider.of<AppDatabase>(context, listen: false);
 
     _allGroupsFuture = db.groupDao.getAllGroups();
@@ -93,6 +114,8 @@ class _CreateGameViewState extends State<CreateGameView> {
       groupsList = result[0] as List<Group>;
       playerList = result[1] as List<Player>;
     });
+
+    filteredPlayerList = List.from(playerList);
   }
 
   @override
@@ -113,14 +136,37 @@ class _CreateGameViewState extends State<CreateGameView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: TextInputField(
                 controller: _gameNameController,
                 hintText: 'Game name',
-                onChanged: (value) {
-                  setState(() {});
-                },
               ),
+            ),
+            ChooseTile(
+              title: 'Game',
+              trailingText: selectedGameIndex == -1
+                  ? 'None'
+                  : games[selectedGameIndex].$1,
+              onPressed: () async {
+                selectedGameIndex = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ChooseGameView(
+                      games: games,
+                      initialGameIndex: selectedGameIndex,
+                    ),
+                  ),
+                );
+                setState(() {
+                  if (selectedGameIndex != -1) {
+                    selectedRuleset = games[selectedGameIndex].$3;
+                    selectedRulesetIndex = rulesets.indexWhere(
+                      (r) => r.$1 == selectedRuleset,
+                    );
+                  } else {
+                    selectedRuleset = null;
+                  }
+                });
+              },
             ),
             ChooseTile(
               title: 'Ruleset',
@@ -139,6 +185,7 @@ class _CreateGameViewState extends State<CreateGameView> {
                 selectedRulesetIndex = rulesets.indexWhere(
                   (r) => r.$1 == selectedRuleset,
                 );
+                selectedGameIndex = -1;
                 setState(() {});
               },
             ),
@@ -152,28 +199,28 @@ class _CreateGameViewState extends State<CreateGameView> {
                   MaterialPageRoute(
                     builder: (context) => ChooseGroupView(
                       groups: groupsList,
-                      initialGroupIndex: selectedGroupIndex,
+                      initialGroupId: selectedGroupId,
                     ),
                   ),
                 );
-                selectedGroupIndex = groupsList.indexWhere(
-                  (g) => g.id == selectedGroup?.id,
-                );
+                selectedGroupId = selectedGroup?.id ?? '';
+                if (selectedGroup != null) {
+                  filteredPlayerList = playerList
+                      .where(
+                        (p) => !selectedGroup!.members.any((m) => m.id == p.id),
+                      )
+                      .toList();
+                } else {
+                  filteredPlayerList = List.from(playerList);
+                }
                 setState(() {});
               },
             ),
             Expanded(
               child: PlayerSelection(
                 key: ValueKey(selectedGroup?.id ?? 'no_group'),
-                initialPlayers: selectedGroup == null
-                    ? playerList
-                    : playerList
-                          .where(
-                            (p) => !selectedGroup!.members.any(
-                              (m) => m.id == p.id,
-                            ),
-                          )
-                          .toList(),
+                initialSelectedPlayers: selectedPlayers ?? [],
+                availablePlayers: filteredPlayerList,
                 onChanged: (value) {
                   setState(() {
                     selectedPlayers = value;
@@ -181,7 +228,6 @@ class _CreateGameViewState extends State<CreateGameView> {
                 },
               ),
             ),
-
             CustomWidthButton(
               text: 'Create game',
               sizeRelativeToWidth: 0.95,
@@ -191,34 +237,29 @@ class _CreateGameViewState extends State<CreateGameView> {
                       Game game = Game(
                         name: _gameNameController.text.trim(),
                         createdAt: DateTime.now(),
-                        group: selectedGroup!,
+                        group: selectedGroup,
                         players: selectedPlayers,
                       );
-                      // TODO: Replace with navigation to GameResultView()
-                      print('Created game: $game');
-                      Navigator.pop(context);
+                      await db.gameDao.addGame(game: game);
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => GameResultView(
+                              game: game,
+                              onWinnerChanged: widget.onWinnerChanged,
+                            ),
+                          ),
+                        );
+                      }
                     }
                   : null,
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
     );
-  }
-
-  /// Translates a [Ruleset] enum value to its corresponding string representation.
-  String translateRulesetToString(Ruleset ruleset) {
-    switch (ruleset) {
-      case Ruleset.singleWinner:
-        return 'Single Winner';
-      case Ruleset.singleLoser:
-        return 'Single Loser';
-      case Ruleset.mostPoints:
-        return 'Most Points';
-      case Ruleset.lastPoints:
-        return 'Least Points';
-    }
   }
 
   /// Determines whether the "Create Game" button should be enabled based on
@@ -226,7 +267,7 @@ class _CreateGameViewState extends State<CreateGameView> {
   bool _enableCreateGameButton() {
     return _gameNameController.text.isNotEmpty &&
         (selectedGroup != null ||
-            (selectedPlayers != null && selectedPlayers!.isNotEmpty)) &&
+            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
         selectedRuleset != null;
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
-import 'package:game_tracker/presentation/widgets/tiles/ruleset_list_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
 class ChooseRulesetView extends StatefulWidget {
-  final List<(Ruleset, String, String)> rulesets;
+  final List<(Ruleset, String)> rulesets;
   final int initialRulesetIndex;
+
   const ChooseRulesetView({
     super.key,
     required this.rulesets,
@@ -35,84 +36,41 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
         appBar: AppBar(
           backgroundColor: CustomTheme.backgroundColor,
           scrolledUnderElevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.of(context).pop(
+                selectedRulesetIndex == -1
+                    ? null
+                    : widget.rulesets[selectedRulesetIndex].$1,
+              );
+            },
+          ),
           title: const Text(
             'Choose Ruleset',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Container(
-              color: CustomTheme.backgroundColor,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: TabBar(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                // Label Settings
-                labelStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                labelColor: Colors.white,
-                unselectedLabelStyle: const TextStyle(fontSize: 14),
-                unselectedLabelColor: Colors.white70,
-                // Indicator Settings
-                indicator: CustomTheme.standardBoxDecoration,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicatorWeight: 1,
-                indicatorPadding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 0,
-                ),
-                // Divider Settings
-                dividerHeight: 0,
-                tabs: const [
-                  Tab(text: 'Rulesets'),
-                  Tab(text: 'Gametypes'),
-                ],
-              ),
-            ),
-            const Divider(
-              indent: 30,
-              endIndent: 30,
-              thickness: 3,
-              radius: BorderRadius.all(Radius.circular(12)),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 85),
-                    itemCount: widget.rulesets.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return RulesetListTile(
-                        onPressed: () async {
-                          setState(() {
-                            selectedRulesetIndex = index;
-                          });
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            if (!context.mounted) return;
-                            Navigator.of(
-                              context,
-                            ).pop(widget.rulesets[index].$1);
-                          });
-                        },
-                        title: widget.rulesets[index].$2,
-                        description: widget.rulesets[index].$3,
-                        isHighlighted: selectedRulesetIndex == index,
-                      );
-                    },
-                  ),
-                  const Center(
-                    child: Text(
-                      'No gametypes available',
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        body: ListView.builder(
+          padding: const EdgeInsets.only(bottom: 85),
+          itemCount: widget.rulesets.length,
+          itemBuilder: (BuildContext context, int index) {
+            return TitleDescriptionListTile(
+              onPressed: () async {
+                setState(() {
+                  if (selectedRulesetIndex == index) {
+                    selectedRulesetIndex = -1;
+                  } else {
+                    selectedRulesetIndex = index;
+                  }
+                });
+              },
+              title: translateRulesetToString(widget.rulesets[index].$1),
+              description: widget.rulesets[index].$2,
+              isHighlighted: selectedRulesetIndex == index,
+            );
+          },
         ),
       ),
     );
