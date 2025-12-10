@@ -197,25 +197,30 @@ class _CreateGameViewState extends State<CreateGameView> {
                 setState(() {});
               },
             ),
-            Expanded(
-              child: PlayerSelection(
-                key: ValueKey(selectedGroup?.id ?? 'no_group'),
-                initialSelectedPlayers: selectedPlayers ?? [],
-                availablePlayers: selectedGroup == null
-                    ? playerList
-                    : playerList
-                          .where(
-                            (p) => !selectedGroup!.members.any(
-                              (m) => m.id == p.id,
-                            ),
-                          )
-                          .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedPlayers = value;
-                  });
-                },
-              ),
+            FutureBuilder(
+              future: _allPlayersFuture,
+              builder:
+                  (BuildContext context, AsyncSnapshot<dynamic> snapshot) =>
+                      Expanded(
+                        child: PlayerSelection(
+                          key: ValueKey(selectedGroup?.id ?? 'no_group'),
+                          initialSelectedPlayers: selectedPlayers ?? [],
+                          availablePlayers: selectedGroup == null
+                              ? playerList
+                              : playerList
+                                    .where(
+                                      (p) => !selectedGroup!.members.any(
+                                        (m) => m.id == p.id,
+                                      ),
+                                    )
+                                    .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedPlayers = value;
+                            });
+                          },
+                        ),
+                      ),
             ),
             CustomWidthButton(
               text: 'Create game',
