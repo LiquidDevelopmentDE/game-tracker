@@ -62,7 +62,11 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           if (widget.initialSelectedPlayers != null) {
             // Ensures that only players available for selection are pre-selected.
             selectedPlayers = widget.initialSelectedPlayers!
-                .where((p) => widget.availablePlayers.contains(p))
+                .where(
+                  (p) => widget.availablePlayers.any(
+                    (available) => available.id == p.id,
+                  ),
+                )
                 .toList();
           }
         } else {
