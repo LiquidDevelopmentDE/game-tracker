@@ -113,8 +113,9 @@ class _CreateGameViewState extends State<CreateGameView> {
     Future.wait([_allGroupsFuture, _allPlayersFuture]).then((result) async {
       groupsList = result[0] as List<Group>;
       playerList = result[1] as List<Player>;
-      filteredPlayerList = List.from(playerList);
     });
+
+    filteredPlayerList = List.from(playerList);
   }
 
   @override
