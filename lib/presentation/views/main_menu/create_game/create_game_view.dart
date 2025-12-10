@@ -43,6 +43,12 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// List of all players from the database
   List<Player> playerList = [];
 
+  /// List of players filtered based on the selected group
+  /// If a group is selected, this list contains all players from [playerList]
+  /// who are not members of the selected group. If no group is selected,
+  /// this list is identical to [playerList].
+  List<Player> filteredPlayerList = [];
+
   /// The currently selected group
   Group? selectedGroup;
 
@@ -57,6 +63,8 @@ class _CreateGameViewState extends State<CreateGameView> {
   /// the [ChooseRulesetView]
   int selectedRulesetIndex = -1;
 
+  /// The index of the currently selected game in [games] to mark it in
+  /// the [ChooseGameView]
   int selectedGameIndex = -1;
 
   /// The currently selected players
@@ -105,6 +113,7 @@ class _CreateGameViewState extends State<CreateGameView> {
     Future.wait([_allGroupsFuture, _allPlayersFuture]).then((result) async {
       groupsList = result[0] as List<Group>;
       playerList = result[1] as List<Player>;
+      filteredPlayerList = List.from(playerList);
     });
   }
 
@@ -194,6 +203,15 @@ class _CreateGameViewState extends State<CreateGameView> {
                   ),
                 );
                 selectedGroupId = selectedGroup?.id ?? '';
+                if (selectedGroup != null) {
+                  filteredPlayerList = playerList
+                      .where(
+                        (p) => !selectedGroup!.members.any((m) => m.id == p.id),
+                      )
+                      .toList();
+                } else {
+                  filteredPlayerList = List.from(playerList);
+                }
                 setState(() {});
               },
             ),
@@ -201,15 +219,7 @@ class _CreateGameViewState extends State<CreateGameView> {
               child: PlayerSelection(
                 key: ValueKey(selectedGroup?.id ?? 'no_group'),
                 initialSelectedPlayers: selectedPlayers ?? [],
-                availablePlayers: selectedGroup == null
-                    ? playerList
-                    : playerList
-                          .where(
-                            (p) => !selectedGroup!.members.any(
-                              (m) => m.id == p.id,
-                            ),
-                          )
-                          .toList(),
+                availablePlayers: filteredPlayerList,
                 onChanged: (value) {
                   setState(() {
                     selectedPlayers = value;
@@ -226,7 +236,7 @@ class _CreateGameViewState extends State<CreateGameView> {
                       Game game = Game(
                         name: _gameNameController.text.trim(),
                         createdAt: DateTime.now(),
-                        group: selectedGroup!,
+                        group: selectedGroup,
                         players: selectedPlayers,
                       );
                       await db.gameDao.addGame(game: game);
