@@ -153,7 +153,7 @@ class _HomeViewState extends State<HomeView> {
                                       ruleset: 'Ruleset',
                                       players: _getPlayerText(matches[0]),
                                       winner: matches[0].winner == null
-                                          ? 'Game in progress...'
+                                          ? 'Match in progress...'
                                           : matches[0].winner!.name,
                                     ),
                                     const Padding(
