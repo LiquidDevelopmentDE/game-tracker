@@ -80,9 +80,9 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
     return rowsAffected > 0;
   }
 
-  /// Updates the players associated with a game based on the provided
+  /// Updates the players associated with a match based on the provided
   /// [newPlayer] list. It adds new players and removes players that are no
-  /// longer associated with the game.
+  /// longer associated with the match.
   Future<void> updatePlayersFromMatch({
     required String matchId,
     required List<Player> newPlayer,
