@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class GameTile extends StatefulWidget {
-  final String gameTitle;
-  final String gameType;
+class MatchTile extends StatefulWidget {
+  final String matchTitle;
+  final String game;
   final String ruleset;
   final String players;
   final String winner;
 
-  const GameTile({
+  const MatchTile({
     super.key,
-    required this.gameTitle,
-    required this.gameType,
+    required this.matchTitle,
+    required this.game,
     required this.ruleset,
     required this.players,
     required this.winner,
   });
 
   @override
-  State<GameTile> createState() => _GameTileState();
+  State<MatchTile> createState() => _MatchTileState();
 }
 
-class _GameTileState extends State<GameTile> {
+class _MatchTileState extends State<MatchTile> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,12 +31,12 @@ class _GameTileState extends State<GameTile> {
         Row(
           children: [
             Text(
-              widget.gameTitle,
+              widget.matchTitle,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 5),
             Text(
-              widget.gameType,
+              widget.game,
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
           ],

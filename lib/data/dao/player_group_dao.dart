@@ -1,11 +1,12 @@
 import 'package:drift/drift.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/db/tables/player_group_table.dart';
+import 'package:game_tracker/data/db/tables/player_table.dart';
 import 'package:game_tracker/data/dto/player.dart';
 
 part 'player_group_dao.g.dart';
 
-@DriftAccessor(tables: [PlayerGroupTable])
+@DriftAccessor(tables: [PlayerGroupTable, PlayerTable])
 class PlayerGroupDao extends DatabaseAccessor<AppDatabase>
     with _$PlayerGroupDaoMixin {
   PlayerGroupDao(super.db);

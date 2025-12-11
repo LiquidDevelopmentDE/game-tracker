@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:json_schema/json_schema.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,7 @@ class DataTransferService {
   /// Deletes all data from the database.
   static Future<void> deleteAllData(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
-    await db.gameDao.deleteAllGames();
+    await db.matchDao.deleteAllMatches();
     await db.groupDao.deleteAllGroups();
     await db.playerDao.deleteAllPlayers();
   }
@@ -25,13 +25,13 @@ class DataTransferService {
   /// Returns the JSON string representation of the data.
   static Future<String> getAppDataAsJson(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
-    final games = await db.gameDao.getAllGames();
+    final matches = await db.matchDao.getAllMatches();
     final groups = await db.groupDao.getAllGroups();
     final players = await db.playerDao.getAllPlayers();
 
     // Construct a JSON representation of the data
     final Map<String, dynamic> jsonMap = {
-      'games': games.map((game) => game.toJson()).toList(),
+      'matches': matches.map((match) => match.toJson()).toList(),
       'groups': groups.map((group) => group.toJson()).toList(),
       'players': players.map((player) => player.toJson()).toList(),
     };
@@ -89,14 +89,15 @@ class DataTransferService {
         final Map<String, dynamic> jsonData =
             json.decode(jsonString) as Map<String, dynamic>;
 
-        final List<dynamic>? gamesJson = jsonData['games'] as List<dynamic>?;
+        final List<dynamic>? matchesJson =
+            jsonData['matches'] as List<dynamic>?;
         final List<dynamic>? groupsJson = jsonData['groups'] as List<dynamic>?;
         final List<dynamic>? playersJson =
             jsonData['players'] as List<dynamic>?;
 
-        final List<Game> importedGames =
-            gamesJson
-                ?.map((g) => Game.fromJson(g as Map<String, dynamic>))
+        final List<Match> importedMatches =
+            matchesJson
+                ?.map((g) => Match.fromJson(g as Map<String, dynamic>))
                 .toList() ??
             [];
         final List<Group> importedGroups =
@@ -112,7 +113,7 @@ class DataTransferService {
 
         await db.playerDao.addPlayersAsList(players: importedPlayers);
         await db.groupDao.addGroupsAsList(groups: importedGroups);
-        await db.gameDao.addGamesAsList(games: importedGames);
+        await db.matchDao.addMatchAsList(matches: importedMatches);
       } else {
         return ImportResult.invalidSchema;
       }

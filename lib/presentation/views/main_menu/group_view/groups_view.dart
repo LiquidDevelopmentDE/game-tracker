@@ -3,7 +3,7 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/views/main_menu/create_group_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/group_view/create_group_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
@@ -25,7 +25,7 @@ class _GroupsViewState extends State<GroupsView> {
   late final List<Group> skeletonData = List.filled(
     7,
     Group(
-      name: 'Skeleton Game',
+      name: 'Skeleton Match',
       members: [player, player, player, player, player, player],
     ),
   );

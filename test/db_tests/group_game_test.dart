@@ -3,8 +3,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 
 void main() {
@@ -16,8 +16,8 @@ void main() {
   late Player testPlayer5;
   late Group testGroup1;
   late Group testGroup2;
-  late Game testgameWithGroup;
-  late Game testgameWithPlayers;
+  late Match testMatchWithGroup;
+  late Match testMatchWithPlayers;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -44,81 +44,84 @@ void main() {
         name: 'Test Group',
         members: [testPlayer3, testPlayer2],
       );
-      testgameWithPlayers = Game(
-        name: 'Test Game with Players',
+      testMatchWithPlayers = Match(
+        name: 'Test Match with Players',
         players: [testPlayer4, testPlayer5],
       );
-      testgameWithGroup = Game(name: 'Test Game with Group', group: testGroup1);
+      testMatchWithGroup = Match(
+        name: 'Test Match with Group',
+        group: testGroup1,
+      );
     });
   });
   tearDown(() async {
     await database.close();
   });
-  group('Group-Game Tests', () {
-    test('Game has group works correctly', () async {
-      await database.gameDao.addGame(game: testgameWithPlayers);
+  group('Group-Match Tests', () {
+    test('matchHasGroup() has group works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchWithPlayers);
       await database.groupDao.addGroup(group: testGroup1);
 
-      var gameHasGroup = await database.groupGameDao.gameHasGroup(
-        gameId: testgameWithPlayers.id,
+      var matchHasGroup = await database.groupMatchDao.matchHasGroup(
+        matchId: testMatchWithPlayers.id,
       );
 
-      expect(gameHasGroup, false);
+      expect(matchHasGroup, false);
 
-      await database.groupGameDao.addGroupToGame(
-        gameId: testgameWithPlayers.id,
+      await database.groupMatchDao.addGroupToMatch(
+        matchId: testMatchWithPlayers.id,
         groupId: testGroup1.id,
       );
 
-      gameHasGroup = await database.groupGameDao.gameHasGroup(
-        gameId: testgameWithPlayers.id,
+      matchHasGroup = await database.groupMatchDao.matchHasGroup(
+        matchId: testMatchWithPlayers.id,
       );
 
-      expect(gameHasGroup, true);
+      expect(matchHasGroup, true);
     });
 
-    test('Adding a group to a game works correctly', () async {
-      await database.gameDao.addGame(game: testgameWithPlayers);
+    test('Adding a group to a match works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchWithPlayers);
       await database.groupDao.addGroup(group: testGroup1);
-      await database.groupGameDao.addGroupToGame(
-        gameId: testgameWithPlayers.id,
+      await database.groupMatchDao.addGroupToMatch(
+        matchId: testMatchWithPlayers.id,
         groupId: testGroup1.id,
       );
 
-      var groupAdded = await database.groupGameDao.isGroupInGame(
-        gameId: testgameWithPlayers.id,
+      var groupAdded = await database.groupMatchDao.isGroupInMatch(
+        matchId: testMatchWithPlayers.id,
         groupId: testGroup1.id,
       );
       expect(groupAdded, true);
 
-      groupAdded = await database.groupGameDao.isGroupInGame(
-        gameId: testgameWithPlayers.id,
+      groupAdded = await database.groupMatchDao.isGroupInMatch(
+        matchId: testMatchWithPlayers.id,
         groupId: '',
       );
       expect(groupAdded, false);
     });
 
-    test('Removing group from game works correctly', () async {
-      await database.gameDao.addGame(game: testgameWithGroup);
+    test('Removing group from match works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchWithGroup);
 
-      final groupToRemove = testgameWithGroup.group!;
+      final groupToRemove = testMatchWithGroup.group!;
 
-      final removed = await database.groupGameDao.removeGroupFromGame(
+      final removed = await database.groupMatchDao.removeGroupFromMatch(
         groupId: groupToRemove.id,
-        gameId: testgameWithGroup.id,
+        matchId: testMatchWithGroup.id,
       );
       expect(removed, true);
 
-      final result = await database.gameDao.getGameById(
-        gameId: testgameWithGroup.id,
+      final result = await database.matchDao.getMatchById(
+        matchId: testMatchWithGroup.id,
       );
       expect(result.group, null);
     });
 
-    test('Retrieving group of a game works correctly', () async {
-      await database.gameDao.addGame(game: testgameWithGroup);
-      final group = await database.groupGameDao.getGroupOfGame(
-        gameId: testgameWithGroup.id,
+    test('Retrieving group of a match works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchWithGroup);
+      final group = await database.groupMatchDao.getGroupOfMatch(
+        matchId: testMatchWithGroup.id,
       );
 
       if (group == null) {
@@ -136,11 +139,11 @@ void main() {
       }
     });
 
-    test('Updating the group of a game works correctly', () async {
-      await database.gameDao.addGame(game: testgameWithGroup);
+    test('Updating the group of a match works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchWithGroup);
 
-      var group = await database.groupGameDao.getGroupOfGame(
-        gameId: testgameWithGroup.id,
+      var group = await database.groupMatchDao.getGroupOfMatch(
+        matchId: testMatchWithGroup.id,
       );
 
       if (group == null) {
@@ -153,13 +156,13 @@ void main() {
       }
 
       await database.groupDao.addGroup(group: testGroup2);
-      await database.groupGameDao.updateGroupOfGame(
-        gameId: testgameWithGroup.id,
+      await database.groupMatchDao.updateGroupOfMatch(
+        matchId: testMatchWithGroup.id,
         newGroupId: testGroup2.id,
       );
 
-      group = await database.groupGameDao.getGroupOfGame(
-        gameId: testgameWithGroup.id,
+      group = await database.groupMatchDao.getGroupOfMatch(
+        matchId: testMatchWithGroup.id,
       );
 
       if (group == null) {

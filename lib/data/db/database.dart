@@ -1,16 +1,16 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:game_tracker/data/dao/game_dao.dart';
 import 'package:game_tracker/data/dao/group_dao.dart';
-import 'package:game_tracker/data/dao/group_game_dao.dart';
+import 'package:game_tracker/data/dao/group_match_dao.dart';
+import 'package:game_tracker/data/dao/match_dao.dart';
 import 'package:game_tracker/data/dao/player_dao.dart';
-import 'package:game_tracker/data/dao/player_game_dao.dart';
 import 'package:game_tracker/data/dao/player_group_dao.dart';
-import 'package:game_tracker/data/db/tables/game_table.dart';
-import 'package:game_tracker/data/db/tables/group_game_table.dart';
+import 'package:game_tracker/data/dao/player_match_dao.dart';
+import 'package:game_tracker/data/db/tables/group_match_table.dart';
 import 'package:game_tracker/data/db/tables/group_table.dart';
-import 'package:game_tracker/data/db/tables/player_game_table.dart';
+import 'package:game_tracker/data/db/tables/match_table.dart';
 import 'package:game_tracker/data/db/tables/player_group_table.dart';
+import 'package:game_tracker/data/db/tables/player_match_table.dart';
 import 'package:game_tracker/data/db/tables/player_table.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -20,18 +20,18 @@ part 'database.g.dart';
   tables: [
     PlayerTable,
     GroupTable,
-    GameTable,
+    MatchTable,
     PlayerGroupTable,
-    PlayerGameTable,
-    GroupGameTable,
+    PlayerMatchTable,
+    GroupMatchTable,
   ],
   daos: [
     PlayerDao,
     GroupDao,
-    GameDao,
+    MatchDao,
     PlayerGroupDao,
-    PlayerGameDao,
-    GroupGameDao,
+    PlayerMatchDao,
+    GroupMatchDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

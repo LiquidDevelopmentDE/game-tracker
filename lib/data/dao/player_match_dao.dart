@@ -1,33 +1,33 @@
 import 'package:drift/drift.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/db/tables/player_game_table.dart';
+import 'package:game_tracker/data/db/tables/player_match_table.dart';
 import 'package:game_tracker/data/dto/player.dart';
 
-part 'player_game_dao.g.dart';
+part 'player_match_dao.g.dart';
 
-@DriftAccessor(tables: [PlayerGameTable])
-class PlayerGameDao extends DatabaseAccessor<AppDatabase>
-    with _$PlayerGameDaoMixin {
-  PlayerGameDao(super.db);
+@DriftAccessor(tables: [PlayerMatchTable])
+class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
+    with _$PlayerMatchDaoMixin {
+  PlayerMatchDao(super.db);
 
-  /// Associates a player with a game by inserting a record into the
-  /// [PlayerGameTable].
-  Future<void> addPlayerToGame({
-    required String gameId,
+  /// Associates a player with a match by inserting a record into the
+  /// [PlayerMatchTable].
+  Future<void> addPlayerToMatch({
+    required String matchId,
     required String playerId,
   }) async {
-    await into(playerGameTable).insert(
-      PlayerGameTableCompanion.insert(playerId: playerId, gameId: gameId),
+    await into(playerMatchTable).insert(
+      PlayerMatchTableCompanion.insert(playerId: playerId, matchId: matchId),
       mode: InsertMode.insertOrReplace,
     );
   }
 
-  /// Retrieves a list of [Player]s associated with the given [gameId].
+  /// Retrieves a list of [Player]s associated with the given [matchId].
   /// Returns null if no players are found.
-  Future<List<Player>?> getPlayersOfGame({required String gameId}) async {
+  Future<List<Player>?> getPlayersOfMatch({required String matchId}) async {
     final result = await (select(
-      playerGameTable,
-    )..where((p) => p.gameId.equals(gameId))).get();
+      playerMatchTable,
+    )..where((p) => p.matchId.equals(matchId))).get();
 
     if (result.isEmpty) return null;
 
@@ -38,43 +38,43 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
     return players;
   }
 
-  /// Checks if there are any players associated with the given [gameId].
+  /// Checks if there are any players associated with the given [matchId].
   /// Returns `true` if there are players, otherwise `false`.
-  Future<bool> gameHasPlayers({required String gameId}) async {
+  Future<bool> matchHasPlayers({required String matchId}) async {
     final count =
-        await (selectOnly(playerGameTable)
-              ..where(playerGameTable.gameId.equals(gameId))
-              ..addColumns([playerGameTable.playerId.count()]))
-            .map((row) => row.read(playerGameTable.playerId.count()))
+        await (selectOnly(playerMatchTable)
+              ..where(playerMatchTable.matchId.equals(matchId))
+              ..addColumns([playerMatchTable.playerId.count()]))
+            .map((row) => row.read(playerMatchTable.playerId.count()))
             .getSingle();
     return (count ?? 0) > 0;
   }
 
-  /// Checks if a specific player is associated with a specific game.
-  /// Returns `true` if the player is in the game, otherwise `false`.
-  Future<bool> isPlayerInGame({
-    required String gameId,
+  /// Checks if a specific player is associated with a specific match.
+  /// Returns `true` if the player is in the match, otherwise `false`.
+  Future<bool> isPlayerInMatch({
+    required String matchId,
     required String playerId,
   }) async {
     final count =
-        await (selectOnly(playerGameTable)
-              ..where(playerGameTable.gameId.equals(gameId))
-              ..where(playerGameTable.playerId.equals(playerId))
-              ..addColumns([playerGameTable.playerId.count()]))
-            .map((row) => row.read(playerGameTable.playerId.count()))
+        await (selectOnly(playerMatchTable)
+              ..where(playerMatchTable.matchId.equals(matchId))
+              ..where(playerMatchTable.playerId.equals(playerId))
+              ..addColumns([playerMatchTable.playerId.count()]))
+            .map((row) => row.read(playerMatchTable.playerId.count()))
             .getSingle();
     return (count ?? 0) > 0;
   }
 
   /// Removes the association of a player with a game by deleting the record
-  /// from the [PlayerGameTable].
+  /// from the [PlayerMatchTable].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> removePlayerFromGame({
-    required String gameId,
+  Future<bool> removePlayerFromMatch({
+    required String matchId,
     required String playerId,
   }) async {
-    final query = delete(playerGameTable)
-      ..where((pg) => pg.gameId.equals(gameId))
+    final query = delete(playerMatchTable)
+      ..where((pg) => pg.matchId.equals(matchId))
       ..where((pg) => pg.playerId.equals(playerId));
     final rowsAffected = await query.go();
     return rowsAffected > 0;
@@ -83,11 +83,11 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
   /// Updates the players associated with a game based on the provided
   /// [newPlayer] list. It adds new players and removes players that are no
   /// longer associated with the game.
-  Future<void> updatePlayersFromGame({
-    required String gameId,
+  Future<void> updatePlayersFromMatch({
+    required String matchId,
     required List<Player> newPlayer,
   }) async {
-    final currentPlayers = await getPlayersOfGame(gameId: gameId);
+    final currentPlayers = await getPlayersOfMatch(matchId: matchId);
     // Create sets of player IDs for easy comparison
     final currentPlayerIds = currentPlayers?.map((p) => p.id).toSet() ?? {};
     final newPlayerIdsSet = newPlayer.map((p) => p.id).toSet();
@@ -99,9 +99,9 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
     db.transaction(() async {
       // Remove old players
       if (playersToRemove.isNotEmpty) {
-        await (delete(playerGameTable)..where(
+        await (delete(playerMatchTable)..where(
               (pg) =>
-                  pg.gameId.equals(gameId) &
+                  pg.matchId.equals(matchId) &
                   pg.playerId.isIn(playersToRemove.toList()),
             ))
             .go();
@@ -111,14 +111,16 @@ class PlayerGameDao extends DatabaseAccessor<AppDatabase>
       if (playersToAdd.isNotEmpty) {
         final inserts = playersToAdd
             .map(
-              (id) =>
-                  PlayerGameTableCompanion.insert(playerId: id, gameId: gameId),
+              (id) => PlayerMatchTableCompanion.insert(
+                playerId: id,
+                matchId: matchId,
+              ),
             )
             .toList();
         await Future.wait(
           inserts.map(
             (c) => into(
-              playerGameTable,
+              playerMatchTable,
             ).insert(c, mode: InsertMode.insertOrReplace),
           ),
         );
