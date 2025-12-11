@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
@@ -18,15 +18,15 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late Future<int> _gameCountFuture;
+  late Future<int> _matchCountFuture;
   late Future<int> _groupCountFuture;
-  late Future<List<Game>> _recentGamesFuture;
+  late Future<List<Match>> _recentMatchesFuture;
   bool isLoading = true;
 
-  late final List<Game> skeletonData = List.filled(
+  late final List<Match> skeletonData = List.filled(
     2,
-    Game(
-      name: 'Skeleton Game',
+    Match(
+      name: 'Skeleton Match',
       group: Group(
         name: 'Skeleton Group',
         members: [
@@ -42,20 +42,22 @@ class _HomeViewState extends State<HomeView> {
   initState() {
     super.initState();
     final db = Provider.of<AppDatabase>(context, listen: false);
-    _gameCountFuture = db.gameDao.getGameCount();
+    _matchCountFuture = db.matchDao.getMatchCount();
     _groupCountFuture = db.groupDao.getGroupCount();
-    _recentGamesFuture = db.gameDao.getAllGames();
+    _recentMatchesFuture = db.matchDao.getAllMatches();
 
-    Future.wait([_gameCountFuture, _groupCountFuture, _recentGamesFuture]).then(
-      (_) async {
-        await Future.delayed(const Duration(milliseconds: 250));
-        if (mounted) {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      },
-    );
+    Future.wait([
+      _matchCountFuture,
+      _groupCountFuture,
+      _recentMatchesFuture,
+    ]).then((_) async {
+      await Future.delayed(const Duration(milliseconds: 250));
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
   }
 
   @override
@@ -72,7 +74,7 @@ class _HomeViewState extends State<HomeView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FutureBuilder<int>(
-                      future: _gameCountFuture,
+                      future: _matchCountFuture,
                       builder: (context, snapshot) {
                         final int count = (snapshot.hasData)
                             ? snapshot.data!
@@ -80,7 +82,7 @@ class _HomeViewState extends State<HomeView> {
                         return QuickInfoTile(
                           width: constraints.maxWidth * 0.45,
                           height: constraints.maxHeight * 0.15,
-                          title: 'Games',
+                          title: 'Matches',
                           icon: Icons.groups_rounded,
                           value: count,
                         );
@@ -110,26 +112,26 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
-                    title: 'Recent Games',
+                    title: 'Recent Matches',
                     icon: Icons.timer,
                     content: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: FutureBuilder(
-                        future: _recentGamesFuture,
+                        future: _recentMatchesFuture,
                         builder:
                             (
                               BuildContext context,
-                              AsyncSnapshot<List<Game>> snapshot,
+                              AsyncSnapshot<List<Match>> snapshot,
                             ) {
                               if (snapshot.hasError) {
                                 return const Center(
                                   heightFactor: 4,
                                   child: Text(
-                                    'Error while loading recent games.',
+                                    'Error while loading recent matches.',
                                   ),
                                 );
                               }
-                              final List<Game> games =
+                              final List<Match> matches =
                                   (isLoading
                                             ? skeletonData
                                             : (snapshot.data ?? [])
@@ -140,19 +142,19 @@ class _HomeViewState extends State<HomeView> {
                                         ))
                                       .take(2)
                                       .toList();
-                              if (games.isNotEmpty) {
+                              if (matches.isNotEmpty) {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    GameTile(
-                                      gameTitle: games[0].name,
-                                      gameType: 'Winner',
+                                    MatchTile(
+                                      matchTitle: matches[0].name,
+                                      game: 'Winner',
                                       ruleset: 'Ruleset',
-                                      players: _getPlayerText(games[0]),
-                                      winner: games[0].winner == null
-                                          ? 'Game in progress...'
-                                          : games[0].winner!.name,
+                                      players: _getPlayerText(matches[0]),
+                                      winner: matches[0].winner == null
+                                          ? 'Match in progress...'
+                                          : matches[0].winner!.name,
                                     ),
                                     const Padding(
                                       padding: EdgeInsets.symmetric(
@@ -160,15 +162,15 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                       child: Divider(),
                                     ),
-                                    if (games.length > 1) ...[
-                                      GameTile(
-                                        gameTitle: games[1].name,
-                                        gameType: 'Winner',
+                                    if (matches.length > 1) ...[
+                                      MatchTile(
+                                        matchTitle: matches[1].name,
+                                        game: 'Winner',
                                         ruleset: 'Ruleset',
-                                        players: _getPlayerText(games[1]),
-                                        winner: games[1].winner == null
+                                        players: _getPlayerText(matches[1]),
+                                        winner: matches[1].winner == null
                                             ? 'Game in progress...'
-                                            : games[1].winner!.name,
+                                            : matches[1].winner!.name,
                                       ),
                                       const SizedBox(height: 8),
                                     ] else ...[
@@ -249,7 +251,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  String _getPlayerText(Game game) {
+  String _getPlayerText(Match game) {
     if (game.group == null) {
       final playerCount = game.players?.length ?? 0;
       return '$playerCount Players';
