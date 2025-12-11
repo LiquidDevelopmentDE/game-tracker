@@ -33,7 +33,7 @@ class _StatisticsViewState extends State<StatisticsView> {
       final matches = results[0] as List<Match>;
       final players = results[1] as List<Player>;
       winCounts = _calculateWinsForAllPlayers(matches, players);
-      matchCounts = _calculateGameAmountsForAllPlayers(matches, players);
+      matchCounts = _calculateMatchAmountsForAllPlayers(matches, players);
       winRates = computeWinRatePercent(wins: winCounts, matches: matchCounts);
       if (mounted) {
         setState(() {
@@ -97,14 +97,14 @@ class _StatisticsViewState extends State<StatisticsView> {
   /// Calculates the number of wins for each player
   /// and returns a sorted list of tuples (playerName, winCount)
   List<(String, int)> _calculateWinsForAllPlayers(
-    List<Match> games,
+    List<Match> matches,
     List<Player> players,
   ) {
     List<(String, int)> winCounts = [];
 
     // Getting the winners
-    for (var game in games) {
-      final winner = game.winner;
+    for (var match in matches) {
+      final winner = match.winner;
       if (winner != null) {
         final index = winCounts.indexWhere((entry) => entry.$1 == winner.id);
         // -1 means winner not found in winCounts
@@ -143,7 +143,7 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   /// Calculates the number of matches played for each player
   /// and returns a sorted list of tuples (playerName, matchCount)
-  List<(String, int)> _calculateGameAmountsForAllPlayers(
+  List<(String, int)> _calculateMatchAmountsForAllPlayers(
     List<Match> matches,
     List<Player> players,
   ) {
@@ -155,7 +155,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         final members = match.group!.members.map((p) => p.id).toList();
         for (var playerId in members) {
           final index = matchCounts.indexWhere((entry) => entry.$1 == playerId);
-          // -1 means player not found in gameCounts
+          // -1 means player not found in matchCounts
           if (index != -1) {
             final current = matchCounts[index].$2;
             matchCounts[index] = (playerId, current + 1);
@@ -168,7 +168,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         final members = match.players!.map((p) => p.id).toList();
         for (var playerId in members) {
           final index = matchCounts.indexWhere((entry) => entry.$1 == playerId);
-          // -1 means player not found in gameCounts
+          // -1 means player not found in matchCounts
           if (index != -1) {
             final current = matchCounts[index].$2;
             matchCounts[index] = (playerId, current + 1);
@@ -179,10 +179,10 @@ class _StatisticsViewState extends State<StatisticsView> {
       }
     }
 
-    // Adding all players with zero games
+    // Adding all players with zero matches
     for (var player in players) {
       final index = matchCounts.indexWhere((entry) => entry.$1 == player.id);
-      // -1 means player not found in gameCounts
+      // -1 means player not found in matchCounts
       if (index == -1) {
         matchCounts.add((player.id, 0));
       }
@@ -209,15 +209,15 @@ class _StatisticsViewState extends State<StatisticsView> {
     required List<(String, int)> matches,
   }) {
     final Map<String, int> winsMap = {for (var e in wins) e.$1: e.$2};
-    final Map<String, int> gamesMap = {for (var e in matches) e.$1: e.$2};
+    final Map<String, int> matchesMap = {for (var e in matches) e.$1: e.$2};
 
     // Get all unique player names
-    final names = {...winsMap.keys, ...gamesMap.keys};
+    final names = {...winsMap.keys, ...matchesMap.keys};
 
     // Calculate win rates
     final result = names.map((name) {
       final int w = winsMap[name] ?? 0;
-      final int g = gamesMap[name] ?? 0;
+      final int g = matchesMap[name] ?? 0;
       // Calculate percentage and round to 2 decimal places
       // Avoid division by zero
       final double percent = (g > 0)

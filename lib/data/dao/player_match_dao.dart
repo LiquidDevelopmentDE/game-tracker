@@ -66,7 +66,7 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
     return (count ?? 0) > 0;
   }
 
-  /// Removes the association of a player with a game by deleting the record
+  /// Removes the association of a player with a match by deleting the record
   /// from the [PlayerMatchTable].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
   Future<bool> removePlayerFromMatch({

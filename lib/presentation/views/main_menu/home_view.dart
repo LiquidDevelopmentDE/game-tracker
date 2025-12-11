@@ -82,7 +82,7 @@ class _HomeViewState extends State<HomeView> {
                         return QuickInfoTile(
                           width: constraints.maxWidth * 0.45,
                           height: constraints.maxHeight * 0.15,
-                          title: 'Games',
+                          title: 'Matches',
                           icon: Icons.groups_rounded,
                           value: count,
                         );
@@ -112,7 +112,7 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
-                    title: 'Recent Games',
+                    title: 'Recent Matches',
                     icon: Icons.timer,
                     content: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -127,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
                                 return const Center(
                                   heightFactor: 4,
                                   child: Text(
-                                    'Error while loading recent games.',
+                                    'Error while loading recent matches.',
                                   ),
                                 );
                               }
