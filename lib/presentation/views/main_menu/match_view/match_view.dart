@@ -1,32 +1,34 @@
+import 'dart:core' hide Match;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/views/main_menu/create_game/create_game_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/create_match_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/game_history_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
-class GameHistoryView extends StatefulWidget {
-  const GameHistoryView({super.key});
+class MatchView extends StatefulWidget {
+  const MatchView({super.key});
 
   @override
-  State<GameHistoryView> createState() => _GameHistoryViewState();
+  State<MatchView> createState() => _MatchViewState();
 }
 
-class _GameHistoryViewState extends State<GameHistoryView> {
-  late Future<List<Game>> _gameListFuture;
+class _MatchViewState extends State<MatchView> {
+  late Future<List<Match>> _gameListFuture;
   late final AppDatabase db;
 
-  late final List<Game> skeletonData = List.filled(
+  late final List<Match> skeletonData = List.filled(
     4,
-    Game(
+    Match(
       name: 'Skeleton Gamename',
       group: Group(
         name: 'Groupname',
@@ -43,7 +45,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
     db = Provider.of<AppDatabase>(context, listen: false);
     _gameListFuture = Future.delayed(
       const Duration(milliseconds: 250),
-      () => db.gameDao.getAllGames(),
+      () => db.matchDao.getAllMatches(),
     );
   }
 
@@ -54,10 +56,10 @@ class _GameHistoryViewState extends State<GameHistoryView> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          FutureBuilder<List<Game>>(
+          FutureBuilder<List<Match>>(
             future: _gameListFuture,
             builder:
-                (BuildContext context, AsyncSnapshot<List<Game>> snapshot) {
+                (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
                       child: TopCenteredMessage(
@@ -79,7 +81,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                   }
                   final bool isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
-                  final List<Game> games =
+                  final List<Match> matches =
                       (isLoading ? skeletonData : (snapshot.data ?? [])
                             ..sort(
                               (a, b) => b.createdAt.compareTo(a.createdAt),
@@ -89,9 +91,9 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                     enabled: isLoading,
                     child: ListView.builder(
                       padding: const EdgeInsets.only(bottom: 85),
-                      itemCount: games.length + 1,
+                      itemCount: matches.length + 1,
                       itemBuilder: (BuildContext context, int index) {
-                        if (index == games.length) {
+                        if (index == matches.length) {
                           return SizedBox(
                             height: MediaQuery.paddingOf(context).bottom - 80,
                           );
@@ -103,13 +105,13 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                               CupertinoPageRoute(
                                 fullscreenDialog: true,
                                 builder: (context) => GameResultView(
-                                  game: games[index],
+                                  match: matches[index],
                                   onWinnerChanged: refreshGameList,
                                 ),
                               ),
                             );
                           },
-                          game: games[index],
+                          match: matches[index],
                         );
                       },
                     ),
@@ -126,7 +128,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CreateGameView(onWinnerChanged: refreshGameList),
+                        CreateMatchView(onWinnerChanged: refreshGameList),
                   ),
                 );
               },
@@ -139,7 +141,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
 
   void refreshGameList() {
     setState(() {
-      _gameListFuture = db.gameDao.getAllGames();
+      _gameListFuture = db.matchDao.getAllMatches();
     });
   }
 }

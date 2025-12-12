@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/presentation/views/main_menu/create_game/choose_game_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/create_game/choose_group_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/create_game/choose_ruleset_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/game_result_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_game_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_group_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_ruleset_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/player_selection.dart';
 import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
 import 'package:game_tracker/presentation/widgets/tiles/choose_tile.dart';
 import 'package:provider/provider.dart';
 
-class CreateGameView extends StatefulWidget {
+class CreateMatchView extends StatefulWidget {
   final VoidCallback? onWinnerChanged;
-  const CreateGameView({super.key, this.onWinnerChanged});
+  const CreateMatchView({super.key, this.onWinnerChanged});
 
   @override
-  State<CreateGameView> createState() => _CreateGameViewState();
+  State<CreateMatchView> createState() => _CreateMatchViewState();
 }
 
-class _CreateGameViewState extends State<CreateGameView> {
+class _CreateMatchViewState extends State<CreateMatchView> {
   /// Reference to the app database
   late final AppDatabase db;
 
@@ -234,20 +234,20 @@ class _CreateGameViewState extends State<CreateGameView> {
               buttonType: ButtonType.primary,
               onPressed: _enableCreateGameButton()
                   ? () async {
-                      Game game = Game(
+                      Match match = Match(
                         name: _gameNameController.text.trim(),
                         createdAt: DateTime.now(),
                         group: selectedGroup,
                         players: selectedPlayers,
                       );
-                      await db.gameDao.addGame(game: game);
+                      await db.matchDao.addMatch(match: match);
                       if (context.mounted) {
                         Navigator.pushReplacement(
                           context,
                           CupertinoPageRoute(
                             fullscreenDialog: true,
                             builder: (context) => GameResultView(
-                              game: game,
+                              match: match,
                               onWinnerChanged: widget.onWinnerChanged,
                             ),
                           ),

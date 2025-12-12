@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-class GameTable extends Table {
+class MatchTable extends Table {
   TextColumn get id => text()();
   TextColumn get name => text()();
   late final winnerId = text().nullable()();

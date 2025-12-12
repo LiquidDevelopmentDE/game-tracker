@@ -3,8 +3,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 
 void main() {
@@ -16,8 +16,8 @@ void main() {
   late Player testPlayer5;
   late Player testPlayer6;
   late Group testgroup;
-  late Game testGameOnlyGroup;
-  late Game testGameOnlyPlayers;
+  late Match testMatchOnlyGroup;
+  late Match testMatchOnlyPlayers;
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -41,9 +41,12 @@ void main() {
         name: 'Test Group',
         members: [testPlayer1, testPlayer2, testPlayer3],
       );
-      testGameOnlyGroup = Game(name: 'Test Game with Group', group: testgroup);
-      testGameOnlyPlayers = Game(
-        name: 'Test Game with Players',
+      testMatchOnlyGroup = Match(
+        name: 'Test Match with Group',
+        group: testgroup,
+      );
+      testMatchOnlyPlayers = Match(
+        name: 'Test Match with Players',
         players: [testPlayer4, testPlayer5, testPlayer6],
       );
     });
@@ -52,67 +55,67 @@ void main() {
     await database.close();
   });
 
-  group('Player-Game Tests', () {
-    test('Game has player works correctly', () async {
-      await database.gameDao.addGame(game: testGameOnlyGroup);
+  group('Player-Match Tests', () {
+    test('Match has player works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchOnlyGroup);
       await database.playerDao.addPlayer(player: testPlayer1);
 
-      var gameHasPlayers = await database.playerGameDao.gameHasPlayers(
-        gameId: testGameOnlyGroup.id,
+      var matchHasPlayers = await database.playerMatchDao.matchHasPlayers(
+        matchId: testMatchOnlyGroup.id,
       );
 
-      expect(gameHasPlayers, false);
+      expect(matchHasPlayers, false);
 
-      await database.playerGameDao.addPlayerToGame(
-        gameId: testGameOnlyGroup.id,
+      await database.playerMatchDao.addPlayerToMatch(
+        matchId: testMatchOnlyGroup.id,
         playerId: testPlayer1.id,
       );
 
-      gameHasPlayers = await database.playerGameDao.gameHasPlayers(
-        gameId: testGameOnlyGroup.id,
+      matchHasPlayers = await database.playerMatchDao.matchHasPlayers(
+        matchId: testMatchOnlyGroup.id,
       );
 
-      expect(gameHasPlayers, true);
+      expect(matchHasPlayers, true);
     });
 
-    test('Adding a player to a game works correctly', () async {
-      await database.gameDao.addGame(game: testGameOnlyGroup);
+    test('Adding a player to a match works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchOnlyGroup);
       await database.playerDao.addPlayer(player: testPlayer5);
-      await database.playerGameDao.addPlayerToGame(
-        gameId: testGameOnlyGroup.id,
+      await database.playerMatchDao.addPlayerToMatch(
+        matchId: testMatchOnlyGroup.id,
         playerId: testPlayer5.id,
       );
 
-      var playerAdded = await database.playerGameDao.isPlayerInGame(
-        gameId: testGameOnlyGroup.id,
+      var playerAdded = await database.playerMatchDao.isPlayerInMatch(
+        matchId: testMatchOnlyGroup.id,
         playerId: testPlayer5.id,
       );
 
       expect(playerAdded, true);
 
-      playerAdded = await database.playerGameDao.isPlayerInGame(
-        gameId: testGameOnlyGroup.id,
+      playerAdded = await database.playerMatchDao.isPlayerInMatch(
+        matchId: testMatchOnlyGroup.id,
         playerId: '',
       );
 
       expect(playerAdded, false);
     });
 
-    test('Removing player from game works correctly', () async {
-      await database.gameDao.addGame(game: testGameOnlyPlayers);
+    test('Removing player from match works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchOnlyPlayers);
 
-      final playerToRemove = testGameOnlyPlayers.players![0];
+      final playerToRemove = testMatchOnlyPlayers.players![0];
 
-      final removed = await database.playerGameDao.removePlayerFromGame(
+      final removed = await database.playerMatchDao.removePlayerFromMatch(
         playerId: playerToRemove.id,
-        gameId: testGameOnlyPlayers.id,
+        matchId: testMatchOnlyPlayers.id,
       );
       expect(removed, true);
 
-      final result = await database.gameDao.getGameById(
-        gameId: testGameOnlyPlayers.id,
+      final result = await database.matchDao.getMatchById(
+        matchId: testMatchOnlyPlayers.id,
       );
-      expect(result.players!.length, testGameOnlyPlayers.players!.length - 1);
+      expect(result.players!.length, testMatchOnlyPlayers.players!.length - 1);
 
       final playerExists = result.players!.any(
         (p) => p.id == playerToRemove.id,
@@ -120,10 +123,10 @@ void main() {
       expect(playerExists, false);
     });
 
-    test('Retrieving players of a game works correctly', () async {
-      await database.gameDao.addGame(game: testGameOnlyPlayers);
-      final players = await database.playerGameDao.getPlayersOfGame(
-        gameId: testGameOnlyPlayers.id,
+    test('Retrieving players of a match works correctly', () async {
+      await database.matchDao.addMatch(match: testMatchOnlyPlayers);
+      final players = await database.playerMatchDao.getPlayersOfMatch(
+        matchId: testMatchOnlyPlayers.id,
       );
 
       if (players == null) {
@@ -131,34 +134,37 @@ void main() {
       }
 
       for (int i = 0; i < players.length; i++) {
-        expect(players[i].id, testGameOnlyPlayers.players![i].id);
-        expect(players[i].name, testGameOnlyPlayers.players![i].name);
-        expect(players[i].createdAt, testGameOnlyPlayers.players![i].createdAt);
+        expect(players[i].id, testMatchOnlyPlayers.players![i].id);
+        expect(players[i].name, testMatchOnlyPlayers.players![i].name);
+        expect(
+          players[i].createdAt,
+          testMatchOnlyPlayers.players![i].createdAt,
+        );
       }
     });
 
-    test('Updating the games players works coreclty', () async {
-      await database.gameDao.addGame(game: testGameOnlyPlayers);
+    test('Updating the match players works coreclty', () async {
+      await database.matchDao.addMatch(match: testMatchOnlyPlayers);
 
       final newPlayers = [testPlayer1, testPlayer2, testPlayer4];
       await database.playerDao.addPlayersAsList(players: newPlayers);
 
       // First, remove all existing players
-      final existingPlayers = await database.playerGameDao.getPlayersOfGame(
-        gameId: testGameOnlyPlayers.id,
+      final existingPlayers = await database.playerMatchDao.getPlayersOfMatch(
+        matchId: testMatchOnlyPlayers.id,
       );
 
       if (existingPlayers == null || existingPlayers.isEmpty) {
         fail('Existing players should not be null or empty');
       }
 
-      await database.playerGameDao.updatePlayersFromGame(
-        gameId: testGameOnlyPlayers.id,
+      await database.playerMatchDao.updatePlayersFromMatch(
+        matchId: testMatchOnlyPlayers.id,
         newPlayer: newPlayers,
       );
 
-      final updatedPlayers = await database.playerGameDao.getPlayersOfGame(
-        gameId: testGameOnlyPlayers.id,
+      final updatedPlayers = await database.playerMatchDao.getPlayersOfMatch(
+        matchId: testMatchOnlyPlayers.id,
       );
 
       if (updatedPlayers == null) {

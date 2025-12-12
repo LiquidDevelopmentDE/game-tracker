@@ -40,11 +40,11 @@ class StatisticsTile extends StatelessWidget {
           child: Column(
             children: List.generate(min(values.length, itemCount), (index) {
               /// The maximum wins among all players
-              final maxGames = values.isNotEmpty ? values[0].$2 : 0;
+              final maxMatches = values.isNotEmpty ? values[0].$2 : 0;
 
               /// Fraction of wins
-              final double fraction = (maxGames > 0)
-                  ? (values[index].$2 / maxGames)
+              final double fraction = (maxMatches > 0)
+                  ? (values[index].$2 / maxMatches)
                   : 0.0;
 
               /// Calculated width for current the bar

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/data/dto/game.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
 
 class GameHistoryTile extends StatefulWidget {
-  final Game game;
+  final Match match;
   final VoidCallback onTap;
 
-  const GameHistoryTile({super.key, required this.game, required this.onTap});
+  const GameHistoryTile({super.key, required this.match, required this.onTap});
 
   @override
   State<GameHistoryTile> createState() => _GameHistoryTileState();
@@ -17,8 +17,8 @@ class GameHistoryTile extends StatefulWidget {
 class _GameHistoryTileState extends State<GameHistoryTile> {
   @override
   Widget build(BuildContext context) {
-    final group = widget.game.group;
-    final winner = widget.game.winner;
+    final group = widget.match.group;
+    final winner = widget.match.winner;
     final allPlayers = _getAllPlayers();
 
     return GestureDetector(
@@ -39,7 +39,7 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
               children: [
                 Expanded(
                   child: Text(
-                    widget.game.name,
+                    widget.match.name,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -48,7 +48,7 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
                   ),
                 ),
                 Text(
-                  _formatDate(widget.game.createdAt),
+                  _formatDate(widget.match.createdAt),
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
@@ -156,8 +156,8 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
     final playerIds = <String>{};
 
     // Add players from game.players
-    if (widget.game.players != null) {
-      for (var player in widget.game.players!) {
+    if (widget.match.players != null) {
+      for (var player in widget.match.players!) {
         if (!playerIds.contains(player.id)) {
           allPlayers.add(player);
           playerIds.add(player.id);
@@ -166,8 +166,8 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
     }
 
     // Add players from game.group.players
-    if (widget.game.group?.members != null) {
-      for (var player in widget.game.group!.members) {
+    if (widget.match.group?.members != null) {
+      for (var player in widget.match.group!.members) {
         if (!playerIds.contains(player.id)) {
           allPlayers.add(player);
           playerIds.add(player.id);

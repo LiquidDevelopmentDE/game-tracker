@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/presentation/views/main_menu/game_history_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/groups_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/group_view/groups_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
 import 'package:game_tracker/presentation/widgets/navbar_item.dart';
@@ -30,8 +30,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     final List<Widget> tabs = [
       KeyedSubtree(key: ValueKey('home_$tabKeyCount'), child: const HomeView()),
       KeyedSubtree(
-        key: ValueKey('games_$tabKeyCount'),
-        child: const GameHistoryView(),
+        key: ValueKey('matches_$tabKeyCount'),
+        child: const MatchView(),
       ),
       KeyedSubtree(
         key: ValueKey('groups_$tabKeyCount'),
@@ -96,7 +96,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
                     index: 1,
                     isSelected: currentIndex == 1,
                     icon: Icons.gamepad_rounded,
-                    label: 'Games',
+                    label: 'Matches',
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
@@ -133,7 +133,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       case 0:
         return 'Home';
       case 1:
-        return 'Game History';
+        return 'Matches';
       case 2:
         return 'Groups';
       case 3:
