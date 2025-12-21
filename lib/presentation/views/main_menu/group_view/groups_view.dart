@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
@@ -34,10 +35,10 @@ class _GroupsViewState extends State<GroupsView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _allGroupsFuture = Future.delayed(
-      const Duration(milliseconds: 250),
-      () => db.groupDao.getAllGroups(),
-    );
+    _allGroupsFuture = Future.wait([
+      db.groupDao.getAllGroups(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) => results[0] as List<Group>);
   }
 
   @override
