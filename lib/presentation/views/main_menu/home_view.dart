@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
@@ -18,12 +19,10 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late Future<int> _matchCountFuture;
-  late Future<int> _groupCountFuture;
-  late Future<List<Match>> _recentMatchesFuture;
   bool isLoading = true;
-
-  late final List<Match> skeletonData = List.filled(
+  int matchCount = 0;
+  int groupCount = 0;
+  List<Match> recentMatches = List.filled(
     2,
     Match(
       name: 'Skeleton Match',
@@ -39,19 +38,24 @@ class _HomeViewState extends State<HomeView> {
   );
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     final db = Provider.of<AppDatabase>(context, listen: false);
-    _matchCountFuture = db.matchDao.getMatchCount();
-    _groupCountFuture = db.groupDao.getGroupCount();
-    _recentMatchesFuture = db.matchDao.getAllMatches();
 
     Future.wait([
-      _matchCountFuture,
-      _groupCountFuture,
-      _recentMatchesFuture,
-    ]).then((_) async {
-      await Future.delayed(const Duration(milliseconds: 250));
+      db.matchDao.getMatchCount(),
+      db.groupDao.getGroupCount(),
+      db.matchDao.getAllMatches(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) {
+      matchCount = results[0] as int;
+      groupCount = results[1] as int;
+      recentMatches = results[2] as List<Match>;
+
+      recentMatches =
+          (recentMatches..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
+              .take(2)
+              .toList();
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -73,38 +77,20 @@ class _HomeViewState extends State<HomeView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    FutureBuilder<int>(
-                      future: _matchCountFuture,
-                      builder: (context, snapshot) {
-                        final int count = (snapshot.hasData)
-                            ? snapshot.data!
-                            : 0;
-                        return QuickInfoTile(
-                          width: constraints.maxWidth * 0.45,
-                          height: constraints.maxHeight * 0.15,
-                          title: 'Matches',
-                          icon: Icons.groups_rounded,
-                          value: count,
-                        );
-                      },
+                    QuickInfoTile(
+                      width: constraints.maxWidth * 0.45,
+                      height: constraints.maxHeight * 0.15,
+                      title: 'Matches',
+                      icon: Icons.groups_rounded,
+                      value: matchCount,
                     ),
                     SizedBox(width: constraints.maxWidth * 0.05),
-                    FutureBuilder<int>(
-                      future: _groupCountFuture,
-                      builder: (context, snapshot) {
-                        final int count =
-                            (snapshot.connectionState == ConnectionState.done &&
-                                snapshot.hasData)
-                            ? snapshot.data!
-                            : 0;
-                        return QuickInfoTile(
-                          width: constraints.maxWidth * 0.45,
-                          height: constraints.maxHeight * 0.15,
-                          title: 'Groups',
-                          icon: Icons.groups_rounded,
-                          value: count,
-                        );
-                      },
+                    QuickInfoTile(
+                      width: constraints.maxWidth * 0.45,
+                      height: constraints.maxHeight * 0.15,
+                      title: 'Groups',
+                      icon: Icons.groups_rounded,
+                      value: groupCount,
                     ),
                   ],
                 ),
@@ -116,80 +102,48 @@ class _HomeViewState extends State<HomeView> {
                     icon: Icons.timer,
                     content: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: FutureBuilder(
-                        future: _recentMatchesFuture,
-                        builder:
-                            (
-                              BuildContext context,
-                              AsyncSnapshot<List<Match>> snapshot,
-                            ) {
-                              if (snapshot.hasError) {
-                                return const Center(
-                                  heightFactor: 4,
-                                  child: Text(
-                                    'Error while loading recent matches.',
-                                  ),
-                                );
-                              }
-                              final List<Match> matches =
-                                  (isLoading
-                                            ? skeletonData
-                                            : (snapshot.data ?? [])
-                                        ..sort(
-                                          (a, b) => b.createdAt.compareTo(
-                                            a.createdAt,
-                                          ),
-                                        ))
-                                      .take(2)
-                                      .toList();
-                              if (matches.isNotEmpty) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    MatchTile(
-                                      matchTitle: matches[0].name,
-                                      game: 'Winner',
-                                      ruleset: 'Ruleset',
-                                      players: _getPlayerText(matches[0]),
-                                      winner: matches[0].winner == null
-                                          ? 'Match in progress...'
-                                          : matches[0].winner!.name,
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 8.0,
-                                      ),
-                                      child: Divider(),
-                                    ),
-                                    if (matches.length > 1) ...[
-                                      MatchTile(
-                                        matchTitle: matches[1].name,
-                                        game: 'Winner',
-                                        ruleset: 'Ruleset',
-                                        players: _getPlayerText(matches[1]),
-                                        winner: matches[1].winner == null
-                                            ? 'Game in progress...'
-                                            : matches[1].winner!.name,
-                                      ),
-                                      const SizedBox(height: 8),
-                                    ] else ...[
-                                      const Center(
-                                        heightFactor: 4,
-                                        child: Text(
-                                          'No second game available.',
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                );
-                              } else {
-                                return const Center(
-                                  heightFactor: 12,
-                                  child: Text('No recent games available.'),
-                                );
-                              }
-                            },
+                      child: Visibility(
+                        visible: !isLoading,
+                        replacement: const Center(
+                          heightFactor: 12,
+                          child: Text('No recent games available.'),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MatchTile(
+                              matchTitle: recentMatches[0].name,
+                              game: 'Winner',
+                              ruleset: 'Ruleset',
+                              players: _getPlayerText(recentMatches[0]),
+                              winner: recentMatches[0].winner == null
+                                  ? 'Match in progress...'
+                                  : recentMatches[0].winner!.name,
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              child: Divider(),
+                            ),
+                            if (recentMatches.length > 1) ...[
+                              MatchTile(
+                                matchTitle: recentMatches[1].name,
+                                game: 'Winner',
+                                ruleset: 'Ruleset',
+                                players: _getPlayerText(recentMatches[1]),
+                                winner: recentMatches[1].winner == null
+                                    ? 'Game in progress...'
+                                    : recentMatches[1].winner!.name,
+                              ),
+                              const SizedBox(height: 8),
+                            ] else ...[
+                              const Center(
+                                heightFactor: 4,
+                                child: Text('No second game available.'),
+                              ),
+                            ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -199,7 +153,6 @@ class _HomeViewState extends State<HomeView> {
                   title: 'Quick Create',
                   icon: Icons.add_box_rounded,
                   content: Column(
-                    spacing: 8,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
