@@ -28,12 +28,6 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Reference to the app database
   late final AppDatabase db;
 
-  /// Futures to load all groups and players from the database
-  late Future<List<Group>> _allGroupsFuture;
-
-  /// Future to load all players from the database
-  late Future<List<Player>> _allPlayersFuture;
-
   /// Controller for the game name input field
   final TextEditingController _gameNameController = TextEditingController();
 
@@ -107,10 +101,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
 
     db = Provider.of<AppDatabase>(context, listen: false);
 
-    _allGroupsFuture = db.groupDao.getAllGroups();
-    _allPlayersFuture = db.playerDao.getAllPlayers();
-
-    Future.wait([_allGroupsFuture, _allPlayersFuture]).then((result) async {
+    Future.wait([
+      db.groupDao.getAllGroups(),
+      db.playerDao.getAllPlayers(),
+    ]).then((result) async {
       groupsList = result[0] as List<Group>;
       playerList = result[1] as List<Player>;
     });
