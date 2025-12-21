@@ -2,6 +2,7 @@ import 'dart:core' hide Match;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
@@ -43,10 +44,10 @@ class _MatchViewState extends State<MatchView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _gameListFuture = Future.delayed(
-      const Duration(milliseconds: 250),
-      () => db.matchDao.getAllMatches(),
-    );
+    _gameListFuture = Future.wait([
+      db.matchDao.getAllMatches(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) => results[0] as List<Match>);
   }
 
   @override
