@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/player.dart';
@@ -46,10 +47,10 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   }
 
   void loadPlayerList() {
-    _allPlayersFuture = Future.delayed(
-      const Duration(milliseconds: 250),
-      () => db.playerDao.getAllPlayers(),
-    );
+    _allPlayersFuture = Future.wait([
+      db.playerDao.getAllPlayers(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) => results[0] as List<Player>);
     suggestedPlayers = skeletonData;
     _allPlayersFuture.then((loadedPlayers) {
       setState(() {
