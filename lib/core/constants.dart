@@ -1,2 +1,2 @@
 /// Minimum duration of all app skeletons
-Duration minimumSkeletonDuration = Duration(milliseconds: 250);
+Duration minimumSkeletonDuration = const Duration(milliseconds: 250);
