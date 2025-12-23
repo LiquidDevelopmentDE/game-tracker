@@ -54,7 +54,6 @@ class _PlayerSelectionState extends State<PlayerSelection> {
       Future.delayed(minimumSkeletonDuration),
     ]).then((results) => results[0] as List<Player>);
     _allPlayersFuture.then((loadedPlayers) {
-      isLoading = false;
       setState(() {
         // If a list of available players is provided, use that list.
         if (widget.availablePlayers.isNotEmpty) {
@@ -79,6 +78,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           suggestedPlayers = [...loadedPlayers];
         }
       });
+      isLoading = false;
     });
   }
 
