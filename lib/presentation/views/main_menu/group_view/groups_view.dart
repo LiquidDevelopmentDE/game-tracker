@@ -35,17 +35,7 @@ class _GroupsViewState extends State<GroupsView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    Future.wait([
-      db.groupDao.getAllGroups(),
-      Future.delayed(minimumSkeletonDuration),
-    ]).then((results) {
-      loadedGroups = results[0] as List<Group>;
-      setState(() {
-        groups = loadedGroups
-          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      });
-      isLoading = false;
-    });
+    loadGroups();
   }
 
   @override
@@ -95,7 +85,7 @@ class _GroupsViewState extends State<GroupsView> {
                   ),
                 );
                 setState(() {
-                  //_allGroupsFuture = db.groupDao.getAllGroups();
+                  loadGroups();
                 });
               },
             ),
@@ -103,5 +93,19 @@ class _GroupsViewState extends State<GroupsView> {
         ],
       ),
     );
+  }
+
+  void loadGroups() {
+    Future.wait([
+      db.groupDao.getAllGroups(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) {
+      loadedGroups = results[0] as List<Group>;
+      setState(() {
+        groups = loadedGroups
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      });
+      isLoading = false;
+    });
   }
 }
