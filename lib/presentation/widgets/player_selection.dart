@@ -30,6 +30,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   List<Player> selectedPlayers = [];
   List<Player> suggestedPlayers = [];
   List<Player> allPlayers = [];
+  bool isLoading = true;
   late final TextEditingController _searchBarController =
       TextEditingController();
   late final AppDatabase db;
@@ -43,6 +44,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
+    suggestedPlayers = skeletonData;
     loadPlayerList();
   }
 
@@ -51,8 +53,8 @@ class _PlayerSelectionState extends State<PlayerSelection> {
       db.playerDao.getAllPlayers(),
       Future.delayed(minimumSkeletonDuration),
     ]).then((results) => results[0] as List<Player>);
-    suggestedPlayers = skeletonData;
     _allPlayersFuture.then((loadedPlayers) {
+      isLoading = false;
       setState(() {
         // If a list of available players is provided, use that list.
         if (widget.availablePlayers.isNotEmpty) {
@@ -163,75 +165,44 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          FutureBuilder(
-            future: _allPlayersFuture,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Player>> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: TopCenteredMessage(
-                        icon: Icons.report,
-                        title: 'Error',
-                        message: 'Player data couldn\'t\nbe loaded.',
-                      ),
+          /*
+
+           */
+          Expanded(
+            child: AppSkeleton(
+              enabled: isLoading,
+              child: Visibility(
+                visible: suggestedPlayers.isNotEmpty,
+                replacement: TopCenteredMessage(
+                  icon: Icons.info,
+                  title: 'Info',
+                  message: allPlayers.isEmpty
+                      ? 'No players created yet.'
+                      : (selectedPlayers.length == allPlayers.length)
+                      ? 'No more players to add.'
+                      : 'No players found with that name.',
+                ),
+                child: ListView.builder(
+                  itemCount: suggestedPlayers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return TextIconListTile(
+                      text: suggestedPlayers[index].name,
+                      onPressed: () {
+                        setState(() {
+                          if (!selectedPlayers.contains(
+                            suggestedPlayers[index],
+                          )) {
+                            selectedPlayers.add(suggestedPlayers[index]);
+                            widget.onChanged([...selectedPlayers]);
+                            suggestedPlayers.remove(suggestedPlayers[index]);
+                          }
+                        });
+                      },
                     );
-                  }
-                  bool doneLoading =
-                      snapshot.connectionState == ConnectionState.done;
-                  bool snapshotDataEmpty =
-                      !snapshot.hasData || snapshot.data!.isEmpty;
-                  if (doneLoading &&
-                      (snapshotDataEmpty && allPlayers.isEmpty)) {
-                    return const Center(
-                      child: TopCenteredMessage(
-                        icon: Icons.info,
-                        title: 'Info',
-                        message: 'No players created yet.',
-                      ),
-                    );
-                  }
-                  final bool isLoading =
-                      snapshot.connectionState == ConnectionState.waiting;
-                  return Expanded(
-                    child: AppSkeleton(
-                      enabled: isLoading,
-                      child: Visibility(
-                        visible:
-                            (suggestedPlayers.isEmpty && allPlayers.isNotEmpty),
-                        replacement: ListView.builder(
-                          itemCount: suggestedPlayers.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return TextIconListTile(
-                              text: suggestedPlayers[index].name,
-                              onPressed: () {
-                                setState(() {
-                                  if (!selectedPlayers.contains(
-                                    suggestedPlayers[index],
-                                  )) {
-                                    selectedPlayers.add(
-                                      suggestedPlayers[index],
-                                    );
-                                    widget.onChanged([...selectedPlayers]);
-                                    suggestedPlayers.remove(
-                                      suggestedPlayers[index],
-                                    );
-                                  }
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        child: TopCenteredMessage(
-                          icon: Icons.info,
-                          title: 'Info',
-                          message: (selectedPlayers.length == allPlayers.length)
-                              ? 'No more players to add.'
-                              : 'No players found with that name.',
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                  },
+                ),
+              ),
+            ),
           ),
         ],
       ),
