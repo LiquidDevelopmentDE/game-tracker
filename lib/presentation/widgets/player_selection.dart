@@ -179,10 +179,10 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                   icon: Icons.info,
                   title: 'Info',
                   message: allPlayers.isEmpty
-                      ? 'No players created yet.'
+                      ? 'No players created yet'
                       : (selectedPlayers.length == allPlayers.length)
-                      ? 'No more players to add.'
-                      : 'No players found with that name.',
+                      ? 'No more players to add'
+                      : 'No players found with that name',
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,

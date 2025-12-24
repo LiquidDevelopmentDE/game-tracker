@@ -112,7 +112,7 @@ class _HomeViewState extends State<HomeView> {
                         visible: !isLoading && loadedRecentMatches.isNotEmpty,
                         replacement: const Center(
                           heightFactor: 12,
-                          child: Text('No recent games available.'),
+                          child: Text('No recent games available'),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -145,7 +145,7 @@ class _HomeViewState extends State<HomeView> {
                             ] else ...[
                               const Center(
                                 heightFactor: 5.35,
-                                child: Text('No second game available.'),
+                                child: Text('No second game available'),
                               ),
                             ],
                           ],
