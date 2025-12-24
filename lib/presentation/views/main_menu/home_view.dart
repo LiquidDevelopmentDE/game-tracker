@@ -22,6 +22,7 @@ class _HomeViewState extends State<HomeView> {
   bool isLoading = true;
   int matchCount = 0;
   int groupCount = 0;
+  List<Match> loadedRecentMatches = [];
   List<Match> recentMatches = List.filled(
     2,
     Match(
@@ -41,7 +42,6 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     final db = Provider.of<AppDatabase>(context, listen: false);
-
     Future.wait([
       db.matchDao.getMatchCount(),
       db.groupDao.getGroupCount(),
@@ -50,12 +50,17 @@ class _HomeViewState extends State<HomeView> {
     ]).then((results) {
       matchCount = results[0] as int;
       groupCount = results[1] as int;
-      recentMatches = results[2] as List<Match>;
-
+      loadedRecentMatches = results[2] as List<Match>;
       recentMatches =
-          (recentMatches..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
+          (loadedRecentMatches
+                ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
               .take(2)
               .toList();
+      if (loadedRecentMatches.length < 2) {
+        recentMatches.add(
+          Match(name: "Dummy Match", winner: null, group: null, players: null),
+        );
+      }
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -69,6 +74,7 @@ class _HomeViewState extends State<HomeView> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return AppSkeleton(
+          fixLayoutBuilder: true,
           enabled: isLoading,
           child: SingleChildScrollView(
             child: Column(
@@ -103,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
                     content: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: Visibility(
-                        visible: !isLoading,
+                        visible: !isLoading && loadedRecentMatches.isNotEmpty,
                         replacement: const Center(
                           heightFactor: 12,
                           child: Text('No recent games available.'),
@@ -125,7 +131,7 @@ class _HomeViewState extends State<HomeView> {
                               padding: EdgeInsets.symmetric(vertical: 8.0),
                               child: Divider(),
                             ),
-                            if (recentMatches.length > 1) ...[
+                            if (loadedRecentMatches.length > 1) ...[
                               MatchTile(
                                 matchTitle: recentMatches[1].name,
                                 game: 'Winner',
