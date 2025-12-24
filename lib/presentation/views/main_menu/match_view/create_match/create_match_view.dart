@@ -108,7 +108,6 @@ class _CreateMatchViewState extends State<CreateMatchView> {
       groupsList = result[0] as List<Group>;
       playerList = result[1] as List<Player>;
     });
-
     filteredPlayerList = List.from(playerList);
   }
 
