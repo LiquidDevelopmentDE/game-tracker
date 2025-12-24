@@ -58,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
               .toList();
       if (loadedRecentMatches.length < 2) {
         recentMatches.add(
-          Match(name: "Dummy Match", winner: null, group: null, players: null),
+          Match(name: 'Dummy Match', winner: null, group: null, players: null),
         );
       }
       if (mounted) {
