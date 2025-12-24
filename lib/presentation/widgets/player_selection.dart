@@ -53,37 +53,35 @@ class _PlayerSelectionState extends State<PlayerSelection> {
       db.playerDao.getAllPlayers(),
       Future.delayed(minimumSkeletonDuration),
     ]).then((results) => results[0] as List<Player>);
-    _allPlayersFuture.then((loadedPlayers) {
-      setState(() {
-        // If a list of available players is provided, use that list.
-        if (widget.availablePlayers.isNotEmpty) {
-          widget.availablePlayers.sort((a, b) => a.name.compareTo(b.name));
-          allPlayers = [...widget.availablePlayers];
-          suggestedPlayers = [...allPlayers];
-
-          if (widget.initialSelectedPlayers != null) {
-            // Ensures that only players available for selection are pre-selected.
-            selectedPlayers = widget.initialSelectedPlayers!
-                .where(
-                  (p) => widget.availablePlayers.any(
-                    (available) => available.id == p.id,
-                  ),
-                )
-                .toList();
-          }
-        } else {
-          // Otherwise, use the loaded players from the database.
-          loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
-          allPlayers = [...loadedPlayers];
-          suggestedPlayers = [...loadedPlayers];
-        }
-      });
-      if (mounted) {
+    if (mounted) {
+      _allPlayersFuture.then((loadedPlayers) {
         setState(() {
+          // If a list of available players is provided, use that list.
+          if (widget.availablePlayers.isNotEmpty) {
+            widget.availablePlayers.sort((a, b) => a.name.compareTo(b.name));
+            allPlayers = [...widget.availablePlayers];
+            suggestedPlayers = [...allPlayers];
+
+            if (widget.initialSelectedPlayers != null) {
+              // Ensures that only players available for selection are pre-selected.
+              selectedPlayers = widget.initialSelectedPlayers!
+                  .where(
+                    (p) => widget.availablePlayers.any(
+                      (available) => available.id == p.id,
+                    ),
+                  )
+                  .toList();
+            }
+          } else {
+            // Otherwise, use the loaded players from the database.
+            loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
+            allPlayers = [...loadedPlayers];
+            suggestedPlayers = [...loadedPlayers];
+          }
           isLoading = false;
         });
-      }
-    });
+      });
+    }
   }
 
   @override
