@@ -78,7 +78,11 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           suggestedPlayers = [...loadedPlayers];
         }
       });
-      isLoading = false;
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 
