@@ -144,7 +144,7 @@ class _HomeViewState extends State<HomeView> {
                               const SizedBox(height: 8),
                             ] else ...[
                               const Center(
-                                heightFactor: 4,
+                                heightFactor: 5.35,
                                 child: Text('No second game available.'),
                               ),
                             ],
