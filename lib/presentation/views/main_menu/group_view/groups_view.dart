@@ -105,7 +105,11 @@ class _GroupsViewState extends State<GroupsView> {
         groups = loadedGroups
           ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
       });
-      isLoading = false;
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 }
