@@ -119,11 +119,11 @@ class _MatchViewState extends State<MatchView> {
       db.matchDao.getAllMatches(),
       Future.delayed(minimumSkeletonDuration),
     ]).then((results) {
-      final loadedMatches = results[0] as List<Match>;
-      matches = loadedMatches
-        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
       if (mounted) {
         setState(() {
+          final loadedMatches = results[0] as List<Match>;
+          matches = loadedMatches
+            ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
           isLoading = false;
         });
       }
