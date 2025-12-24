@@ -122,9 +122,11 @@ class _MatchViewState extends State<MatchView> {
       final loadedMatches = results[0] as List<Match>;
       matches = loadedMatches
         ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 }
