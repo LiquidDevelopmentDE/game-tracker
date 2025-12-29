@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
@@ -14,8 +15,6 @@ class StatisticsView extends StatefulWidget {
 }
 
 class _StatisticsViewState extends State<StatisticsView> {
-  late Future<List<Match>> _matchesFuture;
-  late Future<List<Player>> _playersFuture;
   List<(String, int)> winCounts = List.filled(6, ('Skeleton Player', 1));
   List<(String, int)> matchCounts = List.filled(6, ('Skeleton Player', 1));
   List<(String, double)> winRates = List.filled(6, ('Skeleton Player', 1));
@@ -25,11 +24,12 @@ class _StatisticsViewState extends State<StatisticsView> {
   void initState() {
     super.initState();
     final db = Provider.of<AppDatabase>(context, listen: false);
-    _matchesFuture = db.matchDao.getAllMatches();
-    _playersFuture = db.playerDao.getAllPlayers();
 
-    Future.wait([_matchesFuture, _playersFuture]).then((results) async {
-      await Future.delayed(const Duration(milliseconds: 250));
+    Future.wait([
+      db.matchDao.getAllMatches(),
+      db.playerDao.getAllPlayers(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) async {
       final matches = results[0] as List<Match>;
       final players = results[1] as List<Player>;
       winCounts = _calculateWinsForAllPlayers(matches, players);
