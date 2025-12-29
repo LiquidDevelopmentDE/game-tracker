@@ -75,7 +75,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
             child: Visibility(
               visible: filteredGroups.isNotEmpty,
               replacement: Visibility(
-                visible: controller.text.isNotEmpty,
+                visible: widget.groups.isNotEmpty,
                 replacement: const TopCenteredMessage(
                   icon: Icons.info,
                   title: 'Info',
