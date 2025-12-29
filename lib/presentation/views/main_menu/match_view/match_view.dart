@@ -2,6 +2,7 @@ import 'dart:core' hide Match;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
@@ -23,16 +24,16 @@ class MatchView extends StatefulWidget {
 }
 
 class _MatchViewState extends State<MatchView> {
-  late Future<List<Match>> _gameListFuture;
   late final AppDatabase db;
+  bool isLoading = true;
 
-  late final List<Match> skeletonData = List.filled(
+  List<Match> matches = List.filled(
     4,
     Match(
       name: 'Skeleton Gamename',
       group: Group(
         name: 'Groupname',
-        members: List.generate(5, (index) => Player(name: 'Player')),
+        members: List.filled(5, Player(name: 'Player')),
       ),
       winner: Player(name: 'Player'),
       players: [Player(name: 'Player')],
@@ -43,10 +44,7 @@ class _MatchViewState extends State<MatchView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _gameListFuture = Future.delayed(
-      const Duration(milliseconds: 250),
-      () => db.matchDao.getAllMatches(),
-    );
+    loadGames();
   }
 
   @override
@@ -56,67 +54,44 @@ class _MatchViewState extends State<MatchView> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          FutureBuilder<List<Match>>(
-            future: _gameListFuture,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: TopCenteredMessage(
-                        icon: Icons.report,
-                        title: 'Error',
-                        message: 'Game data could not be loaded',
-                      ),
+          AppSkeleton(
+            enabled: isLoading,
+            child: Visibility(
+              visible: matches.isNotEmpty,
+              replacement: const Center(
+                child: TopCenteredMessage(
+                  icon: Icons.report,
+                  title: 'Info',
+                  message: 'No games created yet',
+                ),
+              ),
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 85),
+                itemCount: matches.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == matches.length) {
+                    return SizedBox(
+                      height: MediaQuery.paddingOf(context).bottom - 80,
                     );
                   }
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      (!snapshot.hasData || snapshot.data!.isEmpty)) {
-                    return const Center(
-                      child: TopCenteredMessage(
-                        icon: Icons.report,
-                        title: 'Info',
-                        message: 'No games created yet',
-                      ),
-                    );
-                  }
-                  final bool isLoading =
-                      snapshot.connectionState == ConnectionState.waiting;
-                  final List<Match> matches =
-                      (isLoading ? skeletonData : (snapshot.data ?? [])
-                            ..sort(
-                              (a, b) => b.createdAt.compareTo(a.createdAt),
-                            ))
-                          .toList();
-                  return AppSkeleton(
-                    enabled: isLoading,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 85),
-                      itemCount: matches.length + 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (index == matches.length) {
-                          return SizedBox(
-                            height: MediaQuery.paddingOf(context).bottom - 20,
-                          );
-                        }
-                        return GameHistoryTile(
-                          onTap: () async {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                fullscreenDialog: true,
-                                builder: (context) => GameResultView(
-                                  match: matches[index],
-                                  onWinnerChanged: refreshGameList,
-                                ),
-                              ),
-                            );
-                          },
-                          match: matches[index],
-                        );
-                      },
-                    ),
+                  return GameHistoryTile(
+                    onTap: () async {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => GameResultView(
+                            match: matches[index],
+                            onWinnerChanged: loadGames,
+                          ),
+                        ),
+                      );
+                    },
+                    match: matches[index],
                   );
                 },
+              ),
+            ),
           ),
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
@@ -128,7 +103,7 @@ class _MatchViewState extends State<MatchView> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CreateMatchView(onWinnerChanged: refreshGameList),
+                        CreateMatchView(onWinnerChanged: loadGames),
                   ),
                 );
               },
@@ -139,9 +114,19 @@ class _MatchViewState extends State<MatchView> {
     );
   }
 
-  void refreshGameList() {
-    setState(() {
-      _gameListFuture = db.matchDao.getAllMatches();
+  void loadGames() {
+    Future.wait([
+      db.matchDao.getAllMatches(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) {
+      if (mounted) {
+        setState(() {
+          final loadedMatches = results[0] as List<Match>;
+          matches = loadedMatches
+            ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+          isLoading = false;
+        });
+      }
     });
   }
 }

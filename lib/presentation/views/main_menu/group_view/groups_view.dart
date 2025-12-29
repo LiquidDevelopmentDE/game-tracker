@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
@@ -18,15 +19,15 @@ class GroupsView extends StatefulWidget {
 }
 
 class _GroupsViewState extends State<GroupsView> {
-  late Future<List<Group>> _allGroupsFuture;
   late final AppDatabase db;
+  late List<Group> loadedGroups;
+  bool isLoading = true;
 
-  final player = Player(name: 'Skeleton Player');
-  late final List<Group> skeletonData = List.filled(
+  List<Group> groups = List.filled(
     7,
     Group(
-      name: 'Skeleton Match',
-      members: [player, player, player, player, player, player],
+      name: 'Skeleton Group',
+      members: List.filled(6, Player(name: 'Skeleton Player')),
     ),
   );
 
@@ -34,10 +35,7 @@ class _GroupsViewState extends State<GroupsView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _allGroupsFuture = Future.delayed(
-      const Duration(milliseconds: 250),
-      () => db.groupDao.getAllGroups(),
-    );
+    loadGroups();
   }
 
   @override
@@ -47,50 +45,30 @@ class _GroupsViewState extends State<GroupsView> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          FutureBuilder<List<Group>>(
-            future: _allGroupsFuture,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Group>> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: TopCenteredMessage(
-                        icon: Icons.report,
-                        title: 'Error',
-                        message: 'Group data couldn\'t\nbe loaded',
-                      ),
+          AppSkeleton(
+            enabled: isLoading,
+            child: Visibility(
+              visible: groups.isNotEmpty,
+              replacement: const Center(
+                child: TopCenteredMessage(
+                  icon: Icons.info,
+                  title: 'Info',
+                  message: 'No groups created yet',
+                ),
+              ),
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 85),
+                itemCount: groups.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == groups.length) {
+                    return SizedBox(
+                      height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      (!snapshot.hasData || snapshot.data!.isEmpty)) {
-                    return const Center(
-                      child: TopCenteredMessage(
-                        icon: Icons.info,
-                        title: 'Info',
-                        message: 'No groups created yet',
-                      ),
-                    );
-                  }
-                  final bool isLoading =
-                      snapshot.connectionState == ConnectionState.waiting;
-                  final List<Group> groups =
-                      isLoading ? skeletonData : (snapshot.data ?? [])
-                        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-                  return AppSkeleton(
-                    enabled: isLoading,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 85),
-                      itemCount: groups.length + 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (index == groups.length) {
-                          return SizedBox(
-                            height: MediaQuery.paddingOf(context).bottom - 20,
-                          );
-                        }
-                        return GroupTile(group: groups[index]);
-                      },
-                    ),
-                  );
+                  return GroupTile(group: groups[index]);
                 },
+              ),
+            ),
           ),
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
@@ -107,7 +85,7 @@ class _GroupsViewState extends State<GroupsView> {
                   ),
                 );
                 setState(() {
-                  _allGroupsFuture = db.groupDao.getAllGroups();
+                  loadGroups();
                 });
               },
             ),
@@ -115,5 +93,23 @@ class _GroupsViewState extends State<GroupsView> {
         ],
       ),
     );
+  }
+
+  void loadGroups() {
+    Future.wait([
+      db.groupDao.getAllGroups(),
+      Future.delayed(minimumSkeletonDuration),
+    ]).then((results) {
+      loadedGroups = results[0] as List<Group>;
+      setState(() {
+        groups = loadedGroups
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
   }
 }
