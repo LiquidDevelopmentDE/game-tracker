@@ -60,7 +60,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: constraints.maxHeight * 0.01),
                   StatisticsTile(
                     icon: Icons.sports_score,
-                    title: 'Wins per Player',
+                    title: 'Wins',
                     width: constraints.maxWidth * 0.95,
                     values: winCounts,
                     itemCount: 3,
@@ -69,7 +69,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: constraints.maxHeight * 0.02),
                   StatisticsTile(
                     icon: Icons.percent,
-                    title: 'Winrate per Player',
+                    title: 'Winrate',
                     width: constraints.maxWidth * 0.95,
                     values: winRates,
                     itemCount: 5,
@@ -78,7 +78,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: constraints.maxHeight * 0.02),
                   StatisticsTile(
                     icon: Icons.casino,
-                    title: 'Match per Player',
+                    title: 'Amount of Matches',
                     width: constraints.maxWidth * 0.95,
                     values: matchCounts,
                     itemCount: 10,
