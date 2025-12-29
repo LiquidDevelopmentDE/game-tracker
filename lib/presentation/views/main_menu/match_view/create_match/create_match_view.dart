@@ -234,8 +234,6 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                         players: selectedPlayers,
                       );
                       await db.matchDao.addMatch(match: match);
-                      widget.onWinnerChanged?.call();
-
                       if (context.mounted) {
                         Navigator.pushReplacement(
                           context,
