@@ -132,7 +132,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: TextInputField(
                 controller: _gameNameController,
-                hintText: 'Game name',
+                hintText: 'Match name',
               ),
             ),
             ChooseTile(
