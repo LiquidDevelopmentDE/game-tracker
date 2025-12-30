@@ -65,8 +65,9 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
     );
   }
 
-  /// Adds a new [Match] to the database.
-  /// Also adds associated players and group if they exist.
+  /// Adds a new [Match] to the database. Also adds players and group
+  /// associations. This method assumes that the players and groups added to
+  /// this match are already present in the database.
   Future<void> addMatch({required Match match}) async {
     await db.transaction(() async {
       await into(matchTable).insert(
@@ -80,7 +81,6 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       );
 
       if (match.players != null) {
-        await db.playerDao.addPlayersAsList(players: match.players!);
         for (final p in match.players ?? []) {
           await db.playerMatchDao.addPlayerToMatch(
             matchId: match.id,
@@ -90,7 +90,6 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       }
 
       if (match.group != null) {
-        await db.groupDao.addGroup(group: match.group!);
         await db.groupMatchDao.addGroupToMatch(
           matchId: match.id,
           groupId: match.group!.id,
@@ -102,6 +101,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
   /// Adds multiple [Match]s to the database in a batch operation.
   /// Also adds associated players and groups if they exist.
   /// If the [matches] list is empty, the method returns immediately.
+  /// This Method should only be used to import matches from a different device.
   Future<void> addMatchAsList({required List<Match> matches}) async {
     if (matches.isEmpty) return;
     await db.transaction(() async {
@@ -186,7 +186,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                   matchId: match.id,
                   playerId: p.id,
                 ),
-                mode: InsertMode.insertOrReplace,
+                mode: InsertMode.insertOrIgnore,
               );
             }
           }
@@ -204,7 +204,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                   playerId: m.id,
                   groupId: match.group!.id,
                 ),
-                mode: InsertMode.insertOrReplace,
+                mode: InsertMode.insertOrIgnore,
               );
             }
           }
@@ -221,7 +221,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                 matchId: match.id,
                 groupId: match.group!.id,
               ),
-              mode: InsertMode.insertOrReplace,
+              mode: InsertMode.insertOrIgnore,
             );
           }
         }

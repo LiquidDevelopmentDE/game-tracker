@@ -18,7 +18,7 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
   }) async {
     await into(playerMatchTable).insert(
       PlayerMatchTableCompanion.insert(playerId: playerId, matchId: matchId),
-      mode: InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrIgnore,
     );
   }
 
@@ -121,7 +121,7 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
           inserts.map(
             (c) => into(
               playerMatchTable,
-            ).insert(c, mode: InsertMode.insertOrReplace),
+            ).insert(c, mode: InsertMode.insertOrIgnore),
           ),
         );
       }

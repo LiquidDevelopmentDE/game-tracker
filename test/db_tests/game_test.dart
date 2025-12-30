@@ -23,7 +23,7 @@ void main() {
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
-  setUp(() {
+  setUp(() async {
     database = AppDatabase(
       DatabaseConnection(
         NativeDatabase.memory(),
@@ -68,6 +68,16 @@ void main() {
         group: testGroup2,
       );
     });
+    await database.playerDao.addPlayersAsList(
+      players: [
+        testPlayer1,
+        testPlayer2,
+        testPlayer3,
+        testPlayer4,
+        testPlayer5,
+      ],
+    );
+    await database.groupDao.addGroupsAsList(groups: [testGroup1, testGroup2]);
   });
   tearDown(() async {
     await database.close();
@@ -253,7 +263,7 @@ void main() {
       expect(matchCount, 0);
     });
 
-    test('Checking if match has winner works correclty', () async {
+    test('Checking if match has winner works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
       await database.matchDao.addMatch(match: testMatchOnlyGroup);
 
