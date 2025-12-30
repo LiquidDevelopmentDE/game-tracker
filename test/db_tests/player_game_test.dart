@@ -21,7 +21,7 @@ void main() {
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
-  setUp(() {
+  setUp(() async {
     database = AppDatabase(
       DatabaseConnection(
         NativeDatabase.memory(),
@@ -50,6 +50,17 @@ void main() {
         players: [testPlayer4, testPlayer5, testPlayer6],
       );
     });
+    await database.playerDao.addPlayersAsList(
+      players: [
+        testPlayer1,
+        testPlayer2,
+        testPlayer3,
+        testPlayer4,
+        testPlayer5,
+        testPlayer6,
+      ],
+    );
+    await database.groupDao.addGroup(group: testgroup);
   });
   tearDown(() async {
     await database.close();
