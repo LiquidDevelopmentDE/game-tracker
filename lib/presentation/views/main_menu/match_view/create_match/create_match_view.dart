@@ -28,7 +28,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Reference to the app database
   late final AppDatabase db;
 
-  /// Controller for the game name input field
+  /// Controller for the match name input field
   final TextEditingController _gameNameController = TextEditingController();
 
   /// List of all groups from the database
