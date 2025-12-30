@@ -1,5 +1,5 @@
 import 'package:clock/clock.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNotNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -196,5 +196,42 @@ void main() {
         expect(player.createdAt, testPlayer.createdAt);
       }
     });
+
+    test(
+      'Adding the same player to seperate matches works correctly',
+      () async {
+        final playersList = [testPlayer1, testPlayer2, testPlayer3];
+        final match1 = Match(name: 'Match 1', players: playersList);
+        final match2 = Match(name: 'Match 2', players: playersList);
+
+        await Future.wait([
+          database.matchDao.addMatch(match: match1),
+          database.matchDao.addMatch(match: match2),
+        ]);
+
+        final players1 = await database.playerMatchDao.getPlayersOfMatch(
+          matchId: match1.id,
+        );
+        final players2 = await database.playerMatchDao.getPlayersOfMatch(
+          matchId: match2.id,
+        );
+
+        expect(players1, isNotNull);
+        expect(players2, isNotNull);
+
+        expect(
+          players1!.map((p) => p.id).toList(),
+          equals(players2!.map((p) => p.id).toList()),
+        );
+        expect(
+          players1.map((p) => p.name).toList(),
+          equals(players2.map((p) => p.name).toList()),
+        );
+        expect(
+          players1.map((p) => p.createdAt).toList(),
+          equals(players2.map((p) => p.createdAt).toList()),
+        );
+      },
+    );
   });
 }

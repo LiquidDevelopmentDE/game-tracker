@@ -263,7 +263,7 @@ void main() {
       expect(matchCount, 0);
     });
 
-    test('Checking if match has winner works correclty', () async {
+    test('Checking if match has winner works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
       await database.matchDao.addMatch(match: testMatchOnlyGroup);
 
