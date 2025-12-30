@@ -80,7 +80,7 @@ class _MatchViewState extends State<MatchView> {
                         context,
                         CupertinoPageRoute(
                           fullscreenDialog: true,
-                          builder: (context) => GameResultView(
+                          builder: (context) => MatchResultView(
                             match: matches[index],
                             onWinnerChanged: loadGames,
                           ),

@@ -239,7 +239,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                           context,
                           CupertinoPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => GameResultView(
+                            builder: (context) => MatchResultView(
                               match: match,
                               onWinnerChanged: widget.onWinnerChanged,
                             ),
