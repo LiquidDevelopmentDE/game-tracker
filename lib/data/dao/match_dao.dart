@@ -65,8 +65,9 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
     );
   }
 
-  /// Adds a new [Match] to the database.
-  /// Also adds associated players and group if they exist.
+  /// Adds a new [Match] to the database. Also adds players and group
+  /// associations. This method assumes that the players and groups added to
+  /// this match are already present in the database.
   Future<void> addMatch({required Match match}) async {
     await db.transaction(() async {
       await into(matchTable).insert(
@@ -100,6 +101,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
   /// Adds multiple [Match]s to the database in a batch operation.
   /// Also adds associated players and groups if they exist.
   /// If the [matches] list is empty, the method returns immediately.
+  /// This Method should only be used to import matches from a different device.
   Future<void> addMatchAsList({required List<Match> matches}) async {
     if (matches.isEmpty) return;
     await db.transaction(() async {
