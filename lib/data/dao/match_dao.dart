@@ -80,7 +80,6 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       );
 
       if (match.players != null) {
-        await db.playerDao.addPlayersAsList(players: match.players!);
         for (final p in match.players ?? []) {
           await db.playerMatchDao.addPlayerToMatch(
             matchId: match.id,
@@ -90,7 +89,6 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       }
 
       if (match.group != null) {
-        await db.groupDao.addGroup(group: match.group!);
         await db.groupMatchDao.addGroupToMatch(
           matchId: match.id,
           groupId: match.group!.id,
@@ -186,7 +184,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                   matchId: match.id,
                   playerId: p.id,
                 ),
-                mode: InsertMode.insertOrReplace,
+                mode: InsertMode.insertOrIgnore,
               );
             }
           }
@@ -204,7 +202,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                   playerId: m.id,
                   groupId: match.group!.id,
                 ),
-                mode: InsertMode.insertOrReplace,
+                mode: InsertMode.insertOrIgnore,
               );
             }
           }
@@ -221,7 +219,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                 matchId: match.id,
                 groupId: match.group!.id,
               ),
-              mode: InsertMode.insertOrReplace,
+              mode: InsertMode.insertOrIgnore,
             );
           }
         }
