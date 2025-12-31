@@ -136,12 +136,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           SizedBox(
             height: 50,
             child: selectedPlayers.isEmpty
-                ? const Center(
-                    child: Text(
-                      'No players selected',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  )
+                ? const Center(child: Text('No players selected'))
                 : SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
