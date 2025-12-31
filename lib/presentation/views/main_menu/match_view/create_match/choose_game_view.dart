@@ -44,7 +44,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
         ),
         title: Text(
           AppLocalizations.of(context)!.choose_game,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),

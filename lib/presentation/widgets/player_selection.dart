@@ -180,7 +180,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           const SizedBox(height: 10),
           Text(
             AppLocalizations.of(context)!.all_players,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           /*

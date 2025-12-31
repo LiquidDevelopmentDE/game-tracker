@@ -46,7 +46,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
         scrolledUnderElevation: 0,
         title: Text(
           AppLocalizations.of(context)!.create_new_group,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),

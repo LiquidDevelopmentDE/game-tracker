@@ -116,7 +116,7 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
             if (allPlayers.isNotEmpty) ...[
               Text(
                 AppLocalizations.of(context)!.players,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 13,
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,

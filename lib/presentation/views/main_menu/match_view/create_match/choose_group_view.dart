@@ -53,7 +53,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
         ),
         title: Text(
           AppLocalizations.of(context)!.choose_group,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
