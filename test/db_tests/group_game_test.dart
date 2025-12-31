@@ -1,5 +1,5 @@
 import 'package:clock/clock.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNotNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -21,7 +21,7 @@ void main() {
   final fixedDate = DateTime(2025, 19, 11, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
-  setUp(() {
+  setUp(() async {
     database = AppDatabase(
       DatabaseConnection(
         NativeDatabase.memory(),
@@ -53,6 +53,16 @@ void main() {
         group: testGroup1,
       );
     });
+    await database.playerDao.addPlayersAsList(
+      players: [
+        testPlayer1,
+        testPlayer2,
+        testPlayer3,
+        testPlayer4,
+        testPlayer5,
+      ],
+    );
+    await database.groupDao.addGroupsAsList(groups: [testGroup1, testGroup2]);
   });
   tearDown(() async {
     await database.close();
@@ -177,6 +187,34 @@ void main() {
           expect(group.members[i].name, testGroup2.members[i].name);
           expect(group.members[i].createdAt, testGroup2.members[i].createdAt);
         }
+      }
+    });
+
+    test('Adding the same group to seperate matches works correctly', () async {
+      final match1 = Match(name: 'Match 1', group: testGroup1);
+      final match2 = Match(name: 'Match 2', group: testGroup1);
+
+      await Future.wait([
+        database.matchDao.addMatch(match: match1),
+        database.matchDao.addMatch(match: match2),
+      ]);
+
+      final group1 = await database.groupMatchDao.getGroupOfMatch(
+        matchId: match1.id,
+      );
+      final group2 = await database.groupMatchDao.getGroupOfMatch(
+        matchId: match2.id,
+      );
+
+      expect(group1, isNotNull);
+      expect(group2, isNotNull);
+
+      final groups = [group1!, group2!];
+      for (final group in groups) {
+        expect(group.members.length, testGroup1.members.length);
+        expect(group.id, testGroup1.id);
+        expect(group.name, testGroup1.name);
+        expect(group.createdAt, testGroup1.createdAt);
       }
     });
   });

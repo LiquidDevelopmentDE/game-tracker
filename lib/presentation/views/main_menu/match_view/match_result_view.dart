@@ -38,6 +38,13 @@ class _GameResultViewState extends State<GameResultView> {
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            widget.onWinnerChanged?.call();
+            Navigator.of(context).pop();
+          },
+        ),
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
         title: Text(

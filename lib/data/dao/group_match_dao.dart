@@ -21,7 +21,7 @@ class GroupMatchDao extends DatabaseAccessor<AppDatabase>
     }
     await into(groupMatchTable).insert(
       GroupMatchTableCompanion.insert(groupId: groupId, matchId: matchId),
-      mode: InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrIgnore,
     );
   }
 
