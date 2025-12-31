@@ -28,8 +28,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Reference to the app database
   late final AppDatabase db;
 
-  /// Controller for the game name input field
-  final TextEditingController _gameNameController = TextEditingController();
+  /// Controller for the match name input field
+  final TextEditingController _matchNameController = TextEditingController();
 
   /// List of all groups from the database
   List<Group> groupsList = [];
@@ -95,7 +95,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   @override
   void initState() {
     super.initState();
-    _gameNameController.addListener(() {
+    _matchNameController.addListener(() {
       setState(() {});
     });
 
@@ -119,7 +119,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
         title: const Text(
-          'Create new game',
+          'Create new match',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -131,8 +131,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: TextInputField(
-                controller: _gameNameController,
-                hintText: 'Game name',
+                controller: _matchNameController,
+                hintText: 'Match name',
               ),
             ),
             ChooseTile(
@@ -222,13 +222,13 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               ),
             ),
             CustomWidthButton(
-              text: 'Create game',
+              text: 'Create match',
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
               onPressed: _enableCreateGameButton()
                   ? () async {
                       Match match = Match(
-                        name: _gameNameController.text.trim(),
+                        name: _matchNameController.text.trim(),
                         createdAt: DateTime.now(),
                         group: selectedGroup,
                         players: selectedPlayers,
@@ -239,7 +239,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                           context,
                           CupertinoPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => GameResultView(
+                            builder: (context) => MatchResultView(
                               match: match,
                               onWinnerChanged: widget.onWinnerChanged,
                             ),
@@ -258,7 +258,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Determines whether the "Create Game" button should be enabled based on
   /// the current state of the input fields.
   bool _enableCreateGameButton() {
-    return _gameNameController.text.isNotEmpty &&
+    return _matchNameController.text.isNotEmpty &&
         (selectedGroup != null ||
             (selectedPlayers != null && selectedPlayers!.length > 1)) &&
         selectedRuleset != null;
