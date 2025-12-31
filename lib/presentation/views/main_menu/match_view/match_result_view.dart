@@ -6,17 +6,17 @@ import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/tiles/custom_radio_list_tile.dart';
 import 'package:provider/provider.dart';
 
-class GameResultView extends StatefulWidget {
+class MatchResultView extends StatefulWidget {
   final Match match;
 
   final VoidCallback? onWinnerChanged;
 
-  const GameResultView({super.key, required this.match, this.onWinnerChanged});
+  const MatchResultView({super.key, required this.match, this.onWinnerChanged});
   @override
-  State<GameResultView> createState() => _GameResultViewState();
+  State<MatchResultView> createState() => _MatchResultViewState();
 }
 
-class _GameResultViewState extends State<GameResultView> {
+class _MatchResultViewState extends State<MatchResultView> {
   late final List<Player> allPlayers;
   late final AppDatabase db;
   Player? _selectedPlayer;
@@ -38,6 +38,13 @@ class _GameResultViewState extends State<GameResultView> {
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            widget.onWinnerChanged?.call();
+            Navigator.of(context).pop();
+          },
+        ),
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
         title: Text(
@@ -135,12 +142,12 @@ class _GameResultViewState extends State<GameResultView> {
     widget.onWinnerChanged?.call();
   }
 
-  List<Player> getAllPlayers(Match game) {
-    if (game.group == null && game.players != null) {
-      return [...game.players!];
-    } else if (game.group != null && game.players != null) {
-      return [...game.players!, ...game.group!.members];
+  List<Player> getAllPlayers(Match match) {
+    if (match.group == null && match.players != null) {
+      return [...match.players!];
+    } else if (match.group != null && match.players != null) {
+      return [...match.players!, ...match.group!.members];
     }
-    return [...game.group!.members];
+    return [...match.group!.members];
   }
 }
