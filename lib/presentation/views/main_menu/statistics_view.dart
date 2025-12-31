@@ -66,38 +66,32 @@ class _StatisticsViewState extends State<StatisticsView> {
                         winRates.isEmpty,
                     replacement: Column(
                       children: [
-                        if (winCounts.isNotEmpty) ...[
-                          StatisticsTile(
-                            icon: Icons.sports_score,
-                            title: 'Wins',
-                            width: constraints.maxWidth * 0.95,
-                            values: winCounts,
-                            itemCount: 3,
-                            barColor: Colors.blue,
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.02),
-                        ],
-                        if (winRates.isNotEmpty) ...[
-                          StatisticsTile(
-                            icon: Icons.percent,
-                            title: 'Winrate',
-                            width: constraints.maxWidth * 0.95,
-                            values: winRates,
-                            itemCount: 5,
-                            barColor: Colors.orange[700]!,
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.02),
-                        ],
-                        if (matchCounts.isNotEmpty) ...[
-                          StatisticsTile(
-                            icon: Icons.casino,
-                            title: 'Amount of Matches',
-                            width: constraints.maxWidth * 0.95,
-                            values: matchCounts,
-                            itemCount: 10,
-                            barColor: Colors.green,
-                          ),
-                        ],
+                        StatisticsTile(
+                          icon: Icons.sports_score,
+                          title: 'Wins',
+                          width: constraints.maxWidth * 0.95,
+                          values: winCounts,
+                          itemCount: 3,
+                          barColor: Colors.blue,
+                        ),
+                        SizedBox(height: constraints.maxHeight * 0.02),
+                        StatisticsTile(
+                          icon: Icons.percent,
+                          title: 'Winrate',
+                          width: constraints.maxWidth * 0.95,
+                          values: winRates,
+                          itemCount: 5,
+                          barColor: Colors.orange[700]!,
+                        ),
+                        SizedBox(height: constraints.maxHeight * 0.02),
+                        StatisticsTile(
+                          icon: Icons.casino,
+                          title: 'Amount of Matches',
+                          width: constraints.maxWidth * 0.95,
+                          values: matchCounts,
+                          itemCount: 10,
+                          barColor: Colors.green,
+                        ),
                       ],
                     ),
                     child: const TopCenteredMessage(
