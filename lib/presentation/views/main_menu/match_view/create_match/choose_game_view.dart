@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
@@ -41,8 +42,8 @@ class _ChooseGameViewState extends State<ChooseGameView> {
             Navigator.of(context).pop(selectedGameIndex);
           },
         ),
-        title: const Text(
-          'Choose Game',
+        title: Text(
+          AppLocalizations.of(context)!.choose_game,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -53,7 +54,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: CustomSearchBar(
               controller: searchBarController,
-              hintText: 'Game Name',
+              hintText: AppLocalizations.of(context)!.game_name,
             ),
           ),
           const SizedBox(height: 5),
@@ -64,8 +65,10 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                 return TitleDescriptionListTile(
                   title: widget.games[index].$1,
                   description: widget.games[index].$2,
-                  badgeText: translateRulesetToString(widget.games[index].$3),
-                  isHighlighted: selectedGameIndex == index,
+                  badgeText: translateRulesetToString(
+                    widget.games[index].$3,
+                    context,
+                  ),
                   onPressed: () async {
                     setState(() {
                       if (selectedGameIndex == index) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/group_view/groups_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/home_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/match_view.dart';
@@ -89,28 +90,28 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
                     index: 0,
                     isSelected: currentIndex == 0,
                     icon: Icons.home_rounded,
-                    label: 'Home',
+                    label: AppLocalizations.of(context)!.home,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 1,
                     isSelected: currentIndex == 1,
                     icon: Icons.gamepad_rounded,
-                    label: 'Matches',
+                    label: AppLocalizations.of(context)!.matches,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 2,
                     isSelected: currentIndex == 2,
                     icon: Icons.group_rounded,
-                    label: 'Groups',
+                    label: AppLocalizations.of(context)!.groups,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 3,
                     isSelected: currentIndex == 3,
                     icon: Icons.bar_chart_rounded,
-                    label: 'Stats',
+                    label: AppLocalizations.of(context)!.statistics,
                     onTabTapped: onTabTapped,
                   ),
                 ],
@@ -131,13 +132,13 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   String _currentTabTitle() {
     switch (currentIndex) {
       case 0:
-        return 'Home';
+        return AppLocalizations.of(context)!.home;
       case 1:
-        return 'Matches';
+        return AppLocalizations.of(context)!.matches;
       case 2:
-        return 'Groups';
+        return AppLocalizations.of(context)!.groups;
       case 3:
-        return 'Statistics';
+        return AppLocalizations.of(context)!.statistics;
       default:
         return '';
     }

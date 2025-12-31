@@ -4,6 +4,7 @@ import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/player_selection.dart';
 import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
@@ -43,8 +44,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
-        title: const Text(
-          'Create new group',
+        title: Text(
+          AppLocalizations.of(context)!.create_new_group,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -57,7 +58,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: TextInputField(
                 controller: _groupNameController,
-                hintText: 'Group name',
+                hintText: AppLocalizations.of(context)!.group_name,
                 onChanged: (value) {
                   setState(() {});
                 },
@@ -73,7 +74,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               ),
             ),
             CustomWidthButton(
-              text: 'Create group',
+              text: AppLocalizations.of(context)!.create_group,
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
               onPressed:
@@ -94,10 +95,12 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: CustomTheme.boxColor,
-                            content: const Center(
+                            content: Center(
                               child: Text(
-                                'Error while creating group, please try again',
-                                style: TextStyle(color: Colors.white),
+                                AppLocalizations.of(
+                                  context,
+                                )!.error_while_creating_group_please_try_again,
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),

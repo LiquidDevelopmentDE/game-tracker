@@ -6,6 +6,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_group_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_ruleset_view.dart';
@@ -64,34 +65,6 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// The currently selected players
   List<Player>? selectedPlayers;
 
-  /// List of available rulesets with their descriptions
-  /// as tuples of (Ruleset, String)
-  /// TODO: Replace when rulesets are implemented
-  List<(Ruleset, String)> rulesets = [
-    (
-      Ruleset.singleWinner,
-      'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.',
-    ),
-    (
-      Ruleset.singleLoser,
-      'Exactly one loser is determined; last place receives the penalty or consequence.',
-    ),
-    (
-      Ruleset.mostPoints,
-      'Traditional ruleset: the player with the most points wins.',
-    ),
-    (
-      Ruleset.leastPoints,
-      'Inverse scoring: the player with the fewest points wins.',
-    ),
-  ];
-
-  // TODO: Replace when games are implemented
-  List<(String, String, Ruleset)> games = [
-    ('Example Game 1', 'This is a discription', Ruleset.leastPoints),
-    ('Example Game 2', '', Ruleset.singleWinner),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -111,6 +84,33 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     filteredPlayerList = List.from(playerList);
   }
 
+  List<(Ruleset, String)> _getRulesets(BuildContext context) {
+    return [
+      (
+        Ruleset.singleWinner,
+        AppLocalizations.of(context)!.ruleset_single_winner_desc,
+      ),
+      (
+        Ruleset.singleLoser,
+        AppLocalizations.of(context)!.ruleset_single_loser_desc,
+      ),
+      (
+        Ruleset.mostPoints,
+        AppLocalizations.of(context)!.ruleset_most_points_desc,
+      ),
+      (
+        Ruleset.leastPoints,
+        AppLocalizations.of(context)!.ruleset_least_points_desc,
+      ),
+    ];
+  }
+
+  // TODO: Replace when games are implemented
+  List<(String, String, Ruleset)> games = [
+    ('Example Game 1', 'This is a description', Ruleset.leastPoints),
+    ('Example Game 2', '', Ruleset.singleWinner),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,8 +118,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
-        title: const Text(
-          'Create new match',
+        title: Text(
+          AppLocalizations.of(context)!.create_new_match,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -132,13 +132,13 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: TextInputField(
                 controller: _matchNameController,
-                hintText: 'Match name',
+                hintText: AppLocalizations.of(context)!.match_name,
               ),
             ),
             ChooseTile(
-              title: 'Game',
+              title: AppLocalizations.of(context)!.game,
               trailingText: selectedGameIndex == -1
-                  ? 'None'
+                  ? AppLocalizations.of(context)!.none
                   : games[selectedGameIndex].$1,
               onPressed: () async {
                 selectedGameIndex = await Navigator.of(context).push(
@@ -152,9 +152,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 setState(() {
                   if (selectedGameIndex != -1) {
                     selectedRuleset = games[selectedGameIndex].$3;
-                    selectedRulesetIndex = rulesets.indexWhere(
-                      (r) => r.$1 == selectedRuleset,
-                    );
+                    selectedRulesetIndex = _getRulesets(
+                      context,
+                    ).indexWhere((r) => r.$1 == selectedRuleset);
                   } else {
                     selectedRuleset = null;
                   }
@@ -162,30 +162,30 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               },
             ),
             ChooseTile(
-              title: 'Ruleset',
+              title: AppLocalizations.of(context)!.ruleset,
               trailingText: selectedRuleset == null
-                  ? 'None'
-                  : translateRulesetToString(selectedRuleset!),
+                  ? AppLocalizations.of(context)!.none
+                  : translateRulesetToString(selectedRuleset!, context),
               onPressed: () async {
                 selectedRuleset = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChooseRulesetView(
-                      rulesets: rulesets,
+                      rulesets: _getRulesets(context),
                       initialRulesetIndex: selectedRulesetIndex,
                     ),
                   ),
                 );
-                selectedRulesetIndex = rulesets.indexWhere(
-                  (r) => r.$1 == selectedRuleset,
-                );
+                selectedRulesetIndex = _getRulesets(
+                  context,
+                ).indexWhere((r) => r.$1 == selectedRuleset);
                 selectedGameIndex = -1;
                 setState(() {});
               },
             ),
             ChooseTile(
-              title: 'Group',
+              title: AppLocalizations.of(context)!.group,
               trailingText: selectedGroup == null
-                  ? 'None'
+                  ? AppLocalizations.of(context)!.none
                   : selectedGroup!.name,
               onPressed: () async {
                 selectedGroup = await Navigator.of(context).push(
@@ -222,7 +222,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               ),
             ),
             CustomWidthButton(
-              text: 'Create match',
+              text: AppLocalizations.of(context)!.create_match,
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
               onPressed: _enableCreateGameButton()

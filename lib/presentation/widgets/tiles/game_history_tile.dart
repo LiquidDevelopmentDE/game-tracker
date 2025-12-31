@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/match.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
 
@@ -97,7 +98,7 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Winner: ${winner.name}',
+                        AppLocalizations.of(context)!.winner(winner.name),
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -113,8 +114,8 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
             ],
 
             if (allPlayers.isNotEmpty) ...[
-              const Text(
-                'Players',
+              Text(
+                AppLocalizations.of(context)!.players,
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.grey,
@@ -141,11 +142,15 @@ class _GameHistoryTileState extends State<GameHistoryTile> {
     final difference = now.difference(dateTime);
 
     if (difference.inDays == 0) {
-      return 'Today at ${DateFormat('HH:mm').format(dateTime)}';
+      return AppLocalizations.of(
+        context,
+      )!.today_at(DateFormat('HH:mm').format(dateTime));
     } else if (difference.inDays == 1) {
-      return 'Yesterday at ${DateFormat('HH:mm').format(dateTime)}';
+      return AppLocalizations.of(
+        context,
+      )!.yesterday_at(DateFormat('HH:mm').format(dateTime));
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return AppLocalizations.of(context)!.days_ago(difference.inDays);
     } else {
       return DateFormat('MMM d, yyyy').format(dateTime);
     }

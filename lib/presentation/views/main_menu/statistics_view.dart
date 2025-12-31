@@ -3,6 +3,7 @@ import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/tiles/statistics_tile.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +61,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: constraints.maxHeight * 0.01),
                   StatisticsTile(
                     icon: Icons.sports_score,
-                    title: 'Wins',
+                    title: AppLocalizations.of(context)!.wins,
                     width: constraints.maxWidth * 0.95,
                     values: winCounts,
                     itemCount: 3,
@@ -69,7 +70,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: constraints.maxHeight * 0.02),
                   StatisticsTile(
                     icon: Icons.percent,
-                    title: 'Winrate',
+                    title: AppLocalizations.of(context)!.winrate,
                     width: constraints.maxWidth * 0.95,
                     values: winRates,
                     itemCount: 5,
@@ -78,7 +79,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: constraints.maxHeight * 0.02),
                   StatisticsTile(
                     icon: Icons.casino,
-                    title: 'Amount of Matches',
+                    title: AppLocalizations.of(context)!.amount_of_matches,
                     width: constraints.maxWidth * 0.95,
                     values: matchCounts,
                     itemCount: 10,

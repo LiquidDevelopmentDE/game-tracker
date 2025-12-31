@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
 
@@ -24,30 +25,33 @@ class _SettingsViewState extends State<SettingsView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 24, 10),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
                     child: Text(
                       textAlign: TextAlign.start,
-                      'Menu',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.menu,
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 10,
+                    ),
                     child: Text(
                       textAlign: TextAlign.start,
-                      'Settings',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.settings,
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   SettingsListTile(
-                    title: 'Export data',
+                    title: AppLocalizations.of(context)!.export_data,
                     icon: Icons.upload_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -62,7 +66,7 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: 'Import data',
+                    title: AppLocalizations.of(context)!.import_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -74,23 +78,27 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: 'Delete all data',
+                    title: AppLocalizations.of(context)!.delete_all_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
                       showDialog<bool>(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text('Delete all data?'),
-                          content: const Text('This can\'t be undone'),
+                          title: Text(
+                            AppLocalizations.of(context)!.delete_all_data,
+                          ),
+                          content: Text(
+                            AppLocalizations.of(context)!.this_cannot_be_undone,
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text('Abbrechen'),
+                              child: Text(AppLocalizations.of(context)!.cancel),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text('Löschen'),
+                              child: Text(AppLocalizations.of(context)!.delete),
                             ),
                           ],
                         ),
@@ -99,7 +107,9 @@ class _SettingsViewState extends State<SettingsView> {
                           DataTransferService.deleteAllData(context);
                           showSnackbar(
                             context: context,
-                            message: 'Daten erfolgreich gelöscht',
+                            message: AppLocalizations.of(
+                              context,
+                            )!.data_successfully_deleted,
                           );
                         }
                       });
@@ -122,22 +132,34 @@ class _SettingsViewState extends State<SettingsView> {
   }) {
     switch (result) {
       case ImportResult.success:
-        showSnackbar(context: context, message: 'Data successfully imported');
+        showSnackbar(
+          context: context,
+          message: AppLocalizations.of(context)!.data_successfully_imported,
+        );
       case ImportResult.invalidSchema:
-        showSnackbar(context: context, message: 'Invalid Schema');
+        showSnackbar(
+          context: context,
+          message: AppLocalizations.of(context)!.invalid_schema,
+        );
       case ImportResult.fileReadError:
-        showSnackbar(context: context, message: 'Error reading file');
+        showSnackbar(
+          context: context,
+          message: AppLocalizations.of(context)!.error_reading_file,
+        );
       case ImportResult.canceled:
-        showSnackbar(context: context, message: 'Import canceled');
+        showSnackbar(
+          context: context,
+          message: AppLocalizations.of(context)!.import_canceled,
+        );
       case ImportResult.formatException:
         showSnackbar(
           context: context,
-          message: 'Format Exception (see console)',
+          message: AppLocalizations.of(context)!.format_exception,
         );
       case ImportResult.unknownException:
         showSnackbar(
           context: context,
-          message: 'Unknown Exception (see console)',
+          message: AppLocalizations.of(context)!.unknown_exception,
         );
     }
   }
@@ -152,13 +174,19 @@ class _SettingsViewState extends State<SettingsView> {
   }) {
     switch (result) {
       case ExportResult.success:
-        showSnackbar(context: context, message: 'Data successfully exported');
+        showSnackbar(
+          context: context,
+          message: AppLocalizations.of(context)!.data_successfully_exported,
+        );
       case ExportResult.canceled:
-        showSnackbar(context: context, message: 'Export canceled');
+        showSnackbar(
+          context: context,
+          message: AppLocalizations.of(context)!.export_canceled,
+        );
       case ExportResult.unknownException:
         showSnackbar(
           context: context,
-          message: 'Unknown Exception (see console)',
+          message: AppLocalizations.of(context)!.unknown_exception,
         );
     }
   }
@@ -183,7 +211,10 @@ class _SettingsViewState extends State<SettingsView> {
         backgroundColor: CustomTheme.onBoxColor,
         duration: duration,
         action: action != null
-            ? SnackBarAction(label: 'Rückgängig', onPressed: action)
+            ? SnackBarAction(
+                label: AppLocalizations.of(context)!.undo,
+                onPressed: action,
+              )
             : null,
       ),
     );

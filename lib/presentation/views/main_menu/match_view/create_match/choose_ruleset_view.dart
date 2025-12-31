@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
 class ChooseRulesetView extends StatefulWidget {
@@ -46,8 +47,8 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
               );
             },
           ),
-          title: const Text(
-            'Choose Ruleset',
+          title: Text(
+            AppLocalizations.of(context)!.choose_ruleset,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -66,7 +67,10 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
                   }
                 });
               },
-              title: translateRulesetToString(widget.rulesets[index].$1),
+              title: translateRulesetToString(
+                widget.rulesets[index].$1,
+                context,
+              ),
               description: widget.rulesets[index].$2,
               isHighlighted: selectedRulesetIndex == index,
             );

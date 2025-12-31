@@ -4,6 +4,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/game_tile.dart';
@@ -86,7 +87,7 @@ class _HomeViewState extends State<HomeView> {
                     QuickInfoTile(
                       width: constraints.maxWidth * 0.45,
                       height: constraints.maxHeight * 0.15,
-                      title: 'Matches',
+                      title: AppLocalizations.of(context)!.matches,
                       icon: Icons.groups_rounded,
                       value: matchCount,
                     ),
@@ -94,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
                     QuickInfoTile(
                       width: constraints.maxWidth * 0.45,
                       height: constraints.maxHeight * 0.15,
-                      title: 'Groups',
+                      title: AppLocalizations.of(context)!.groups,
                       icon: Icons.groups_rounded,
                       value: groupCount,
                     ),
@@ -104,15 +105,19 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
-                    title: 'Recent Matches',
+                    title: AppLocalizations.of(context)!.recent_matches,
                     icon: Icons.timer,
                     content: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: Visibility(
                         visible: !isLoading && loadedRecentMatches.isNotEmpty,
-                        replacement: const Center(
+                        replacement: Center(
                           heightFactor: 12,
-                          child: Text('No recent games available'),
+                          child: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!.no_recent_matches_available,
+                          ),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -120,11 +125,15 @@ class _HomeViewState extends State<HomeView> {
                           children: [
                             MatchTile(
                               matchTitle: recentMatches[0].name,
-                              game: 'Winner',
-                              ruleset: 'Ruleset',
+                              game: AppLocalizations.of(context)!.winner_label,
+                              ruleset: AppLocalizations.of(
+                                context,
+                              )!.ruleset_label,
                               players: _getPlayerText(recentMatches[0]),
                               winner: recentMatches[0].winner == null
-                                  ? 'Match in progress...'
+                                  ? AppLocalizations.of(
+                                      context,
+                                    )!.match_in_progress
                                   : recentMatches[0].winner!.name,
                             ),
                             const Padding(
@@ -134,18 +143,28 @@ class _HomeViewState extends State<HomeView> {
                             if (loadedRecentMatches.length > 1) ...[
                               MatchTile(
                                 matchTitle: recentMatches[1].name,
-                                game: 'Winner',
-                                ruleset: 'Ruleset',
+                                game: AppLocalizations.of(
+                                  context,
+                                )!.winner_label,
+                                ruleset: AppLocalizations.of(
+                                  context,
+                                )!.ruleset_label,
                                 players: _getPlayerText(recentMatches[1]),
                                 winner: recentMatches[1].winner == null
-                                    ? 'Game in progress...'
+                                    ? AppLocalizations.of(
+                                        context,
+                                      )!.match_in_progress
                                     : recentMatches[1].winner!.name,
                               ),
                               const SizedBox(height: 8),
                             ] else ...[
-                              const Center(
+                              Center(
                                 heightFactor: 5.35,
-                                child: Text('No second game available'),
+                                child: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.no_second_match_available,
+                                ),
                               ),
                             ],
                           ],
@@ -156,7 +175,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 InfoTile(
                   width: constraints.maxWidth * 0.95,
-                  title: 'Quick Create',
+                  title: AppLocalizations.of(context)!.quick_create,
                   icon: Icons.add_box_rounded,
                   content: Column(
                     children: [
@@ -213,7 +232,7 @@ class _HomeViewState extends State<HomeView> {
   String _getPlayerText(Match game) {
     if (game.group == null) {
       final playerCount = game.players?.length ?? 0;
-      return '$playerCount Players';
+      return AppLocalizations.of(context)!.players_count(playerCount);
     }
     if (game.players == null || game.players!.isEmpty) {
       return game.group!.name;

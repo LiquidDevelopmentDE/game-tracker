@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 
 class StatisticsTile extends StatelessWidget {
@@ -33,9 +34,9 @@ class StatisticsTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Visibility(
           visible: values.isNotEmpty,
-          replacement: const Center(
+          replacement: Center(
             heightFactor: 4,
-            child: Text('No data available.'),
+            child: Text(AppLocalizations.of(context)!.no_data_available),
           ),
           child: Column(
             children: List.generate(min(values.length, itemCount), (index) {
