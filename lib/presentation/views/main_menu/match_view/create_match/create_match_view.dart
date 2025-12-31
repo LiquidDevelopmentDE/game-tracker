@@ -167,17 +167,19 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   ? AppLocalizations.of(context)!.none
                   : translateRulesetToString(selectedRuleset!, context),
               onPressed: () async {
+                final rulesets = _getRulesets(context);
                 selectedRuleset = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChooseRulesetView(
-                      rulesets: _getRulesets(context),
+                      rulesets: rulesets,
                       initialRulesetIndex: selectedRulesetIndex,
                     ),
                   ),
                 );
-                selectedRulesetIndex = _getRulesets(
-                  context,
-                ).indexWhere((r) => r.$1 == selectedRuleset);
+                if (!mounted) return;
+                selectedRulesetIndex = rulesets.indexWhere(
+                  (r) => r.$1 == selectedRuleset,
+                );
                 selectedGameIndex = -1;
                 setState(() {});
               },
