@@ -1,0 +1,357 @@
+{
+  "@@locale": "en",
+  "choose_group": "Choose Group",
+  "@choose_group": {
+    "description": "Label for choosing a group"
+  },
+  "create_new_match": "Create new match",
+  "@create_new_match": {
+    "description": "Button text to create a new match"
+  },
+  "choose_ruleset": "Choose Ruleset",
+  "@choose_ruleset": {
+    "description": "Label for choosing a ruleset"
+  },
+  "choose_game": "Choose Game",
+  "@choose_game": {
+    "description": "Label for choosing a game"
+  },
+  "select_winner": "Select Winner:",
+  "@select_winner": {
+    "description": "Label to select the winner"
+  },
+  "no_recent_matches_available": "No recent matches available",
+  "@no_recent_matches_available": {
+    "description": "Message when no recent matches exist"
+  },
+  "no_second_match_available": "No second match available",
+  "@no_second_matcb_available": {
+    "description": "Message when no second match exists"
+  },
+  "delete_all_data": "Delete all data?",
+  "@delete_all_data": {
+    "description": "Confirmation dialog for deleting all data"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "create_new_group": "Create new group",
+  "@create_new_group": {
+    "description": "Button text to create a new group"
+  },
+  "error_while_creating_group_please_try_again": "Error while creating group, please try again",
+  "@error_while_creating_group_please_try_again": {
+    "description": "Error message when group creation fails"
+  },
+  "selected_players": "Selected players: {count}",
+  "@selected_players": {
+    "description": "Shows the number of selected players",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "no_players_selected": "No players selected",
+  "@no_players_selected": {
+    "description": "Message when no players are selected"
+  },
+  "all_players": "All players:",
+  "@all_players": {
+    "description": "Label for all players list"
+  },
+  "successfully_added_player": "Successfully added player {playerName}.",
+  "@successfully_added_player": {
+    "description": "Success message when adding a player",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "John"
+      }
+    }
+  },
+  "could_not_add_player": "Could not add player {playerName}.",
+  "@could_not_add_player": {
+    "description": "Error message when adding a player fails",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "John"
+      }
+    }
+  },
+  "winner": "Winner: {winnerName}",
+  "@winner": {
+    "description": "Shows the winner's name",
+    "placeholders": {
+      "winnerName": {
+        "type": "String",
+        "example": "John"
+      }
+    }
+  },
+  "players": "Players",
+  "@players": {
+    "description": "Players label"
+  },
+  "no_data_available": "No data available.",
+  "@no_data_available": {
+    "description": "Message when no data is available"
+  },
+  "matches": "Matches",
+  "@matches": {
+    "description": "Label for matches"
+  },
+  "groups": "Groups",
+  "@groups": {
+    "description": "Label for groups"
+  },
+  "recent_matches": "Recent Matches",
+  "@recent_matches": {
+    "description": "Title for recent matches section"
+  },
+  "quick_create": "Quick Create",
+  "@quick_create": {
+    "description": "Title for quick create section"
+  },
+  "winner_label": "Winner",
+  "@winner_label": {
+    "description": "Label for winner field"
+  },
+  "ruleset_label": "Ruleset",
+  "@ruleset_label": {
+    "description": "Label for ruleset field"
+  },
+  "match_in_progress": "Match in progress...",
+  "@match_in_progress": {
+    "description": "Message when match is in progress"
+  },
+  "menu": "Menu",
+  "@menu": {
+    "description": "Menu label"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings label"
+  },
+  "export_data": "Export data",
+  "@export_data": {
+    "description": "Export data menu item"
+  },
+  "import_data": "Import data",
+  "@import_data": {
+    "description": "Import data menu item"
+  },
+  "this_cannot_be_undone": "This can't be undone",
+  "@this_cannot_be_undone": {
+    "description": "Warning message for irreversible actions"
+  },
+  "data_successfully_deleted": "Data successfully deleted",
+  "@data_successfully_deleted": {
+    "description": "Success message after deleting data"
+  },
+  "data_successfully_imported": "Data successfully imported",
+  "@data_successfully_imported": {
+    "description": "Success message after importing data"
+  },
+  "invalid_schema": "Invalid Schema",
+  "@invalid_schema": {
+    "description": "Error message for invalid schema"
+  },
+  "error_reading_file": "Error reading file",
+  "@error_reading_file": {
+    "description": "Error message when file cannot be read"
+  },
+  "import_canceled": "Import canceled",
+  "@import_canceled": {
+    "description": "Message when import is canceled"
+  },
+  "format_exception": "Format Exception (see console)",
+  "@format_exception": {
+    "description": "Error message for format exceptions"
+  },
+  "unknown_exception": "Unknown Exception (see console)",
+  "@unknown_exception": {
+    "description": "Error message for unknown exceptions"
+  },
+  "data_successfully_exported": "Data successfully exported",
+  "@data_successfully_exported": {
+    "description": "Success message after exporting data"
+  },
+  "export_canceled": "Export canceled",
+  "@export_canceled": {
+    "description": "Message when export is canceled"
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Undo button text"
+  },
+  "wins": "Wins",
+  "@wins": {
+    "description": "Label for wins statistic"
+  },
+  "winrate": "Winrate",
+  "@winrate": {
+    "description": "Label for winrate statistic"
+  },
+  "amount_of_matches": "Amount of Matches",
+  "@amount_of_matches": {
+    "description": "Label for amount of matches statistic"
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info label"
+  },
+  "no_groups_created_yet": "No groups created yet",
+  "@no_groups_created_yet": {
+    "description": "Message when no groups exist"
+  },
+  "no_players_created_yet": "No players created yet",
+  "@no_players_created_yet": {
+    "description": "Message when no players exist"
+  },
+  "create_group": "Create Group",
+  "@create_group": {
+    "description": "Button text to create a group"
+  },
+  "group_name": "Group name",
+  "@group_name": {
+    "description": "Placeholder for group name input"
+  },
+  "player_name": "Player name",
+  "@player_name": {
+    "description": "Placeholder for player name input"
+  },
+  "no_matches_created_yet": "No matches created yet",
+  "@no_matches_created_yet": {
+    "description": "Message when no matches exist"
+  },
+  "match_name": "Match name",
+  "@match_name": {
+    "description": "Placeholder for match name input"
+  },
+  "game": "Game",
+  "@game": {
+    "description": "Game label"
+  },
+  "ruleset": "Ruleset",
+  "@ruleset": {
+    "description": "Ruleset label"
+  },
+  "group": "Group",
+  "@group": {
+    "description": "Group label"
+  },
+  "none": "None",
+  "@none": {
+    "description": "None option label"
+  },
+  "create_match": "Create match",
+  "@create_match": {
+    "description": "Button text to create a match"
+  },
+  "no_players_found_with_that_name": "No players found with that name",
+  "@no_players_found_with_that_name": {
+    "description": "Message when search returns no results"
+  },
+  "all_players_selected": "All players selected",
+  "@all_players_selected": {
+    "description": "Message when all players are added to selection"
+  },
+  "today_at": "Today at {time}",
+  "@today_at": {
+    "description": "Date format for today",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "14:30"
+      }
+    }
+  },
+  "yesterday_at": "Yesterday at {time}",
+  "@yesterday_at": {
+    "description": "Date format for yesterday",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "14:30"
+      }
+    }
+  },
+  "days_ago": "{count} days ago",
+  "@days_ago": {
+    "description": "Date format for days ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home tab label"
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "Statistics tab label"
+  },
+  "stats": "Stats",
+  "@stats": {
+    "description": "Stats tab label (short)"
+  },
+  "players_count": "{count} Players",
+  "@players_count": {
+    "description": "Shows the number of players",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "there_is_no_group_matching_your_search": "There is no group matching your search",
+  "@there_is_no_group_matching_your_search": {
+    "description": "Message when search returns no groups"
+  },
+  "game_name": "Game Name",
+  "@game_name": {
+    "description": "Placeholder for game name search"
+  },
+  "ruleset_single_winner_desc": "Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.",
+  "@ruleset_single_winner_desc": {
+    "description": "Description for single winner ruleset"
+  },
+  "ruleset_single_loser_desc": "Exactly one loser is determined; last place receives the penalty or consequence.",
+  "@ruleset_single_loser_desc": {
+    "description": "Description for single loser ruleset"
+  },
+  "ruleset_most_points_desc": "Traditional ruleset: the player with the most points wins.",
+  "@ruleset_most_points_desc": {
+    "description": "Description for most points ruleset"
+  },
+  "ruleset_least_points_desc": "Inverse scoring: the player with the fewest points wins.",
+  "@ruleset_least_points_desc": {
+    "description": "Description for least points ruleset"
+  },
+  "single_winner": "Single Winner",
+  "@single_winner": {
+    "description": "Title for single winner ruleset"
+  },
+  "single_loser": "Single Loser",
+  "@single_loser": {
+    "description": "Title for single loser ruleset"
+  },
+  "most_points": "Most Points",
+  "@most_points": {
+    "description": "Title for most points ruleset"
+  },
+  "least_points": "Least Points",
+  "@least_points": {
+    "description": "Title for least points ruleset"
+  }
+}
