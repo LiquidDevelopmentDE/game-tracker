@@ -100,6 +100,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                       title: 'Info',
                       message: 'No statistics available',
                     ),
+                  ),
                   StatisticsTile(
                     icon: Icons.sports_score,
                     title: AppLocalizations.of(context)!.wins,
