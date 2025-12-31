@@ -5,6 +5,7 @@ import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/tiles/statistics_tile.dart';
+import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
 class StatisticsView extends StatefulWidget {
@@ -58,31 +59,46 @@ class _StatisticsViewState extends State<StatisticsView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: constraints.maxHeight * 0.01),
-                  StatisticsTile(
-                    icon: Icons.sports_score,
-                    title: 'Wins',
-                    width: constraints.maxWidth * 0.95,
-                    values: winCounts,
-                    itemCount: 3,
-                    barColor: Colors.blue,
-                  ),
-                  SizedBox(height: constraints.maxHeight * 0.02),
-                  StatisticsTile(
-                    icon: Icons.percent,
-                    title: 'Winrate',
-                    width: constraints.maxWidth * 0.95,
-                    values: winRates,
-                    itemCount: 5,
-                    barColor: Colors.orange[700]!,
-                  ),
-                  SizedBox(height: constraints.maxHeight * 0.02),
-                  StatisticsTile(
-                    icon: Icons.casino,
-                    title: 'Amount of Matches',
-                    width: constraints.maxWidth * 0.95,
-                    values: matchCounts,
-                    itemCount: 10,
-                    barColor: Colors.green,
+                  Visibility(
+                    visible:
+                        winCounts.isEmpty &&
+                        matchCounts.isEmpty &&
+                        winRates.isEmpty,
+                    replacement: Column(
+                      children: [
+                        StatisticsTile(
+                          icon: Icons.sports_score,
+                          title: 'Wins',
+                          width: constraints.maxWidth * 0.95,
+                          values: winCounts,
+                          itemCount: 3,
+                          barColor: Colors.blue,
+                        ),
+                        SizedBox(height: constraints.maxHeight * 0.02),
+                        StatisticsTile(
+                          icon: Icons.percent,
+                          title: 'Winrate',
+                          width: constraints.maxWidth * 0.95,
+                          values: winRates,
+                          itemCount: 5,
+                          barColor: Colors.orange[700]!,
+                        ),
+                        SizedBox(height: constraints.maxHeight * 0.02),
+                        StatisticsTile(
+                          icon: Icons.casino,
+                          title: 'Amount of Matches',
+                          width: constraints.maxWidth * 0.95,
+                          values: matchCounts,
+                          itemCount: 10,
+                          barColor: Colors.green,
+                        ),
+                      ],
+                    ),
+                    child: const TopCenteredMessage(
+                      icon: Icons.info,
+                      title: 'Info',
+                      message: 'No statistics available',
+                    ),
                   ),
                   SizedBox(height: MediaQuery.paddingOf(context).bottom),
                 ],
