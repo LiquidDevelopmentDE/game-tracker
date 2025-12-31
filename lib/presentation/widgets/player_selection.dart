@@ -128,33 +128,47 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          Wrap(
-            alignment: WrapAlignment.start,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: <Widget>[
-              // Generates a TextIconTile for each selected player.
-              for (var player in selectedPlayers)
-                TextIconTile(
-                  text: player.name,
-                  onIconTap: () {
-                    setState(() {
-                      // Removes the player from the selection and notifies the parent.
-                      final currentSearch = _searchBarController.text
-                          .toLowerCase();
-                      selectedPlayers.remove(player);
-                      widget.onChanged([...selectedPlayers]);
-                      // If the player matches the current search query (or search is empty),
-                      // they are added back to the suggestions and the list is re-sorted.
-                      if (currentSearch.isEmpty ||
-                          player.name.toLowerCase().contains(currentSearch)) {
-                        suggestedPlayers.add(player);
-                      }
-                    });
-                  },
-                ),
-            ],
+          SizedBox(
+            height: 50,
+            child: selectedPlayers.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No players selected',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        for (var player in selectedPlayers)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: TextIconTile(
+                              text: player.name,
+                              onIconTap: () {
+                                setState(() {
+                                  // Removes the player from the selection and notifies the parent.
+                                  final currentSearch = _searchBarController
+                                      .text
+                                      .toLowerCase();
+                                  selectedPlayers.remove(player);
+                                  widget.onChanged([...selectedPlayers]);
+                                  // If the player matches the current search query (or search is empty),
+                                  // they are added back to the suggestions and the list is re-sorted.
+                                  if (currentSearch.isEmpty ||
+                                      player.name.toLowerCase().contains(
+                                        currentSearch,
+                                      )) {
+                                    suggestedPlayers.add(player);
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
           ),
           const SizedBox(height: 10),
           const Text(
