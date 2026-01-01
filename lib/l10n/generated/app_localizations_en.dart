@@ -266,4 +266,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get least_points => 'Least Points';
+
+  @override
+  String get search_for_players => 'Search for players';
+
+  @override
+  String get search_for_groups => 'Search for groups';
 }

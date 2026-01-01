@@ -134,7 +134,7 @@ abstract class AppLocalizations {
   /// **'No recent matches available'**
   String get no_recent_matches_available;
 
-  /// No description provided for @no_second_match_available.
+  /// Message when no second match exists
   ///
   /// In en, this message translates to:
   /// **'No second match available'**
@@ -559,6 +559,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Least Points'**
   String get least_points;
+
+  /// Hint text for player search input field
+  ///
+  /// In en, this message translates to:
+  /// **'Search for players'**
+  String get search_for_players;
+
+  /// Hint text for group search input field
+  ///
+  /// In en, this message translates to:
+  /// **'Search for groups'**
+  String get search_for_groups;
 }
 
 class _AppLocalizationsDelegate
