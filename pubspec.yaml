@@ -27,7 +27,6 @@ dependencies:
   intl: any
   flutter_localizations:
     sdk: flutter
-  auto_localize: ^0.0.5
 
 dev_dependencies:
   flutter_test:
