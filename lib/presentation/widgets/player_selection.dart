@@ -12,13 +12,13 @@ import 'package:provider/provider.dart';
 
 class PlayerSelection extends StatefulWidget {
   final Function(List<Player> value) onChanged;
-  final List<Player> availablePlayers;
+  final List<Player>? availablePlayers;
   final List<Player>? initialSelectedPlayers;
 
   const PlayerSelection({
     super.key,
     required this.onChanged,
-    this.availablePlayers = const [],
+    this.availablePlayers,
     this.initialSelectedPlayers,
   });
 
@@ -56,17 +56,17 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     if (mounted) {
       _allPlayersFuture.then((loadedPlayers) {
         setState(() {
-          // If a list of available players is provided, use that list.
-          if (widget.availablePlayers.isNotEmpty) {
-            widget.availablePlayers.sort((a, b) => a.name.compareTo(b.name));
-            allPlayers = [...widget.availablePlayers];
+          // If a list of available players is provided (even if empty), use that list.
+          if (widget.availablePlayers != null) {
+            widget.availablePlayers!.sort((a, b) => a.name.compareTo(b.name));
+            allPlayers = [...widget.availablePlayers!];
             suggestedPlayers = [...allPlayers];
 
             if (widget.initialSelectedPlayers != null) {
               // Ensures that only players available for selection are pre-selected.
               selectedPlayers = widget.initialSelectedPlayers!
                   .where(
-                    (p) => widget.availablePlayers.any(
+                    (p) => widget.availablePlayers!.any(
                       (available) => available.id == p.id,
                     ),
                   )
@@ -193,11 +193,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                 replacement: TopCenteredMessage(
                   icon: Icons.info,
                   title: 'Info',
-                  message: allPlayers.isEmpty
-                      ? 'No players created yet'
-                      : (selectedPlayers.length == allPlayers.length)
-                      ? 'No more players to add'
-                      : 'No players found with that name',
+                  message: _getInfoText(),
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -271,6 +267,24 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
         ),
       );
+    }
+  }
+
+  /// Determines the appropriate info text to display when no players
+  /// are available in the suggested players list.
+  String _getInfoText() {
+    if (widget.availablePlayers != null && widget.availablePlayers!.isEmpty) {
+      // Available players list is provided but empty
+      return 'All players added to the match';
+    } else if (allPlayers.isEmpty) {
+      // No players exist in the database
+      return 'No players created yet';
+    } else if (selectedPlayers.length == allPlayers.length) {
+      // All players have been selected
+      return 'No more players to add';
+    } else {
+      // No players match the search query
+      return 'No players found with that name';
     }
   }
 }
