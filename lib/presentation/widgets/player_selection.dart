@@ -97,7 +97,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           CustomSearchBar(
             controller: _searchBarController,
             constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
-            hintText: 'Search for players',
+            hintText: AppLocalizations.of(context)!.search_for_players,
             trailingButtonShown: true,
             trailingButtonicon: Icons.add_circle,
             trailingButtonEnabled: _searchBarController.text.trim().isNotEmpty,

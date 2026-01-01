@@ -63,7 +63,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: CustomSearchBar(
               controller: controller,
-              hintText: AppLocalizations.of(context)!.group_name,
+              hintText: AppLocalizations.of(context)!.search_for_groups,
               onChanged: (value) {
                 setState(() {
                   filterGroups(value);
