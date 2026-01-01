@@ -31,6 +31,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Controller for the match name input field
   final TextEditingController _matchNameController = TextEditingController();
 
+  /// Hint text for the match name input field
   String hintText = 'Match Name';
 
   /// List of all groups from the database
