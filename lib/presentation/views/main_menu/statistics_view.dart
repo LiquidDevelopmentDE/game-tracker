@@ -69,7 +69,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                       children: [
                         StatisticsTile(
                           icon: Icons.sports_score,
-                          title: 'Wins',
+                          title: AppLocalizations.of(context)!.wins,
                           width: constraints.maxWidth * 0.95,
                           values: winCounts,
                           itemCount: 3,
@@ -78,7 +78,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
                           icon: Icons.percent,
-                          title: 'Winrate',
+                          title: AppLocalizations.of(context)!.winrate,
                           width: constraints.maxWidth * 0.95,
                           values: winRates,
                           itemCount: 5,
@@ -87,7 +87,9 @@ class _StatisticsViewState extends State<StatisticsView> {
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
                           icon: Icons.casino,
-                          title: 'Amount of Matches',
+                          title: AppLocalizations.of(
+                            context,
+                          )!.amount_of_matches,
                           width: constraints.maxWidth * 0.95,
                           values: matchCounts,
                           itemCount: 10,
@@ -95,37 +97,11 @@ class _StatisticsViewState extends State<StatisticsView> {
                         ),
                       ],
                     ),
-                    child: const TopCenteredMessage(
+                    child: TopCenteredMessage(
                       icon: Icons.info,
-                      title: 'Info',
-                      message: 'No statistics available',
+                      title: AppLocalizations.of(context)!.info,
+                      message: AppLocalizations.of(context)!.no_data_available,
                     ),
-                  ),
-                  StatisticsTile(
-                    icon: Icons.sports_score,
-                    title: AppLocalizations.of(context)!.wins,
-                    width: constraints.maxWidth * 0.95,
-                    values: winCounts,
-                    itemCount: 3,
-                    barColor: Colors.blue,
-                  ),
-                  SizedBox(height: constraints.maxHeight * 0.02),
-                  StatisticsTile(
-                    icon: Icons.percent,
-                    title: AppLocalizations.of(context)!.winrate,
-                    width: constraints.maxWidth * 0.95,
-                    values: winRates,
-                    itemCount: 5,
-                    barColor: Colors.orange[700]!,
-                  ),
-                  SizedBox(height: constraints.maxHeight * 0.02),
-                  StatisticsTile(
-                    icon: Icons.casino,
-                    title: AppLocalizations.of(context)!.amount_of_matches,
-                    width: constraints.maxWidth * 0.95,
-                    values: matchCounts,
-                    itemCount: 10,
-                    barColor: Colors.green,
                   ),
                   SizedBox(height: MediaQuery.paddingOf(context).bottom),
                 ],
