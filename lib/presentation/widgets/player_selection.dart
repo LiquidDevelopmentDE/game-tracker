@@ -149,18 +149,24 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                               onIconTap: () {
                                 setState(() {
                                   // Removes the player from the selection and notifies the parent.
+                                  selectedPlayers.remove(player);
+                                  widget.onChanged([...selectedPlayers]);
+
+                                  // Get the current search query
                                   final currentSearch = _searchBarController
                                       .text
                                       .toLowerCase();
-                                  selectedPlayers.remove(player);
-                                  widget.onChanged([...selectedPlayers]);
+
                                   // If the player matches the current search query (or search is empty),
-                                  // they are added back to the suggestions and the list is re-sorted.
+                                  // they are added back to the `suggestedPlayers` and the list is re-sorted.
                                   if (currentSearch.isEmpty ||
                                       player.name.toLowerCase().contains(
                                         currentSearch,
                                       )) {
                                     suggestedPlayers.add(player);
+                                    suggestedPlayers.sort(
+                                      (a, b) => a.name.compareTo(b.name),
+                                    );
                                   }
                                 });
                               },
@@ -200,11 +206,15 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                       text: suggestedPlayers[index].name,
                       onPressed: () {
                         setState(() {
+                          // If the player is not already selected
                           if (!selectedPlayers.contains(
                             suggestedPlayers[index],
                           )) {
-                            selectedPlayers.add(suggestedPlayers[index]);
+                            // Add to player to the front of the selectedPlayers
+                            selectedPlayers.insert(0, suggestedPlayers[index]);
+                            // Notify the parent widget of the change
                             widget.onChanged([...selectedPlayers]);
+                            // Remove the player from the suggestedPlayers
                             suggestedPlayers.remove(suggestedPlayers[index]);
                           }
                         });
@@ -221,7 +231,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   }
 
   /// Adds a new player to the database from the search bar input.
-  /// Shows a snackbar indicating success or failure.
+  /// Shows a snackbar indicating success xfor failure.
   /// [context] - BuildContext to show the snackbar.
   void addNewPlayerFromSearch({required BuildContext context}) async {
     String playerName = _searchBarController.text.trim();
@@ -229,7 +239,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     bool success = await db.playerDao.addPlayer(player: createdPlayer);
     if (!context.mounted) return;
     if (success) {
-      selectedPlayers.add(createdPlayer);
+      selectedPlayers.insert(0, createdPlayer);
       widget.onChanged([...selectedPlayers]);
       allPlayers.add(createdPlayer);
       setState(() {
