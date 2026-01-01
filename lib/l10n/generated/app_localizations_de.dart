@@ -195,7 +195,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get group => 'Gruppe';
 
   @override
-  String get none => 'Keine';
+  String get none => 'Kein';
+
+  @override
+  String get none_group => 'Keine';
 
   @override
   String get create_match => 'Match erstellen';

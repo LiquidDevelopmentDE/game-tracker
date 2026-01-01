@@ -446,6 +446,12 @@ abstract class AppLocalizations {
   /// **'None'**
   String get none;
 
+  /// None group option label
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none_group;
+
   /// Button text to create a match
   ///
   /// In en, this message translates to:

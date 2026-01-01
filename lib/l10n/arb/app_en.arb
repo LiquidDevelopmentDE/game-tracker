@@ -256,6 +256,10 @@
   "@none": {
     "description": "None option label"
   },
+  "none_group": "None",
+  "@none_group": {
+    "description": "None group option label"
+  },
   "create_match": "Create match",
   "@create_match": {
     "description": "Button text to create a match"

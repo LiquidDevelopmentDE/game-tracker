@@ -187,7 +187,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
             ChooseTile(
               title: AppLocalizations.of(context)!.group,
               trailingText: selectedGroup == null
-                  ? AppLocalizations.of(context)!.none
+                  ? AppLocalizations.of(context)!.none_group
                   : selectedGroup!.name,
               onPressed: () async {
                 selectedGroup = await Navigator.of(context).push(

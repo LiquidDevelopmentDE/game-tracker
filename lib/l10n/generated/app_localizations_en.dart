@@ -197,6 +197,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get none => 'None';
 
   @override
+  String get none_group => 'None';
+
+  @override
   String get create_match => 'Create match';
 
   @override
