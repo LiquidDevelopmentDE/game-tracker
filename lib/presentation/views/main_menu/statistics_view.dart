@@ -100,7 +100,9 @@ class _StatisticsViewState extends State<StatisticsView> {
                     child: TopCenteredMessage(
                       icon: Icons.info,
                       title: AppLocalizations.of(context)!.info,
-                      message: AppLocalizations.of(context)!.no_data_available,
+                      message: AppLocalizations.of(
+                        context,
+                      )!.no_statistics_available,
                     ),
                   ),
                   SizedBox(height: MediaQuery.paddingOf(context).bottom),
