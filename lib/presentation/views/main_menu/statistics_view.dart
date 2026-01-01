@@ -152,7 +152,10 @@ class _StatisticsViewState extends State<StatisticsView> {
       final playerId = winCounts[i].$1;
       final player = players.firstWhere(
         (p) => p.id == playerId,
-        orElse: () => Player(id: playerId, name: 'N.a.'),
+        orElse: () => Player(
+          id: playerId,
+          name: AppLocalizations.of(context)!.not_available,
+        ),
       );
       winCounts[i] = (player.name, winCounts[i].$2);
     }
@@ -214,7 +217,10 @@ class _StatisticsViewState extends State<StatisticsView> {
       final playerId = matchCounts[i].$1;
       final player = players.firstWhere(
         (p) => p.id == playerId,
-        orElse: () => Player(id: playerId, name: 'N.a.'),
+        orElse: () => Player(
+          id: playerId,
+          name: AppLocalizations.of(context)!.not_available,
+        ),
       );
       matchCounts[i] = (player.name, matchCounts[i].$2);
     }
