@@ -31,7 +31,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Controller for the match name input field
   final TextEditingController _matchNameController = TextEditingController();
 
-  String hintText = "Match Name";
+  String hintText = 'Match Name';
 
   /// List of all groups from the database
   List<Group> groupsList = [];
@@ -159,7 +159,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                       (r) => r.$1 == selectedRuleset,
                     );
                   } else {
-                    hintText = "Match Name";
+                    hintText = 'Match Name';
                     selectedRuleset = null;
                   }
                 });
