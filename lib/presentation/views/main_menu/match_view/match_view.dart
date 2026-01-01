@@ -71,7 +71,7 @@ class _MatchViewState extends State<MatchView> {
                 itemBuilder: (BuildContext context, int index) {
                   if (index == matches.length) {
                     return SizedBox(
-                      height: MediaQuery.paddingOf(context).bottom - 80,
+                      height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
                   return MatchTile(
