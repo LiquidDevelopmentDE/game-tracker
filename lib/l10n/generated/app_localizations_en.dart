@@ -63,12 +63,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String successfully_added_player(String playerName) {
-    return 'Successfully added player $playerName.';
+    return 'Successfully added player $playerName';
   }
 
   @override
   String could_not_add_player(String playerName) {
-    return 'Could not add player $playerName.';
+    return 'Could not add player $playerName';
   }
 
   @override
@@ -80,7 +80,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get players => 'Players';
 
   @override
-  String get no_data_available => 'No data available.';
+  String get no_statistics_available => 'No statistics available';
+
+  @override
+  String get no_data_available => 'No data available';
 
   @override
   String get matches => 'Matches';

@@ -15,12 +15,12 @@
   "selected_players": "Ausgewählte Spieler: {count}",
   "no_players_selected": "Keine Spieler ausgewählt",
   "all_players": "Alle Spieler:",
-  "successfully_added_player": "Spieler {playerName} erfolgreich hinzugefügt.",
-  "could_not_add_player": "Spieler {playerName} konnte nicht hinzugefügt werden.",
+  "successfully_added_player": "Spieler {playerName} erfolgreich hinzugefügt",
+  "could_not_add_player": "Spieler {playerName} konnte nicht hinzugefügt werden",
   "winner": "Gewinner: {winnerName}",
   "players": "Spieler",
   "player_name": "Spielername",
-  "no_data_available": "Keine Daten verfügbar.",
+  "no_statistics_available": "Keine Statistiken verfügbar",
   "matches": "Matches",
   "groups": "Gruppen",
   "recent_matches": "Letzte Matches",
@@ -78,5 +78,6 @@
   "most_points": "Höchste Punkte",
   "least_points": "Niedrigste Punkte",
   "search_for_players": "Nach Spielern suchen",
-  "search_for_groups": "Nach Gruppen suchen"
+  "search_for_groups": "Nach Gruppen suchen",
+  "no_data_available": "Keine Daten verfügbar"
 }

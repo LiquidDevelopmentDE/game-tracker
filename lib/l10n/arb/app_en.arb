@@ -66,7 +66,7 @@
   "@all_players": {
     "description": "Label for all players list"
   },
-  "successfully_added_player": "Successfully added player {playerName}.",
+  "successfully_added_player": "Successfully added player {playerName}",
   "@successfully_added_player": {
     "description": "Success message when adding a player",
     "placeholders": {
@@ -76,7 +76,7 @@
       }
     }
   },
-  "could_not_add_player": "Could not add player {playerName}.",
+  "could_not_add_player": "Could not add player {playerName}",
   "@could_not_add_player": {
     "description": "Error message when adding a player fails",
     "placeholders": {
@@ -100,9 +100,13 @@
   "@players": {
     "description": "Players label"
   },
-  "no_data_available": "No data available.",
+  "no_statistics_available": "No statistics available",
+  "@no_statistics_available": {
+    "description": "Message when no statistics are available, because no matches were played yet"
+  },
+  "no_data_available": "No data available",
   "@no_data_available": {
-    "description": "Message when no data is available"
+    "description": "Message when no data in the statistic tiles is given"
   },
   "matches": "Matches",
   "@matches": {

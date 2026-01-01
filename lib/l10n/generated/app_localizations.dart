@@ -191,13 +191,13 @@ abstract class AppLocalizations {
   /// Success message when adding a player
   ///
   /// In en, this message translates to:
-  /// **'Successfully added player {playerName}.'**
+  /// **'Successfully added player {playerName}'**
   String successfully_added_player(String playerName);
 
   /// Error message when adding a player fails
   ///
   /// In en, this message translates to:
-  /// **'Could not add player {playerName}.'**
+  /// **'Could not add player {playerName}'**
   String could_not_add_player(String playerName);
 
   /// Shows the winner's name
@@ -212,10 +212,16 @@ abstract class AppLocalizations {
   /// **'Players'**
   String get players;
 
-  /// Message when no data is available
+  /// Message when no statistics are available, because no matches were played yet
   ///
   /// In en, this message translates to:
-  /// **'No data available.'**
+  /// **'No statistics available'**
+  String get no_statistics_available;
+
+  /// Message when no data in the statistic tiles is given
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
   String get no_data_available;
 
   /// Label for matches
