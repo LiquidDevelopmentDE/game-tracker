@@ -276,4 +276,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get search_for_groups => 'Nach Gruppen suchen';
+
+  @override
+  String get not_available => 'Nicht verfügbar';
 }

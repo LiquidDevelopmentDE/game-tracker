@@ -365,5 +365,9 @@
   "search_for_groups": "Search for groups",
   "@search_for_groups": {
     "description": "Hint text for group search input field"
+  },
+  "not_available": "Not available",
+  "@not_available": {
+    "description": "Abbreviation for not available"
   }
 }

@@ -79,5 +79,6 @@
   "least_points": "Niedrigste Punkte",
   "search_for_players": "Nach Spielern suchen",
   "search_for_groups": "Nach Gruppen suchen",
-  "no_data_available": "Keine Daten verfügbar"
+  "no_data_available": "Keine Daten verfügbar",
+  "not_available": "Nicht verfügbar"
 }

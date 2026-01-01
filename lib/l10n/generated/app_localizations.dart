@@ -577,6 +577,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search for groups'**
   String get search_for_groups;
+
+  /// Abbreviation for not available
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get not_available;
 }
 
 class _AppLocalizationsDelegate
