@@ -173,6 +173,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
+                // TODO: Implement quick create functionality
                 InfoTile(
                   width: constraints.maxWidth * 0.95,
                   title: AppLocalizations.of(context)!.quick_create,
@@ -221,7 +222,6 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                 ),
-              ],
             ),
           ),
         );
