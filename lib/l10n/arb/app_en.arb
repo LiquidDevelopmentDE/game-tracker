@@ -25,7 +25,7 @@
     "description": "Message when no recent matches exist"
   },
   "no_second_match_available": "No second match available",
-  "@no_second_matcb_available": {
+  "@no_second_match_available": {
     "description": "Message when no second match exists"
   },
   "delete_all_data": "Delete all data?",
@@ -353,5 +353,13 @@
   "least_points": "Least Points",
   "@least_points": {
     "description": "Title for least points ruleset"
+  },
+  "search_for_players": "Search for players",
+  "@search_for_players": {
+    "description": "Hint text for player search input field"
+  },
+  "search_for_groups": "Search for groups",
+  "@search_for_groups": {
+    "description": "Hint text for group search input field"
   }
 }

@@ -76,5 +76,7 @@
   "single_winner": "Ein Gewinner",
   "single_loser": "Ein Verlierer",
   "most_points": "Höchste Punkte",
-  "least_points": "Niedrigste Punkte"
+  "least_points": "Niedrigste Punkte",
+  "search_for_players": "Nach Spielern suchen",
+  "search_for_groups": "Nach Gruppen suchen"
 }
