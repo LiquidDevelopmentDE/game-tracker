@@ -6,8 +6,8 @@ import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
-import 'package:game_tracker/presentation/widgets/tiles/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/match_summary_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -112,13 +112,13 @@ class _HomeViewState extends State<HomeView> {
                         visible: !isLoading && loadedRecentMatches.isNotEmpty,
                         replacement: const Center(
                           heightFactor: 12,
-                          child: Text('No recent games available'),
+                          child: Text('No recent matches available'),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            MatchTile(
+                            MatchSummaryTile(
                               matchTitle: recentMatches[0].name,
                               game: 'Winner',
                               ruleset: 'Ruleset',
@@ -132,20 +132,20 @@ class _HomeViewState extends State<HomeView> {
                               child: Divider(),
                             ),
                             if (loadedRecentMatches.length > 1) ...[
-                              MatchTile(
+                              MatchSummaryTile(
                                 matchTitle: recentMatches[1].name,
                                 game: 'Winner',
                                 ruleset: 'Ruleset',
                                 players: _getPlayerText(recentMatches[1]),
                                 winner: recentMatches[1].winner == null
-                                    ? 'Game in progress...'
+                                    ? 'Match in progress...'
                                     : recentMatches[1].winner!.name,
                               ),
                               const SizedBox(height: 8),
                             ] else ...[
                               const Center(
                                 heightFactor: 5.35,
-                                child: Text('No second game available'),
+                                child: Text('No second match available'),
                               ),
                             ],
                           ],
