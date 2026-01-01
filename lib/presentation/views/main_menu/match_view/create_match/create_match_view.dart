@@ -234,7 +234,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   ? () async {
                       Match match = Match(
                         name: _matchNameController.text.isEmpty
-                            ? hintText.trim()
+                            ? hintText
                             : _matchNameController.text.trim(),
                         createdAt: DateTime.now(),
                         group: selectedGroup,
