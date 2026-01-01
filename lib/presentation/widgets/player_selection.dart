@@ -239,7 +239,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     bool success = await db.playerDao.addPlayer(player: createdPlayer);
     if (!context.mounted) return;
     if (success) {
-      selectedPlayers.add(createdPlayer);
+      selectedPlayers.insert(0, createdPlayer);
       widget.onChanged([...selectedPlayers]);
       allPlayers.add(createdPlayer);
       setState(() {
