@@ -99,7 +99,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                               child: Text(
                                 AppLocalizations.of(
                                   context,
-                                )!.error_while_creating_group_please_try_again,
+                                ).error_while_creating_group_please_try_again,
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ),

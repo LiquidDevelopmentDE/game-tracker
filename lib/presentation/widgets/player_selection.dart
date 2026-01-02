@@ -132,7 +132,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           Text(
             AppLocalizations.of(
               context,
-            )!.selected_players(selectedPlayers.length),
+            ).selected_players(selectedPlayers.length),
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -206,7 +206,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                       ? AppLocalizations.of(context).all_players_selected
                       : AppLocalizations.of(
                           context,
-                        )!.no_players_found_with_that_name,
+                        ).no_players_found_with_that_name,
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -264,7 +264,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             child: Text(
               AppLocalizations.of(
                 context,
-              )!.successfully_added_player(playerName),
+              ).successfully_added_player(playerName),
               style: const TextStyle(color: Colors.white),
             ),
           ),

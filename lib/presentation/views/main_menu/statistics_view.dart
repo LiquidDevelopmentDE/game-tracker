@@ -87,9 +87,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
                           icon: Icons.casino,
-                          title: AppLocalizations.of(
-                            context,
-                          )!.amount_of_matches,
+                          title: AppLocalizations.of(context).amount_of_matches,
                           width: constraints.maxWidth * 0.95,
                           values: matchCounts,
                           itemCount: 10,
@@ -102,7 +100,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                       title: AppLocalizations.of(context).info,
                       message: AppLocalizations.of(
                         context,
-                      )!.no_statistics_available,
+                      ).no_statistics_available,
                     ),
                   ),
                   SizedBox(height: MediaQuery.paddingOf(context).bottom),

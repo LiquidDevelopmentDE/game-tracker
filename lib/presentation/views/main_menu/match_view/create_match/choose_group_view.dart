@@ -86,7 +86,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
                   title: AppLocalizations.of(context).info,
                   message: AppLocalizations.of(
                     context,
-                  )!.there_is_no_group_matching_your_search,
+                  ).there_is_no_group_matching_your_search,
                 ),
               ),
               child: ListView.builder(

@@ -116,7 +116,7 @@ class _HomeViewState extends State<HomeView> {
                           child: Text(
                             AppLocalizations.of(
                               context,
-                            )!.no_recent_matches_available,
+                            ).no_recent_matches_available,
                           ),
                         ),
                         child: Column(
@@ -128,12 +128,12 @@ class _HomeViewState extends State<HomeView> {
                               game: AppLocalizations.of(context).winner_label,
                               ruleset: AppLocalizations.of(
                                 context,
-                              )!.ruleset_label,
+                              ).ruleset_label,
                               players: _getPlayerText(recentMatches[0]),
                               winner: recentMatches[0].winner == null
                                   ? AppLocalizations.of(
                                       context,
-                                    )!.match_in_progress
+                                    ).match_in_progress
                                   : recentMatches[0].winner!.name,
                             ),
                             const Padding(
@@ -143,17 +143,15 @@ class _HomeViewState extends State<HomeView> {
                             if (loadedRecentMatches.length > 1) ...[
                               MatchSummaryTile(
                                 matchTitle: recentMatches[1].name,
-                                game: AppLocalizations.of(
-                                  context,
-                                )!.winner_label,
+                                game: AppLocalizations.of(context).winner_label,
                                 ruleset: AppLocalizations.of(
                                   context,
-                                )!.ruleset_label,
+                                ).ruleset_label,
                                 players: _getPlayerText(recentMatches[1]),
                                 winner: recentMatches[1].winner == null
                                     ? AppLocalizations.of(
                                         context,
-                                      )!.match_in_progress
+                                      ).match_in_progress
                                     : recentMatches[1].winner!.name,
                               ),
                               const SizedBox(height: 8),
@@ -163,7 +161,7 @@ class _HomeViewState extends State<HomeView> {
                                 child: Text(
                                   AppLocalizations.of(
                                     context,
-                                  )!.no_second_match_available,
+                                  ).no_second_match_available,
                                 ),
                               ),
                             ],

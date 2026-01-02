@@ -144,11 +144,11 @@ class _MatchTileState extends State<MatchTile> {
     if (difference.inDays == 0) {
       return AppLocalizations.of(
         context,
-      )!.today_at(DateFormat('HH:mm').format(dateTime));
+      ).today_at(DateFormat('HH:mm').format(dateTime));
     } else if (difference.inDays == 1) {
       return AppLocalizations.of(
         context,
-      )!.yesterday_at(DateFormat('HH:mm').format(dateTime));
+      ).yesterday_at(DateFormat('HH:mm').format(dateTime));
     } else if (difference.inDays < 7) {
       return AppLocalizations.of(context).days_ago(difference.inDays);
     } else {

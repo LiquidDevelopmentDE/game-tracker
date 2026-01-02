@@ -109,7 +109,7 @@ class _SettingsViewState extends State<SettingsView> {
                             context: context,
                             message: AppLocalizations.of(
                               context,
-                            )!.data_successfully_deleted,
+                            ).data_successfully_deleted,
                           );
                         }
                       });
