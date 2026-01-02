@@ -13,13 +13,13 @@ import 'package:provider/provider.dart';
 
 class PlayerSelection extends StatefulWidget {
   final Function(List<Player> value) onChanged;
-  final List<Player> availablePlayers;
+  final List<Player>? availablePlayers;
   final List<Player>? initialSelectedPlayers;
 
   const PlayerSelection({
     super.key,
     required this.onChanged,
-    this.availablePlayers = const [],
+    this.availablePlayers,
     this.initialSelectedPlayers,
   });
 
@@ -57,17 +57,17 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     if (mounted) {
       _allPlayersFuture.then((loadedPlayers) {
         setState(() {
-          // If a list of available players is provided, use that list.
-          if (widget.availablePlayers.isNotEmpty) {
-            widget.availablePlayers.sort((a, b) => a.name.compareTo(b.name));
-            allPlayers = [...widget.availablePlayers];
+          // If a list of available players is provided (even if empty), use that list.
+          if (widget.availablePlayers != null) {
+            widget.availablePlayers!.sort((a, b) => a.name.compareTo(b.name));
+            allPlayers = [...widget.availablePlayers!];
             suggestedPlayers = [...allPlayers];
 
             if (widget.initialSelectedPlayers != null) {
               // Ensures that only players available for selection are pre-selected.
               selectedPlayers = widget.initialSelectedPlayers!
                   .where(
-                    (p) => widget.availablePlayers.any(
+                    (p) => widget.availablePlayers!.any(
                       (available) => available.id == p.id,
                     ),
                   )
@@ -189,9 +189,6 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          /*
-
-           */
           Expanded(
             child: AppSkeleton(
               enabled: isLoading,
@@ -199,14 +196,8 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                 visible: suggestedPlayers.isNotEmpty,
                 replacement: TopCenteredMessage(
                   icon: Icons.info,
-                  title: AppLocalizations.of(context).info,
-                  message: allPlayers.isEmpty
-                      ? AppLocalizations.of(context).no_players_created_yet
-                      : (selectedPlayers.length == allPlayers.length)
-                      ? AppLocalizations.of(context).all_players_selected
-                      : AppLocalizations.of(
-                          context,
-                        ).no_players_found_with_that_name,
+                  title: 'Info',
+                  message: _getInfoText(),
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -240,7 +231,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   }
 
   /// Adds a new player to the database from the search bar input.
-  /// Shows a snackbar indicating success xfor failure.
+  /// Shows a snackbar indicating success or failure.
   /// [context] - BuildContext to show the snackbar.
   void addNewPlayerFromSearch({required BuildContext context}) async {
     String playerName = _searchBarController.text.trim();
@@ -282,6 +273,23 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
         ),
       );
+    }
+  }
+
+  /// Determines the appropriate info text to display when no players
+  /// are available in the suggested players list.
+  String _getInfoText() {
+    if (allPlayers.isEmpty) {
+      // No players exist in the database
+      return AppLocalizations.of(context).no_players_created_yet;
+    } else if (selectedPlayers.length == allPlayers.length ||
+        widget.availablePlayers?.isEmpty == true) {
+      // All players have been selected or
+      // available players list is provided but empty
+      return AppLocalizations.of(context).all_players_selected;
+    } else {
+      // No players match the search query
+      return AppLocalizations.of(context).no_players_found_with_that_name;
     }
   }
 }
