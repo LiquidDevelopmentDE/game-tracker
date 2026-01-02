@@ -182,9 +182,6 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          /*
-
-           */
           Expanded(
             child: AppSkeleton(
               enabled: isLoading,
