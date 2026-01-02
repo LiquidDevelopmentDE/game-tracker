@@ -224,7 +224,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   }
 
   /// Adds a new player to the database from the search bar input.
-  /// Shows a snackbar indicating success xfor failure.
+  /// Shows a snackbar indicating success or failure.
   /// [context] - BuildContext to show the snackbar.
   void addNewPlayerFromSearch({required BuildContext context}) async {
     String playerName = _searchBarController.text.trim();
