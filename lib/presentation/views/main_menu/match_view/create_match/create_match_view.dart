@@ -31,6 +31,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Controller for the match name input field
   final TextEditingController _matchNameController = TextEditingController();
 
+  /// Hint text for the match name input field
+  String hintText = 'Match Name';
+
   /// List of all groups from the database
   List<Group> groupsList = [];
 
@@ -107,8 +110,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     ]).then((result) async {
       groupsList = result[0] as List<Group>;
       playerList = result[1] as List<Player>;
+      setState(() {
+        filteredPlayerList = List.from(playerList);
+      });
     });
-    filteredPlayerList = List.from(playerList);
   }
 
   @override
@@ -132,7 +137,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: TextInputField(
                 controller: _matchNameController,
-                hintText: 'Match name',
+                hintText: hintText,
               ),
             ),
             ChooseTile(
@@ -151,11 +156,13 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 );
                 setState(() {
                   if (selectedGameIndex != -1) {
+                    hintText = games[selectedGameIndex].$1;
                     selectedRuleset = games[selectedGameIndex].$3;
                     selectedRulesetIndex = rulesets.indexWhere(
                       (r) => r.$1 == selectedRuleset,
                     );
                   } else {
+                    hintText = 'Match Name';
                     selectedRuleset = null;
                   }
                 });
@@ -228,7 +235,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               onPressed: _enableCreateGameButton()
                   ? () async {
                       Match match = Match(
-                        name: _matchNameController.text.trim(),
+                        name: _matchNameController.text.isEmpty
+                            ? hintText
+                            : _matchNameController.text.trim(),
                         createdAt: DateTime.now(),
                         group: selectedGroup,
                         players: selectedPlayers,
@@ -258,9 +267,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Determines whether the "Create Game" button should be enabled based on
   /// the current state of the input fields.
   bool _enableCreateGameButton() {
-    return _matchNameController.text.isNotEmpty &&
-        (selectedGroup != null ||
-            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
-        selectedRuleset != null;
+    return selectedGroup != null ||
+        (selectedPlayers != null && selectedPlayers!.length > 1) &&
+            selectedRuleset != null;
   }
 }
