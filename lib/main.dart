@@ -20,9 +20,21 @@ class GameTracker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(AppLocalizations.supportedLocales.first);
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (final supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.firstWhere(
+          (locale) => locale.languageCode == 'en',
+          orElse: () => supportedLocales.first,
+        );
+      },
       debugShowCheckedModeBanner: false,
       title: 'Game Tracker',
       darkTheme: ThemeData.dark(),
