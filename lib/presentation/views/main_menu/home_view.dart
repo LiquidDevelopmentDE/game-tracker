@@ -7,8 +7,8 @@ import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
-import 'package:game_tracker/presentation/widgets/tiles/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/match_summary_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -123,7 +123,7 @@ class _HomeViewState extends State<HomeView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            MatchTile(
+                            MatchSummaryTile(
                               matchTitle: recentMatches[0].name,
                               game: AppLocalizations.of(context)!.winner_label,
                               ruleset: AppLocalizations.of(
@@ -141,7 +141,7 @@ class _HomeViewState extends State<HomeView> {
                               child: Divider(),
                             ),
                             if (loadedRecentMatches.length > 1) ...[
-                              MatchTile(
+                              MatchSummaryTile(
                                 matchTitle: recentMatches[1].name,
                                 game: AppLocalizations.of(
                                   context,
@@ -173,7 +173,6 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
-                // TODO: Implement quick create functionality
                 InfoTile(
                   width: constraints.maxWidth * 0.95,
                   title: AppLocalizations.of(context)!.quick_create,

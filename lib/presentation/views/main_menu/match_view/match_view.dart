@@ -13,7 +13,7 @@ import 'package:game_tracker/presentation/views/main_menu/match_view/create_matc
 import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
-import 'package:game_tracker/presentation/widgets/tiles/game_history_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/match_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
@@ -31,9 +31,9 @@ class _MatchViewState extends State<MatchView> {
   List<Match> matches = List.filled(
     4,
     Match(
-      name: 'Skeleton Gamename',
+      name: 'Skeleton match name',
       group: Group(
-        name: 'Groupname',
+        name: 'Group name',
         members: List.filled(5, Player(name: 'Player')),
       ),
       winner: Player(name: 'Player'),
@@ -75,7 +75,7 @@ class _MatchViewState extends State<MatchView> {
                       height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
-                  return GameHistoryTile(
+                  return MatchTile(
                     onTap: () async {
                       Navigator.push(
                         context,
