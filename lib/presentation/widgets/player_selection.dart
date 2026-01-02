@@ -270,14 +270,13 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   /// Determines the appropriate info text to display when no players
   /// are available in the suggested players list.
   String _getInfoText() {
-    if (widget.availablePlayers != null && widget.availablePlayers!.isEmpty) {
-      // Available players list is provided but empty
-      return 'All players added to the match';
-    } else if (allPlayers.isEmpty) {
+    if (allPlayers.isEmpty) {
       // No players exist in the database
       return 'No players created yet';
-    } else if (selectedPlayers.length == allPlayers.length) {
-      // All players have been selected
+    } else if (selectedPlayers.length == allPlayers.length ||
+        widget.availablePlayers?.isEmpty == true) {
+      // All players have been selected or
+      // available players list is provided but empty
       return 'No more players to add';
     } else {
       // No players match the search query
