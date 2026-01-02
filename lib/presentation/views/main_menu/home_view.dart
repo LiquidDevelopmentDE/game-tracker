@@ -87,7 +87,7 @@ class _HomeViewState extends State<HomeView> {
                     QuickInfoTile(
                       width: constraints.maxWidth * 0.45,
                       height: constraints.maxHeight * 0.15,
-                      title: AppLocalizations.of(context)!.matches,
+                      title: AppLocalizations.of(context).matches,
                       icon: Icons.groups_rounded,
                       value: matchCount,
                     ),
@@ -95,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
                     QuickInfoTile(
                       width: constraints.maxWidth * 0.45,
                       height: constraints.maxHeight * 0.15,
-                      title: AppLocalizations.of(context)!.groups,
+                      title: AppLocalizations.of(context).groups,
                       icon: Icons.groups_rounded,
                       value: groupCount,
                     ),
@@ -105,7 +105,7 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
-                    title: AppLocalizations.of(context)!.recent_matches,
+                    title: AppLocalizations.of(context).recent_matches,
                     icon: Icons.timer,
                     content: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -125,7 +125,7 @@ class _HomeViewState extends State<HomeView> {
                           children: [
                             MatchSummaryTile(
                               matchTitle: recentMatches[0].name,
-                              game: AppLocalizations.of(context)!.winner_label,
+                              game: AppLocalizations.of(context).winner_label,
                               ruleset: AppLocalizations.of(
                                 context,
                               )!.ruleset_label,
@@ -175,7 +175,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 InfoTile(
                   width: constraints.maxWidth * 0.95,
-                  title: AppLocalizations.of(context)!.quick_create,
+                  title: AppLocalizations.of(context).quick_create,
                   icon: Icons.add_box_rounded,
                   content: Column(
                     children: [
@@ -232,7 +232,7 @@ class _HomeViewState extends State<HomeView> {
   String _getPlayerText(Match game) {
     if (game.group == null) {
       final playerCount = game.players?.length ?? 0;
-      return AppLocalizations.of(context)!.players_count(playerCount);
+      return AppLocalizations.of(context).players_count(playerCount);
     }
     if (game.players == null || game.players!.isEmpty) {
       return game.group!.name;

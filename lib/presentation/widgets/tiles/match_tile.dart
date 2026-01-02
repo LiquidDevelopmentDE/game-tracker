@@ -98,7 +98,7 @@ class _MatchTileState extends State<MatchTile> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        AppLocalizations.of(context)!.winner(winner.name),
+                        AppLocalizations.of(context).winner(winner.name),
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -115,7 +115,7 @@ class _MatchTileState extends State<MatchTile> {
 
             if (allPlayers.isNotEmpty) ...[
               Text(
-                AppLocalizations.of(context)!.players,
+                AppLocalizations.of(context).players,
                 style: const TextStyle(
                   fontSize: 13,
                   color: Colors.grey,
@@ -150,7 +150,7 @@ class _MatchTileState extends State<MatchTile> {
         context,
       )!.yesterday_at(DateFormat('HH:mm').format(dateTime));
     } else if (difference.inDays < 7) {
-      return AppLocalizations.of(context)!.days_ago(difference.inDays);
+      return AppLocalizations.of(context).days_ago(difference.inDays);
     } else {
       return DateFormat('MMM d, yyyy').format(dateTime);
     }

@@ -43,7 +43,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context)!.choose_game,
+          AppLocalizations.of(context).choose_game,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -54,7 +54,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: CustomSearchBar(
               controller: searchBarController,
-              hintText: AppLocalizations.of(context)!.game_name,
+              hintText: AppLocalizations.of(context).game_name,
             ),
           ),
           const SizedBox(height: 5),

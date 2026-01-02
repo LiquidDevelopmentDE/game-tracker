@@ -37,12 +37,12 @@ enum Ruleset { singleWinner, singleLoser, mostPoints, leastPoints }
 String translateRulesetToString(Ruleset ruleset, BuildContext context) {
   switch (ruleset) {
     case Ruleset.singleWinner:
-      return AppLocalizations.of(context)!.single_winner;
+      return AppLocalizations.of(context).single_winner;
     case Ruleset.singleLoser:
-      return AppLocalizations.of(context)!.single_loser;
+      return AppLocalizations.of(context).single_loser;
     case Ruleset.mostPoints:
-      return AppLocalizations.of(context)!.most_points;
+      return AppLocalizations.of(context).most_points;
     case Ruleset.leastPoints:
-      return AppLocalizations.of(context)!.least_points;
+      return AppLocalizations.of(context).least_points;
   }
 }

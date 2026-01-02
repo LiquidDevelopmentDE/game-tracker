@@ -81,7 +81,7 @@ class _MatchResultViewState extends State<MatchResultView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.select_winner,
+                      AppLocalizations.of(context).select_winner,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

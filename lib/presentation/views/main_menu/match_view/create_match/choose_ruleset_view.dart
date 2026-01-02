@@ -48,7 +48,7 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
             },
           ),
           title: Text(
-            AppLocalizations.of(context)!.choose_ruleset,
+            AppLocalizations.of(context).choose_ruleset,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,

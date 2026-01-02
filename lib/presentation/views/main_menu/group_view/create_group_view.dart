@@ -45,7 +45,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
         title: Text(
-          AppLocalizations.of(context)!.create_new_group,
+          AppLocalizations.of(context).create_new_group,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -58,7 +58,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: TextInputField(
                 controller: _groupNameController,
-                hintText: AppLocalizations.of(context)!.group_name,
+                hintText: AppLocalizations.of(context).group_name,
                 onChanged: (value) {
                   setState(() {});
                 },
@@ -74,7 +74,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               ),
             ),
             CustomWidthButton(
-              text: AppLocalizations.of(context)!.create_group,
+              text: AppLocalizations.of(context).create_group,
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
               onPressed:

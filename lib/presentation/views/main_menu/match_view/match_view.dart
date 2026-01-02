@@ -62,8 +62,8 @@ class _MatchViewState extends State<MatchView> {
               replacement: Center(
                 child: TopCenteredMessage(
                   icon: Icons.report,
-                  title: AppLocalizations.of(context)!.info,
-                  message: AppLocalizations.of(context)!.no_matches_created_yet,
+                  title: AppLocalizations.of(context).info,
+                  message: AppLocalizations.of(context).no_matches_created_yet,
                 ),
               ),
               child: ListView.builder(
@@ -97,7 +97,7 @@ class _MatchViewState extends State<MatchView> {
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(
-              text: AppLocalizations.of(context)!.create_match,
+              text: AppLocalizations.of(context).create_match,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
                 Navigator.push(

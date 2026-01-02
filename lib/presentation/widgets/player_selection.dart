@@ -97,7 +97,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           CustomSearchBar(
             controller: _searchBarController,
             constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
-            hintText: AppLocalizations.of(context)!.search_for_players,
+            hintText: AppLocalizations.of(context).search_for_players,
             trailingButtonShown: true,
             trailingButtonicon: Icons.add_circle,
             trailingButtonEnabled: _searchBarController.text.trim().isNotEmpty,
@@ -141,7 +141,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             child: selectedPlayers.isEmpty
                 ? Center(
                     child: Text(
-                      AppLocalizations.of(context)!.no_players_selected,
+                      AppLocalizations.of(context).no_players_selected,
                     ),
                   )
                 : SingleChildScrollView(
@@ -185,7 +185,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
           const SizedBox(height: 10),
           Text(
-            AppLocalizations.of(context)!.all_players,
+            AppLocalizations.of(context).all_players,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -199,11 +199,11 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                 visible: suggestedPlayers.isNotEmpty,
                 replacement: TopCenteredMessage(
                   icon: Icons.info,
-                  title: AppLocalizations.of(context)!.info,
+                  title: AppLocalizations.of(context).info,
                   message: allPlayers.isEmpty
-                      ? AppLocalizations.of(context)!.no_players_created_yet
+                      ? AppLocalizations.of(context).no_players_created_yet
                       : (selectedPlayers.length == allPlayers.length)
-                      ? AppLocalizations.of(context)!.all_players_selected
+                      ? AppLocalizations.of(context).all_players_selected
                       : AppLocalizations.of(
                           context,
                         )!.no_players_found_with_that_name,
@@ -276,7 +276,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           backgroundColor: CustomTheme.boxColor,
           content: Center(
             child: Text(
-              AppLocalizations.of(context)!.could_not_add_player(playerName),
+              AppLocalizations.of(context).could_not_add_player(playerName),
               style: const TextStyle(color: Colors.white),
             ),
           ),

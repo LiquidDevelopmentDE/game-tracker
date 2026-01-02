@@ -53,8 +53,8 @@ class _GroupsViewState extends State<GroupsView> {
               replacement: Center(
                 child: TopCenteredMessage(
                   icon: Icons.info,
-                  title: AppLocalizations.of(context)!.info,
-                  message: AppLocalizations.of(context)!.no_groups_created_yet,
+                  title: AppLocalizations.of(context).info,
+                  message: AppLocalizations.of(context).no_groups_created_yet,
                 ),
               ),
               child: ListView.builder(
@@ -74,7 +74,7 @@ class _GroupsViewState extends State<GroupsView> {
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(
-              text: AppLocalizations.of(context)!.create_group,
+              text: AppLocalizations.of(context).create_group,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
                 await Navigator.push(

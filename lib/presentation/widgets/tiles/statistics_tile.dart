@@ -36,7 +36,7 @@ class StatisticsTile extends StatelessWidget {
           visible: values.isNotEmpty,
           replacement: Center(
             heightFactor: 4,
-            child: Text(AppLocalizations.of(context)!.no_data_available),
+            child: Text(AppLocalizations.of(context).no_data_available),
           ),
           child: Column(
             children: List.generate(min(values.length, itemCount), (index) {

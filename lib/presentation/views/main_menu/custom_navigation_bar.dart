@@ -90,28 +90,28 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
                     index: 0,
                     isSelected: currentIndex == 0,
                     icon: Icons.home_rounded,
-                    label: AppLocalizations.of(context)!.home,
+                    label: AppLocalizations.of(context).home,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 1,
                     isSelected: currentIndex == 1,
                     icon: Icons.gamepad_rounded,
-                    label: AppLocalizations.of(context)!.matches,
+                    label: AppLocalizations.of(context).matches,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 2,
                     isSelected: currentIndex == 2,
                     icon: Icons.group_rounded,
-                    label: AppLocalizations.of(context)!.groups,
+                    label: AppLocalizations.of(context).groups,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 3,
                     isSelected: currentIndex == 3,
                     icon: Icons.bar_chart_rounded,
-                    label: AppLocalizations.of(context)!.statistics,
+                    label: AppLocalizations.of(context).statistics,
                     onTabTapped: onTabTapped,
                   ),
                 ],
@@ -132,13 +132,13 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   String _currentTabTitle() {
     switch (currentIndex) {
       case 0:
-        return AppLocalizations.of(context)!.home;
+        return AppLocalizations.of(context).home;
       case 1:
-        return AppLocalizations.of(context)!.matches;
+        return AppLocalizations.of(context).matches;
       case 2:
-        return AppLocalizations.of(context)!.groups;
+        return AppLocalizations.of(context).groups;
       case 3:
-        return AppLocalizations.of(context)!.statistics;
+        return AppLocalizations.of(context).statistics;
       default:
         return '';
     }

@@ -29,7 +29,7 @@ class _SettingsViewState extends State<SettingsView> {
                     padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
                     child: Text(
                       textAlign: TextAlign.start,
-                      AppLocalizations.of(context)!.menu,
+                      AppLocalizations.of(context).menu,
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     child: Text(
                       textAlign: TextAlign.start,
-                      AppLocalizations.of(context)!.settings,
+                      AppLocalizations.of(context).settings,
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                   SettingsListTile(
-                    title: AppLocalizations.of(context)!.export_data,
+                    title: AppLocalizations.of(context).export_data,
                     icon: Icons.upload_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -66,7 +66,7 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: AppLocalizations.of(context)!.import_data,
+                    title: AppLocalizations.of(context).import_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -78,7 +78,7 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: AppLocalizations.of(context)!.delete_all_data,
+                    title: AppLocalizations.of(context).delete_all_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
@@ -86,19 +86,19 @@ class _SettingsViewState extends State<SettingsView> {
                         context: context,
                         builder: (context) => AlertDialog(
                           title: Text(
-                            AppLocalizations.of(context)!.delete_all_data,
+                            AppLocalizations.of(context).delete_all_data,
                           ),
                           content: Text(
-                            AppLocalizations.of(context)!.this_cannot_be_undone,
+                            AppLocalizations.of(context).this_cannot_be_undone,
                           ),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: Text(AppLocalizations.of(context)!.cancel),
+                              child: Text(AppLocalizations.of(context).cancel),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: Text(AppLocalizations.of(context)!.delete),
+                              child: Text(AppLocalizations.of(context).delete),
                             ),
                           ],
                         ),
@@ -134,32 +134,32 @@ class _SettingsViewState extends State<SettingsView> {
       case ImportResult.success:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.data_successfully_imported,
+          message: AppLocalizations.of(context).data_successfully_imported,
         );
       case ImportResult.invalidSchema:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.invalid_schema,
+          message: AppLocalizations.of(context).invalid_schema,
         );
       case ImportResult.fileReadError:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.error_reading_file,
+          message: AppLocalizations.of(context).error_reading_file,
         );
       case ImportResult.canceled:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.import_canceled,
+          message: AppLocalizations.of(context).import_canceled,
         );
       case ImportResult.formatException:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.format_exception,
+          message: AppLocalizations.of(context).format_exception,
         );
       case ImportResult.unknownException:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.unknown_exception,
+          message: AppLocalizations.of(context).unknown_exception,
         );
     }
   }
@@ -176,17 +176,17 @@ class _SettingsViewState extends State<SettingsView> {
       case ExportResult.success:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.data_successfully_exported,
+          message: AppLocalizations.of(context).data_successfully_exported,
         );
       case ExportResult.canceled:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.export_canceled,
+          message: AppLocalizations.of(context).export_canceled,
         );
       case ExportResult.unknownException:
         showSnackbar(
           context: context,
-          message: AppLocalizations.of(context)!.unknown_exception,
+          message: AppLocalizations.of(context).unknown_exception,
         );
     }
   }
@@ -212,7 +212,7 @@ class _SettingsViewState extends State<SettingsView> {
         duration: duration,
         action: action != null
             ? SnackBarAction(
-                label: AppLocalizations.of(context)!.undo,
+                label: AppLocalizations.of(context).undo,
                 onPressed: action,
               )
             : null,

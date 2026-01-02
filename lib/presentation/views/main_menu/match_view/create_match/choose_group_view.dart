@@ -52,7 +52,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context)!.choose_group,
+          AppLocalizations.of(context).choose_group,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -63,7 +63,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: CustomSearchBar(
               controller: controller,
-              hintText: AppLocalizations.of(context)!.search_for_groups,
+              hintText: AppLocalizations.of(context).search_for_groups,
               onChanged: (value) {
                 setState(() {
                   filterGroups(value);
@@ -78,12 +78,12 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
                 visible: widget.groups.isNotEmpty,
                 replacement: TopCenteredMessage(
                   icon: Icons.info,
-                  title: AppLocalizations.of(context)!.info,
-                  message: AppLocalizations.of(context)!.no_groups_created_yet,
+                  title: AppLocalizations.of(context).info,
+                  message: AppLocalizations.of(context).no_groups_created_yet,
                 ),
                 child: TopCenteredMessage(
                   icon: Icons.info,
-                  title: AppLocalizations.of(context)!.info,
+                  title: AppLocalizations.of(context).info,
                   message: AppLocalizations.of(
                     context,
                   )!.there_is_no_group_matching_your_search,

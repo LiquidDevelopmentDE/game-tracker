@@ -69,7 +69,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                       children: [
                         StatisticsTile(
                           icon: Icons.sports_score,
-                          title: AppLocalizations.of(context)!.wins,
+                          title: AppLocalizations.of(context).wins,
                           width: constraints.maxWidth * 0.95,
                           values: winCounts,
                           itemCount: 3,
@@ -78,7 +78,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
                           icon: Icons.percent,
-                          title: AppLocalizations.of(context)!.winrate,
+                          title: AppLocalizations.of(context).winrate,
                           width: constraints.maxWidth * 0.95,
                           values: winRates,
                           itemCount: 5,
@@ -99,7 +99,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                     ),
                     child: TopCenteredMessage(
                       icon: Icons.info,
-                      title: AppLocalizations.of(context)!.info,
+                      title: AppLocalizations.of(context).info,
                       message: AppLocalizations.of(
                         context,
                       )!.no_statistics_available,
@@ -154,7 +154,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         (p) => p.id == playerId,
         orElse: () => Player(
           id: playerId,
-          name: AppLocalizations.of(context)!.not_available,
+          name: AppLocalizations.of(context).not_available,
         ),
       );
       winCounts[i] = (player.name, winCounts[i].$2);
@@ -219,7 +219,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         (p) => p.id == playerId,
         orElse: () => Player(
           id: playerId,
-          name: AppLocalizations.of(context)!.not_available,
+          name: AppLocalizations.of(context).not_available,
         ),
       );
       matchCounts[i] = (player.name, matchCounts[i].$2);
