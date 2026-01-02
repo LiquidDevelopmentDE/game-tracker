@@ -110,8 +110,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     ]).then((result) async {
       groupsList = result[0] as List<Group>;
       playerList = result[1] as List<Player>;
+      setState(() {
+        filteredPlayerList = List.from(playerList);
+      });
     });
-    filteredPlayerList = List.from(playerList);
   }
 
   @override
