@@ -69,6 +69,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                     widget.games[index].$3,
                     context,
                   ),
+                  isHighlighted: selectedGameIndex == index,
                   onPressed: () async {
                     setState(() {
                       if (selectedGameIndex == index) {
