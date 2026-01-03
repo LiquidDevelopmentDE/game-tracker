@@ -47,39 +47,50 @@ class _ChooseGameViewState extends State<ChooseGameView> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: CustomSearchBar(
-              controller: searchBarController,
-              hintText: 'Game Name',
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) {
+          print(result);
+          print(didPop);
+          if (didPop) {
+            return;
+          }
+          Navigator.of(context).pop(selectedGameIndex);
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: CustomSearchBar(
+                controller: searchBarController,
+                hintText: 'Game Name',
+              ),
             ),
-          ),
-          const SizedBox(height: 5),
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.games.length,
-              itemBuilder: (BuildContext context, int index) {
-                return TitleDescriptionListTile(
-                  title: widget.games[index].$1,
-                  description: widget.games[index].$2,
-                  badgeText: translateRulesetToString(widget.games[index].$3),
-                  isHighlighted: selectedGameIndex == index,
-                  onPressed: () async {
-                    setState(() {
-                      if (selectedGameIndex == index) {
-                        selectedGameIndex = -1;
-                      } else {
-                        selectedGameIndex = index;
-                      }
-                    });
-                  },
-                );
-              },
+            const SizedBox(height: 5),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.games.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return TitleDescriptionListTile(
+                    title: widget.games[index].$1,
+                    description: widget.games[index].$2,
+                    badgeText: translateRulesetToString(widget.games[index].$3),
+                    isHighlighted: selectedGameIndex == index,
+                    onPressed: () async {
+                      setState(() {
+                        if (selectedGameIndex == index) {
+                          selectedGameIndex = -1;
+                        } else {
+                          selectedGameIndex = index;
+                        }
+                      });
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
