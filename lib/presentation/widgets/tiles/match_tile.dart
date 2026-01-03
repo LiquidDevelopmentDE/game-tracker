@@ -175,6 +175,8 @@ class _MatchTileState extends State<MatchTile> {
       }
     }
 
+    allPlayers.sort((a, b) => a.name.compareTo(b.name));
     return allPlayers;
+    ;
   }
 }
