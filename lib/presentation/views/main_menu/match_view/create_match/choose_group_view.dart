@@ -57,63 +57,80 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: CustomSearchBar(
-              controller: controller,
-              hintText: AppLocalizations.of(context).search_for_groups,
-              onChanged: (value) {
-                setState(() {
-                  filterGroups(value);
-                });
-              },
-            ),
-          ),
-          Expanded(
-            child: Visibility(
-              visible: filteredGroups.isNotEmpty,
-              replacement: Visibility(
-                visible: widget.groups.isNotEmpty,
-                replacement: TopCenteredMessage(
-                  icon: Icons.info,
-                  title: AppLocalizations.of(context).info,
-                  message: AppLocalizations.of(context).no_groups_created_yet,
-                ),
-                child: TopCenteredMessage(
-                  icon: Icons.info,
-                  title: AppLocalizations.of(context).info,
-                  message: AppLocalizations.of(
-                    context,
-                  ).there_is_no_group_matching_your_search,
-                ),
-              ),
-              child: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 85),
-                itemCount: filteredGroups.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (selectedGroupId != filteredGroups[index].id) {
-                          selectedGroupId = filteredGroups[index].id;
-                        } else {
-                          selectedGroupId = '';
-                        }
-                      });
-                    },
-                    child: GroupTile(
-                      group: filteredGroups[index],
-                      isHighlighted:
-                          selectedGroupId == filteredGroups[index].id,
-                    ),
-                  );
+      body: PopScope(
+        // This fixes that the Android Back Gesture didn't return the
+        // selectedGroupId and therefore the selected Group wasn't saved
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) {
+          if (didPop) {
+            return;
+          }
+          Navigator.of(context).pop(
+            selectedGroupId == ''
+                ? null
+                : widget.groups.firstWhere(
+                    (group) => group.id == selectedGroupId,
+                  ),
+          );
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: CustomSearchBar(
+                controller: controller,
+                hintText: AppLocalizations.of(context).search_for_groups,
+                onChanged: (value) {
+                  setState(() {
+                    filterGroups(value);
+                  });
                 },
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Visibility(
+                visible: filteredGroups.isNotEmpty,
+                replacement: Visibility(
+                  visible: widget.groups.isNotEmpty,
+                  replacement: TopCenteredMessage(
+                    icon: Icons.info,
+                    title: AppLocalizations.of(context).info,
+                    message: AppLocalizations.of(context).no_groups_created_yet,
+                  ),
+                  child: TopCenteredMessage(
+                    icon: Icons.info,
+                    title: AppLocalizations.of(context).info,
+                    message: AppLocalizations.of(
+                    context,
+                  ).there_is_no_group_matching_your_search,
+                  ),
+                ),
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 85),
+                  itemCount: filteredGroups.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (selectedGroupId != filteredGroups[index].id) {
+                            selectedGroupId = filteredGroups[index].id;
+                          } else {
+                            selectedGroupId = '';
+                          }
+                        });
+                      },
+                      child: GroupTile(
+                        group: filteredGroups[index],
+                        isHighlighted:
+                            selectedGroupId == filteredGroups[index].id,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

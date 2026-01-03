@@ -53,28 +53,43 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
           ),
           centerTitle: true,
         ),
-        body: ListView.builder(
-          padding: const EdgeInsets.only(bottom: 85),
-          itemCount: widget.rulesets.length,
-          itemBuilder: (BuildContext context, int index) {
-            return TitleDescriptionListTile(
-              onPressed: () async {
-                setState(() {
-                  if (selectedRulesetIndex == index) {
-                    selectedRulesetIndex = -1;
-                  } else {
-                    selectedRulesetIndex = index;
-                  }
-                });
-              },
-              title: translateRulesetToString(
+        body: PopScope(
+          // This fixes that the Android Back Gesture didn't return the
+          // selectedRulesetIndex and therefore the selected Ruleset wasn't saved
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, Object? result) {
+            if (didPop) {
+              return;
+            }
+            Navigator.of(context).pop(
+              selectedRulesetIndex == -1
+                  ? null
+                  : widget.rulesets[selectedRulesetIndex].$1,
+            );
+          },
+          child: ListView.builder(
+            padding: const EdgeInsets.only(bottom: 85),
+            itemCount: widget.rulesets.length,
+            itemBuilder: (BuildContext context, int index) {
+              return TitleDescriptionListTile(
+                onPressed: () async {
+                  setState(() {
+                    if (selectedRulesetIndex == index) {
+                      selectedRulesetIndex = -1;
+                    } else {
+                      selectedRulesetIndex = index;
+                    }
+                  });
+                },
+                title: translateRulesetToString(
                 widget.rulesets[index].$1,
                 context,
               ),
-              description: widget.rulesets[index].$2,
-              isHighlighted: selectedRulesetIndex == index,
-            );
-          },
+                description: widget.rulesets[index].$2,
+                isHighlighted: selectedRulesetIndex == index,
+              );
+            },
+          ),
         ),
       ),
     );
