@@ -38,7 +38,7 @@ class DataTransferService {
         'id': g.id,
         'name': g.name,
         'createdAt': g.createdAt.toIso8601String(),
-        'memberIds': (g.members ?? []).map((m) => m.id).toList(),
+        'memberIds': (g.members).map((m) => m.id).toList(),
       }).toList(),
 
       'matches': matches
