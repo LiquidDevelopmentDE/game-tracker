@@ -20,11 +20,13 @@ class CreateGroupView extends StatefulWidget {
 class _CreateGroupViewState extends State<CreateGroupView> {
   final _groupNameController = TextEditingController();
   late final AppDatabase db;
+
   List<Player> selectedPlayers = [];
 
   @override
   void initState() {
     super.initState();
+
     db = Provider.of<AppDatabase>(context, listen: false);
     _groupNameController.addListener(() {
       setState(() {});
@@ -39,13 +41,14 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
         title: Text(
-          AppLocalizations.of(context).create_new_group,
+          loc.create_new_group,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -58,7 +61,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: TextInputField(
                 controller: _groupNameController,
-                hintText: AppLocalizations.of(context).group_name,
+                hintText: loc.group_name,
                 onChanged: (value) {
                   setState(() {});
                 },
@@ -74,7 +77,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               ),
             ),
             CustomWidthButton(
-              text: AppLocalizations.of(context).create_group,
+              text: loc.create_group,
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
               onPressed:
@@ -99,7 +102,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                               child: Text(
                                 AppLocalizations.of(
                                   context,
-                                ).error_while_creating_group_please_try_again,
+                                ).error_creating_group,
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ),

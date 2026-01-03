@@ -14,7 +14,13 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
       backgroundColor: CustomTheme.backgroundColor,
@@ -29,7 +35,7 @@ class _SettingsViewState extends State<SettingsView> {
                     padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
                     child: Text(
                       textAlign: TextAlign.start,
-                      AppLocalizations.of(context).menu,
+                      loc.menu,
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -43,7 +49,7 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     child: Text(
                       textAlign: TextAlign.start,
-                      AppLocalizations.of(context).settings,
+                      loc.settings,
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -51,7 +57,7 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                   SettingsListTile(
-                    title: AppLocalizations.of(context).export_data,
+                    title: loc.export_data,
                     icon: Icons.upload_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -66,7 +72,7 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: AppLocalizations.of(context).import_data,
+                    title: loc.import_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -78,27 +84,23 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: AppLocalizations.of(context).delete_all_data,
+                    title: loc.delete_all_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
                       showDialog<bool>(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: Text(
-                            AppLocalizations.of(context).delete_all_data,
-                          ),
-                          content: Text(
-                            AppLocalizations.of(context).this_cannot_be_undone,
-                          ),
+                          title: Text(loc.delete_all_data),
+                          content: Text(loc.this_cannot_be_undone),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: Text(AppLocalizations.of(context).cancel),
+                              child: Text(loc.cancel),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: Text(AppLocalizations.of(context).delete),
+                              child: Text(loc.delete),
                             ),
                           ],
                         ),
@@ -130,37 +132,20 @@ class _SettingsViewState extends State<SettingsView> {
     required BuildContext context,
     required ImportResult result,
   }) {
+    final loc = AppLocalizations.of(context);
     switch (result) {
       case ImportResult.success:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).data_successfully_imported,
-        );
+        showSnackbar(context: context, message: loc.data_successfully_imported);
       case ImportResult.invalidSchema:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).invalid_schema,
-        );
+        showSnackbar(context: context, message: loc.invalid_schema);
       case ImportResult.fileReadError:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).error_reading_file,
-        );
+        showSnackbar(context: context, message: loc.error_reading_file);
       case ImportResult.canceled:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).import_canceled,
-        );
+        showSnackbar(context: context, message: loc.import_canceled);
       case ImportResult.formatException:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).format_exception,
-        );
+        showSnackbar(context: context, message: loc.format_exception);
       case ImportResult.unknownException:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).unknown_exception,
-        );
+        showSnackbar(context: context, message: loc.unknown_exception);
     }
   }
 
@@ -172,22 +157,14 @@ class _SettingsViewState extends State<SettingsView> {
     required BuildContext context,
     required ExportResult result,
   }) {
+    final loc = AppLocalizations.of(context);
     switch (result) {
       case ExportResult.success:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).data_successfully_exported,
-        );
+        showSnackbar(context: context, message: loc.data_successfully_exported);
       case ExportResult.canceled:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).export_canceled,
-        );
+        showSnackbar(context: context, message: loc.export_canceled);
       case ExportResult.unknownException:
-        showSnackbar(
-          context: context,
-          message: AppLocalizations.of(context).unknown_exception,
-        );
+        showSnackbar(context: context, message: loc.unknown_exception);
     }
   }
 
@@ -203,6 +180,7 @@ class _SettingsViewState extends State<SettingsView> {
     Duration duration = const Duration(seconds: 3),
     VoidCallback? action,
   }) {
+    final loc = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
@@ -211,10 +189,7 @@ class _SettingsViewState extends State<SettingsView> {
         backgroundColor: CustomTheme.onBoxColor,
         duration: duration,
         action: action != null
-            ? SnackBarAction(
-                label: AppLocalizations.of(context).undo,
-                onPressed: action,
-              )
+            ? SnackBarAction(label: loc.undo, onPressed: action)
             : null,
       ),
     );

@@ -18,10 +18,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get choose_ruleset => 'Regelwerk wählen';
 
   @override
-  String get choose_game => 'Spiel wählen';
+  String get choose_game => 'Spielvorlage wählen';
 
   @override
-  String get select_winner => 'Gewinner wählen:';
+  String get select_winner => 'Gewinner:in wählen:';
+
+  @override
+  String get game_tracker => 'Game Tracker';
 
   @override
   String get no_recent_matches_available => 'Keine letzten Matches verfügbar';
@@ -42,7 +45,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_new_group => 'Neue Gruppe erstellen';
 
   @override
-  String get error_while_creating_group_please_try_again =>
+  String get error_creating_group =>
       'Fehler beim Erstellen der Gruppe, bitte erneut versuchen';
 
   @override
@@ -52,32 +55,32 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     final String countString = countNumberFormat.format(count);
 
-    return 'Ausgewählte Spieler: $countString';
+    return 'Ausgewählte Spieler:in: $countString';
   }
 
   @override
-  String get no_players_selected => 'Keine Spieler ausgewählt';
+  String get no_players_selected => 'Keine Spieler:in ausgewählt';
 
   @override
-  String get all_players => 'Alle Spieler:';
+  String get all_players => 'Alle Spieler:innen:';
 
   @override
   String successfully_added_player(String playerName) {
-    return 'Spieler $playerName erfolgreich hinzugefügt';
+    return 'Spieler:in $playerName erfolgreich hinzugefügt';
   }
 
   @override
   String could_not_add_player(String playerName) {
-    return 'Spieler $playerName konnte nicht hinzugefügt werden';
+    return 'Spieler:in $playerName konnte nicht hinzugefügt werden';
   }
 
   @override
   String winner(String winnerName) {
-    return 'Gewinner: $winnerName';
+    return 'Gewinner:in: $winnerName';
   }
 
   @override
-  String get players => 'Spieler';
+  String get players => 'Spieler:in';
 
   @override
   String get no_statistics_available => 'Keine Statistiken verfügbar';
@@ -96,12 +99,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get quick_create => 'Schnellzugriff';
-
-  @override
-  String get winner_label => 'Gewinner';
-
-  @override
-  String get ruleset_label => 'Regelwerk';
 
   @override
   String get match_in_progress => 'Match läuft...';
@@ -168,7 +165,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get no_groups_created_yet => 'Noch keine Gruppen erstellt';
 
   @override
-  String get no_players_created_yet => 'Noch keine Spieler erstellt';
+  String get no_players_created_yet => 'Noch keine Spieler:in erstellt';
 
   @override
   String get create_group => 'Gruppe erstellen';
@@ -177,7 +174,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get group_name => 'Gruppenname';
 
   @override
-  String get player_name => 'Spielername';
+  String get player_name => 'Spieler:innenname';
 
   @override
   String get no_matches_created_yet => 'Noch keine Matches erstellt';
@@ -186,7 +183,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get match_name => 'Matchname';
 
   @override
-  String get game => 'Spiel';
+  String get game => 'Spielvorlage';
 
   @override
   String get ruleset => 'Regelwerk';
@@ -205,10 +202,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get no_players_found_with_that_name =>
-      'Keine Spieler mit diesem Namen gefunden';
+      'Keine Spieler:in mit diesem Namen gefunden';
 
   @override
-  String get all_players_selected => 'Alle Spieler ausgewählt';
+  String get all_players_selected => 'Alle Spieler:innen ausgewählt';
 
   @override
   String today_at(String time) {
@@ -244,29 +241,29 @@ class AppLocalizationsDe extends AppLocalizations {
       'Es gibt keine Gruppe, die deiner Suche entspricht';
 
   @override
-  String get game_name => 'Spielname';
+  String get game_name => 'Spielvorlagenname';
 
   @override
-  String get ruleset_single_winner_desc =>
-      'Genau ein Gewinner wird gewählt; Unentschieden werden durch einen vordefinierten Tie-Breaker aufgelöst.';
+  String get ruleset_single_winner =>
+      'Genau ein:e Gewinner:in wird gewählt; Unentschieden werden durch einen vordefinierten Tie-Breaker aufgelöst.';
 
   @override
-  String get ruleset_single_loser_desc =>
-      'Genau ein Verlierer wird bestimmt; der letzte Platz erhält die Strafe oder Konsequenz.';
+  String get ruleset_single_loser =>
+      'Genau ein:e Verlierer:in wird bestimmt; der letzte Platz erhält die Strafe oder Konsequenz.';
 
   @override
-  String get ruleset_most_points_desc =>
-      'Traditionelles Regelwerk: Der Spieler mit den meisten Punkten gewinnt.';
+  String get ruleset_most_points =>
+      'Traditionelles Regelwerk: Der/die Spieler:in mit den meisten Punkten gewinnt.';
 
   @override
-  String get ruleset_least_points_desc =>
-      'Umgekehrte Wertung: Der Spieler mit den wenigsten Punkten gewinnt.';
+  String get ruleset_least_points =>
+      'Umgekehrte Wertung: Der/die Spieler:in mit den wenigsten Punkten gewinnt.';
 
   @override
-  String get single_winner => 'Ein Gewinner';
+  String get single_winner => 'Ein:e Gewinner:in';
 
   @override
-  String get single_loser => 'Ein Verlierer';
+  String get single_loser => 'Ein:e Verlierer:in';
 
   @override
   String get most_points => 'Höchste Punkte';
@@ -275,7 +272,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get least_points => 'Niedrigste Punkte';
 
   @override
-  String get search_for_players => 'Nach Spielern suchen';
+  String get search_for_players => 'Nach Spieler:innen suchen';
 
   @override
   String get search_for_groups => 'Nach Gruppen suchen';

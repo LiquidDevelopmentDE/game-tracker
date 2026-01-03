@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Select Winner:'**
   String get select_winner;
 
+  /// App Name
+  ///
+  /// In en, this message translates to:
+  /// **'Game Tracker'**
+  String get game_tracker;
+
   /// Message when no recent matches exist
   ///
   /// In en, this message translates to:
@@ -168,7 +174,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Error while creating group, please try again'**
-  String get error_while_creating_group_please_try_again;
+  String get error_creating_group;
 
   /// Shows the number of selected players
   ///
@@ -247,18 +253,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quick Create'**
   String get quick_create;
-
-  /// Label for winner field
-  ///
-  /// In en, this message translates to:
-  /// **'Winner'**
-  String get winner_label;
-
-  /// Label for ruleset field
-  ///
-  /// In en, this message translates to:
-  /// **'Ruleset'**
-  String get ruleset_label;
 
   /// Message when match is in progress
   ///
@@ -528,25 +522,25 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.'**
-  String get ruleset_single_winner_desc;
+  String get ruleset_single_winner;
 
   /// Description for single loser ruleset
   ///
   /// In en, this message translates to:
   /// **'Exactly one loser is determined; last place receives the penalty or consequence.'**
-  String get ruleset_single_loser_desc;
+  String get ruleset_single_loser;
 
   /// Description for most points ruleset
   ///
   /// In en, this message translates to:
   /// **'Traditional ruleset: the player with the most points wins.'**
-  String get ruleset_most_points_desc;
+  String get ruleset_most_points;
 
   /// Description for least points ruleset
   ///
   /// In en, this message translates to:
   /// **'Inverse scoring: the player with the fewest points wins.'**
-  String get ruleset_least_points_desc;
+  String get ruleset_least_points;
 
   /// Title for single winner ruleset
   ///

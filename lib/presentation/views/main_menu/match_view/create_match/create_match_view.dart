@@ -90,23 +90,12 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   }
 
   List<(Ruleset, String)> _getRulesets(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return [
-      (
-        Ruleset.singleWinner,
-        AppLocalizations.of(context).ruleset_single_winner_desc,
-      ),
-      (
-        Ruleset.singleLoser,
-        AppLocalizations.of(context).ruleset_single_loser_desc,
-      ),
-      (
-        Ruleset.mostPoints,
-        AppLocalizations.of(context).ruleset_most_points_desc,
-      ),
-      (
-        Ruleset.leastPoints,
-        AppLocalizations.of(context).ruleset_least_points_desc,
-      ),
+      (Ruleset.singleWinner, loc.ruleset_single_winner),
+      (Ruleset.singleLoser, loc.ruleset_single_loser),
+      (Ruleset.mostPoints, loc.ruleset_most_points),
+      (Ruleset.leastPoints, loc.ruleset_least_points),
     ];
   }
 
@@ -118,13 +107,14 @@ class _CreateMatchViewState extends State<CreateMatchView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
         title: Text(
-          AppLocalizations.of(context).create_new_match,
+          loc.create_new_match,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -141,9 +131,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               ),
             ),
             ChooseTile(
-              title: AppLocalizations.of(context).game,
+              title: loc.game,
               trailingText: selectedGameIndex == -1
-                  ? AppLocalizations.of(context).none
+                  ? loc.none
                   : games[selectedGameIndex].$1,
               onPressed: () async {
                 selectedGameIndex = await Navigator.of(context).push(
@@ -169,9 +159,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               },
             ),
             ChooseTile(
-              title: AppLocalizations.of(context).ruleset,
+              title: loc.ruleset,
               trailingText: selectedRuleset == null
-                  ? AppLocalizations.of(context).none
+                  ? loc.none
                   : translateRulesetToString(selectedRuleset!, context),
               onPressed: () async {
                 final rulesets = _getRulesets(context);
@@ -192,9 +182,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               },
             ),
             ChooseTile(
-              title: AppLocalizations.of(context).group,
+              title: loc.group,
               trailingText: selectedGroup == null
-                  ? AppLocalizations.of(context).none_group
+                  ? loc.none_group
                   : selectedGroup!.name,
               onPressed: () async {
                 selectedGroup = await Navigator.of(context).push(
@@ -231,7 +221,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               ),
             ),
             CustomWidthButton(
-              text: AppLocalizations.of(context).create_match,
+              text: loc.create_match,
               sizeRelativeToWidth: 0.95,
               buttonType: ButtonType.primary,
               onPressed: _enableCreateGameButton()

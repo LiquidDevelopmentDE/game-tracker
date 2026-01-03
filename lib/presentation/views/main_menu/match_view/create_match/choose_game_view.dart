@@ -21,6 +21,7 @@ class ChooseGameView extends StatefulWidget {
 
 class _ChooseGameViewState extends State<ChooseGameView> {
   late int selectedGameIndex;
+
   final TextEditingController searchBarController = TextEditingController();
 
   @override
@@ -31,6 +32,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
@@ -43,7 +45,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context).choose_game,
+          loc.choose_game,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -64,7 +66,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: CustomSearchBar(
                 controller: searchBarController,
-                hintText: AppLocalizations.of(context).game_name,
+                hintText: loc.game_name,
               ),
             ),
             const SizedBox(height: 5),
@@ -76,9 +78,9 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                     title: widget.games[index].$1,
                     description: widget.games[index].$2,
                     badgeText: translateRulesetToString(
-                    widget.games[index].$3,
-                    context,
-                  ),
+                      widget.games[index].$3,
+                      context,
+                    ),
                     isHighlighted: selectedGameIndex == index,
                     onPressed: () async {
                       setState(() {

@@ -36,6 +36,7 @@ class _MatchResultViewState extends State<MatchResultView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
@@ -81,7 +82,7 @@ class _MatchResultViewState extends State<MatchResultView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppLocalizations.of(context).select_winner,
+                      loc.select_winner,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

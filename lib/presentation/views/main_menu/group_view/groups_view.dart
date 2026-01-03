@@ -35,12 +35,14 @@ class _GroupsViewState extends State<GroupsView> {
   @override
   void initState() {
     super.initState();
+
     db = Provider.of<AppDatabase>(context, listen: false);
     loadGroups();
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       body: Stack(
@@ -53,8 +55,8 @@ class _GroupsViewState extends State<GroupsView> {
               replacement: Center(
                 child: TopCenteredMessage(
                   icon: Icons.info,
-                  title: AppLocalizations.of(context).info,
-                  message: AppLocalizations.of(context).no_groups_created_yet,
+                  title: loc.info,
+                  message: loc.no_groups_created_yet,
                 ),
               ),
               child: ListView.builder(
@@ -74,7 +76,7 @@ class _GroupsViewState extends State<GroupsView> {
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(
-              text: AppLocalizations.of(context).create_group,
+              text: loc.create_group,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
                 await Navigator.push(

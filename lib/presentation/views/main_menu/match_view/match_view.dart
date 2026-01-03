@@ -44,12 +44,14 @@ class _MatchViewState extends State<MatchView> {
   @override
   void initState() {
     super.initState();
+
     db = Provider.of<AppDatabase>(context, listen: false);
     loadGames();
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       body: Stack(
@@ -62,8 +64,8 @@ class _MatchViewState extends State<MatchView> {
               replacement: Center(
                 child: TopCenteredMessage(
                   icon: Icons.report,
-                  title: AppLocalizations.of(context).info,
-                  message: AppLocalizations.of(context).no_matches_created_yet,
+                  title: loc.info,
+                  message: loc.no_matches_created_yet,
                 ),
               ),
               child: ListView.builder(
@@ -97,7 +99,7 @@ class _MatchViewState extends State<MatchView> {
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(
-              text: AppLocalizations.of(context).create_match,
+              text: loc.create_match,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
                 Navigator.push(

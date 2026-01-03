@@ -34,6 +34,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
@@ -52,7 +53,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context).choose_group,
+          loc.choose_group,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -79,7 +80,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: CustomSearchBar(
                 controller: controller,
-                hintText: AppLocalizations.of(context).search_for_groups,
+                hintText: loc.search_for_groups,
                 onChanged: (value) {
                   setState(() {
                     filterGroups(value);
@@ -94,15 +95,15 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
                   visible: widget.groups.isNotEmpty,
                   replacement: TopCenteredMessage(
                     icon: Icons.info,
-                    title: AppLocalizations.of(context).info,
-                    message: AppLocalizations.of(context).no_groups_created_yet,
+                    title: loc.info,
+                    message: loc.no_groups_created_yet,
                   ),
                   child: TopCenteredMessage(
                     icon: Icons.info,
-                    title: AppLocalizations.of(context).info,
+                    title: loc.info,
                     message: AppLocalizations.of(
-                    context,
-                  ).there_is_no_group_matching_your_search,
+                      context,
+                    ).there_is_no_group_matching_your_search,
                   ),
                 ),
                 child: ListView.builder(

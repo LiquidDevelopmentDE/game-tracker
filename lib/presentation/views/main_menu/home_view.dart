@@ -72,6 +72,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return AppSkeleton(
@@ -87,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
                     QuickInfoTile(
                       width: constraints.maxWidth * 0.45,
                       height: constraints.maxHeight * 0.15,
-                      title: AppLocalizations.of(context).matches,
+                      title: loc.matches,
                       icon: Icons.groups_rounded,
                       value: matchCount,
                     ),
@@ -95,7 +96,7 @@ class _HomeViewState extends State<HomeView> {
                     QuickInfoTile(
                       width: constraints.maxWidth * 0.45,
                       height: constraints.maxHeight * 0.15,
-                      title: AppLocalizations.of(context).groups,
+                      title: loc.groups,
                       icon: Icons.groups_rounded,
                       value: groupCount,
                     ),
@@ -105,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
-                    title: AppLocalizations.of(context).recent_matches,
+                    title: loc.recent_matches,
                     icon: Icons.timer,
                     content: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -125,11 +126,12 @@ class _HomeViewState extends State<HomeView> {
                           children: [
                             MatchSummaryTile(
                               matchTitle: recentMatches[0].name,
-                              game: AppLocalizations.of(context).winner_label,
-                              ruleset: AppLocalizations.of(
+                              game: 'Winner',
+                              ruleset: 'Ruleset',
+                              players: _getPlayerText(
+                                recentMatches[0],
                                 context,
-                              ).ruleset_label,
-                              players: _getPlayerText(recentMatches[0]),
+                              ),
                               winner: recentMatches[0].winner == null
                                   ? AppLocalizations.of(
                                       context,
@@ -143,11 +145,12 @@ class _HomeViewState extends State<HomeView> {
                             if (loadedRecentMatches.length > 1) ...[
                               MatchSummaryTile(
                                 matchTitle: recentMatches[1].name,
-                                game: AppLocalizations.of(context).winner_label,
-                                ruleset: AppLocalizations.of(
+                                game: 'Winner',
+                                ruleset: 'Ruleset',
+                                players: _getPlayerText(
+                                  recentMatches[1],
                                   context,
-                                ).ruleset_label,
-                                players: _getPlayerText(recentMatches[1]),
+                                ),
                                 winner: recentMatches[1].winner == null
                                     ? AppLocalizations.of(
                                         context,
@@ -173,7 +176,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 InfoTile(
                   width: constraints.maxWidth * 0.95,
-                  title: AppLocalizations.of(context).quick_create,
+                  title: loc.quick_create,
                   icon: Icons.add_box_rounded,
                   content: Column(
                     children: [
@@ -227,10 +230,11 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  String _getPlayerText(Match game) {
+  String _getPlayerText(Match game, context) {
+    final loc = AppLocalizations.of(context);
     if (game.group == null) {
       final playerCount = game.players?.length ?? 0;
-      return AppLocalizations.of(context).players_count(playerCount);
+      return loc.players_count(playerCount);
     }
     if (game.players == null || game.players!.isEmpty) {
       return game.group!.name;

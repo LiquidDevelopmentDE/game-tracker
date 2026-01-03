@@ -29,6 +29,7 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
@@ -48,7 +49,7 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
             },
           ),
           title: Text(
-            AppLocalizations.of(context).choose_ruleset,
+            loc.choose_ruleset,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -82,9 +83,9 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
                   });
                 },
                 title: translateRulesetToString(
-                widget.rulesets[index].$1,
-                context,
-              ),
+                  widget.rulesets[index].$1,
+                  context,
+                ),
                 description: widget.rulesets[index].$2,
                 isHighlighted: selectedRulesetIndex == index,
               );

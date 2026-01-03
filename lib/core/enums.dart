@@ -35,14 +35,15 @@ enum Ruleset { singleWinner, singleLoser, mostPoints, leastPoints }
 
 /// Translates a [Ruleset] enum value to its corresponding localized string.
 String translateRulesetToString(Ruleset ruleset, BuildContext context) {
+  final loc = AppLocalizations.of(context);
   switch (ruleset) {
     case Ruleset.singleWinner:
-      return AppLocalizations.of(context).single_winner;
+      return loc.single_winner;
     case Ruleset.singleLoser:
-      return AppLocalizations.of(context).single_loser;
+      return loc.single_loser;
     case Ruleset.mostPoints:
-      return AppLocalizations.of(context).most_points;
+      return loc.most_points;
     case Ruleset.leastPoints:
-      return AppLocalizations.of(context).least_points;
+      return loc.least_points;
   }
 }

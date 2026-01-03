@@ -25,6 +25,7 @@ class StatisticsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final maxBarWidth = MediaQuery.of(context).size.width * 0.65;
+    final loc = AppLocalizations.of(context);
 
     return InfoTile(
       width: width,
@@ -36,7 +37,7 @@ class StatisticsTile extends StatelessWidget {
           visible: values.isNotEmpty,
           replacement: Center(
             heightFactor: 4,
-            child: Text(AppLocalizations.of(context).no_data_available),
+            child: Text(loc.no_data_available),
           ),
           child: Column(
             children: List.generate(min(values.length, itemCount), (index) {

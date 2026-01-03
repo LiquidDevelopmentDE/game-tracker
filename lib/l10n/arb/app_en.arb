@@ -20,6 +20,10 @@
   "@select_winner": {
     "description": "Label to select the winner"
   },
+  "game_tracker": "Game Tracker",
+  "@game_tracker": {
+    "description": "App Name"
+  },
   "no_recent_matches_available": "No recent matches available",
   "@no_recent_matches_available": {
     "description": "Message when no recent matches exist"
@@ -44,8 +48,8 @@
   "@create_new_group": {
     "description": "Button text to create a new group"
   },
-  "error_while_creating_group_please_try_again": "Error while creating group, please try again",
-  "@error_while_creating_group_please_try_again": {
+  "error_creating_group": "Error while creating group, please try again",
+  "@error_creating_group": {
     "description": "Error message when group creation fails"
   },
   "selected_players": "Selected players: {count}",
@@ -123,14 +127,6 @@
   "quick_create": "Quick Create",
   "@quick_create": {
     "description": "Title for quick create section"
-  },
-  "winner_label": "Winner",
-  "@winner_label": {
-    "description": "Label for winner field"
-  },
-  "ruleset_label": "Ruleset",
-  "@ruleset_label": {
-    "description": "Label for ruleset field"
   },
   "match_in_progress": "Match in progress...",
   "@match_in_progress": {
@@ -330,20 +326,20 @@
   "@game_name": {
     "description": "Placeholder for game name search"
   },
-  "ruleset_single_winner_desc": "Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.",
-  "@ruleset_single_winner_desc": {
+  "ruleset_single_winner": "Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.",
+  "@ruleset_single_winner": {
     "description": "Description for single winner ruleset"
   },
-  "ruleset_single_loser_desc": "Exactly one loser is determined; last place receives the penalty or consequence.",
-  "@ruleset_single_loser_desc": {
+  "ruleset_single_loser": "Exactly one loser is determined; last place receives the penalty or consequence.",
+  "@ruleset_single_loser": {
     "description": "Description for single loser ruleset"
   },
-  "ruleset_most_points_desc": "Traditional ruleset: the player with the most points wins.",
-  "@ruleset_most_points_desc": {
+  "ruleset_most_points": "Traditional ruleset: the player with the most points wins.",
+  "@ruleset_most_points": {
     "description": "Description for most points ruleset"
   },
-  "ruleset_least_points_desc": "Inverse scoring: the player with the fewest points wins.",
-  "@ruleset_least_points_desc": {
+  "ruleset_least_points": "Inverse scoring: the player with the fewest points wins.",
+  "@ruleset_least_points": {
     "description": "Description for least points ruleset"
   },
   "single_winner": "Single Winner",

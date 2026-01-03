@@ -20,7 +20,6 @@ class GameTracker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(AppLocalizations.supportedLocales.first);
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -35,7 +34,7 @@ class GameTracker extends StatelessWidget {
         );
       },
       debugShowCheckedModeBanner: false,
-      title: 'Game Tracker',
+      onGenerateTitle: (context) => AppLocalizations.of(context).game_tracker,
       darkTheme: ThemeData.dark(),
 
       themeMode: ThemeMode.dark, // forces dark mode

@@ -87,6 +87,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -97,7 +98,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           CustomSearchBar(
             controller: _searchBarController,
             constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
-            hintText: AppLocalizations.of(context).search_for_players,
+            hintText: loc.search_for_players,
             trailingButtonShown: true,
             trailingButtonicon: Icons.add_circle,
             trailingButtonEnabled: _searchBarController.text.trim().isNotEmpty,
@@ -139,11 +140,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           SizedBox(
             height: 50,
             child: selectedPlayers.isEmpty
-                ? Center(
-                    child: Text(
-                      AppLocalizations.of(context).no_players_selected,
-                    ),
-                  )
+                ? Center(child: Text(loc.no_players_selected))
                 : SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -185,7 +182,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
           const SizedBox(height: 10),
           Text(
-            AppLocalizations.of(context).all_players,
+            loc.all_players,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -196,8 +193,8 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                 visible: suggestedPlayers.isNotEmpty,
                 replacement: TopCenteredMessage(
                   icon: Icons.info,
-                  title: 'Info',
-                  message: _getInfoText(),
+                  title: loc.info,
+                  message: _getInfoText(context),
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -234,6 +231,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   /// Shows a snackbar indicating success or failure.
   /// [context] - BuildContext to show the snackbar.
   void addNewPlayerFromSearch({required BuildContext context}) async {
+    final loc = AppLocalizations.of(context);
     String playerName = _searchBarController.text.trim();
     Player createdPlayer = Player(name: playerName);
     bool success = await db.playerDao.addPlayer(player: createdPlayer);
@@ -267,7 +265,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           backgroundColor: CustomTheme.boxColor,
           content: Center(
             child: Text(
-              AppLocalizations.of(context).could_not_add_player(playerName),
+              loc.could_not_add_player(playerName),
               style: const TextStyle(color: Colors.white),
             ),
           ),
@@ -278,18 +276,19 @@ class _PlayerSelectionState extends State<PlayerSelection> {
 
   /// Determines the appropriate info text to display when no players
   /// are available in the suggested players list.
-  String _getInfoText() {
+  String _getInfoText(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     if (allPlayers.isEmpty) {
       // No players exist in the database
-      return AppLocalizations.of(context).no_players_created_yet;
+      return loc.no_players_created_yet;
     } else if (selectedPlayers.length == allPlayers.length ||
         widget.availablePlayers?.isEmpty == true) {
       // All players have been selected or
       // available players list is provided but empty
-      return AppLocalizations.of(context).all_players_selected;
+      return loc.all_players_selected;
     } else {
       // No players match the search query
-      return AppLocalizations.of(context).no_players_found_with_that_name;
+      return loc.no_players_found_with_that_name;
     }
   }
 }

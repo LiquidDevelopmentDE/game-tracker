@@ -21,12 +21,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   int tabKeyCount = 0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     // Pretty ugly but works
     final List<Widget> tabs = [
       KeyedSubtree(key: ValueKey('home_$tabKeyCount'), child: const HomeView()),
@@ -47,7 +43,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          _currentTabTitle(),
+          _currentTabTitle(context),
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         backgroundColor: CustomTheme.backgroundColor,
@@ -90,28 +86,28 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
                     index: 0,
                     isSelected: currentIndex == 0,
                     icon: Icons.home_rounded,
-                    label: AppLocalizations.of(context).home,
+                    label: loc.home,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 1,
                     isSelected: currentIndex == 1,
                     icon: Icons.gamepad_rounded,
-                    label: AppLocalizations.of(context).matches,
+                    label: loc.matches,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 2,
                     isSelected: currentIndex == 2,
                     icon: Icons.group_rounded,
-                    label: AppLocalizations.of(context).groups,
+                    label: loc.groups,
                     onTabTapped: onTabTapped,
                   ),
                   NavbarItem(
                     index: 3,
                     isSelected: currentIndex == 3,
                     icon: Icons.bar_chart_rounded,
-                    label: AppLocalizations.of(context).statistics,
+                    label: loc.statistics,
                     onTabTapped: onTabTapped,
                   ),
                 ],
@@ -129,16 +125,17 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     });
   }
 
-  String _currentTabTitle() {
+  String _currentTabTitle(context) {
+    final loc = AppLocalizations.of(context);
     switch (currentIndex) {
       case 0:
-        return AppLocalizations.of(context).home;
+        return loc.home;
       case 1:
-        return AppLocalizations.of(context).matches;
+        return loc.matches;
       case 2:
-        return AppLocalizations.of(context).groups;
+        return loc.groups;
       case 3:
-        return AppLocalizations.of(context).statistics;
+        return loc.statistics;
       default:
         return '';
     }

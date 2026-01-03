@@ -24,6 +24,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_winner => 'Select Winner:';
 
   @override
+  String get game_tracker => 'Game Tracker';
+
+  @override
   String get no_recent_matches_available => 'No recent matches available';
 
   @override
@@ -42,7 +45,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_new_group => 'Create new group';
 
   @override
-  String get error_while_creating_group_please_try_again =>
+  String get error_creating_group =>
       'Error while creating group, please try again';
 
   @override
@@ -96,12 +99,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quick_create => 'Quick Create';
-
-  @override
-  String get winner_label => 'Winner';
-
-  @override
-  String get ruleset_label => 'Ruleset';
 
   @override
   String get match_in_progress => 'Match in progress...';
@@ -246,19 +243,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get game_name => 'Game Name';
 
   @override
-  String get ruleset_single_winner_desc =>
+  String get ruleset_single_winner =>
       'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.';
 
   @override
-  String get ruleset_single_loser_desc =>
+  String get ruleset_single_loser =>
       'Exactly one loser is determined; last place receives the penalty or consequence.';
 
   @override
-  String get ruleset_most_points_desc =>
+  String get ruleset_most_points =>
       'Traditional ruleset: the player with the most points wins.';
 
   @override
-  String get ruleset_least_points_desc =>
+  String get ruleset_least_points =>
       'Inverse scoring: the player with the fewest points wins.';
 
   @override
