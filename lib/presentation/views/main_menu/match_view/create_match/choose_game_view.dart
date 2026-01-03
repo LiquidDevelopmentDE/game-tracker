@@ -48,10 +48,10 @@ class _ChooseGameViewState extends State<ChooseGameView> {
         centerTitle: true,
       ),
       body: PopScope(
+        // This fixes that the Android Back Gesture didn't return the
+        // selectedGameIndex and therefore the selected Game wasn't saved
         canPop: false,
         onPopInvokedWithResult: (bool didPop, Object? result) {
-          print(result);
-          print(didPop);
           if (didPop) {
             return;
           }
