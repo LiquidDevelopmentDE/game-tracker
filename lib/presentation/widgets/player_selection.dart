@@ -12,13 +12,13 @@ import 'package:provider/provider.dart';
 
 class PlayerSelection extends StatefulWidget {
   final Function(List<Player> value) onChanged;
-  final List<Player> availablePlayers;
+  final List<Player>? availablePlayers;
   final List<Player>? initialSelectedPlayers;
 
   const PlayerSelection({
     super.key,
     required this.onChanged,
-    this.availablePlayers = const [],
+    this.availablePlayers,
     this.initialSelectedPlayers,
   });
 
@@ -56,17 +56,17 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     if (mounted) {
       _allPlayersFuture.then((loadedPlayers) {
         setState(() {
-          // If a list of available players is provided, use that list.
-          if (widget.availablePlayers.isNotEmpty) {
-            widget.availablePlayers.sort((a, b) => a.name.compareTo(b.name));
-            allPlayers = [...widget.availablePlayers];
+          // If a list of available players is provided (even if empty), use that list.
+          if (widget.availablePlayers != null) {
+            widget.availablePlayers!.sort((a, b) => a.name.compareTo(b.name));
+            allPlayers = [...widget.availablePlayers!];
             suggestedPlayers = [...allPlayers];
 
             if (widget.initialSelectedPlayers != null) {
               // Ensures that only players available for selection are pre-selected.
               selectedPlayers = widget.initialSelectedPlayers!
                   .where(
-                    (p) => widget.availablePlayers.any(
+                    (p) => widget.availablePlayers!.any(
                       (available) => available.id == p.id,
                     ),
                   )
@@ -149,18 +149,24 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                               onIconTap: () {
                                 setState(() {
                                   // Removes the player from the selection and notifies the parent.
+                                  selectedPlayers.remove(player);
+                                  widget.onChanged([...selectedPlayers]);
+
+                                  // Get the current search query
                                   final currentSearch = _searchBarController
                                       .text
                                       .toLowerCase();
-                                  selectedPlayers.remove(player);
-                                  widget.onChanged([...selectedPlayers]);
+
                                   // If the player matches the current search query (or search is empty),
-                                  // they are added back to the suggestions and the list is re-sorted.
+                                  // they are added back to the `suggestedPlayers` and the list is re-sorted.
                                   if (currentSearch.isEmpty ||
                                       player.name.toLowerCase().contains(
                                         currentSearch,
                                       )) {
                                     suggestedPlayers.add(player);
+                                    suggestedPlayers.sort(
+                                      (a, b) => a.name.compareTo(b.name),
+                                    );
                                   }
                                 });
                               },
@@ -176,9 +182,6 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          /*
-
-           */
           Expanded(
             child: AppSkeleton(
               enabled: isLoading,
@@ -187,11 +190,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                 replacement: TopCenteredMessage(
                   icon: Icons.info,
                   title: 'Info',
-                  message: allPlayers.isEmpty
-                      ? 'No players created yet'
-                      : (selectedPlayers.length == allPlayers.length)
-                      ? 'No more players to add'
-                      : 'No players found with that name',
+                  message: _getInfoText(),
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -200,11 +199,15 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                       text: suggestedPlayers[index].name,
                       onPressed: () {
                         setState(() {
+                          // If the player is not already selected
                           if (!selectedPlayers.contains(
                             suggestedPlayers[index],
                           )) {
-                            selectedPlayers.add(suggestedPlayers[index]);
+                            // Add to player to the front of the selectedPlayers
+                            selectedPlayers.insert(0, suggestedPlayers[index]);
+                            // Notify the parent widget of the change
                             widget.onChanged([...selectedPlayers]);
+                            // Remove the player from the suggestedPlayers
                             suggestedPlayers.remove(suggestedPlayers[index]);
                           }
                         });
@@ -229,7 +232,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     bool success = await db.playerDao.addPlayer(player: createdPlayer);
     if (!context.mounted) return;
     if (success) {
-      selectedPlayers.add(createdPlayer);
+      selectedPlayers.insert(0, createdPlayer);
       widget.onChanged([...selectedPlayers]);
       allPlayers.add(createdPlayer);
       setState(() {
@@ -261,6 +264,23 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
         ),
       );
+    }
+  }
+
+  /// Determines the appropriate info text to display when no players
+  /// are available in the suggested players list.
+  String _getInfoText() {
+    if (allPlayers.isEmpty) {
+      // No players exist in the database
+      return 'No players created yet';
+    } else if (selectedPlayers.length == allPlayers.length ||
+        widget.availablePlayers?.isEmpty == true) {
+      // All players have been selected or
+      // available players list is provided but empty
+      return 'No more players to add';
+    } else {
+      // No players match the search query
+      return 'No players found with that name';
     }
   }
 }

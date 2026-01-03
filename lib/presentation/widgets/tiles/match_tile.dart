@@ -4,17 +4,17 @@ import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
 
-class GameHistoryTile extends StatefulWidget {
+class MatchTile extends StatefulWidget {
   final Match match;
   final VoidCallback onTap;
 
-  const GameHistoryTile({super.key, required this.match, required this.onTap});
+  const MatchTile({super.key, required this.match, required this.onTap});
 
   @override
-  State<GameHistoryTile> createState() => _GameHistoryTileState();
+  State<MatchTile> createState() => _MatchTileState();
 }
 
-class _GameHistoryTileState extends State<GameHistoryTile> {
+class _MatchTileState extends State<MatchTile> {
   @override
   Widget build(BuildContext context) {
     final group = widget.match.group;
