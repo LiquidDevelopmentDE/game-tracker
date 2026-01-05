@@ -68,7 +68,10 @@
             "type": "string"
           },
           "groupId": {
-            "type": "string"
+            "anyOf": [
+              {"type": "string"},
+              {"type": "null"}
+            ]
           },
           "playerIds": {
             "type": "array",
@@ -77,7 +80,10 @@
             }
           },
           "winnerId": {
-            "type": "string"
+            "anyOf": [
+              {"type": "string"},
+              {"type": "null"}
+            ]
           }
         },
         "required": [
@@ -85,8 +91,7 @@
           "name",
           "createdAt",
           "groupId",
-          "playerIds",
-          "winnerId"
+          "playerIds"
         ]
       }
     }
