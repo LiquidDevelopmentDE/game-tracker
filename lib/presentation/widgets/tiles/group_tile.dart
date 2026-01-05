@@ -56,7 +56,9 @@ class GroupTile extends StatelessWidget {
             spacing: 12.0,
             runSpacing: 8.0,
             children: <Widget>[
-              for (var member in group.members)
+              for (var member in [
+                ...group.members,
+              ]..sort((a, b) => a.name.compareTo(b.name)))
                 TextIconTile(text: member.name, iconEnabled: false),
             ],
           ),
