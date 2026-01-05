@@ -145,11 +145,17 @@ class _MatchResultViewState extends State<MatchResultView> {
   }
 
   List<Player> getAllPlayers(Match match) {
+    List<Player> players = [];
+
     if (match.group == null && match.players != null) {
-      return [...match.players!];
+      players = [...match.players!];
     } else if (match.group != null && match.players != null) {
-      return [...match.players!, ...match.group!.members];
+      players = [...match.players!, ...match.group!.members];
+    } else {
+      players = [...match.group!.members];
     }
-    return [...match.group!.members];
+
+    players.sort((a, b) => a.name.compareTo(b.name));
+    return players;
   }
 }
