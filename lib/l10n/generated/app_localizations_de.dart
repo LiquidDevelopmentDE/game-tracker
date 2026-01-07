@@ -9,22 +9,148 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get choose_group => 'Gruppe wählen';
+  String get all_players => 'Alle Spieler:innen:';
 
   @override
-  String get create_new_match => 'Neues Match erstellen';
+  String get all_players_selected => 'Alle Spieler:innen ausgewählt';
 
   @override
-  String get choose_ruleset => 'Regelwerk wählen';
+  String get amount_of_matches => 'Anzahl der Matches';
+
+  @override
+  String get cancel => 'Abbrechen';
 
   @override
   String get choose_game => 'Spielvorlage wählen';
 
   @override
-  String get select_winner => 'Gewinner:in wählen:';
+  String get choose_group => 'Gruppe wählen';
+
+  @override
+  String get choose_ruleset => 'Regelwerk wählen';
+
+  @override
+  String could_not_add_player(String playerName) {
+    return 'Spieler:in $playerName konnte nicht hinzugefügt werden';
+  }
+
+  @override
+  String get create_group => 'Gruppe erstellen';
+
+  @override
+  String get create_match => 'Match erstellen';
+
+  @override
+  String get create_new_group => 'Neue Gruppe erstellen';
+
+  @override
+  String get create_new_match => 'Neues Match erstellen';
+
+  @override
+  String get data_successfully_deleted => 'Daten erfolgreich gelöscht';
+
+  @override
+  String get data_successfully_exported => 'Daten erfolgreich exportiert';
+
+  @override
+  String get data_successfully_imported => 'Daten erfolgreich importiert';
+
+  @override
+  String days_ago(int count) {
+    return 'vor $count Tagen';
+  }
+
+  @override
+  String get delete => 'Löschen';
+
+  @override
+  String get delete_all_data => 'Alle Daten löschen?';
+
+  @override
+  String get error_creating_group =>
+      'Fehler beim Erstellen der Gruppe, bitte erneut versuchen';
+
+  @override
+  String get error_reading_file => 'Fehler beim Lesen der Datei';
+
+  @override
+  String get export_canceled => 'Export abgebrochen';
+
+  @override
+  String get export_data => 'Daten exportieren';
+
+  @override
+  String get format_exception => 'Formatfehler (siehe Konsole)';
+
+  @override
+  String get game => 'Spielvorlage';
+
+  @override
+  String get game_name => 'Spielvorlagenname';
 
   @override
   String get game_tracker => 'Game Tracker';
+
+  @override
+  String get group => 'Gruppe';
+
+  @override
+  String get group_name => 'Gruppenname';
+
+  @override
+  String get groups => 'Gruppen';
+
+  @override
+  String get home => 'Startseite';
+
+  @override
+  String get import_canceled => 'Import abgebrochen';
+
+  @override
+  String get import_data => 'Daten importieren';
+
+  @override
+  String get info => 'Info';
+
+  @override
+  String get invalid_schema => 'Ungültiges Schema';
+
+  @override
+  String get least_points => 'Niedrigste Punkte';
+
+  @override
+  String get match_in_progress => 'Match läuft...';
+
+  @override
+  String get match_name => 'Matchname';
+
+  @override
+  String get matches => 'Matches';
+
+  @override
+  String get menu => 'Menü';
+
+  @override
+  String get most_points => 'Höchste Punkte';
+
+  @override
+  String get no_data_available => 'Keine Daten verfügbar';
+
+  @override
+  String get no_groups_created_yet => 'Noch keine Gruppen erstellt';
+
+  @override
+  String get no_matches_created_yet => 'Noch keine Matches erstellt';
+
+  @override
+  String get no_players_created_yet => 'Noch keine Spieler:in erstellt';
+
+  @override
+  String get no_players_found_with_that_name =>
+      'Keine Spieler:in mit diesem Namen gefunden';
+
+  @override
+  String get no_players_selected => 'Keine Spieler:in ausgewählt';
 
   @override
   String get no_recent_matches_available => 'Keine letzten Matches verfügbar';
@@ -33,20 +159,61 @@ class AppLocalizationsDe extends AppLocalizations {
   String get no_second_match_available => 'Kein zweites Match verfügbar';
 
   @override
-  String get delete_all_data => 'Alle Daten löschen?';
+  String get no_statistics_available => 'Keine Statistiken verfügbar';
 
   @override
-  String get cancel => 'Abbrechen';
+  String get none => 'Kein';
 
   @override
-  String get delete => 'Löschen';
+  String get none_group => 'Keine';
 
   @override
-  String get create_new_group => 'Neue Gruppe erstellen';
+  String get not_available => 'Nicht verfügbar';
 
   @override
-  String get error_creating_group =>
-      'Fehler beim Erstellen der Gruppe, bitte erneut versuchen';
+  String get player_name => 'Spieler:innenname';
+
+  @override
+  String get players => 'Spieler:in';
+
+  @override
+  String players_count(int count) {
+    return '$count Spieler';
+  }
+
+  @override
+  String get quick_create => 'Schnellzugriff';
+
+  @override
+  String get recent_matches => 'Letzte Matches';
+
+  @override
+  String get ruleset => 'Regelwerk';
+
+  @override
+  String get ruleset_least_points =>
+      'Umgekehrte Wertung: Der/die Spieler:in mit den wenigsten Punkten gewinnt.';
+
+  @override
+  String get ruleset_most_points =>
+      'Traditionelles Regelwerk: Der/die Spieler:in mit den meisten Punkten gewinnt.';
+
+  @override
+  String get ruleset_single_loser =>
+      'Genau ein:e Verlierer:in wird bestimmt; der letzte Platz erhält die Strafe oder Konsequenz.';
+
+  @override
+  String get ruleset_single_winner =>
+      'Genau ein:e Gewinner:in wird gewählt; Unentschieden werden durch einen vordefinierten Tie-Breaker aufgelöst.';
+
+  @override
+  String get search_for_groups => 'Nach Gruppen suchen';
+
+  @override
+  String get search_for_players => 'Nach Spieler:innen suchen';
+
+  @override
+  String get select_winner => 'Gewinner:in wählen:';
 
   @override
   String selected_players(int count) {
@@ -59,171 +226,13 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get no_players_selected => 'Keine Spieler:in ausgewählt';
-
-  @override
-  String get all_players => 'Alle Spieler:innen:';
-
-  @override
-  String successfully_added_player(String playerName) {
-    return 'Spieler:in $playerName erfolgreich hinzugefügt';
-  }
-
-  @override
-  String could_not_add_player(String playerName) {
-    return 'Spieler:in $playerName konnte nicht hinzugefügt werden';
-  }
-
-  @override
-  String winner(String winnerName) {
-    return 'Gewinner:in: $winnerName';
-  }
-
-  @override
-  String get players => 'Spieler:in';
-
-  @override
-  String get no_statistics_available => 'Keine Statistiken verfügbar';
-
-  @override
-  String get no_data_available => 'Keine Daten verfügbar';
-
-  @override
-  String get matches => 'Matches';
-
-  @override
-  String get groups => 'Gruppen';
-
-  @override
-  String get recent_matches => 'Letzte Matches';
-
-  @override
-  String get quick_create => 'Schnellzugriff';
-
-  @override
-  String get match_in_progress => 'Match läuft...';
-
-  @override
-  String get menu => 'Menü';
-
-  @override
   String get settings => 'Einstellungen';
 
   @override
-  String get export_data => 'Daten exportieren';
+  String get single_loser => 'Ein:e Verlierer:in';
 
   @override
-  String get import_data => 'Daten importieren';
-
-  @override
-  String get this_cannot_be_undone =>
-      'Dies kann nicht rückgängig gemacht werden';
-
-  @override
-  String get data_successfully_deleted => 'Daten erfolgreich gelöscht';
-
-  @override
-  String get data_successfully_imported => 'Daten erfolgreich importiert';
-
-  @override
-  String get invalid_schema => 'Ungültiges Schema';
-
-  @override
-  String get error_reading_file => 'Fehler beim Lesen der Datei';
-
-  @override
-  String get import_canceled => 'Import abgebrochen';
-
-  @override
-  String get format_exception => 'Formatfehler (siehe Konsole)';
-
-  @override
-  String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
-
-  @override
-  String get data_successfully_exported => 'Daten erfolgreich exportiert';
-
-  @override
-  String get export_canceled => 'Export abgebrochen';
-
-  @override
-  String get undo => 'Rückgängig';
-
-  @override
-  String get wins => 'Siege';
-
-  @override
-  String get winrate => 'Siegquote';
-
-  @override
-  String get amount_of_matches => 'Anzahl der Matches';
-
-  @override
-  String get info => 'Info';
-
-  @override
-  String get no_groups_created_yet => 'Noch keine Gruppen erstellt';
-
-  @override
-  String get no_players_created_yet => 'Noch keine Spieler:in erstellt';
-
-  @override
-  String get create_group => 'Gruppe erstellen';
-
-  @override
-  String get group_name => 'Gruppenname';
-
-  @override
-  String get player_name => 'Spieler:innenname';
-
-  @override
-  String get no_matches_created_yet => 'Noch keine Matches erstellt';
-
-  @override
-  String get match_name => 'Matchname';
-
-  @override
-  String get game => 'Spielvorlage';
-
-  @override
-  String get ruleset => 'Regelwerk';
-
-  @override
-  String get group => 'Gruppe';
-
-  @override
-  String get none => 'Kein';
-
-  @override
-  String get none_group => 'Keine';
-
-  @override
-  String get create_match => 'Match erstellen';
-
-  @override
-  String get no_players_found_with_that_name =>
-      'Keine Spieler:in mit diesem Namen gefunden';
-
-  @override
-  String get all_players_selected => 'Alle Spieler:innen ausgewählt';
-
-  @override
-  String today_at(String time) {
-    return 'Heute um $time';
-  }
-
-  @override
-  String yesterday_at(String time) {
-    return 'Gestern um $time';
-  }
-
-  @override
-  String days_ago(int count) {
-    return 'vor $count Tagen';
-  }
-
-  @override
-  String get home => 'Startseite';
+  String get single_winner => 'Ein:e Gewinner:in';
 
   @override
   String get statistics => 'Statistiken';
@@ -232,8 +241,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get stats => 'Statistiken';
 
   @override
-  String players_count(int count) {
-    return '$count Spieler';
+  String successfully_added_player(String playerName) {
+    return 'Spieler:in $playerName erfolgreich hinzugefügt';
   }
 
   @override
@@ -241,42 +250,33 @@ class AppLocalizationsDe extends AppLocalizations {
       'Es gibt keine Gruppe, die deiner Suche entspricht';
 
   @override
-  String get game_name => 'Spielvorlagenname';
+  String get this_cannot_be_undone =>
+      'Dies kann nicht rückgängig gemacht werden';
 
   @override
-  String get ruleset_single_winner =>
-      'Genau ein:e Gewinner:in wird gewählt; Unentschieden werden durch einen vordefinierten Tie-Breaker aufgelöst.';
+  String today_at(String time) {
+    return 'Heute um $time';
+  }
 
   @override
-  String get ruleset_single_loser =>
-      'Genau ein:e Verlierer:in wird bestimmt; der letzte Platz erhält die Strafe oder Konsequenz.';
+  String get undo => 'Rückgängig';
 
   @override
-  String get ruleset_most_points =>
-      'Traditionelles Regelwerk: Der/die Spieler:in mit den meisten Punkten gewinnt.';
+  String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
 
   @override
-  String get ruleset_least_points =>
-      'Umgekehrte Wertung: Der/die Spieler:in mit den wenigsten Punkten gewinnt.';
+  String winner(Object winnerName) {
+    return 'Gewinner:in: $winnerName';
+  }
 
   @override
-  String get single_winner => 'Ein:e Gewinner:in';
+  String get winrate => 'Siegquote';
 
   @override
-  String get single_loser => 'Ein:e Verlierer:in';
+  String get wins => 'Siege';
 
   @override
-  String get most_points => 'Höchste Punkte';
-
-  @override
-  String get least_points => 'Niedrigste Punkte';
-
-  @override
-  String get search_for_players => 'Nach Spieler:innen suchen';
-
-  @override
-  String get search_for_groups => 'Nach Gruppen suchen';
-
-  @override
-  String get not_available => 'Nicht verfügbar';
+  String yesterday_at(String time) {
+    return 'Gestern um $time';
+  }
 }
