@@ -99,7 +99,7 @@ class _MatchTileState extends State<MatchTile> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        "${loc.winner}: ${winner.name}",
+                        '${loc.winner}: ${winner.name}',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
