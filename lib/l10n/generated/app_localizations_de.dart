@@ -15,7 +15,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get all_players_selected => 'Alle Spieler:innen ausgewählt';
 
   @override
-  String get amount_of_matches => 'Anzahl der Matches';
+  String get amount_of_matches => 'Anzahl der Spiele';
 
   @override
   String get cancel => 'Abbrechen';
@@ -38,13 +38,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_group => 'Gruppe erstellen';
 
   @override
-  String get create_match => 'Match erstellen';
+  String get create_match => 'Spiel erstellen';
 
   @override
   String get create_new_group => 'Neue Gruppe erstellen';
 
   @override
-  String get create_new_match => 'Neues Match erstellen';
+  String get create_new_match => 'Neues Spiel erstellen';
 
   @override
   String get data_successfully_deleted => 'Daten erfolgreich gelöscht';
@@ -119,13 +119,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get least_points => 'Niedrigste Punkte';
 
   @override
-  String get match_in_progress => 'Match läuft...';
+  String get match_in_progress => 'Spiel läuft...';
 
   @override
-  String get match_name => 'Matchname';
+  String get match_name => 'Spieltitel';
 
   @override
-  String get matches => 'Matches';
+  String get matches => 'Spiele';
 
   @override
   String get menu => 'Menü';
@@ -140,7 +140,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get no_groups_created_yet => 'Noch keine Gruppen erstellt';
 
   @override
-  String get no_matches_created_yet => 'Noch keine Matches erstellt';
+  String get no_matches_created_yet => 'Noch keine Spiele erstellt';
 
   @override
   String get no_players_created_yet => 'Noch keine Spieler:in erstellt';
@@ -153,10 +153,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get no_players_selected => 'Keine Spieler:in ausgewählt';
 
   @override
-  String get no_recent_matches_available => 'Keine letzten Matches verfügbar';
+  String get no_recent_matches_available => 'Keine letzten Spiele verfügbar';
 
   @override
-  String get no_second_match_available => 'Kein zweites Match verfügbar';
+  String get no_second_match_available => 'Kein zweites Spiel verfügbar';
 
   @override
   String get no_statistics_available => 'Keine Statistiken verfügbar';
@@ -174,7 +174,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get player_name => 'Spieler:innenname';
 
   @override
-  String get players => 'Spieler:in';
+  String get players => 'Spieler:innen';
 
   @override
   String players_count(int count) {
@@ -185,7 +185,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get quick_create => 'Schnellzugriff';
 
   @override
-  String get recent_matches => 'Letzte Matches';
+  String get recent_matches => 'Letzte Spiele';
 
   @override
   String get ruleset => 'Regelwerk';
@@ -222,7 +222,7 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     final String countString = countNumberFormat.format(count);
 
-    return 'Ausgewählte Spieler:in: $countString';
+    return 'Ausgewählte Spieler:innen: $countString';
   }
 
   @override
@@ -265,9 +265,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
 
   @override
-  String winner(Object winnerName) {
-    return 'Gewinner:in: $winnerName';
-  }
+  String get winner => 'Gewinner*in';
 
   @override
   String get winrate => 'Siegquote';

@@ -564,7 +564,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Winner'**
-  String winner(Object winnerName);
+  String get winner;
 
   /// Label for winrate statistic
   ///
