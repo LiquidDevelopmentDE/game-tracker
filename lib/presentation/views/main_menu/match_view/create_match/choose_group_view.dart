@@ -136,8 +136,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
     );
   }
 
-  /// Filters the groups based on the search query.
-  /// TODO: Maybe implement also targetting player names?
+  /// Filters the groups based on the search [query].
   void filterGroups(String query) {
     setState(() {
       if (query.isEmpty) {

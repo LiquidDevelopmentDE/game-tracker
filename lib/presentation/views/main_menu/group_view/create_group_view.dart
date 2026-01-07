@@ -18,15 +18,17 @@ class CreateGroupView extends StatefulWidget {
 }
 
 class _CreateGroupViewState extends State<CreateGroupView> {
-  final _groupNameController = TextEditingController();
   late final AppDatabase db;
 
+  /// Controller for the group name input field
+  final _groupNameController = TextEditingController();
+
+  /// List of currently selected players
   List<Player> selectedPlayers = [];
 
   @override
   void initState() {
     super.initState();
-
     db = Provider.of<AppDatabase>(context, listen: false);
     _groupNameController.addListener(() {
       setState(() {});

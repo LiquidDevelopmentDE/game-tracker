@@ -17,7 +17,10 @@ class CustomNavigationBar extends StatefulWidget {
 
 class _CustomNavigationBarState extends State<CustomNavigationBar>
     with SingleTickerProviderStateMixin {
+  /// Currently selected tab index
   int currentIndex = 0;
+
+  /// Key count to force rebuild of tab views
   int tabKeyCount = 0;
 
   @override
@@ -119,12 +122,14 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     );
   }
 
+  /// Handles tab tap events. Updates the current [index] state.
   void onTabTapped(int index) {
     setState(() {
       currentIndex = index;
     });
   }
 
+  /// Returns the title of the current tab based on [currentIndex].
   String _currentTabTitle(context) {
     final loc = AppLocalizations.of(context);
     switch (currentIndex) {

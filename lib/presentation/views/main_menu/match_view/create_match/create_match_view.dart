@@ -26,7 +26,6 @@ class CreateMatchView extends StatefulWidget {
 }
 
 class _CreateMatchViewState extends State<CreateMatchView> {
-  /// Reference to the app database
   late final AppDatabase db;
 
   /// Controller for the match name input field

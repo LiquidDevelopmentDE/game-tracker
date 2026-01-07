@@ -19,6 +19,7 @@ class ChooseRulesetView extends StatefulWidget {
 }
 
 class _ChooseRulesetViewState extends State<ChooseRulesetView> {
+  /// Currently selected ruleset index
   late int selectedRulesetIndex;
 
   @override

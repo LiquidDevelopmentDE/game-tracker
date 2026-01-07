@@ -21,9 +21,17 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool isLoading = true;
+
+  /// Amount of matches in the database
   int matchCount = 0;
+
+  /// Amount of groups in the database
   int groupCount = 0;
+
+  /// Loaded recent matches from the database
   List<Match> loadedRecentMatches = [];
+
+  /// Recent matches to display, initially filled with skeleton matches
   List<Match> recentMatches = List.filled(
     2,
     Match(
@@ -42,32 +50,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    final db = Provider.of<AppDatabase>(context, listen: false);
-    Future.wait([
-      db.matchDao.getMatchCount(),
-      db.groupDao.getGroupCount(),
-      db.matchDao.getAllMatches(),
-      Future.delayed(Constants.minimumSkeletonDuration),
-    ]).then((results) {
-      matchCount = results[0] as int;
-      groupCount = results[1] as int;
-      loadedRecentMatches = results[2] as List<Match>;
-      recentMatches =
-          (loadedRecentMatches
-                ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
-              .take(2)
-              .toList();
-      if (loadedRecentMatches.length < 2) {
-        recentMatches.add(
-          Match(name: 'Dummy Match', winner: null, group: null, players: null),
-        );
-      }
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    });
+    loadHomeViewData();
   }
 
   @override
@@ -230,6 +213,40 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  /// Loads the data for the HomeView from the database.
+  /// This includes the match count, group count, and recent matches.
+  void loadHomeViewData() {
+    final db = Provider.of<AppDatabase>(context, listen: false);
+    Future.wait([
+      db.matchDao.getMatchCount(),
+      db.groupDao.getGroupCount(),
+      db.matchDao.getAllMatches(),
+      Future.delayed(Constants.minimumSkeletonDuration),
+    ]).then((results) {
+      matchCount = results[0] as int;
+      groupCount = results[1] as int;
+      loadedRecentMatches = results[2] as List<Match>;
+      recentMatches =
+          (loadedRecentMatches
+                ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
+              .take(2)
+              .toList();
+      if (loadedRecentMatches.length < 2) {
+        recentMatches.add(
+          Match(name: 'Dummy Match', winner: null, group: null, players: null),
+        );
+      }
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
+  }
+
+  /// Generates a text representation of the players in the match.
+  /// If the match has a group, it returns the group name and the number of additional players.
+  /// If there is no group, it returns the count of players.
   String _getPlayerText(Match game, context) {
     final loc = AppLocalizations.of(context);
     if (game.group == null) {

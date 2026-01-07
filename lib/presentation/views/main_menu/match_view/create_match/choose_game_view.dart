@@ -20,9 +20,11 @@ class ChooseGameView extends StatefulWidget {
 }
 
 class _ChooseGameViewState extends State<ChooseGameView> {
-  late int selectedGameIndex;
-
+  /// Controller for the search bar
   final TextEditingController searchBarController = TextEditingController();
+
+  /// Currently selected game index
+  late int selectedGameIndex;
 
   @override
   void initState() {
