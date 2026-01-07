@@ -32,7 +32,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   final TextEditingController _matchNameController = TextEditingController();
 
   /// Hint text for the match name input field
-  String hintText = 'Match Name';
+  String? hintText;
 
   /// List of all groups from the database
   List<Group> groupsList = [];
@@ -101,6 +101,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final loc = AppLocalizations.of(context);
+    hintText ??= loc.match_name;
     _rulesets = [
       (Ruleset.singleWinner, loc.ruleset_single_winner),
       (Ruleset.singleLoser, loc.ruleset_single_loser),
@@ -137,7 +138,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: TextInputField(
                 controller: _matchNameController,
-                hintText: hintText,
+                hintText: hintText ?? '',
               ),
             ),
             ChooseTile(
@@ -162,7 +163,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                       (r) => r.$1 == selectedRuleset,
                     );
                   } else {
-                    hintText = 'Match Name';
+                    hintText = AppLocalizations.of(context).match_name;
                     selectedRuleset = null;
                   }
                 });
@@ -237,7 +238,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   ? () async {
                       Match match = Match(
                         name: _matchNameController.text.isEmpty
-                            ? hintText
+                            ? (hintText ?? '')
                             : _matchNameController.text.trim(),
                         createdAt: DateTime.now(),
                         group: selectedGroup,
@@ -265,8 +266,11 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     );
   }
 
-  /// Determines whether the "Create Game" button should be enabled based on
-  /// the current state of the input fields.
+  /// Determines whether the "Create Match" button should be enabled.
+  ///
+  /// Returns `true` if:
+  /// - A ruleset is selected AND
+  /// - Either a group is selected OR at least 2 players are selected
   bool _enableCreateGameButton() {
     return (selectedGroup != null ||
             (selectedPlayers != null && selectedPlayers!.length > 1)) &&
