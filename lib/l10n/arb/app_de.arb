@@ -52,7 +52,7 @@
   "none_group": "Keine",
   "not_available": "Nicht verfügbar",
   "player_name": "Spieler:innenname",
-  "players": "Spieler:in",
+  "players": "Spieler:innen",
   "players_count": "{count} Spieler",
   "quick_create": "Schnellzugriff",
   "recent_matches": "Letzte Spiele",
@@ -76,7 +76,7 @@
   "today_at": "Heute um {time}",
   "undo": "Rückgängig",
   "unknown_exception": "Unbekannter Fehler (siehe Konsole)",
-  "winner": "Gewinner:in: {winnerName}",
+  "winner": "Gewinner*in",
   "winrate": "Siegquote",
   "wins": "Siege",
   "yesterday_at": "Gestern um {time}"
