@@ -90,15 +90,9 @@
       }
     }
   },
-  "winner": "Winner: {winnerName}",
+  "winner": "Winner",
   "@winner": {
-    "description": "Shows the winner's name",
-    "placeholders": {
-      "winnerName": {
-        "type": "String",
-        "example": "John"
-      }
-    }
+    "description": "Winner label",
   },
   "players": "Players",
   "@players": {
