@@ -64,9 +64,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
               child: TextInputField(
                 controller: _groupNameController,
                 hintText: loc.group_name,
-                onChanged: (value) {
-                  setState(() {});
-                },
               ),
             ),
             Expanded(
@@ -111,7 +108,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           ),
                         );
                       }
-                      setState(() {});
                     },
             ),
             const SizedBox(height: 20),
