@@ -76,7 +76,7 @@
   "today_at": "Heute um {time}",
   "undo": "Rückgängig",
   "unknown_exception": "Unbekannter Fehler (siehe Konsole)",
-  "winner": "Gewinner*in",
+  "winner": "Gewinner:in",
   "winrate": "Siegquote",
   "wins": "Siege",
   "yesterday_at": "Gestern um {time}"
