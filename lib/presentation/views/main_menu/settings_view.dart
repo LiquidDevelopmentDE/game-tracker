@@ -58,7 +58,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   SettingsListTile(
                     title: loc.export_data,
-                    icon: Icons.upload_outlined,
+                    icon: Icons.upload_rounded,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
                       final String json =
@@ -73,7 +73,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   SettingsListTile(
                     title: loc.import_data,
-                    icon: Icons.download_outlined,
+                    icon: Icons.download_rounded,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
                       final result = await DataTransferService.importData(
@@ -85,7 +85,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   SettingsListTile(
                     title: loc.delete_all_data,
-                    icon: Icons.download_outlined,
+                    icon: Icons.delete_rounded,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
                       showDialog<bool>(
