@@ -2,178 +2,103 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "games": {
+    "players": {
       "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "createdAt": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "players": {
-              "type": [
-                "array",
-                "null"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "id",
-                "createdAt",
-                "name"
-              ]
-            }
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
           },
-          "group": {
-            "type": [
-              "object",
-              "null"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "members": {
-                "type": "array",
-                "items": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "createdAt": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "id",
-                      "createdAt",
-                      "name"
-                    ]
-                  }
-                ]
-              }
-            },
-            "required": [
-              "id",
-              "createdAt",
-              "name",
-              "members"
-            ]
+          "createdAt": {
+            "type": "string"
           },
-          "winner": {
-            "type": ["object","null"]
-          },
-          "required": [
-            "id",
-            "createdAt",
-            "name"
-          ]
-        }
-      ]
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "name"
+        ]
+      }
     },
     "groups": {
       "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "createdAt": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "members": {
-              "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "createdAt": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "createdAt",
-                    "name"
-                  ]
-                }
-              ]
-            }
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
           },
-          "required": [
-            "id",
-            "createdAt",
-            "name",
-            "members"
-          ]
-        }
-      ]
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "memberIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "memberIds"
+        ]
+      }
     },
-    "players": {
+    "matches": {
       "type": "array",
-      "items": [
-        {
-          "type": [
-            "object",
-            "null"
-          ],
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "createdAt": {
-              "type": "string"
-            },
-            "name": {
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "groupId": {
+            "anyOf": [
+              {"type": "string"},
+              {"type": "null"}
+            ]
+          },
+          "playerIds": {
+            "type": "array",
+            "items": {
               "type": "string"
             }
           },
-          "required": [
-            "id",
-            "createdAt",
-            "name"
-          ]
-        }
-      ]
+          "winnerId": {
+            "anyOf": [
+              {"type": "string"},
+              {"type": "null"}
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "groupId",
+          "playerIds"
+        ]
+      }
     }
-  }
+  },
+  "required": [
+    "players",
+    "groups",
+    "matches"
+  ]
 }
-

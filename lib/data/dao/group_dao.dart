@@ -95,6 +95,8 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
       }
 
       // Insert unique groups in batch
+      // Using insertOrIgnore to avoid triggering cascade deletes on
+      // player_group associations when groups already exist
       await db.batch(
         (b) => b.insertAll(
           groupTable,
@@ -107,7 +109,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
                 ),
               )
               .toList(),
-          mode: InsertMode.insertOrReplace,
+          mode: InsertMode.insertOrIgnore,
         ),
       );
 
@@ -120,6 +122,8 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
       }
 
       if (uniquePlayers.isNotEmpty) {
+        // Using insertOrIgnore to avoid triggering cascade deletes on
+        // player_group associations when players already exist
         await db.batch(
           (b) => b.insertAll(
             db.playerTable,
@@ -132,7 +136,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
                   ),
                 )
                 .toList(),
-            mode: InsertMode.insertOrReplace,
+            mode: InsertMode.insertOrIgnore,
           ),
         );
       }

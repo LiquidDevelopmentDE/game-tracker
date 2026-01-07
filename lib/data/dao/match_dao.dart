@@ -124,6 +124,8 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       );
 
       // Add all groups of the matches in batch
+      // Using insertOrIgnore to avoid overwriting existing groups (which would
+      // trigger cascade deletes on player_group associations)
       await db.batch(
         (b) => b.insertAll(
           db.groupTable,
@@ -137,7 +139,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                 ),
               )
               .toList(),
-          mode: InsertMode.insertOrReplace,
+          mode: InsertMode.insertOrIgnore,
         ),
       );
 
@@ -158,6 +160,8 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       }
 
       if (uniquePlayers.isNotEmpty) {
+        // Using insertOrIgnore to avoid triggering cascade deletes on
+        // player_group/player_match associations when players already exist
         await db.batch(
           (b) => b.insertAll(
             db.playerTable,
@@ -170,7 +174,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                   ),
                 )
                 .toList(),
-            mode: InsertMode.insertOrReplace,
+            mode: InsertMode.insertOrIgnore,
           ),
         );
       }
