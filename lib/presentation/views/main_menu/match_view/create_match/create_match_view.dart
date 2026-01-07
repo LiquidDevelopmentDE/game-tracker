@@ -67,6 +67,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// The currently selected players
   List<Player>? selectedPlayers;
 
+  /// List of available rulesets with their localized string representations
+  late final List<(Ruleset, String)> _rulesets;
+
   @override
   void initState() {
     super.initState();
@@ -88,9 +91,11 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     });
   }
 
-  List<(Ruleset, String)> _getRulesets(BuildContext context) {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final loc = AppLocalizations.of(context);
-    return [
+    _rulesets = [
       (Ruleset.singleWinner, loc.ruleset_single_winner),
       (Ruleset.singleLoser, loc.ruleset_single_loser),
       (Ruleset.mostPoints, loc.ruleset_most_points),
@@ -147,9 +152,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   if (selectedGameIndex != -1) {
                     hintText = games[selectedGameIndex].$1;
                     selectedRuleset = games[selectedGameIndex].$3;
-                    selectedRulesetIndex = _getRulesets(
-                      context,
-                    ).indexWhere((r) => r.$1 == selectedRuleset);
+                    selectedRulesetIndex = _rulesets.indexWhere(
+                      (r) => r.$1 == selectedRuleset,
+                    );
                   } else {
                     hintText = 'Match Name';
                     selectedRuleset = null;
@@ -163,17 +168,16 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   ? loc.none
                   : translateRulesetToString(selectedRuleset!, context),
               onPressed: () async {
-                final rulesets = _getRulesets(context);
                 selectedRuleset = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChooseRulesetView(
-                      rulesets: rulesets,
+                      rulesets: _rulesets,
                       initialRulesetIndex: selectedRulesetIndex,
                     ),
                   ),
                 );
                 if (!mounted) return;
-                selectedRulesetIndex = rulesets.indexWhere(
+                selectedRulesetIndex = _rulesets.indexWhere(
                   (r) => r.$1 == selectedRuleset,
                 );
                 selectedGameIndex = -1;
