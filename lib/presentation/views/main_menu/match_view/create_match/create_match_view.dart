@@ -92,6 +92,12 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   }
 
   @override
+  void dispose() {
+    _matchNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final loc = AppLocalizations.of(context);
@@ -262,8 +268,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Determines whether the "Create Game" button should be enabled based on
   /// the current state of the input fields.
   bool _enableCreateGameButton() {
-    return selectedGroup != null ||
-        (selectedPlayers != null && selectedPlayers!.length > 1) &&
-            selectedRuleset != null;
+    return (selectedGroup != null ||
+            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
+        selectedRuleset != null;
   }
 }
