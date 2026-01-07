@@ -31,9 +31,25 @@ class DataTransferService {
 
     // Construct a JSON representation of the data
     final Map<String, dynamic> jsonMap = {
-      'matches': matches.map((match) => match.toJson()).toList(),
-      'groups': groups.map((group) => group.toJson()).toList(),
-      'players': players.map((player) => player.toJson()).toList(),
+      'players': players.map((p) => p.toJson()).toList(),
+
+      'groups': groups
+          .map((g) => {
+        'id': g.id,
+        'name': g.name,
+        'createdAt': g.createdAt.toIso8601String(),
+        'memberIds': (g.members).map((m) => m.id).toList(),
+      }).toList(),
+
+      'matches': matches
+          .map((m) => {
+        'id': m.id,
+        'name': m.name,
+        'createdAt': m.createdAt.toIso8601String(),
+        'groupId': m.group?.id,
+        'playerIds': (m.players ?? []).map((p) => p.id).toList(),
+        'winnerId': m.winner?.id,
+      }).toList(),
     };
 
     return json.encode(jsonMap);
@@ -46,7 +62,7 @@ class DataTransferService {
   /// [fileName] The desired name for the exported file (without extension).
   static Future<ExportResult> exportData(
     String jsonString,
-    String fileName,
+    String fileName
   ) async {
     try {
       final bytes = Uint8List.fromList(utf8.encode(jsonString));
@@ -54,11 +70,13 @@ class DataTransferService {
         fileName: '$fileName.json',
         bytes: bytes,
       );
+
       if (path == null) {
         return ExportResult.canceled;
       } else {
         return ExportResult.success;
       }
+
     } catch (e, stack) {
       print('[exportData] $e');
       print(stack);
@@ -81,42 +99,77 @@ class DataTransferService {
 
     try {
       final jsonString = await _readFileContent(path.files.single);
-      if (jsonString == null) {
-        return ImportResult.fileReadError;
-      }
+      if (jsonString == null) return ImportResult.fileReadError;
 
-      if (await _validateJsonSchema(jsonString)) {
-        final Map<String, dynamic> jsonData =
-            json.decode(jsonString) as Map<String, dynamic>;
+      final isValid = await _validateJsonSchema(jsonString);
+      if (!isValid) return ImportResult.invalidSchema;
 
-        final List<dynamic>? matchesJson =
-            jsonData['matches'] as List<dynamic>?;
-        final List<dynamic>? groupsJson = jsonData['groups'] as List<dynamic>?;
-        final List<dynamic>? playersJson =
-            jsonData['players'] as List<dynamic>?;
+      final Map<String, dynamic> decoded = json.decode(jsonString) as Map<String, dynamic>;
 
-        final List<Match> importedMatches =
-            matchesJson
-                ?.map((g) => Match.fromJson(g as Map<String, dynamic>))
-                .toList() ??
-            [];
-        final List<Group> importedGroups =
-            groupsJson
-                ?.map((g) => Group.fromJson(g as Map<String, dynamic>))
-                .toList() ??
-            [];
-        final List<Player> importedPlayers =
-            playersJson
-                ?.map((p) => Player.fromJson(p as Map<String, dynamic>))
-                .toList() ??
-            [];
+      final List<dynamic> playersJson = (decoded['players'] as List<dynamic>?) ?? [];
+      final List<dynamic> groupsJson = (decoded['groups'] as List<dynamic>?) ?? [];
+      final List<dynamic> matchesJson = (decoded['matches'] as List<dynamic>?) ?? [];
 
-        await db.playerDao.addPlayersAsList(players: importedPlayers);
-        await db.groupDao.addGroupsAsList(groups: importedGroups);
-        await db.matchDao.addMatchAsList(matches: importedMatches);
-      } else {
-        return ImportResult.invalidSchema;
-      }
+      // Players
+      final List<Player> importedPlayers = playersJson
+          .map((p) => Player.fromJson(p as Map<String, dynamic>))
+          .toList();
+
+      final Map<String, Player> playerById = {
+        for (final p in importedPlayers) p.id: p,
+      };
+
+      // Groups
+      final List<Group> importedGroups = groupsJson.map((g) {
+        final map = g as Map<String, dynamic>;
+        final memberIds = (map['memberIds'] as List<dynamic>? ?? []).cast<String>();
+
+        final members = memberIds
+            .map((id) => playerById[id])
+            .whereType<Player>()
+            .toList();
+
+        return Group(
+          id: map['id'] as String,
+          name: map['name'] as String,
+          members: members,
+          createdAt: DateTime.parse(map['createdAt'] as String),
+        );
+      }).toList();
+
+      final Map<String, Group> groupById = {
+        for (final g in importedGroups) g.id: g,
+      };
+
+      // Matches
+      final List<Match> importedMatches = matchesJson.map((m) {
+        final map = m as Map<String, dynamic>;
+
+        final String? groupId = map['groupId'] as String?;
+        final List<String> playerIds = (map['playerIds'] as List<dynamic>? ?? []).cast<String>();
+        final String? winnerId = map['winnerId'] as String?;
+
+        final group = (groupId == null) ? null : groupById[groupId];
+        final players = playerIds
+            .map((id) => playerById[id])
+            .whereType<Player>()
+            .toList();
+        final winner = (winnerId == null) ? null : playerById[winnerId];
+
+        return Match(
+          id: map['id'] as String,
+          name: map['name'] as String,
+          group: group,
+          players: players,
+          createdAt: DateTime.parse(map['createdAt'] as String),
+          winner: winner,
+        );
+      }).toList();
+
+      await db.playerDao.addPlayersAsList(players: importedPlayers);
+      await db.groupDao.addGroupsAsList(groups: importedGroups);
+      await db.matchDao.addMatchAsList(matches: importedMatches);
+
       return ImportResult.success;
     } on FormatException catch (e, stack) {
       print('[importData] FormatException');
