@@ -104,8 +104,7 @@ class DataTransferService {
       final isValid = await _validateJsonSchema(jsonString);
       if (!isValid) return ImportResult.invalidSchema;
 
-      final dynamic decoded = json.decode(jsonString);
-      if (decoded is! Map<String, dynamic>) return ImportResult.invalidSchema;
+      final Map<String, dynamic> decoded = json.decode(jsonString) as Map<String, dynamic>;
 
       final List<dynamic> playersJson = (decoded['players'] as List<dynamic>?) ?? [];
       final List<dynamic> groupsJson = (decoded['groups'] as List<dynamic>?) ?? [];
