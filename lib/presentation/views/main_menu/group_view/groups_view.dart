@@ -101,7 +101,7 @@ class _GroupsViewState extends State<GroupsView> {
   void loadGroups() {
     Future.wait([
       db.groupDao.getAllGroups(),
-      Future.delayed(minimumSkeletonDuration),
+      Future.delayed(Constants.minimumSkeletonDuration),
     ]).then((results) {
       loadedGroups = results[0] as List<Group>;
       setState(() {

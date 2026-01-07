@@ -47,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
       db.matchDao.getMatchCount(),
       db.groupDao.getGroupCount(),
       db.matchDao.getAllMatches(),
-      Future.delayed(minimumSkeletonDuration),
+      Future.delayed(Constants.minimumSkeletonDuration),
     ]).then((results) {
       matchCount = results[0] as int;
       groupCount = results[1] as int;
