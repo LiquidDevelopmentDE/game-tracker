@@ -38,8 +38,6 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -52,11 +50,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
             );
           },
         ),
-        title: Text(
-          loc.choose_group,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+        title: Text(loc.choose_group),
       ),
       body: PopScope(
         // This fixes that the Android Back Gesture didn't return the

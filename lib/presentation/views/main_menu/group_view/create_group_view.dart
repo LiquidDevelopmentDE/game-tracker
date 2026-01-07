@@ -46,15 +46,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
-        title: Text(
-          loc.create_new_group,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(loc.create_new_group)),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

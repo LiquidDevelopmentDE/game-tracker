@@ -37,8 +37,6 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
       child: Scaffold(
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(
-          backgroundColor: CustomTheme.backgroundColor,
-          scrolledUnderElevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
@@ -49,11 +47,7 @@ class _ChooseRulesetViewState extends State<ChooseRulesetView> {
               );
             },
           ),
-          title: Text(
-            loc.choose_ruleset,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+          title: Text(loc.choose_ruleset),
         ),
         body: PopScope(
           // This fixes that the Android Back Gesture didn't return the

@@ -25,10 +25,13 @@ class CustomTheme {
     backgroundColor: backgroundColor,
     foregroundColor: Colors.white,
     elevation: 0,
+    scrolledUnderElevation: 0,
+    centerTitle: true,
     titleTextStyle: const TextStyle(
       color: Colors.white,
       fontSize: 20,
       fontWeight: FontWeight.bold,
+      overflow: TextOverflow.ellipsis,
     ),
     iconTheme: const IconThemeData(color: Colors.white),
   );

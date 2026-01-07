@@ -51,17 +51,7 @@ class _MatchResultViewState extends State<MatchResultView> {
             Navigator.of(context).pop();
           },
         ),
-        backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
-        title: Text(
-          widget.match.name,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        centerTitle: true,
+        title: Text(widget.match.name),
       ),
       body: SafeArea(
         child: Column(
