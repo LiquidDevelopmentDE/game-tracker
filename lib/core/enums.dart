@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 
 /// Button types used for styling the [CustomWidthButton]
+/// - [ButtonType.primary]: Primary button style.
+/// - [ButtonType.secondary]: Secondary button style.
+/// - [ButtonType.tertiary]: Tertiary button style.
 enum ButtonType { primary, secondary, tertiary }
 
 /// Result types for import operations in the [SettingsView]

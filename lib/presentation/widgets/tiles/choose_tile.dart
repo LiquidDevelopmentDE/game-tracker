@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
+/// A tile widget that allows users to choose an option by tapping on it.
+/// - [title]: The title text displayed on the tile.
+/// - [trailingText]: Optional trailing text displayed on the tile.
+/// - [onPressed]: The callback invoked when the tile is tapped.
 class ChooseTile extends StatefulWidget {
-  final String title;
-  final VoidCallback? onPressed;
-  final String? trailingText;
   const ChooseTile({
     super.key,
     required this.title,
     this.trailingText,
     this.onPressed,
   });
+
+  /// The title text displayed on the tile.
+  final String title;
+
+  /// The callback invoked when the tile is tapped.
+  final VoidCallback? onPressed;
+
+  /// Optional trailing text displayed on the tile.
+  final String? trailingText;
 
   @override
   State<ChooseTile> createState() => _ChooseTileState();

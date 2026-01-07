@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
+/// A list tile widget that displays a title and description, with optional highlighting and badge.
+/// - [title]: The title text displayed on the tile.
+/// - [description]: The description text displayed below the title.
+/// - [onPressed]: The callback invoked when the tile is tapped.
+/// - [isHighlighted]: A boolean to determine if the tile should be highlighted.
+/// - [badgeText]: Optional text to display in a badge on the right side of the title.
+/// - [badgeColor]: Optional color for the badge background.
 class TitleDescriptionListTile extends StatelessWidget {
-  final String title;
-  final String description;
-  final VoidCallback? onPressed;
-  final bool isHighlighted;
-  final String? badgeText;
-  final Color? badgeColor;
-
   const TitleDescriptionListTile({
     super.key,
     required this.title,
@@ -18,6 +18,24 @@ class TitleDescriptionListTile extends StatelessWidget {
     this.badgeText,
     this.badgeColor,
   });
+
+  /// The title text displayed on the tile.
+  final String title;
+
+  /// The description text displayed below the title.
+  final String description;
+
+  /// The callback invoked when the tile is tapped.
+  final VoidCallback? onPressed;
+
+  /// A boolean to determine if the tile should be highlighted.
+  final bool isHighlighted;
+
+  /// Optional text to display in a badge on the right side of the title.
+  final String? badgeText;
+
+  /// Optional color for the badge background.
+  final Color? badgeColor;
 
   @override
   Widget build(BuildContext context) {
