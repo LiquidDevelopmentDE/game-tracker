@@ -3,6 +3,7 @@ import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_list_tile.dart';
@@ -86,6 +87,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -96,7 +98,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           CustomSearchBar(
             controller: _searchBarController,
             constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
-            hintText: 'Search for players',
+            hintText: loc.search_for_players,
             trailingButtonShown: true,
             trailingButtonicon: Icons.add_circle,
             trailingButtonEnabled: _searchBarController.text.trim().isNotEmpty,
@@ -129,14 +131,16 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
           const SizedBox(height: 10),
           Text(
-            'Selected players: (${selectedPlayers.length})',
+            AppLocalizations.of(
+              context,
+            ).selected_players(selectedPlayers.length),
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           SizedBox(
             height: 50,
             child: selectedPlayers.isEmpty
-                ? const Center(child: Text('No players selected'))
+                ? Center(child: Text(loc.no_players_selected))
                 : SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -177,9 +181,9 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                   ),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'All players:',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Text(
+            loc.all_players,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Expanded(
@@ -189,8 +193,8 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                 visible: suggestedPlayers.isNotEmpty,
                 replacement: TopCenteredMessage(
                   icon: Icons.info,
-                  title: 'Info',
-                  message: _getInfoText(),
+                  title: loc.info,
+                  message: _getInfoText(context),
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -227,6 +231,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   /// Shows a snackbar indicating success or failure.
   /// [context] - BuildContext to show the snackbar.
   void addNewPlayerFromSearch({required BuildContext context}) async {
+    final loc = AppLocalizations.of(context);
     String playerName = _searchBarController.text.trim();
     Player createdPlayer = Player(name: playerName);
     bool success = await db.playerDao.addPlayer(player: createdPlayer);
@@ -246,7 +251,9 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           backgroundColor: CustomTheme.boxColor,
           content: Center(
             child: Text(
-              'Successfully added player $playerName.',
+              AppLocalizations.of(
+                context,
+              ).successfully_added_player(playerName),
               style: const TextStyle(color: Colors.white),
             ),
           ),
@@ -258,7 +265,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           backgroundColor: CustomTheme.boxColor,
           content: Center(
             child: Text(
-              'Could not add player $playerName.',
+              loc.could_not_add_player(playerName),
               style: const TextStyle(color: Colors.white),
             ),
           ),
@@ -269,18 +276,19 @@ class _PlayerSelectionState extends State<PlayerSelection> {
 
   /// Determines the appropriate info text to display when no players
   /// are available in the suggested players list.
-  String _getInfoText() {
+  String _getInfoText(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     if (allPlayers.isEmpty) {
       // No players exist in the database
-      return 'No players created yet';
+      return loc.no_players_created_yet;
     } else if (selectedPlayers.length == allPlayers.length ||
         widget.availablePlayers?.isEmpty == true) {
       // All players have been selected or
       // available players list is provided but empty
-      return 'No more players to add';
+      return loc.all_players_selected;
     } else {
       // No players match the search query
-      return 'No players found with that name';
+      return loc.no_players_found_with_that_name;
     }
   }
 }

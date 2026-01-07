@@ -3,6 +3,7 @@ import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/tiles/statistics_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
@@ -24,6 +25,7 @@ class _StatisticsViewState extends State<StatisticsView> {
   @override
   void initState() {
     super.initState();
+
     final db = Provider.of<AppDatabase>(context, listen: false);
 
     Future.wait([
@@ -31,21 +33,25 @@ class _StatisticsViewState extends State<StatisticsView> {
       db.playerDao.getAllPlayers(),
       Future.delayed(minimumSkeletonDuration),
     ]).then((results) async {
+      if (!mounted) return;
       final matches = results[0] as List<Match>;
       final players = results[1] as List<Player>;
-      winCounts = _calculateWinsForAllPlayers(matches, players);
-      matchCounts = _calculateMatchAmountsForAllPlayers(matches, players);
+      winCounts = _calculateWinsForAllPlayers(matches, players, context);
+      matchCounts = _calculateMatchAmountsForAllPlayers(
+        matches,
+        players,
+        context,
+      );
       winRates = computeWinRatePercent(wins: winCounts, matches: matchCounts);
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SingleChildScrollView(
@@ -68,7 +74,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                       children: [
                         StatisticsTile(
                           icon: Icons.sports_score,
-                          title: 'Wins',
+                          title: loc.wins,
                           width: constraints.maxWidth * 0.95,
                           values: winCounts,
                           itemCount: 3,
@@ -77,7 +83,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
                           icon: Icons.percent,
-                          title: 'Winrate',
+                          title: loc.winrate,
                           width: constraints.maxWidth * 0.95,
                           values: winRates,
                           itemCount: 5,
@@ -86,7 +92,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
                           icon: Icons.casino,
-                          title: 'Amount of Matches',
+                          title: loc.amount_of_matches,
                           width: constraints.maxWidth * 0.95,
                           values: matchCounts,
                           itemCount: 10,
@@ -94,10 +100,12 @@ class _StatisticsViewState extends State<StatisticsView> {
                         ),
                       ],
                     ),
-                    child: const TopCenteredMessage(
+                    child: TopCenteredMessage(
                       icon: Icons.info,
-                      title: 'Info',
-                      message: 'No statistics available',
+                      title: loc.info,
+                      message: AppLocalizations.of(
+                        context,
+                      ).no_statistics_available,
                     ),
                   ),
                   SizedBox(height: MediaQuery.paddingOf(context).bottom),
@@ -115,8 +123,10 @@ class _StatisticsViewState extends State<StatisticsView> {
   List<(String, int)> _calculateWinsForAllPlayers(
     List<Match> matches,
     List<Player> players,
+    BuildContext context,
   ) {
     List<(String, int)> winCounts = [];
+    final loc = AppLocalizations.of(context);
 
     // Getting the winners
     for (var match in matches) {
@@ -147,7 +157,7 @@ class _StatisticsViewState extends State<StatisticsView> {
       final playerId = winCounts[i].$1;
       final player = players.firstWhere(
         (p) => p.id == playerId,
-        orElse: () => Player(id: playerId, name: 'N.a.'),
+        orElse: () => Player(id: playerId, name: loc.not_available),
       );
       winCounts[i] = (player.name, winCounts[i].$2);
     }
@@ -162,8 +172,10 @@ class _StatisticsViewState extends State<StatisticsView> {
   List<(String, int)> _calculateMatchAmountsForAllPlayers(
     List<Match> matches,
     List<Player> players,
+    BuildContext context,
   ) {
     List<(String, int)> matchCounts = [];
+    final loc = AppLocalizations.of(context);
 
     // Counting matches for each player
     for (var match in matches) {
@@ -209,7 +221,7 @@ class _StatisticsViewState extends State<StatisticsView> {
       final playerId = matchCounts[i].$1;
       final player = players.firstWhere(
         (p) => p.id == playerId,
-        orElse: () => Player(id: playerId, name: 'N.a.'),
+        orElse: () => Player(id: playerId, name: loc.not_available),
       );
       matchCounts[i] = (player.name, matchCounts[i].$2);
     }

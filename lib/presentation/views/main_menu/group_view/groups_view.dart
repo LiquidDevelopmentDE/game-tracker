@@ -4,6 +4,7 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/group_view/create_group_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
@@ -34,12 +35,14 @@ class _GroupsViewState extends State<GroupsView> {
   @override
   void initState() {
     super.initState();
+
     db = Provider.of<AppDatabase>(context, listen: false);
     loadGroups();
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       body: Stack(
@@ -49,11 +52,11 @@ class _GroupsViewState extends State<GroupsView> {
             enabled: isLoading,
             child: Visibility(
               visible: groups.isNotEmpty,
-              replacement: const Center(
+              replacement: Center(
                 child: TopCenteredMessage(
                   icon: Icons.info,
-                  title: 'Info',
-                  message: 'No groups created yet',
+                  title: loc.info,
+                  message: loc.no_groups_created_yet,
                 ),
               ),
               child: ListView.builder(
@@ -73,7 +76,7 @@ class _GroupsViewState extends State<GroupsView> {
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(
-              text: 'Create Group',
+              text: loc.create_group,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
                 await Navigator.push(

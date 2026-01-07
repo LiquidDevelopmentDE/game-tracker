@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
@@ -22,7 +23,6 @@ class ChooseGroupView extends StatefulWidget {
 class _ChooseGroupViewState extends State<ChooseGroupView> {
   late String selectedGroupId;
   final TextEditingController controller = TextEditingController();
-  final String hintText = 'Group Name';
   late final List<Group> filteredGroups;
 
   @override
@@ -34,6 +34,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
@@ -51,9 +52,9 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
             );
           },
         ),
-        title: const Text(
-          'Choose Group',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        title: Text(
+          loc.choose_group,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -79,7 +80,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: CustomSearchBar(
                 controller: controller,
-                hintText: hintText,
+                hintText: loc.search_for_groups,
                 onChanged: (value) {
                   setState(() {
                     filterGroups(value);
@@ -92,15 +93,17 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
                 visible: filteredGroups.isNotEmpty,
                 replacement: Visibility(
                   visible: widget.groups.isNotEmpty,
-                  replacement: const TopCenteredMessage(
+                  replacement: TopCenteredMessage(
                     icon: Icons.info,
-                    title: 'Info',
-                    message: 'You have no groups created yet',
+                    title: loc.info,
+                    message: loc.no_groups_created_yet,
                   ),
-                  child: const TopCenteredMessage(
+                  child: TopCenteredMessage(
                     icon: Icons.info,
-                    title: 'Info',
-                    message: 'There is no group matching your search',
+                    title: loc.info,
+                    message: AppLocalizations.of(
+                      context,
+                    ).there_is_no_group_matching_your_search,
                   ),
                 ),
                 child: ListView.builder(

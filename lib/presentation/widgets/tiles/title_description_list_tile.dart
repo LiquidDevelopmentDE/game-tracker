@@ -54,7 +54,7 @@ class TitleDescriptionListTile extends StatelessWidget {
                 if (badgeText != null) ...[
                   const Spacer(),
                   Container(
-                    constraints: const BoxConstraints(maxWidth: 100),
+                    constraints: const BoxConstraints(maxWidth: 115),
                     margin: const EdgeInsets.only(top: 4),
                     padding: const EdgeInsets.symmetric(
                       vertical: 2,

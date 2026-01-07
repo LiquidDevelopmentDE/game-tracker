@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
+
 /// Button types used for styling the [CustomWidthButton]
 enum ButtonType { primary, secondary, tertiary }
 
@@ -30,16 +33,17 @@ enum ExportResult { success, canceled, unknownException }
 /// - [Ruleset.leastPoints]: The player with the fewest points wins.
 enum Ruleset { singleWinner, singleLoser, mostPoints, leastPoints }
 
-/// Translates a [Ruleset] enum value to its corresponding string representation.
-String translateRulesetToString(Ruleset ruleset) {
+/// Translates a [Ruleset] enum value to its corresponding localized string.
+String translateRulesetToString(Ruleset ruleset, BuildContext context) {
+  final loc = AppLocalizations.of(context);
   switch (ruleset) {
     case Ruleset.singleWinner:
-      return 'Single Winner';
+      return loc.single_winner;
     case Ruleset.singleLoser:
-      return 'Single Loser';
+      return loc.single_loser;
     case Ruleset.mostPoints:
-      return 'Most Points';
+      return loc.most_points;
     case Ruleset.leastPoints:
-      return 'Least Points';
+      return loc.least_points;
   }
 }

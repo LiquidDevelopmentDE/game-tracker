@@ -8,6 +8,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/create_match_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
@@ -43,12 +44,14 @@ class _MatchViewState extends State<MatchView> {
   @override
   void initState() {
     super.initState();
+
     db = Provider.of<AppDatabase>(context, listen: false);
     loadGames();
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       body: Stack(
@@ -58,11 +61,11 @@ class _MatchViewState extends State<MatchView> {
             enabled: isLoading,
             child: Visibility(
               visible: matches.isNotEmpty,
-              replacement: const Center(
+              replacement: Center(
                 child: TopCenteredMessage(
                   icon: Icons.report,
-                  title: 'Info',
-                  message: 'No games created yet',
+                  title: loc.info,
+                  message: loc.no_matches_created_yet,
                 ),
               ),
               child: ListView.builder(
@@ -96,7 +99,7 @@ class _MatchViewState extends State<MatchView> {
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
             child: CustomWidthButton(
-              text: 'Create Match',
+              text: loc.create_match,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
                 Navigator.push(

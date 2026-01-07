@@ -3,6 +3,7 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/custom_radio_list_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +36,7 @@ class _MatchResultViewState extends State<MatchResultView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
@@ -79,9 +81,9 @@ class _MatchResultViewState extends State<MatchResultView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Select Winner:',
-                      style: TextStyle(
+                    Text(
+                      loc.select_winner,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),

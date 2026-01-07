@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/match.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
 
@@ -20,6 +21,7 @@ class _MatchTileState extends State<MatchTile> {
     final group = widget.match.group;
     final winner = widget.match.winner;
     final allPlayers = _getAllPlayers();
+    final loc = AppLocalizations.of(context);
 
     return GestureDetector(
       onTap: widget.onTap,
@@ -48,7 +50,7 @@ class _MatchTileState extends State<MatchTile> {
                   ),
                 ),
                 Text(
-                  _formatDate(widget.match.createdAt),
+                  _formatDate(widget.match.createdAt, context),
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
@@ -97,7 +99,7 @@ class _MatchTileState extends State<MatchTile> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Winner: ${winner.name}',
+                        '${loc.winner}: ${winner.name}',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -113,9 +115,9 @@ class _MatchTileState extends State<MatchTile> {
             ],
 
             if (allPlayers.isNotEmpty) ...[
-              const Text(
-                'Players',
-                style: TextStyle(
+              Text(
+                loc.players,
+                style: const TextStyle(
                   fontSize: 13,
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
@@ -136,16 +138,21 @@ class _MatchTileState extends State<MatchTile> {
     );
   }
 
-  String _formatDate(DateTime dateTime) {
+  String _formatDate(DateTime dateTime, BuildContext context) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
+    final loc = AppLocalizations.of(context);
 
     if (difference.inDays == 0) {
-      return 'Today at ${DateFormat('HH:mm').format(dateTime)}';
+      return AppLocalizations.of(
+        context,
+      ).today_at(DateFormat('HH:mm').format(dateTime));
     } else if (difference.inDays == 1) {
-      return 'Yesterday at ${DateFormat('HH:mm').format(dateTime)}';
+      return AppLocalizations.of(
+        context,
+      ).yesterday_at(DateFormat('HH:mm').format(dateTime));
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return loc.days_ago(difference.inDays);
     } else {
       return DateFormat('MMM d, yyyy').format(dateTime);
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
 
@@ -13,7 +14,13 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
       backgroundColor: CustomTheme.backgroundColor,
@@ -24,30 +31,33 @@ class _SettingsViewState extends State<SettingsView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 24, 10),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
                     child: Text(
                       textAlign: TextAlign.start,
-                      'Menu',
-                      style: TextStyle(
+                      loc.menu,
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 10,
+                    ),
                     child: Text(
                       textAlign: TextAlign.start,
-                      'Settings',
-                      style: TextStyle(
+                      loc.settings,
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   SettingsListTile(
-                    title: 'Export data',
+                    title: loc.export_data,
                     icon: Icons.upload_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -62,7 +72,7 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: 'Import data',
+                    title: loc.import_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () async {
@@ -74,23 +84,23 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsListTile(
-                    title: 'Delete all data',
+                    title: loc.delete_all_data,
                     icon: Icons.download_outlined,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
                       showDialog<bool>(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text('Delete all data?'),
-                          content: const Text('This can\'t be undone'),
+                          title: Text(loc.delete_all_data),
+                          content: Text(loc.this_cannot_be_undone),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text('Abbrechen'),
+                              child: Text(loc.cancel),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text('Löschen'),
+                              child: Text(loc.delete),
                             ),
                           ],
                         ),
@@ -99,7 +109,9 @@ class _SettingsViewState extends State<SettingsView> {
                           DataTransferService.deleteAllData(context);
                           showSnackbar(
                             context: context,
-                            message: 'Daten erfolgreich gelöscht',
+                            message: AppLocalizations.of(
+                              context,
+                            ).data_successfully_deleted,
                           );
                         }
                       });
@@ -120,25 +132,20 @@ class _SettingsViewState extends State<SettingsView> {
     required BuildContext context,
     required ImportResult result,
   }) {
+    final loc = AppLocalizations.of(context);
     switch (result) {
       case ImportResult.success:
-        showSnackbar(context: context, message: 'Data successfully imported');
+        showSnackbar(context: context, message: loc.data_successfully_imported);
       case ImportResult.invalidSchema:
-        showSnackbar(context: context, message: 'Invalid Schema');
+        showSnackbar(context: context, message: loc.invalid_schema);
       case ImportResult.fileReadError:
-        showSnackbar(context: context, message: 'Error reading file');
+        showSnackbar(context: context, message: loc.error_reading_file);
       case ImportResult.canceled:
-        showSnackbar(context: context, message: 'Import canceled');
+        showSnackbar(context: context, message: loc.import_canceled);
       case ImportResult.formatException:
-        showSnackbar(
-          context: context,
-          message: 'Format Exception (see console)',
-        );
+        showSnackbar(context: context, message: loc.format_exception);
       case ImportResult.unknownException:
-        showSnackbar(
-          context: context,
-          message: 'Unknown Exception (see console)',
-        );
+        showSnackbar(context: context, message: loc.unknown_exception);
     }
   }
 
@@ -150,16 +157,14 @@ class _SettingsViewState extends State<SettingsView> {
     required BuildContext context,
     required ExportResult result,
   }) {
+    final loc = AppLocalizations.of(context);
     switch (result) {
       case ExportResult.success:
-        showSnackbar(context: context, message: 'Data successfully exported');
+        showSnackbar(context: context, message: loc.data_successfully_exported);
       case ExportResult.canceled:
-        showSnackbar(context: context, message: 'Export canceled');
+        showSnackbar(context: context, message: loc.export_canceled);
       case ExportResult.unknownException:
-        showSnackbar(
-          context: context,
-          message: 'Unknown Exception (see console)',
-        );
+        showSnackbar(context: context, message: loc.unknown_exception);
     }
   }
 
@@ -175,6 +180,7 @@ class _SettingsViewState extends State<SettingsView> {
     Duration duration = const Duration(seconds: 3),
     VoidCallback? action,
   }) {
+    final loc = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
@@ -183,7 +189,7 @@ class _SettingsViewState extends State<SettingsView> {
         backgroundColor: CustomTheme.onBoxColor,
         duration: duration,
         action: action != null
-            ? SnackBarAction(label: 'Rückgängig', onPressed: action)
+            ? SnackBarAction(label: loc.undo, onPressed: action)
             : null,
       ),
     );
