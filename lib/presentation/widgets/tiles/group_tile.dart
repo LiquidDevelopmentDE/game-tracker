@@ -18,7 +18,7 @@ class GroupTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: CustomTheme.standardMargin,
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: isHighlighted
           ? CustomTheme.highlightedBoxDecoration

@@ -60,7 +60,7 @@ class CustomWidthButton extends StatelessWidget {
             60,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: CustomTheme.standardBorderRadiusAll,
           ),
         ),
         child: Text(
@@ -91,7 +91,7 @@ class CustomWidthButton extends StatelessWidget {
           ),
           side: BorderSide(color: borderSideColor, width: 2),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: CustomTheme.standardBorderRadiusAll,
           ),
         ),
         child: Text(

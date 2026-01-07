@@ -77,7 +77,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: CustomTheme.standardMargin,
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: CustomTheme.standardBoxDecoration,
       child: Column(

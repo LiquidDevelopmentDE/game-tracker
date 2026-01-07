@@ -29,7 +29,9 @@ class _QuickCreateButtonState extends State<QuickCreateButton> {
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(140, 45),
         backgroundColor: CustomTheme.primaryColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: CustomTheme.standardBorderRadiusAll,
+        ),
       ),
       child: Text(
         widget.text,

@@ -57,7 +57,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                           width: constraints.maxWidth * 0.95,
                           values: winCounts,
                           itemCount: 3,
-                          barColor: Colors.blue,
+                          barColor: Colors.green,
                         ),
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
@@ -75,7 +75,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                           width: constraints.maxWidth * 0.95,
                           values: matchCounts,
                           itemCount: 10,
-                          barColor: Colors.green,
+                          barColor: Colors.blue,
                         ),
                       ],
                     ),

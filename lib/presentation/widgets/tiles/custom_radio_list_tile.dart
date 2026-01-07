@@ -32,7 +32,7 @@ class CustomRadioListTile<T> extends StatelessWidget {
         decoration: BoxDecoration(
           color: CustomTheme.boxColor,
           border: Border.all(color: CustomTheme.boxBorder),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: CustomTheme.standardBorderRadiusAll,
         ),
         child: Row(
           children: [

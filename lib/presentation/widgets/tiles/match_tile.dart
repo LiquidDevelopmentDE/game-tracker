@@ -41,8 +41,8 @@ class _MatchTileState extends State<MatchTile> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        padding: const EdgeInsets.all(16),
+        margin: CustomTheme.tileMargin,
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: CustomTheme.boxColor,
           border: Border.all(color: CustomTheme.boxBorder),
@@ -118,7 +118,7 @@ class _MatchTileState extends State<MatchTile> {
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          color: CustomTheme.textColor,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),

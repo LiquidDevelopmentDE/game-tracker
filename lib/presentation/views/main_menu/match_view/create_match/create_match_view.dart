@@ -127,7 +127,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+              margin: CustomTheme.tileMargin,
               child: TextInputField(
                 controller: _matchNameController,
                 hintText: hintText ?? '',

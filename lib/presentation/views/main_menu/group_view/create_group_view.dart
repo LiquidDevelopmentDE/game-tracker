@@ -52,7 +52,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              margin: CustomTheme.standardMargin,
               child: TextInputField(
                 controller: _groupNameController,
                 hintText: loc.group_name,

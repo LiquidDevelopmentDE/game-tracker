@@ -32,8 +32,8 @@ class _ChooseTileState extends State<ChooseTile> {
     return GestureDetector(
       onTap: widget.onPressed,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        margin: CustomTheme.tileMargin,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: CustomTheme.standardBoxDecoration,
         child: Row(
           children: [
