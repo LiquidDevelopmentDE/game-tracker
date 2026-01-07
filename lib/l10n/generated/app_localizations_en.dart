@@ -264,7 +264,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknown_exception => 'Unknown Exception (see console)';
 
   @override
-  String get winner => 'Winner';
+  String winner(Object winnerName) {
+    return 'Winner';
+  }
 
   @override
   String get winrate => 'Winrate';
