@@ -98,23 +98,29 @@ abstract class AppLocalizations {
     Locale('en'),
   ];
 
-  /// Label for choosing a group
+  /// Label for all players list
   ///
   /// In en, this message translates to:
-  /// **'Choose Group'**
-  String get choose_group;
+  /// **'All players:'**
+  String get all_players;
 
-  /// Button text to create a new match
+  /// Message when all players are added to selection
   ///
   /// In en, this message translates to:
-  /// **'Create new match'**
-  String get create_new_match;
+  /// **'All players selected'**
+  String get all_players_selected;
 
-  /// Label for choosing a ruleset
+  /// Label for amount of matches statistic
   ///
   /// In en, this message translates to:
-  /// **'Choose Ruleset'**
-  String get choose_ruleset;
+  /// **'Amount of Matches'**
+  String get amount_of_matches;
+
+  /// Cancel button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 
   /// Label for choosing a game
   ///
@@ -122,17 +128,251 @@ abstract class AppLocalizations {
   /// **'Choose Game'**
   String get choose_game;
 
-  /// Label to select the winner
+  /// Label for choosing a group
   ///
   /// In en, this message translates to:
-  /// **'Select Winner:'**
-  String get select_winner;
+  /// **'Choose Group'**
+  String get choose_group;
+
+  /// Label for choosing a ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Ruleset'**
+  String get choose_ruleset;
+
+  /// Error message when adding a player fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not add player {playerName}'**
+  String could_not_add_player(String playerName);
+
+  /// Button text to create a group
+  ///
+  /// In en, this message translates to:
+  /// **'Create Group'**
+  String get create_group;
+
+  /// Button text to create a match
+  ///
+  /// In en, this message translates to:
+  /// **'Create match'**
+  String get create_match;
+
+  /// Button text to create a new group
+  ///
+  /// In en, this message translates to:
+  /// **'Create new group'**
+  String get create_new_group;
+
+  /// Button text to create a new match
+  ///
+  /// In en, this message translates to:
+  /// **'Create new match'**
+  String get create_new_match;
+
+  /// Success message after deleting data
+  ///
+  /// In en, this message translates to:
+  /// **'Data successfully deleted'**
+  String get data_successfully_deleted;
+
+  /// Success message after exporting data
+  ///
+  /// In en, this message translates to:
+  /// **'Data successfully exported'**
+  String get data_successfully_exported;
+
+  /// Success message after importing data
+  ///
+  /// In en, this message translates to:
+  /// **'Data successfully imported'**
+  String get data_successfully_imported;
+
+  /// Date format for days ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String days_ago(int count);
+
+  /// Delete button text
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Confirmation dialog for deleting all data
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data?'**
+  String get delete_all_data;
+
+  /// Error message when group creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error while creating group, please try again'**
+  String get error_creating_group;
+
+  /// Error message when file cannot be read
+  ///
+  /// In en, this message translates to:
+  /// **'Error reading file'**
+  String get error_reading_file;
+
+  /// Message when export is canceled
+  ///
+  /// In en, this message translates to:
+  /// **'Export canceled'**
+  String get export_canceled;
+
+  /// Export data menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get export_data;
+
+  /// Error message for format exceptions
+  ///
+  /// In en, this message translates to:
+  /// **'Format Exception (see console)'**
+  String get format_exception;
+
+  /// Game label
+  ///
+  /// In en, this message translates to:
+  /// **'Game'**
+  String get game;
+
+  /// Placeholder for game name search
+  ///
+  /// In en, this message translates to:
+  /// **'Game Name'**
+  String get game_name;
 
   /// App Name
   ///
   /// In en, this message translates to:
   /// **'Game Tracker'**
   String get game_tracker;
+
+  /// Group label
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get group;
+
+  /// Placeholder for group name input
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get group_name;
+
+  /// Label for groups
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get groups;
+
+  /// Home tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// Message when import is canceled
+  ///
+  /// In en, this message translates to:
+  /// **'Import canceled'**
+  String get import_canceled;
+
+  /// Import data menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Import data'**
+  String get import_data;
+
+  /// Info label
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get info;
+
+  /// Error message for invalid schema
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid Schema'**
+  String get invalid_schema;
+
+  /// Title for least points ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Least Points'**
+  String get least_points;
+
+  /// Message when match is in progress
+  ///
+  /// In en, this message translates to:
+  /// **'Match in progress...'**
+  String get match_in_progress;
+
+  /// Placeholder for match name input
+  ///
+  /// In en, this message translates to:
+  /// **'Match name'**
+  String get match_name;
+
+  /// Label for matches
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get matches;
+
+  /// Menu label
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get menu;
+
+  /// Title for most points ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Most Points'**
+  String get most_points;
+
+  /// Message when no data in the statistic tiles is given
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get no_data_available;
+
+  /// Message when no groups exist
+  ///
+  /// In en, this message translates to:
+  /// **'No groups created yet'**
+  String get no_groups_created_yet;
+
+  /// Message when no matches exist
+  ///
+  /// In en, this message translates to:
+  /// **'No matches created yet'**
+  String get no_matches_created_yet;
+
+  /// Message when no players exist
+  ///
+  /// In en, this message translates to:
+  /// **'No players created yet'**
+  String get no_players_created_yet;
+
+  /// Message when search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No players found with that name'**
+  String get no_players_found_with_that_name;
+
+  /// Message when no players are selected
+  ///
+  /// In en, this message translates to:
+  /// **'No players selected'**
+  String get no_players_selected;
 
   /// Message when no recent matches exist
   ///
@@ -146,293 +386,11 @@ abstract class AppLocalizations {
   /// **'No second match available'**
   String get no_second_match_available;
 
-  /// Confirmation dialog for deleting all data
-  ///
-  /// In en, this message translates to:
-  /// **'Delete all data?'**
-  String get delete_all_data;
-
-  /// Cancel button text
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
-  /// Delete button text
-  ///
-  /// In en, this message translates to:
-  /// **'Delete'**
-  String get delete;
-
-  /// Button text to create a new group
-  ///
-  /// In en, this message translates to:
-  /// **'Create new group'**
-  String get create_new_group;
-
-  /// Error message when group creation fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error while creating group, please try again'**
-  String get error_creating_group;
-
-  /// Shows the number of selected players
-  ///
-  /// In en, this message translates to:
-  /// **'Selected players: {count}'**
-  String selected_players(int count);
-
-  /// Message when no players are selected
-  ///
-  /// In en, this message translates to:
-  /// **'No players selected'**
-  String get no_players_selected;
-
-  /// Label for all players list
-  ///
-  /// In en, this message translates to:
-  /// **'All players:'**
-  String get all_players;
-
-  /// Success message when adding a player
-  ///
-  /// In en, this message translates to:
-  /// **'Successfully added player {playerName}'**
-  String successfully_added_player(String playerName);
-
-  /// Error message when adding a player fails
-  ///
-  /// In en, this message translates to:
-  /// **'Could not add player {playerName}'**
-  String could_not_add_player(String playerName);
-
-  /// Shows the winner's name
-  ///
-  /// In en, this message translates to:
-  /// **'Winner: {winnerName}'**
-  String winner(String winnerName);
-
-  /// Players label
-  ///
-  /// In en, this message translates to:
-  /// **'Players'**
-  String get players;
-
   /// Message when no statistics are available, because no matches were played yet
   ///
   /// In en, this message translates to:
   /// **'No statistics available'**
   String get no_statistics_available;
-
-  /// Message when no data in the statistic tiles is given
-  ///
-  /// In en, this message translates to:
-  /// **'No data available'**
-  String get no_data_available;
-
-  /// Label for matches
-  ///
-  /// In en, this message translates to:
-  /// **'Matches'**
-  String get matches;
-
-  /// Label for groups
-  ///
-  /// In en, this message translates to:
-  /// **'Groups'**
-  String get groups;
-
-  /// Title for recent matches section
-  ///
-  /// In en, this message translates to:
-  /// **'Recent Matches'**
-  String get recent_matches;
-
-  /// Title for quick create section
-  ///
-  /// In en, this message translates to:
-  /// **'Quick Create'**
-  String get quick_create;
-
-  /// Message when match is in progress
-  ///
-  /// In en, this message translates to:
-  /// **'Match in progress...'**
-  String get match_in_progress;
-
-  /// Menu label
-  ///
-  /// In en, this message translates to:
-  /// **'Menu'**
-  String get menu;
-
-  /// Settings label
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
-
-  /// Export data menu item
-  ///
-  /// In en, this message translates to:
-  /// **'Export data'**
-  String get export_data;
-
-  /// Import data menu item
-  ///
-  /// In en, this message translates to:
-  /// **'Import data'**
-  String get import_data;
-
-  /// Warning message for irreversible actions
-  ///
-  /// In en, this message translates to:
-  /// **'This can\'t be undone'**
-  String get this_cannot_be_undone;
-
-  /// Success message after deleting data
-  ///
-  /// In en, this message translates to:
-  /// **'Data successfully deleted'**
-  String get data_successfully_deleted;
-
-  /// Success message after importing data
-  ///
-  /// In en, this message translates to:
-  /// **'Data successfully imported'**
-  String get data_successfully_imported;
-
-  /// Error message for invalid schema
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid Schema'**
-  String get invalid_schema;
-
-  /// Error message when file cannot be read
-  ///
-  /// In en, this message translates to:
-  /// **'Error reading file'**
-  String get error_reading_file;
-
-  /// Message when import is canceled
-  ///
-  /// In en, this message translates to:
-  /// **'Import canceled'**
-  String get import_canceled;
-
-  /// Error message for format exceptions
-  ///
-  /// In en, this message translates to:
-  /// **'Format Exception (see console)'**
-  String get format_exception;
-
-  /// Error message for unknown exceptions
-  ///
-  /// In en, this message translates to:
-  /// **'Unknown Exception (see console)'**
-  String get unknown_exception;
-
-  /// Success message after exporting data
-  ///
-  /// In en, this message translates to:
-  /// **'Data successfully exported'**
-  String get data_successfully_exported;
-
-  /// Message when export is canceled
-  ///
-  /// In en, this message translates to:
-  /// **'Export canceled'**
-  String get export_canceled;
-
-  /// Undo button text
-  ///
-  /// In en, this message translates to:
-  /// **'Undo'**
-  String get undo;
-
-  /// Label for wins statistic
-  ///
-  /// In en, this message translates to:
-  /// **'Wins'**
-  String get wins;
-
-  /// Label for winrate statistic
-  ///
-  /// In en, this message translates to:
-  /// **'Winrate'**
-  String get winrate;
-
-  /// Label for amount of matches statistic
-  ///
-  /// In en, this message translates to:
-  /// **'Amount of Matches'**
-  String get amount_of_matches;
-
-  /// Info label
-  ///
-  /// In en, this message translates to:
-  /// **'Info'**
-  String get info;
-
-  /// Message when no groups exist
-  ///
-  /// In en, this message translates to:
-  /// **'No groups created yet'**
-  String get no_groups_created_yet;
-
-  /// Message when no players exist
-  ///
-  /// In en, this message translates to:
-  /// **'No players created yet'**
-  String get no_players_created_yet;
-
-  /// Button text to create a group
-  ///
-  /// In en, this message translates to:
-  /// **'Create Group'**
-  String get create_group;
-
-  /// Placeholder for group name input
-  ///
-  /// In en, this message translates to:
-  /// **'Group name'**
-  String get group_name;
-
-  /// Placeholder for player name input
-  ///
-  /// In en, this message translates to:
-  /// **'Player name'**
-  String get player_name;
-
-  /// Message when no matches exist
-  ///
-  /// In en, this message translates to:
-  /// **'No matches created yet'**
-  String get no_matches_created_yet;
-
-  /// Placeholder for match name input
-  ///
-  /// In en, this message translates to:
-  /// **'Match name'**
-  String get match_name;
-
-  /// Game label
-  ///
-  /// In en, this message translates to:
-  /// **'Game'**
-  String get game;
-
-  /// Ruleset label
-  ///
-  /// In en, this message translates to:
-  /// **'Ruleset'**
-  String get ruleset;
-
-  /// Group label
-  ///
-  /// In en, this message translates to:
-  /// **'Group'**
-  String get group;
 
   /// None option label
   ///
@@ -446,47 +404,113 @@ abstract class AppLocalizations {
   /// **'None'**
   String get none_group;
 
-  /// Button text to create a match
+  /// Abbreviation for not available
   ///
   /// In en, this message translates to:
-  /// **'Create match'**
-  String get create_match;
+  /// **'Not available'**
+  String get not_available;
 
-  /// Message when search returns no results
+  /// Placeholder for player name input
   ///
   /// In en, this message translates to:
-  /// **'No players found with that name'**
-  String get no_players_found_with_that_name;
+  /// **'Player name'**
+  String get player_name;
 
-  /// Message when all players are added to selection
+  /// Players label
   ///
   /// In en, this message translates to:
-  /// **'All players selected'**
-  String get all_players_selected;
+  /// **'Players'**
+  String get players;
 
-  /// Date format for today
+  /// Shows the number of players
   ///
   /// In en, this message translates to:
-  /// **'Today at {time}'**
-  String today_at(String time);
+  /// **'{count} Players'**
+  String players_count(int count);
 
-  /// Date format for yesterday
+  /// Title for quick create section
   ///
   /// In en, this message translates to:
-  /// **'Yesterday at {time}'**
-  String yesterday_at(String time);
+  /// **'Quick Create'**
+  String get quick_create;
 
-  /// Date format for days ago
+  /// Title for recent matches section
   ///
   /// In en, this message translates to:
-  /// **'{count} days ago'**
-  String days_ago(int count);
+  /// **'Recent Matches'**
+  String get recent_matches;
 
-  /// Home tab label
+  /// Ruleset label
   ///
   /// In en, this message translates to:
-  /// **'Home'**
-  String get home;
+  /// **'Ruleset'**
+  String get ruleset;
+
+  /// Description for least points ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Inverse scoring: the player with the fewest points wins.'**
+  String get ruleset_least_points;
+
+  /// Description for most points ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional ruleset: the player with the most points wins.'**
+  String get ruleset_most_points;
+
+  /// Description for single loser ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Exactly one loser is determined; last place receives the penalty or consequence.'**
+  String get ruleset_single_loser;
+
+  /// Description for single winner ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.'**
+  String get ruleset_single_winner;
+
+  /// Hint text for group search input field
+  ///
+  /// In en, this message translates to:
+  /// **'Search for groups'**
+  String get search_for_groups;
+
+  /// Hint text for player search input field
+  ///
+  /// In en, this message translates to:
+  /// **'Search for players'**
+  String get search_for_players;
+
+  /// Label to select the winner
+  ///
+  /// In en, this message translates to:
+  /// **'Select Winner:'**
+  String get select_winner;
+
+  /// Shows the number of selected players
+  ///
+  /// In en, this message translates to:
+  /// **'Selected players: {count}'**
+  String selected_players(int count);
+
+  /// Settings label
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Title for single loser ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Single Loser'**
+  String get single_loser;
+
+  /// Title for single winner ruleset
+  ///
+  /// In en, this message translates to:
+  /// **'Single Winner'**
+  String get single_winner;
 
   /// Statistics tab label
   ///
@@ -500,11 +524,11 @@ abstract class AppLocalizations {
   /// **'Stats'**
   String get stats;
 
-  /// Shows the number of players
+  /// Success message when adding a player
   ///
   /// In en, this message translates to:
-  /// **'{count} Players'**
-  String players_count(int count);
+  /// **'Successfully added player {playerName}'**
+  String successfully_added_player(String playerName);
 
   /// Message when search returns no groups
   ///
@@ -512,77 +536,53 @@ abstract class AppLocalizations {
   /// **'There is no group matching your search'**
   String get there_is_no_group_matching_your_search;
 
-  /// Placeholder for game name search
+  /// Warning message for irreversible actions
   ///
   /// In en, this message translates to:
-  /// **'Game Name'**
-  String get game_name;
+  /// **'This can\'t be undone'**
+  String get this_cannot_be_undone;
 
-  /// Description for single winner ruleset
+  /// Date format for today
   ///
   /// In en, this message translates to:
-  /// **'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.'**
-  String get ruleset_single_winner;
+  /// **'Today at {time}'**
+  String today_at(String time);
 
-  /// Description for single loser ruleset
+  /// Undo button text
   ///
   /// In en, this message translates to:
-  /// **'Exactly one loser is determined; last place receives the penalty or consequence.'**
-  String get ruleset_single_loser;
+  /// **'Undo'**
+  String get undo;
 
-  /// Description for most points ruleset
+  /// Error message for unknown exceptions
   ///
   /// In en, this message translates to:
-  /// **'Traditional ruleset: the player with the most points wins.'**
-  String get ruleset_most_points;
+  /// **'Unknown Exception (see console)'**
+  String get unknown_exception;
 
-  /// Description for least points ruleset
+  /// Winner label
   ///
   /// In en, this message translates to:
-  /// **'Inverse scoring: the player with the fewest points wins.'**
-  String get ruleset_least_points;
+  /// **'Winner'**
+  String winner(Object winnerName);
 
-  /// Title for single winner ruleset
+  /// Label for winrate statistic
   ///
   /// In en, this message translates to:
-  /// **'Single Winner'**
-  String get single_winner;
+  /// **'Winrate'**
+  String get winrate;
 
-  /// Title for single loser ruleset
+  /// Label for wins statistic
   ///
   /// In en, this message translates to:
-  /// **'Single Loser'**
-  String get single_loser;
+  /// **'Wins'**
+  String get wins;
 
-  /// Title for most points ruleset
+  /// Date format for yesterday
   ///
   /// In en, this message translates to:
-  /// **'Most Points'**
-  String get most_points;
-
-  /// Title for least points ruleset
-  ///
-  /// In en, this message translates to:
-  /// **'Least Points'**
-  String get least_points;
-
-  /// Hint text for player search input field
-  ///
-  /// In en, this message translates to:
-  /// **'Search for players'**
-  String get search_for_players;
-
-  /// Hint text for group search input field
-  ///
-  /// In en, this message translates to:
-  /// **'Search for groups'**
-  String get search_for_groups;
-
-  /// Abbreviation for not available
-  ///
-  /// In en, this message translates to:
-  /// **'Not available'**
-  String get not_available;
+  /// **'Yesterday at {time}'**
+  String yesterday_at(String time);
 }
 
 class _AppLocalizationsDelegate
