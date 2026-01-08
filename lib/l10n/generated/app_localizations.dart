@@ -116,6 +116,12 @@ abstract class AppLocalizations {
   /// **'Amount of Matches'**
   String get amount_of_matches;
 
+  /// The name of the App
+  ///
+  /// In en, this message translates to:
+  /// **'Game Tracker'**
+  String get app_name;
+
   /// Cancel button text
   ///
   /// In en, this message translates to:
@@ -143,8 +149,8 @@ abstract class AppLocalizations {
   /// Error message when adding a player fails
   ///
   /// In en, this message translates to:
-  /// **'Could not add player {playerName}'**
-  String could_not_add_player(String playerName);
+  /// **'Could not add player'**
+  String could_not_add_player(Object playerName);
 
   /// Button text to create a group
   ///
@@ -247,12 +253,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Game Name'**
   String get game_name;
-
-  /// App Name
-  ///
-  /// In en, this message translates to:
-  /// **'Game Tracker'**
-  String get game_tracker;
 
   /// Group label
   ///
@@ -545,8 +545,8 @@ abstract class AppLocalizations {
   /// Date format for today
   ///
   /// In en, this message translates to:
-  /// **'Today at {time}'**
-  String today_at(String time);
+  /// **'Today at'**
+  String get today_at;
 
   /// Undo button text
   ///
@@ -581,8 +581,8 @@ abstract class AppLocalizations {
   /// Date format for yesterday
   ///
   /// In en, this message translates to:
-  /// **'Yesterday at {time}'**
-  String yesterday_at(String time);
+  /// **'Yesterday at'**
+  String get yesterday_at;
 }
 
 class _AppLocalizationsDelegate

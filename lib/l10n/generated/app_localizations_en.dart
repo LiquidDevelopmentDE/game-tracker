@@ -18,6 +18,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get amount_of_matches => 'Amount of Matches';
 
   @override
+  String get app_name => 'Game Tracker';
+
+  @override
   String get cancel => 'Cancel';
 
   @override
@@ -30,8 +33,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get choose_ruleset => 'Choose Ruleset';
 
   @override
-  String could_not_add_player(String playerName) {
-    return 'Could not add player $playerName';
+  String could_not_add_player(Object playerName) {
+    return 'Could not add player';
   }
 
   @override
@@ -87,9 +90,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get game_name => 'Game Name';
-
-  @override
-  String get game_tracker => 'Game Tracker';
 
   @override
   String get group => 'Group';
@@ -253,9 +253,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get this_cannot_be_undone => 'This can\'t be undone';
 
   @override
-  String today_at(String time) {
-    return 'Today at $time';
-  }
+  String get today_at => 'Today at';
 
   @override
   String get undo => 'Undo';
@@ -273,7 +271,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wins => 'Wins';
 
   @override
-  String yesterday_at(String time) {
-    return 'Yesterday at $time';
-  }
+  String get yesterday_at => 'Yesterday at';
 }

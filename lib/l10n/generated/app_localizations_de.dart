@@ -18,6 +18,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get amount_of_matches => 'Anzahl der Spiele';
 
   @override
+  String get app_name => 'Game Tracker';
+
+  @override
   String get cancel => 'Abbrechen';
 
   @override
@@ -30,7 +33,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get choose_ruleset => 'Regelwerk wählen';
 
   @override
-  String could_not_add_player(String playerName) {
+  String could_not_add_player(Object playerName) {
     return 'Spieler:in $playerName konnte nicht hinzugefügt werden';
   }
 
@@ -87,9 +90,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get game_name => 'Spielvorlagenname';
-
-  @override
-  String get game_tracker => 'Game Tracker';
 
   @override
   String get group => 'Gruppe';
@@ -254,9 +254,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dies kann nicht rückgängig gemacht werden';
 
   @override
-  String today_at(String time) {
-    return 'Heute um $time';
-  }
+  String get today_at => 'Heute um';
 
   @override
   String get undo => 'Rückgängig';
@@ -274,7 +272,5 @@ class AppLocalizationsDe extends AppLocalizations {
   String get wins => 'Siege';
 
   @override
-  String yesterday_at(String time) {
-    return 'Gestern um $time';
-  }
+  String get yesterday_at => 'Gestern um';
 }
