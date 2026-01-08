@@ -20,9 +20,11 @@ class ChooseGameView extends StatefulWidget {
 }
 
 class _ChooseGameViewState extends State<ChooseGameView> {
-  late int selectedGameIndex;
-
+  /// Controller for the search bar
   final TextEditingController searchBarController = TextEditingController();
+
+  /// Currently selected game index
+  late int selectedGameIndex;
 
   @override
   void initState() {
@@ -36,19 +38,13 @@ class _ChooseGameViewState extends State<ChooseGameView> {
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.of(context).pop(selectedGameIndex);
           },
         ),
-        title: Text(
-          loc.choose_game,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+        title: Text(loc.choose_game),
       ),
       body: PopScope(
         // This fixes that the Android Back Gesture didn't return the

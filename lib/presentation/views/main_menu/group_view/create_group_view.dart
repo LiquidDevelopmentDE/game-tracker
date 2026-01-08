@@ -18,15 +18,17 @@ class CreateGroupView extends StatefulWidget {
 }
 
 class _CreateGroupViewState extends State<CreateGroupView> {
-  final _groupNameController = TextEditingController();
   late final AppDatabase db;
 
+  /// Controller for the group name input field
+  final _groupNameController = TextEditingController();
+
+  /// List of currently selected players
   List<Player> selectedPlayers = [];
 
   @override
   void initState() {
     super.initState();
-
     db = Provider.of<AppDatabase>(context, listen: false);
     _groupNameController.addListener(() {
       setState(() {});
@@ -44,27 +46,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
-        title: Text(
-          loc.create_new_group,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(loc.create_new_group)),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              margin: CustomTheme.standardMargin,
               child: TextInputField(
                 controller: _groupNameController,
                 hintText: loc.group_name,
-                onChanged: (value) {
-                  setState(() {});
-                },
               ),
             ),
             Expanded(
@@ -109,7 +100,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           ),
                         );
                       }
-                      setState(() {});
                     },
             ),
             const SizedBox(height: 20),

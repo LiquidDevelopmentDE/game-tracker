@@ -1,33 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/match.dart';
+import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
 
+/// A tile widget that displays information about a match, including its name,
+/// creation date, associated group, winner, and players.
+/// - [match]: The match data to be displayed.
+/// - [onTap]: The callback invoked when the tile is tapped.
 class MatchTile extends StatefulWidget {
-  final Match match;
-  final VoidCallback onTap;
-
   const MatchTile({super.key, required this.match, required this.onTap});
+
+  /// The match data to be displayed.
+  final Match match;
+
+  /// The callback invoked when the tile is tapped.
+  final VoidCallback onTap;
 
   @override
   State<MatchTile> createState() => _MatchTileState();
 }
 
 class _MatchTileState extends State<MatchTile> {
+  late final List<Player> _allPlayers;
+
+  @override
+  void initState() {
+    super.initState();
+    _allPlayers = _getCombinedPlayers();
+  }
+
   @override
   Widget build(BuildContext context) {
     final group = widget.match.group;
     final winner = widget.match.winner;
-    final allPlayers = _getAllPlayers();
     final loc = AppLocalizations.of(context);
 
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        padding: const EdgeInsets.all(16),
+        margin: CustomTheme.tileMargin,
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: CustomTheme.boxColor,
           border: Border.all(color: CustomTheme.boxBorder),
@@ -103,7 +118,7 @@ class _MatchTileState extends State<MatchTile> {
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          color: CustomTheme.textColor,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -114,7 +129,7 @@ class _MatchTileState extends State<MatchTile> {
               const SizedBox(height: 12),
             ],
 
-            if (allPlayers.isNotEmpty) ...[
+            if (_allPlayers.isNotEmpty) ...[
               Text(
                 loc.players,
                 style: const TextStyle(
@@ -127,7 +142,7 @@ class _MatchTileState extends State<MatchTile> {
               Wrap(
                 spacing: 6,
                 runSpacing: 6,
-                children: allPlayers.map((player) {
+                children: _allPlayers.map((player) {
                   return TextIconTile(text: player.name, iconEnabled: false);
                 }).toList(),
               ),
@@ -138,19 +153,17 @@ class _MatchTileState extends State<MatchTile> {
     );
   }
 
+  /// Formats the given [dateTime] into a human-readable string based on its
+  /// difference from the current date.
   String _formatDate(DateTime dateTime, BuildContext context) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
     final loc = AppLocalizations.of(context);
 
     if (difference.inDays == 0) {
-      return AppLocalizations.of(
-        context,
-      ).today_at(DateFormat('HH:mm').format(dateTime));
+      return "${loc.today_at} ${DateFormat('HH:mm').format(dateTime)}";
     } else if (difference.inDays == 1) {
-      return AppLocalizations.of(
-        context,
-      ).yesterday_at(DateFormat('HH:mm').format(dateTime));
+      return "${loc.yesterday_at} ${DateFormat('HH:mm').format(dateTime)}";
     } else if (difference.inDays < 7) {
       return loc.days_ago(difference.inDays);
     } else {
@@ -158,8 +171,10 @@ class _MatchTileState extends State<MatchTile> {
     }
   }
 
-  List<dynamic> _getAllPlayers() {
-    final allPlayers = <dynamic>[];
+  /// Retrieves all unique players associated with the match,
+  /// combining players from both the match and its group.
+  List<Player> _getCombinedPlayers() {
+    final allPlayers = <Player>[];
     final playerIds = <String>{};
 
     // Add players from game.players

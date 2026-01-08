@@ -21,7 +21,11 @@ class GroupsView extends StatefulWidget {
 
 class _GroupsViewState extends State<GroupsView> {
   late final AppDatabase db;
+
+  /// Loaded groups from the database
   late List<Group> loadedGroups;
+
+  /// Loading state
   bool isLoading = true;
 
   List<Group> groups = List.filled(
@@ -101,7 +105,7 @@ class _GroupsViewState extends State<GroupsView> {
   void loadGroups() {
     Future.wait([
       db.groupDao.getAllGroups(),
-      Future.delayed(minimumSkeletonDuration),
+      Future.delayed(Constants.minimumSkeletonDuration),
     ]).then((results) {
       loadedGroups = results[0] as List<Group>;
       setState(() {

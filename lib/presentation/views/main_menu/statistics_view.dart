@@ -25,28 +25,7 @@ class _StatisticsViewState extends State<StatisticsView> {
   @override
   void initState() {
     super.initState();
-
-    final db = Provider.of<AppDatabase>(context, listen: false);
-
-    Future.wait([
-      db.matchDao.getAllMatches(),
-      db.playerDao.getAllPlayers(),
-      Future.delayed(minimumSkeletonDuration),
-    ]).then((results) async {
-      if (!mounted) return;
-      final matches = results[0] as List<Match>;
-      final players = results[1] as List<Player>;
-      winCounts = _calculateWinsForAllPlayers(matches, players, context);
-      matchCounts = _calculateMatchAmountsForAllPlayers(
-        matches,
-        players,
-        context,
-      );
-      winRates = computeWinRatePercent(wins: winCounts, matches: matchCounts);
-      setState(() {
-        isLoading = false;
-      });
-    });
+    loadStatisticData();
   }
 
   @override
@@ -78,7 +57,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                           width: constraints.maxWidth * 0.95,
                           values: winCounts,
                           itemCount: 3,
-                          barColor: Colors.blue,
+                          barColor: Colors.green,
                         ),
                         SizedBox(height: constraints.maxHeight * 0.02),
                         StatisticsTile(
@@ -96,7 +75,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                           width: constraints.maxWidth * 0.95,
                           values: matchCounts,
                           itemCount: 10,
-                          barColor: Colors.green,
+                          barColor: Colors.blue,
                         ),
                       ],
                     ),
@@ -118,13 +97,43 @@ class _StatisticsViewState extends State<StatisticsView> {
     );
   }
 
+  /// Loads matches and players from the database
+  /// and calculates statistics for each player
+  void loadStatisticData() {
+    final db = Provider.of<AppDatabase>(context, listen: false);
+
+    Future.wait([
+      db.matchDao.getAllMatches(),
+      db.playerDao.getAllPlayers(),
+      Future.delayed(Constants.minimumSkeletonDuration),
+    ]).then((results) async {
+      if (!mounted) return;
+      final matches = results[0] as List<Match>;
+      final players = results[1] as List<Player>;
+      winCounts = _calculateWinsForAllPlayers(
+        matches: matches,
+        players: players,
+        context: context,
+      );
+      matchCounts = _calculateMatchAmountsForAllPlayers(
+        matches: matches,
+        players: players,
+        context: context,
+      );
+      winRates = computeWinRatePercent(wins: winCounts, matches: matchCounts);
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   /// Calculates the number of wins for each player
   /// and returns a sorted list of tuples (playerName, winCount)
-  List<(String, int)> _calculateWinsForAllPlayers(
-    List<Match> matches,
-    List<Player> players,
-    BuildContext context,
-  ) {
+  List<(String, int)> _calculateWinsForAllPlayers({
+    required List<Match> matches,
+    required List<Player> players,
+    required BuildContext context,
+  }) {
     List<(String, int)> winCounts = [];
     final loc = AppLocalizations.of(context);
 
@@ -169,11 +178,11 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   /// Calculates the number of matches played for each player
   /// and returns a sorted list of tuples (playerName, matchCount)
-  List<(String, int)> _calculateMatchAmountsForAllPlayers(
-    List<Match> matches,
-    List<Player> players,
-    BuildContext context,
-  ) {
+  List<(String, int)> _calculateMatchAmountsForAllPlayers({
+    required List<Match> matches,
+    required List<Player> players,
+    required BuildContext context,
+  }) {
     List<(String, int)> matchCounts = [];
     final loc = AppLocalizations.of(context);
 

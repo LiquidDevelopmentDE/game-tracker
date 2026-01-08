@@ -11,31 +11,55 @@ import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
+/// A widget that allows users to select players from a list,
+/// with search functionality and the ability to add new players.
+/// - [availablePlayers]: An optional list of players to choose from. If null, all
+///   players from the database are used.
+/// - [initialSelectedPlayers]: An optional list of players that should be pre-selected.
+/// - [onChanged]: A callback function that is invoked whenever the selection changes,
+///   providing the updated list of selected players.
 class PlayerSelection extends StatefulWidget {
-  final Function(List<Player> value) onChanged;
-  final List<Player>? availablePlayers;
-  final List<Player>? initialSelectedPlayers;
-
   const PlayerSelection({
     super.key,
-    required this.onChanged,
     this.availablePlayers,
     this.initialSelectedPlayers,
+    required this.onChanged,
   });
+
+  /// An optional list of players to choose from. If null, all players from the database are used.
+  final List<Player>? availablePlayers;
+
+  /// An optional list of players that should be pre-selected.
+  final List<Player>? initialSelectedPlayers;
+
+  /// A callback function that is invoked whenever the selection changes,
+  final Function(List<Player> value) onChanged;
 
   @override
   State<PlayerSelection> createState() => _PlayerSelectionState();
 }
 
 class _PlayerSelectionState extends State<PlayerSelection> {
-  List<Player> selectedPlayers = [];
-  List<Player> suggestedPlayers = [];
-  List<Player> allPlayers = [];
+  late final AppDatabase db;
   bool isLoading = true;
+
+  /// Future that loads all players from the database.
+  late Future<List<Player>> _allPlayersFuture;
+
+  /// The complete list of all available players.
+  List<Player> allPlayers = [];
+
+  /// The list of players suggested based on the search input.
+  List<Player> suggestedPlayers = [];
+
+  /// The list of currently selected players.
+  List<Player> selectedPlayers = [];
+
+  /// Controller for the search bar input.
   late final TextEditingController _searchBarController =
       TextEditingController();
-  late final AppDatabase db;
-  late Future<List<Player>> _allPlayersFuture;
+
+  /// Skeleton data used while loading players.
   late final List<Player> skeletonData = List.filled(
     7,
     Player(name: 'Player 0'),
@@ -49,47 +73,11 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     loadPlayerList();
   }
 
-  void loadPlayerList() {
-    _allPlayersFuture = Future.wait([
-      db.playerDao.getAllPlayers(),
-      Future.delayed(minimumSkeletonDuration),
-    ]).then((results) => results[0] as List<Player>);
-    if (mounted) {
-      _allPlayersFuture.then((loadedPlayers) {
-        setState(() {
-          // If a list of available players is provided (even if empty), use that list.
-          if (widget.availablePlayers != null) {
-            widget.availablePlayers!.sort((a, b) => a.name.compareTo(b.name));
-            allPlayers = [...widget.availablePlayers!];
-            suggestedPlayers = [...allPlayers];
-
-            if (widget.initialSelectedPlayers != null) {
-              // Ensures that only players available for selection are pre-selected.
-              selectedPlayers = widget.initialSelectedPlayers!
-                  .where(
-                    (p) => widget.availablePlayers!.any(
-                      (available) => available.id == p.id,
-                    ),
-                  )
-                  .toList();
-            }
-          } else {
-            // Otherwise, use the loaded players from the database.
-            loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
-            allPlayers = [...loadedPlayers];
-            suggestedPlayers = [...loadedPlayers];
-          }
-          isLoading = false;
-        });
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: CustomTheme.standardMargin,
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: CustomTheme.standardBoxDecoration,
       child: Column(
@@ -131,9 +119,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           ),
           const SizedBox(height: 10),
           Text(
-            AppLocalizations.of(
-              context,
-            ).selected_players(selectedPlayers.length),
+            loc.selected_players,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -227,51 +213,95 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     );
   }
 
+  /// Loads the list of players from the database or uses the provided available players.
+  /// Sets the loading state and updates the player lists accordingly.
+  void loadPlayerList() {
+    _allPlayersFuture = Future.wait([
+      db.playerDao.getAllPlayers(),
+      Future.delayed(Constants.minimumSkeletonDuration),
+    ]).then((results) => results[0] as List<Player>);
+    if (mounted) {
+      _allPlayersFuture.then((loadedPlayers) {
+        setState(() {
+          // If a list of available players is provided (even if empty), use that list.
+          if (widget.availablePlayers != null) {
+            widget.availablePlayers!.sort((a, b) => a.name.compareTo(b.name));
+            allPlayers = [...widget.availablePlayers!];
+            suggestedPlayers = [...allPlayers];
+
+            if (widget.initialSelectedPlayers != null) {
+              // Ensures that only players available for selection are pre-selected.
+              selectedPlayers = widget.initialSelectedPlayers!
+                  .where(
+                    (p) => widget.availablePlayers!.any(
+                      (available) => available.id == p.id,
+                    ),
+                  )
+                  .toList();
+            }
+          } else {
+            // Otherwise, use the loaded players from the database.
+            loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
+            allPlayers = [...loadedPlayers];
+            suggestedPlayers = [...loadedPlayers];
+          }
+          isLoading = false;
+        });
+      });
+    }
+  }
+
   /// Adds a new player to the database from the search bar input.
   /// Shows a snackbar indicating success or failure.
   /// [context] - BuildContext to show the snackbar.
-  void addNewPlayerFromSearch({required BuildContext context}) async {
+  Future<void> addNewPlayerFromSearch({required BuildContext context}) async {
     final loc = AppLocalizations.of(context);
-    String playerName = _searchBarController.text.trim();
-    Player createdPlayer = Player(name: playerName);
-    bool success = await db.playerDao.addPlayer(player: createdPlayer);
+    final playerName = _searchBarController.text.trim();
+
+    final createdPlayer = Player(name: playerName);
+    final success = await db.playerDao.addPlayer(player: createdPlayer);
+
     if (!context.mounted) return;
+
     if (success) {
-      selectedPlayers.insert(0, createdPlayer);
-      widget.onChanged([...selectedPlayers]);
-      allPlayers.add(createdPlayer);
-      setState(() {
-        _searchBarController.clear();
-        suggestedPlayers = allPlayers.where((player) {
-          return !selectedPlayers.contains(player);
-        }).toList();
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: CustomTheme.boxColor,
-          content: Center(
-            child: Text(
-              AppLocalizations.of(
-                context,
-              ).successfully_added_player(playerName),
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-      );
+      _handleSuccessfulPlayerCreation(createdPlayer);
+      showSnackBarMessage(loc.successfully_added_player(playerName));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: CustomTheme.boxColor,
-          content: Center(
-            child: Text(
-              loc.could_not_add_player(playerName),
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-      );
+      showSnackBarMessage(loc.could_not_add_player(playerName));
     }
+  }
+
+  /// Updates the state after successfully adding a new player.
+  void _handleSuccessfulPlayerCreation(Player player) {
+    selectedPlayers.insert(0, player);
+    widget.onChanged([...selectedPlayers]);
+    allPlayers.add(player);
+
+    setState(() {
+      _searchBarController.clear();
+      _updateSuggestedPlayers();
+    });
+  }
+
+  /// Updates the suggested players list based on current selection.
+  void _updateSuggestedPlayers() {
+    suggestedPlayers = allPlayers
+        .where((player) => !selectedPlayers.contains(player))
+        .toList();
+  }
+
+  /// Displays a snackbar message at the bottom of the screen.
+  /// [message] - The message to display in the snackbar.
+  void showSnackBarMessage(String message) {
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: CustomTheme.boxColor,
+        content: Center(
+          child: Text(message, style: const TextStyle(color: Colors.white)),
+        ),
+      ),
+    );
   }
 
   /// Determines the appropriate info text to display when no players

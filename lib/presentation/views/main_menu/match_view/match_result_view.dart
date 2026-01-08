@@ -18,8 +18,12 @@ class MatchResultView extends StatefulWidget {
 }
 
 class _MatchResultViewState extends State<MatchResultView> {
-  late final List<Player> allPlayers;
   late final AppDatabase db;
+
+  /// List of all players who participated in the match
+  late final List<Player> allPlayers;
+
+  /// Currently selected winner player
   Player? _selectedPlayer;
 
   @override
@@ -47,17 +51,7 @@ class _MatchResultViewState extends State<MatchResultView> {
             Navigator.of(context).pop();
           },
         ),
-        backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
-        title: Text(
-          widget.match.name,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        centerTitle: true,
+        title: Text(widget.match.name),
       ),
       body: SafeArea(
         child: Column(
@@ -132,6 +126,8 @@ class _MatchResultViewState extends State<MatchResultView> {
     );
   }
 
+  /// Handles saving or removing the winner in the database
+  /// based on the current selection.
   Future<void> _handleWinnerSaving() async {
     if (_selectedPlayer == null) {
       await db.matchDao.removeWinner(matchId: widget.match.id);
@@ -144,6 +140,10 @@ class _MatchResultViewState extends State<MatchResultView> {
     widget.onWinnerChanged?.call();
   }
 
+  /// Retrieves all players associated with the given [match].
+  /// This includes players directly assigned to the match
+  /// as well as members of the group (if any).
+  /// The returned list is sorted alphabetically by player name.
   List<Player> getAllPlayers(Match match) {
     List<Player> players = [];
 

@@ -9,13 +9,16 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get all_players => 'All players:';
+  String get all_players => 'All players';
 
   @override
   String get all_players_selected => 'All players selected';
 
   @override
   String get amount_of_matches => 'Amount of Matches';
+
+  @override
+  String get app_name => 'Game Tracker';
 
   @override
   String get cancel => 'Cancel';
@@ -30,8 +33,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get choose_ruleset => 'Choose Ruleset';
 
   @override
-  String could_not_add_player(String playerName) {
-    return 'Could not add player $playerName';
+  String could_not_add_player(Object playerName) {
+    return 'Could not add player';
   }
 
   @override
@@ -87,9 +90,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get game_name => 'Game Name';
-
-  @override
-  String get game_tracker => 'Game Tracker';
 
   @override
   String get group => 'Group';
@@ -216,14 +216,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_winner => 'Select Winner:';
 
   @override
-  String selected_players(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    return 'Selected players: $countString';
-  }
+  String get selected_players => 'Selected players';
 
   @override
   String get settings => 'Settings';
@@ -253,9 +246,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get this_cannot_be_undone => 'This can\'t be undone';
 
   @override
-  String today_at(String time) {
-    return 'Today at $time';
-  }
+  String get today_at => 'Today at';
 
   @override
   String get undo => 'Undo';
@@ -264,9 +255,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknown_exception => 'Unknown Exception (see console)';
 
   @override
-  String winner(Object winnerName) {
-    return 'Winner';
-  }
+  String get winner => 'Winner';
 
   @override
   String get winrate => 'Winrate';
@@ -275,7 +264,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wins => 'Wins';
 
   @override
-  String yesterday_at(String time) {
-    return 'Yesterday at $time';
-  }
+  String get yesterday_at => 'Yesterday at';
 }

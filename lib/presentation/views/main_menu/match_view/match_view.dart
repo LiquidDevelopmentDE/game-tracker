@@ -28,6 +28,8 @@ class _MatchViewState extends State<MatchView> {
   late final AppDatabase db;
   bool isLoading = true;
 
+  /// Loaded matches from the database,
+  /// initially filled with skeleton matches
   List<Match> matches = List.filled(
     4,
     Match(
@@ -44,7 +46,6 @@ class _MatchViewState extends State<MatchView> {
   @override
   void initState() {
     super.initState();
-
     db = Provider.of<AppDatabase>(context, listen: false);
     loadGames();
   }
@@ -117,10 +118,11 @@ class _MatchViewState extends State<MatchView> {
     );
   }
 
+  /// Loads the games from the database and sorts them by creation date.
   void loadGames() {
     Future.wait([
       db.matchDao.getAllMatches(),
-      Future.delayed(minimumSkeletonDuration),
+      Future.delayed(Constants.minimumSkeletonDuration),
     ]).then((results) {
       if (mounted) {
         setState(() {

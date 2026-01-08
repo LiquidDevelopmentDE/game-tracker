@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
+/// A custom text input field widget that encapsulates a [TextField] with specific styling.
+/// - [controller]: The controller for the text input field.
+/// - [onChanged]: The callback invoked when the text in the field changes.
+/// - [hintText]: The hint text displayed in the text input field when it is empty
 class TextInputField extends StatelessWidget {
-  final TextEditingController controller;
-  final ValueChanged<String>? onChanged;
-  final String hintText;
-
   const TextInputField({
     super.key,
     required this.controller,
     required this.hintText,
     this.onChanged,
   });
+
+  /// The controller for the text input field.
+  final TextEditingController controller;
+
+  /// The callback invoked when the text in the field changes.
+  final ValueChanged<String>? onChanged;
+
+  /// The hint text displayed in the text input field when it is empty.
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {

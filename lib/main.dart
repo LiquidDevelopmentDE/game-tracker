@@ -34,21 +34,17 @@ class GameTracker extends StatelessWidget {
         );
       },
       debugShowCheckedModeBanner: false,
-      onGenerateTitle: (context) => AppLocalizations.of(context).game_tracker,
-      darkTheme: ThemeData.dark(),
-
+      onGenerateTitle: (context) => AppLocalizations.of(context).app_name,
       themeMode: ThemeMode.dark, // forces dark mode
       theme: ThemeData(
         primaryColor: CustomTheme.primaryColor,
         scaffoldBackgroundColor: CustomTheme.backgroundColor,
         appBarTheme: CustomTheme.appBarTheme,
-
         colorScheme: ColorScheme.fromSeed(
           seedColor: CustomTheme.primaryColor,
           brightness: Brightness.dark,
         ).copyWith(surface: CustomTheme.backgroundColor),
       ),
-
       home: const CustomNavigationBar(),
     );
   }

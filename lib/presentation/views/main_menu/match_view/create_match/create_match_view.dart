@@ -26,14 +26,13 @@ class CreateMatchView extends StatefulWidget {
 }
 
 class _CreateMatchViewState extends State<CreateMatchView> {
-  /// Reference to the app database
   late final AppDatabase db;
 
   /// Controller for the match name input field
   final TextEditingController _matchNameController = TextEditingController();
 
   /// Hint text for the match name input field
-  String hintText = 'Match Name';
+  String? hintText;
 
   /// List of all groups from the database
   List<Group> groupsList = [];
@@ -68,6 +67,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// The currently selected players
   List<Player>? selectedPlayers;
 
+  /// List of available rulesets with their localized string representations
+  late final List<(Ruleset, String)> _rulesets;
+
   @override
   void initState() {
     super.initState();
@@ -89,9 +91,18 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     });
   }
 
-  List<(Ruleset, String)> _getRulesets(BuildContext context) {
+  @override
+  void dispose() {
+    _matchNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final loc = AppLocalizations.of(context);
-    return [
+    hintText ??= loc.match_name;
+    _rulesets = [
       (Ruleset.singleWinner, loc.ruleset_single_winner),
       (Ruleset.singleLoser, loc.ruleset_single_loser),
       (Ruleset.mostPoints, loc.ruleset_most_points),
@@ -110,24 +121,16 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: CustomTheme.backgroundColor,
-        scrolledUnderElevation: 0,
-        title: Text(
-          loc.create_new_match,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(loc.create_new_match)),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+              margin: CustomTheme.tileMargin,
               child: TextInputField(
                 controller: _matchNameController,
-                hintText: hintText,
+                hintText: hintText ?? '',
               ),
             ),
             ChooseTile(
@@ -148,11 +151,11 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   if (selectedGameIndex != -1) {
                     hintText = games[selectedGameIndex].$1;
                     selectedRuleset = games[selectedGameIndex].$3;
-                    selectedRulesetIndex = _getRulesets(
-                      context,
-                    ).indexWhere((r) => r.$1 == selectedRuleset);
+                    selectedRulesetIndex = _rulesets.indexWhere(
+                      (r) => r.$1 == selectedRuleset,
+                    );
                   } else {
-                    hintText = 'Match Name';
+                    hintText = loc.match_name;
                     selectedRuleset = null;
                   }
                 });
@@ -164,17 +167,16 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   ? loc.none
                   : translateRulesetToString(selectedRuleset!, context),
               onPressed: () async {
-                final rulesets = _getRulesets(context);
                 selectedRuleset = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChooseRulesetView(
-                      rulesets: rulesets,
+                      rulesets: _rulesets,
                       initialRulesetIndex: selectedRulesetIndex,
                     ),
                   ),
                 );
                 if (!mounted) return;
-                selectedRulesetIndex = rulesets.indexWhere(
+                selectedRulesetIndex = _rulesets.indexWhere(
                   (r) => r.$1 == selectedRuleset,
                 );
                 selectedGameIndex = -1;
@@ -228,7 +230,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   ? () async {
                       Match match = Match(
                         name: _matchNameController.text.isEmpty
-                            ? hintText
+                            ? (hintText ?? '')
                             : _matchNameController.text.trim(),
                         createdAt: DateTime.now(),
                         group: selectedGroup,
@@ -256,11 +258,14 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     );
   }
 
-  /// Determines whether the "Create Game" button should be enabled based on
-  /// the current state of the input fields.
+  /// Determines whether the "Create Match" button should be enabled.
+  ///
+  /// Returns `true` if:
+  /// - A ruleset is selected AND
+  /// - Either a group is selected OR at least 2 players are selected
   bool _enableCreateGameButton() {
-    return selectedGroup != null ||
-        (selectedPlayers != null && selectedPlayers!.length > 1) &&
-            selectedRuleset != null;
+    return (selectedGroup != null ||
+            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
+        selectedRuleset != null;
   }
 }

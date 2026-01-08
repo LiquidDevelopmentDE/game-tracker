@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
+/// A custom search bar widget that encapsulates a [SearchBar] with additional customization options.
+/// - [controller]: The controller for the search bar's text input.
+/// - [hintText]: The hint text displayed in the search bar when it is empty.
+/// - [trailingButtonShown]: Whether to show the trailing button.
+/// - [trailingButtonicon]: The icon for the trailing button.
+/// - [trailingButtonEnabled]: Whether the trailing button is in enabled state.
+/// - [onTrailingButtonPressed]: The callback invoked when the trailing button is pressed.
+/// - [onChanged]: The callback invoked when the text in the search bar changes.
+/// - [constraints]: The constraints for the search bar.
 class CustomSearchBar extends StatelessWidget {
-  final TextEditingController controller;
-  final String hintText;
-  final ValueChanged<String>? onChanged;
-  final BoxConstraints? constraints;
-  final bool trailingButtonShown;
-  final bool trailingButtonEnabled;
-  final VoidCallback? onTrailingButtonPressed;
-  final IconData trailingButtonicon;
-
   const CustomSearchBar({
     super.key,
     required this.controller,
@@ -22,6 +22,30 @@ class CustomSearchBar extends StatelessWidget {
     this.onChanged,
     this.constraints,
   });
+
+  /// The controller for the search bar's text input.
+  final TextEditingController controller;
+
+  /// The hint text displayed in the search bar when it is empty.
+  final String hintText;
+
+  /// Whether to show the trailing button.
+  final bool trailingButtonShown;
+
+  /// The icon for the trailing button.
+  final IconData trailingButtonicon;
+
+  /// Whether the trailing button is in enabled state.
+  final bool trailingButtonEnabled;
+
+  /// The callback invoked when the trailing button is pressed.
+  final VoidCallback? onTrailingButtonPressed;
+
+  /// The callback invoked when the text in the search bar changes.
+  final ValueChanged<String>? onChanged;
+
+  /// The constraints for the search bar.
+  final BoxConstraints? constraints;
 
   @override
   Widget build(BuildContext context) {
