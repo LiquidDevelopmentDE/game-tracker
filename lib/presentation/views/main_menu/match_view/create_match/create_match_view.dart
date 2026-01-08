@@ -155,7 +155,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                       (r) => r.$1 == selectedRuleset,
                     );
                   } else {
-                    hintText = AppLocalizations.of(context).match_name;
+                    hintText = loc.match_name;
                     selectedRuleset = null;
                   }
                 });

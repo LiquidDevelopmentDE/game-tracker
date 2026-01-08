@@ -206,13 +206,7 @@
     "description": "Label to select the winner"
   },
   "@selected_players": {
-    "description": "Shows the number of selected players",
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "format": "compact"
-      }
-    }
+    "description": "Shows the number of selected players"
   },
   "@settings": {
     "description": "Settings label"
@@ -265,7 +259,7 @@
   "@yesterday_at": {
     "description": "Date format for yesterday"
   },
-  "all_players": "All players:",
+  "all_players": "All players",
   "all_players_selected": "All players selected",
   "amount_of_matches": "Amount of Matches",
   "app_name": "Game Tracker",
@@ -330,7 +324,7 @@
   "search_for_groups": "Search for groups",
   "search_for_players": "Search for players",
   "select_winner": "Select Winner:",
-  "selected_players": "Selected players: {count}",
+  "selected_players": "Selected players",
   "settings": "Settings",
   "single_loser": "Single Loser",
   "single_winner": "Single Winner",

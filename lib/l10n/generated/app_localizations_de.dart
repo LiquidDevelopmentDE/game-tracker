@@ -9,7 +9,7 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get all_players => 'Alle Spieler:innen:';
+  String get all_players => 'Alle Spieler:innen';
 
   @override
   String get all_players_selected => 'Alle Spieler:innen ausgewählt';
@@ -150,7 +150,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Keine Spieler:in mit diesem Namen gefunden';
 
   @override
-  String get no_players_selected => 'Keine Spieler:in ausgewählt';
+  String get no_players_selected => 'Keine Spieler:innen ausgewählt';
 
   @override
   String get no_recent_matches_available => 'Keine letzten Spiele verfügbar';
@@ -216,14 +216,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get select_winner => 'Gewinner:in wählen:';
 
   @override
-  String selected_players(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    return 'Ausgewählte Spieler:innen: $countString';
-  }
+  String get selected_players => 'Ausgewählte Spieler:innen';
 
   @override
   String get settings => 'Einstellungen';

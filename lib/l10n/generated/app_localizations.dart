@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// Label for all players list
   ///
   /// In en, this message translates to:
-  /// **'All players:'**
+  /// **'All players'**
   String get all_players;
 
   /// Message when all players are added to selection
@@ -491,8 +491,8 @@ abstract class AppLocalizations {
   /// Shows the number of selected players
   ///
   /// In en, this message translates to:
-  /// **'Selected players: {count}'**
-  String selected_players(int count);
+  /// **'Selected players'**
+  String get selected_players;
 
   /// Settings label
   ///

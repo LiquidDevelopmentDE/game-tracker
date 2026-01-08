@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get all_players => 'All players:';
+  String get all_players => 'All players';
 
   @override
   String get all_players_selected => 'All players selected';
@@ -216,14 +216,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_winner => 'Select Winner:';
 
   @override
-  String selected_players(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    return 'Selected players: $countString';
-  }
+  String get selected_players => 'Selected players';
 
   @override
   String get settings => 'Settings';
