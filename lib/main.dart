@@ -35,8 +35,6 @@ class GameTracker extends StatelessWidget {
       },
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => AppLocalizations.of(context).game_tracker,
-      darkTheme: ThemeData.dark(),
-
       themeMode: ThemeMode.dark, // forces dark mode
       theme: ThemeData(
         primaryColor: CustomTheme.primaryColor,
