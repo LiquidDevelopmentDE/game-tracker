@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
@@ -85,7 +88,11 @@ class _GroupsViewState extends State<GroupsView> {
               onPressed: () async {
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  Platform.isIOS ? CupertinoPageRoute(
+                  builder: (context) {
+                    return const CreateGroupView();
+                  },
+                  ) : MaterialPageRoute(
                     builder: (context) {
                       return const CreateGroupView();
                     },

@@ -1,4 +1,5 @@
 import 'dart:core' hide Match;
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +106,9 @@ class _MatchViewState extends State<MatchView> {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  Platform.isIOS ? CupertinoPageRoute(
+                      builder: (context) =>
+                          CreateMatchView(onWinnerChanged: loadGames)) : MaterialPageRoute(
                     builder: (context) =>
                         CreateMatchView(onWinnerChanged: loadGames),
                   ),

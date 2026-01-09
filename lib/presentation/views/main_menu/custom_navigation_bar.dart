@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
@@ -56,7 +59,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             onPressed: () async {
               await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const SettingsView()),
+                Platform.isIOS ? CupertinoPageRoute(builder: (_) => const SettingsView()) : MaterialPageRoute(builder: (_) => const SettingsView()),
               );
               setState(() {
                 tabKeyCount++;
