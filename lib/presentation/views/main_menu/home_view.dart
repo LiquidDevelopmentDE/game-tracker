@@ -122,78 +122,6 @@ class _HomeViewState extends State<HomeView> {
                       },
                     ),
                   ),
-                /*Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: InfoTile(
-                    width: constraints.maxWidth * 0.95,
-                    title: loc.recent_matches,
-                    icon: Icons.timer,
-                    content: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: Visibility(
-                        visible: !isLoading && loadedRecentMatches.isNotEmpty,
-                        replacement: Center(
-                          heightFactor: 12,
-                          child: Text(
-                            AppLocalizations.of(
-                              context,
-                            ).no_recent_matches_available,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            MatchSummaryTile(
-                              matchTitle: recentMatches[0].name,
-                              game: 'Winner',
-                              ruleset: 'Ruleset',
-                              players: _getPlayerText(
-                                recentMatches[0],
-                                context,
-                              ),
-                              winner: recentMatches[0].winner == null
-                                  ? AppLocalizations.of(
-                                      context,
-                                    ).match_in_progress
-                                  : recentMatches[0].winner!.name,
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child: Divider(),
-                            ),
-                            if (loadedRecentMatches.length > 1) ...[
-                              MatchSummaryTile(
-                                matchTitle: recentMatches[1].name,
-                                game: 'Winner',
-                                ruleset: 'Ruleset',
-                                players: _getPlayerText(
-                                  recentMatches[1],
-                                  context,
-                                ),
-                                winner: recentMatches[1].winner == null
-                                    ? AppLocalizations.of(
-                                        context,
-                                      ).match_in_progress
-                                    : recentMatches[1].winner!.name,
-                              ),
-                              const SizedBox(height: 8),
-                            ] else ...[
-                              Center(
-                                heightFactor: 5.35,
-                                child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  ).no_second_match_available,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),*/
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: InfoTile(
@@ -271,31 +199,11 @@ class _HomeViewState extends State<HomeView> {
                 ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
               .take(2)
               .toList();
-      if (loadedRecentMatches.length < 2) {
-        recentMatches.add(
-          Match(name: 'Dummy Match', winner: null, group: null, players: null),
-        );
-      }
       if (mounted) {
         setState(() {
           isLoading = false;
         });
       }
     });
-  }
-
-  /// Generates a text representation of the players in the match.
-  /// If the match has a group, it returns the group name and the number of additional players.
-  /// If there is no group, it returns the count of players.
-  String _getPlayerText(Match game, context) {
-    final loc = AppLocalizations.of(context);
-    if (game.group == null) {
-      final playerCount = game.players?.length ?? 0;
-      return loc.players_count(playerCount);
-    }
-    if (game.players == null || game.players!.isEmpty) {
-      return game.group!.name;
-    }
-    return '${game.group!.name} + ${game.players!.length}';
   }
 }
