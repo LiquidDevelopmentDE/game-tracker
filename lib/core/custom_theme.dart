@@ -11,6 +11,8 @@ class CustomTheme {
   static Color onBoxColor = const Color(0xFF181818);
   static Color boxBorder = const Color(0xFF272727);
   static const Color textColor = Colors.white;
+  static Color navBarItemSelectedColor = primaryColor.withValues(green: 0.4);
+  static Color navBarItemUnselectedColor = Colors.white.withValues(alpha: 0.6);
 
   // ==================== Border Radius ====================
   static const double standardBorderRadius = 12.0;

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
@@ -70,50 +72,49 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       backgroundColor: CustomTheme.backgroundColor,
       body: tabs[currentIndex],
       extendBody: true,
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.only(bottom: 30),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: CustomTheme.primaryColor,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: SizedBox(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  NavbarItem(
-                    index: 0,
-                    isSelected: currentIndex == 0,
-                    icon: Icons.home_rounded,
-                    label: loc.home,
-                    onTabTapped: onTabTapped,
-                  ),
-                  NavbarItem(
-                    index: 1,
-                    isSelected: currentIndex == 1,
-                    icon: Icons.gamepad_rounded,
-                    label: loc.matches,
-                    onTabTapped: onTabTapped,
-                  ),
-                  NavbarItem(
-                    index: 2,
-                    isSelected: currentIndex == 2,
-                    icon: Icons.group_rounded,
-                    label: loc.groups,
-                    onTabTapped: onTabTapped,
-                  ),
-                  NavbarItem(
-                    index: 3,
-                    isSelected: currentIndex == 3,
-                    icon: Icons.bar_chart_rounded,
-                    label: loc.statistics,
-                    onTabTapped: onTabTapped,
-                  ),
-                ],
+      bottomNavigationBar: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            decoration: BoxDecoration(
+              color: CustomTheme.boxColor.withValues(alpha: 0.8),
+            ),
+            child: SafeArea(
+              child: SizedBox(
+                height: 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    NavbarItem(
+                      index: 0,
+                      isSelected: currentIndex == 0,
+                      icon: Icons.home_rounded,
+                      label: loc.home,
+                      onTabTapped: onTabTapped,
+                    ),
+                    NavbarItem(
+                      index: 1,
+                      isSelected: currentIndex == 1,
+                      icon: Icons.gamepad_rounded,
+                      label: loc.matches,
+                      onTabTapped: onTabTapped,
+                    ),
+                    NavbarItem(
+                      index: 2,
+                      isSelected: currentIndex == 2,
+                      icon: Icons.group_rounded,
+                      label: loc.groups,
+                      onTabTapped: onTabTapped,
+                    ),
+                    NavbarItem(
+                      index: 3,
+                      isSelected: currentIndex == 3,
+                      icon: Icons.bar_chart_rounded,
+                      label: loc.statistics,
+                      onTabTapped: onTabTapped,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
