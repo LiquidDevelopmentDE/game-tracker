@@ -11,13 +11,20 @@ import 'package:intl/intl.dart';
 /// - [match]: The match data to be displayed.
 /// - [onTap]: The callback invoked when the tile is tapped.
 class MatchTile extends StatefulWidget {
-  const MatchTile({super.key, required this.match, required this.onTap});
+  const MatchTile({
+    super.key,
+    required this.match,
+    required this.onTap,
+    this.width,
+  });
 
   /// The match data to be displayed.
   final Match match;
 
   /// The callback invoked when the tile is tapped.
   final VoidCallback onTap;
+
+  final double? width;
 
   @override
   State<MatchTile> createState() => _MatchTileState();
@@ -41,7 +48,8 @@ class _MatchTileState extends State<MatchTile> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        margin: CustomTheme.tileMargin,
+        margin: EdgeInsets.zero,
+        width: widget.width,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: CustomTheme.boxColor,
