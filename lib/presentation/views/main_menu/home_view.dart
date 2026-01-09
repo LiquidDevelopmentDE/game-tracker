@@ -5,10 +5,11 @@ import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
-import 'package:game_tracker/presentation/widgets/tiles/match_summary_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/match_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -86,6 +87,38 @@ class _HomeViewState extends State<HomeView> {
                   ],
                 ),
                 Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: MatchTile(
+                    width: constraints.maxWidth * 0.95,
+                    match: recentMatches[0],
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) =>
+                              MatchResultView(match: recentMatches[0]),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: MatchTile(
+                    width: constraints.maxWidth * 0.95,
+                    match: recentMatches[1],
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) =>
+                              MatchResultView(match: recentMatches[1]),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                /*Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
@@ -156,53 +189,56 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                   ),
-                ),
-                InfoTile(
-                  width: constraints.maxWidth * 0.95,
-                  title: loc.quick_create,
-                  icon: Icons.add_box_rounded,
-                  content: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 1',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 2',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 3',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 4',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 5',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 6',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ],
+                ),*/
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: InfoTile(
+                    width: constraints.maxWidth * 0.95,
+                    title: loc.quick_create,
+                    icon: Icons.add_box_rounded,
+                    content: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 1',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 2',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 3',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 4',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 5',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 6',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
