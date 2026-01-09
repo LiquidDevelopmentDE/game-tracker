@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
 
   /// Recent matches to display, initially filled with skeleton matches
   List<Match> recentMatches = List.filled(
-    2,
+    3,
     Match(
       name: 'Skeleton Match',
       group: Group(
@@ -44,7 +44,6 @@ class _HomeViewState extends State<HomeView> {
           Player(name: 'Skeleton Player 2'),
         ],
       ),
-      winner: Player(name: 'Skeleton Player 1'),
     ),
   );
 
@@ -86,44 +85,46 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ],
                 ),
-                if (recentMatches.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: MatchTile(
-                      compact: true,
-                      width: constraints.maxWidth * 0.95,
-                      match: recentMatches[0],
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) =>
-                                MatchResultView(match: recentMatches[0]),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                if (recentMatches.length > 1)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: MatchTile(
-                      compact: true,
-                      width: constraints.maxWidth * 0.95,
-                      match: recentMatches[1],
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) =>
-                                MatchResultView(match: recentMatches[1]),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: InfoTile(
+                    width: constraints.maxWidth * 0.95,
+                    title: loc.recent_matches,
+                    icon: Icons.history_rounded,
+                    content: Column(
+                      children: [
+                        if (recentMatches.isNotEmpty)
+                          for (Match match in recentMatches)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6.0,
+                              ),
+                              child: MatchTile(
+                                compact: true,
+                                width: constraints.maxWidth * 0.9,
+                                match: match,
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          MatchResultView(match: match),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                        else
+                          Center(
+                            heightFactor: 5,
+                            child: Text(loc.no_recent_matches_available),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.zero,
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
                     title: loc.quick_create,
@@ -173,6 +174,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
+                SizedBox(height: MediaQuery.paddingOf(context).bottom),
               ],
             ),
           ),
