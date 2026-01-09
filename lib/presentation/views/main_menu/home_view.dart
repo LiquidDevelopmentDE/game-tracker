@@ -86,40 +86,42 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: MatchTile(
-                    compact: true,
-                    width: constraints.maxWidth * 0.95,
-                    match: recentMatches[0],
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) =>
-                              MatchResultView(match: recentMatches[0]),
-                        ),
-                      );
-                    },
+                if (recentMatches.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: MatchTile(
+                      compact: true,
+                      width: constraints.maxWidth * 0.95,
+                      match: recentMatches[0],
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) =>
+                                MatchResultView(match: recentMatches[0]),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: MatchTile(
-                    compact: true,
-                    width: constraints.maxWidth * 0.95,
-                    match: recentMatches[1],
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) =>
-                              MatchResultView(match: recentMatches[1]),
-                        ),
-                      );
-                    },
+                if (recentMatches.length > 1)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: MatchTile(
+                      compact: true,
+                      width: constraints.maxWidth * 0.95,
+                      match: recentMatches[1],
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) =>
+                                MatchResultView(match: recentMatches[1]),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
                 /*Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
