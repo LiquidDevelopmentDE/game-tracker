@@ -15,12 +15,10 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   PackageInfo _packageInfo = PackageInfo(
-    appName: 'Unknown',
-    packageName: 'Unknown',
-    version: 'Unknown',
-    buildNumber: 'Unknown',
-    buildSignature: 'Unknown',
-    installerStore: 'Unknown',
+    appName: 'n.A.',
+    packageName: 'n.A.',
+    version: 'n.A.',
+    buildNumber: 'n.A.',
   );
   @override
   void initState() {
