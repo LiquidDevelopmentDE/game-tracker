@@ -142,7 +142,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                     : games[selectedGameIndex].$1,
                 onPressed: () async {
                   selectedGameIndex = await Navigator.of(context).push(
-                    MaterialPageRoute(
+                    adaptivePageRoute(
                       builder: (context) => ChooseGameView(
                         games: games,
                         initialGameIndex: selectedGameIndex,
@@ -170,7 +170,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                     : translateRulesetToString(selectedRuleset!, context),
                 onPressed: () async {
                   selectedRuleset = await Navigator.of(context).push(
-                    MaterialPageRoute(
+                    adaptivePageRoute(
                       builder: (context) => ChooseRulesetView(
                         rulesets: _rulesets,
                         initialRulesetIndex: selectedRulesetIndex,
@@ -192,7 +192,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                     : selectedGroup!.name,
                 onPressed: () async {
                   selectedGroup = await Navigator.of(context).push(
-                    MaterialPageRoute(
+                    adaptivePageRoute(
                       builder: (context) => ChooseGroupView(
                         groups: groupsList,
                         initialGroupId: selectedGroupId,
@@ -242,7 +242,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
-                            CupertinoPageRoute(
+                            adaptivePageRoute(
                               fullscreenDialog: true,
                               builder: (context) => MatchResultView(
                                 match: match,
