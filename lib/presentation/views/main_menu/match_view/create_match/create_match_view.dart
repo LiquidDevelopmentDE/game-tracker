@@ -70,6 +70,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// List of available rulesets with their localized string representations
   late final List<(Ruleset, String)> _rulesets;
 
+  /// GlobalKey for ScaffoldMessenger to show snackbars
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   void initState() {
     super.initState();
@@ -120,6 +123,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     return ScaffoldMessenger(
+      key: _scaffoldMessengerKey,
       child: Scaffold(
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(title: Text(loc.create_new_match)),

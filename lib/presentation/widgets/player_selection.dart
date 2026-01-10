@@ -70,6 +70,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
     suggestedPlayers = skeletonData;
+    selectedPlayers = widget.initialSelectedPlayers ?? [];
     loadPlayerList();
   }
 
@@ -99,7 +100,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                 if (value.isEmpty) {
                   // If the search is empty, it shows all unselected players.
                   suggestedPlayers = allPlayers.where((player) {
-                    return !selectedPlayers.contains(player);
+                    return !selectedPlayers.any((p) => p.id == player.id);
                   }).toList();
                 } else {
                   // If there is input, it filters by name match (case-insensitive) and ensures
@@ -108,9 +109,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                     final bool nameMatches = player.name.toLowerCase().contains(
                       value.toLowerCase(),
                     );
-                    final bool isNotSelected = !selectedPlayers.contains(
-                      player,
-                    );
+                    final bool isNotSelected = !selectedPlayers.any((p) => p.id == player.id);
                     return nameMatches && isNotSelected;
                   }).toList();
                 }
@@ -125,46 +124,49 @@ class _PlayerSelectionState extends State<PlayerSelection> {
           const SizedBox(height: 10),
           SizedBox(
             height: 50,
-            child: selectedPlayers.isEmpty
-                ? Center(child: Text(loc.no_players_selected))
-                : SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        for (var player in selectedPlayers)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: TextIconTile(
-                              text: player.name,
-                              onIconTap: () {
-                                setState(() {
-                                  // Removes the player from the selection and notifies the parent.
-                                  selectedPlayers.remove(player);
-                                  widget.onChanged([...selectedPlayers]);
+            child: AppSkeleton(
+              enabled: isLoading,
+              child: selectedPlayers.isEmpty
+                  ? Center(child: Text(loc.no_players_selected))
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (var player in selectedPlayers)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: TextIconTile(
+                                text: player.name,
+                                onIconTap: () {
+                                  setState(() {
+                                    // Removes the player from the selection and notifies the parent.
+                                    selectedPlayers.remove(player);
+                                    widget.onChanged([...selectedPlayers]);
 
-                                  // Get the current search query
-                                  final currentSearch = _searchBarController
-                                      .text
-                                      .toLowerCase();
+                                    // Get the current search query
+                                    final currentSearch = _searchBarController
+                                        .text
+                                        .toLowerCase();
 
-                                  // If the player matches the current search query (or search is empty),
-                                  // they are added back to the `suggestedPlayers` and the list is re-sorted.
-                                  if (currentSearch.isEmpty ||
-                                      player.name.toLowerCase().contains(
-                                        currentSearch,
-                                      )) {
-                                    suggestedPlayers.add(player);
-                                    suggestedPlayers.sort(
-                                      (a, b) => a.name.compareTo(b.name),
-                                    );
-                                  }
-                                });
-                              },
+                                    // If the player matches the current search query (or search is empty),
+                                    // they are added back to the `suggestedPlayers` and the list is re-sorted.
+                                    if (currentSearch.isEmpty ||
+                                        player.name.toLowerCase().contains(
+                                          currentSearch,
+                                        )) {
+                                      suggestedPlayers.add(player);
+                                      suggestedPlayers.sort(
+                                        (a, b) => a.name.compareTo(b.name),
+                                      );
+                                    }
+                                  });
+                                },
+                              ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+            ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -243,7 +245,21 @@ class _PlayerSelectionState extends State<PlayerSelection> {
             // Otherwise, use the loaded players from the database.
             loadedPlayers.sort((a, b) => a.name.compareTo(b.name));
             allPlayers = [...loadedPlayers];
-            suggestedPlayers = [...loadedPlayers];
+            if (widget.initialSelectedPlayers != null) {
+              // Excludes already selected players from the suggested players list.
+              suggestedPlayers = loadedPlayers.where((p) => !widget.initialSelectedPlayers!.any((ip) => ip.id == p.id)).toList();
+              // Ensures that only players available for selection are pre-selected.
+              selectedPlayers = widget.initialSelectedPlayers!
+                  .where(
+                    (p) => allPlayers.any(
+                      (available) => available.id == p.id,
+                ),
+              )
+                  .toList();
+            } else {
+              // If no initial selection, all loaded players are suggested.
+              suggestedPlayers = [...loadedPlayers];
+            }
           }
           isLoading = false;
         });

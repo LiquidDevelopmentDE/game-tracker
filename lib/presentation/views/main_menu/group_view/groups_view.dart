@@ -6,7 +6,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/views/main_menu/group_view/create_group_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/group_view/group_detail_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
@@ -73,7 +73,19 @@ class _GroupsViewState extends State<GroupsView> {
                       height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
-                  return GroupTile(group: groups[index]);
+                  return GroupTile(group: groups[index], onTap: () async {
+                    await Navigator.push(
+                      context,
+                      adaptivePageRoute(
+                        builder: (context) {
+                          return CreateGroupView(groupToEdit: groups[index]);
+                        },
+                      ),
+                    );
+                    setState(() {
+                      loadGroups();
+                    });
+                  });
                 },
               ),
             ),

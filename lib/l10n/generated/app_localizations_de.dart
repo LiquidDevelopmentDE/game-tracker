@@ -67,11 +67,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get delete => 'Löschen';
 
   @override
-  String get delete_all_data => 'Alle Daten löschen?';
+  String get delete_all_data => 'Diese Gruppe löschen?';
+
+  @override
+  String get delete_group => 'Delete this group?';
+
+  @override
+  String get edit_group => 'Gruppe bearbeiten';
 
   @override
   String get error_creating_group =>
       'Fehler beim Erstellen der Gruppe, bitte erneut versuchen';
+
+  @override
+  String get error_deleting_group =>
+      'Fehler beim Löschen der Gruppe, bitte erneut versuchen';
+
+  @override
+  String get error_editing_group =>
+      'Fehler beim Bearbeiten der Gruppe, bitte erneut versuchen';
 
   @override
   String get error_reading_file => 'Fehler beim Lesen der Datei';

@@ -13,6 +13,10 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+
+  /// GlobalKey for ScaffoldMessenger to show snackbars
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   void initState() {
     super.initState();
@@ -22,6 +26,7 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     return ScaffoldMessenger(
+      key: _scaffoldMessengerKey,
       child: Scaffold(
         appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
         backgroundColor: CustomTheme.backgroundColor,

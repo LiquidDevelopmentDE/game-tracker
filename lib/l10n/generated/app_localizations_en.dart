@@ -70,8 +70,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete_all_data => 'Delete all data?';
 
   @override
+  String get delete_group => 'Delete this group?';
+
+  @override
+  String get edit_group => 'Edit Group';
+
+  @override
   String get error_creating_group =>
       'Error while creating group, please try again';
+
+  @override
+  String get error_deleting_group =>
+      'Error while deleting group, please try again';
+
+  @override
+  String get error_editing_group =>
+      'Error while editing group, please try again';
 
   @override
   String get error_reading_file => 'Error reading file';

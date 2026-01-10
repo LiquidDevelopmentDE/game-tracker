@@ -34,10 +34,10 @@
     "description": "Button text to create a match"
   },
   "@create_new_group": {
-    "description": "Button text to create a new group"
+    "description": "Appbar text to create a group"
   },
   "@create_new_match": {
-    "description": "Button text to create a new match"
+    "description": "Appbar text to create a match"
   },
   "@data_successfully_deleted": {
     "description": "Success message after deleting data"
@@ -62,8 +62,20 @@
   "@delete_all_data": {
     "description": "Confirmation dialog for deleting all data"
   },
+  "@delete_group": {
+    "description": "Confirmation dialog for deleting a group"
+  },
+  "@edit_group": {
+      "description": "Button & Appbar label for editing a group"
+  },
   "@error_creating_group": {
     "description": "Error message when group creation fails"
+  },
+  "@error_deleting_group": {
+      "description": "Error message when group deletion fails"
+  },
+  "@error_editing_group": {
+      "description": "Error message when group editing fails"
   },
   "@error_reading_file": {
     "description": "Error message when file cannot be read"
@@ -278,7 +290,11 @@
   "days_ago": "{count} days ago",
   "delete": "Delete",
   "delete_all_data": "Delete all data?",
+  "delete_group": "Delete this group?",
+  "edit_group": "Edit Group",
   "error_creating_group": "Error while creating group, please try again",
+  "error_deleting_group": "Error while deleting group, please try again",
+  "error_editing_group": "Error while editing group, please try again",
   "error_reading_file": "Error reading file",
   "export_canceled": "Export canceled",
   "export_data": "Export data",
