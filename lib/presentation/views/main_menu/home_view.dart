@@ -103,14 +103,15 @@ class _HomeViewState extends State<HomeView> {
                                 compact: true,
                                 width: constraints.maxWidth * 0.9,
                                 match: match,
-                                onTap: () {
-                                  Navigator.of(context).push(
+                                onTap: () async {
+                                  await Navigator.of(context).push(
                                     MaterialPageRoute(
                                       fullscreenDialog: true,
                                       builder: (context) =>
                                           MatchResultView(match: match),
                                     ),
                                   );
+                                  loadHomeViewData();
                                 },
                               ),
                             )
