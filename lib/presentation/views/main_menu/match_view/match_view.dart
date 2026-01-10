@@ -1,4 +1,5 @@
 import 'dart:core' hide Match;
+
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/constants.dart';
@@ -111,8 +112,9 @@ class _MatchViewState extends State<MatchView> {
                 Navigator.push(
                   context,
                   adaptivePageRoute(
-                      builder: (context) =>
-                          CreateMatchView(onWinnerChanged: loadGames))
+                    builder: (context) =>
+                        CreateMatchView(onWinnerChanged: loadGames),
+                  ),
                 );
               },
             ),
