@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
@@ -119,140 +120,142 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    return Scaffold(
-      backgroundColor: CustomTheme.backgroundColor,
-      appBar: AppBar(title: Text(loc.create_new_match)),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: CustomTheme.tileMargin,
-              child: TextInputField(
-                controller: _matchNameController,
-                hintText: hintText ?? '',
+    return ScaffoldMessenger(
+      child: Scaffold(
+        backgroundColor: CustomTheme.backgroundColor,
+        appBar: AppBar(title: Text(loc.create_new_match)),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: CustomTheme.tileMargin,
+                child: TextInputField(
+                  controller: _matchNameController,
+                  hintText: hintText ?? '',
+                ),
               ),
-            ),
-            ChooseTile(
-              title: loc.game,
-              trailingText: selectedGameIndex == -1
-                  ? loc.none
-                  : games[selectedGameIndex].$1,
-              onPressed: () async {
-                selectedGameIndex = await Navigator.of(context).push(
-                  adaptivePageRoute(
-                    builder: (context) => ChooseGameView(
-                      games: games,
-                      initialGameIndex: selectedGameIndex,
+              ChooseTile(
+                title: loc.game,
+                trailingText: selectedGameIndex == -1
+                    ? loc.none
+                    : games[selectedGameIndex].$1,
+                onPressed: () async {
+                  selectedGameIndex = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChooseGameView(
+                        games: games,
+                        initialGameIndex: selectedGameIndex,
+                      ),
                     ),
-                  ),
-                );
-                setState(() {
-                  if (selectedGameIndex != -1) {
-                    hintText = games[selectedGameIndex].$1;
-                    selectedRuleset = games[selectedGameIndex].$3;
-                    selectedRulesetIndex = _rulesets.indexWhere(
-                      (r) => r.$1 == selectedRuleset,
-                    );
-                  } else {
-                    hintText = loc.match_name;
-                    selectedRuleset = null;
-                  }
-                });
-              },
-            ),
-            ChooseTile(
-              title: loc.ruleset,
-              trailingText: selectedRuleset == null
-                  ? loc.none
-                  : translateRulesetToString(selectedRuleset!, context),
-              onPressed: () async {
-                selectedRuleset = await Navigator.of(context).push(
-                  adaptivePageRoute(
-                    builder: (context) => ChooseRulesetView(
-                      rulesets: _rulesets,
-                      initialRulesetIndex: selectedRulesetIndex,
-                    ),
-                  ),
-                );
-                if (!mounted) return;
-                selectedRulesetIndex = _rulesets.indexWhere(
-                  (r) => r.$1 == selectedRuleset,
-                );
-                selectedGameIndex = -1;
-                setState(() {});
-              },
-            ),
-            ChooseTile(
-              title: loc.group,
-              trailingText: selectedGroup == null
-                  ? loc.none_group
-                  : selectedGroup!.name,
-              onPressed: () async {
-                selectedGroup = await Navigator.of(context).push(
-                  adaptivePageRoute(
-                    builder: (context) => ChooseGroupView(
-                      groups: groupsList,
-                      initialGroupId: selectedGroupId,
-                    ),
-                  ),
-                );
-                selectedGroupId = selectedGroup?.id ?? '';
-                if (selectedGroup != null) {
-                  filteredPlayerList = playerList
-                      .where(
-                        (p) => !selectedGroup!.members.any((m) => m.id == p.id),
-                      )
-                      .toList();
-                } else {
-                  filteredPlayerList = List.from(playerList);
-                }
-                setState(() {});
-              },
-            ),
-            Expanded(
-              child: PlayerSelection(
-                key: ValueKey(selectedGroup?.id ?? 'no_group'),
-                initialSelectedPlayers: selectedPlayers ?? [],
-                availablePlayers: filteredPlayerList,
-                onChanged: (value) {
+                  );
                   setState(() {
-                    selectedPlayers = value;
+                    if (selectedGameIndex != -1) {
+                      hintText = games[selectedGameIndex].$1;
+                      selectedRuleset = games[selectedGameIndex].$3;
+                      selectedRulesetIndex = _rulesets.indexWhere(
+                        (r) => r.$1 == selectedRuleset,
+                      );
+                    } else {
+                      hintText = loc.match_name;
+                      selectedRuleset = null;
+                    }
                   });
                 },
               ),
-            ),
-            CustomWidthButton(
-              text: loc.create_match,
-              sizeRelativeToWidth: 0.95,
-              buttonType: ButtonType.primary,
-              onPressed: _enableCreateGameButton()
-                  ? () async {
-                      Match match = Match(
-                        name: _matchNameController.text.isEmpty
-                            ? (hintText ?? '')
-                            : _matchNameController.text.trim(),
-                        createdAt: DateTime.now(),
-                        group: selectedGroup,
-                        players: selectedPlayers,
-                      );
-                      await db.matchDao.addMatch(match: match);
-                      if (context.mounted) {
-                        Navigator.pushReplacement(
-                          context,
-                          adaptivePageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => MatchResultView(
-                              match: match,
-                              onWinnerChanged: widget.onWinnerChanged,
-                            ),
-                          ),
+              ChooseTile(
+                title: loc.ruleset,
+                trailingText: selectedRuleset == null
+                    ? loc.none
+                    : translateRulesetToString(selectedRuleset!, context),
+                onPressed: () async {
+                  selectedRuleset = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChooseRulesetView(
+                        rulesets: _rulesets,
+                        initialRulesetIndex: selectedRulesetIndex,
+                      ),
+                    ),
+                  );
+                  if (!mounted) return;
+                  selectedRulesetIndex = _rulesets.indexWhere(
+                    (r) => r.$1 == selectedRuleset,
+                  );
+                  selectedGameIndex = -1;
+                  setState(() {});
+                },
+              ),
+              ChooseTile(
+                title: loc.group,
+                trailingText: selectedGroup == null
+                    ? loc.none_group
+                    : selectedGroup!.name,
+                onPressed: () async {
+                  selectedGroup = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChooseGroupView(
+                        groups: groupsList,
+                        initialGroupId: selectedGroupId,
+                      ),
+                    ),
+                  );
+                  selectedGroupId = selectedGroup?.id ?? '';
+                  if (selectedGroup != null) {
+                    filteredPlayerList = playerList
+                        .where(
+                          (p) => !selectedGroup!.members.any((m) => m.id == p.id),
+                        )
+                        .toList();
+                  } else {
+                    filteredPlayerList = List.from(playerList);
+                  }
+                  setState(() {});
+                },
+              ),
+              Expanded(
+                child: PlayerSelection(
+                  key: ValueKey(selectedGroup?.id ?? 'no_group'),
+                  initialSelectedPlayers: selectedPlayers ?? [],
+                  availablePlayers: filteredPlayerList,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPlayers = value;
+                    });
+                  },
+                ),
+              ),
+              CustomWidthButton(
+                text: loc.create_match,
+                sizeRelativeToWidth: 0.95,
+                buttonType: ButtonType.primary,
+                onPressed: _enableCreateGameButton()
+                    ? () async {
+                        Match match = Match(
+                          name: _matchNameController.text.isEmpty
+                              ? (hintText ?? '')
+                              : _matchNameController.text.trim(),
+                          createdAt: DateTime.now(),
+                          group: selectedGroup,
+                          players: selectedPlayers,
                         );
+                        await db.matchDao.addMatch(match: match);
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => MatchResultView(
+                                match: match,
+                                onWinnerChanged: widget.onWinnerChanged,
+                              ),
+                            ),
+                          );
+                        }
                       }
-                    }
-                  : null,
-            ),
-          ],
+                    : null,
+              ),
+            ],
+          ),
         ),
       ),
     );

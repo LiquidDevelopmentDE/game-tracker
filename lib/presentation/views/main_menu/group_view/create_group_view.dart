@@ -44,66 +44,68 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    return Scaffold(
-      backgroundColor: CustomTheme.backgroundColor,
-      appBar: AppBar(title: Text(loc.create_new_group)),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: CustomTheme.standardMargin,
-              child: TextInputField(
-                controller: _groupNameController,
-                hintText: loc.group_name,
+    return ScaffoldMessenger(
+      child: Scaffold(
+        backgroundColor: CustomTheme.backgroundColor,
+        appBar: AppBar(title: Text(loc.create_new_group)),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: CustomTheme.standardMargin,
+                child: TextInputField(
+                  controller: _groupNameController,
+                  hintText: loc.group_name,
+                ),
               ),
-            ),
-            Expanded(
-              child: PlayerSelection(
-                onChanged: (value) {
-                  setState(() {
-                    selectedPlayers = [...value];
-                  });
-                },
+              Expanded(
+                child: PlayerSelection(
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPlayers = [...value];
+                    });
+                  },
+                ),
               ),
-            ),
-            CustomWidthButton(
-              text: loc.create_group,
-              sizeRelativeToWidth: 0.95,
-              buttonType: ButtonType.primary,
-              onPressed:
-                  (_groupNameController.text.isEmpty ||
-                      (selectedPlayers.length < 2))
-                  ? null
-                  : () async {
-                      bool success = await db.groupDao.addGroup(
-                        group: Group(
-                          name: _groupNameController.text.trim(),
-                          members: selectedPlayers,
-                        ),
-                      );
-                      if (!context.mounted) return;
-                      if (success) {
-                        Navigator.pop(context);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: CustomTheme.boxColor,
-                            content: Center(
-                              child: Text(
-                                AppLocalizations.of(
-                                  context,
-                                ).error_creating_group,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
+              CustomWidthButton(
+                text: loc.create_group,
+                sizeRelativeToWidth: 0.95,
+                buttonType: ButtonType.primary,
+                onPressed:
+                    (_groupNameController.text.isEmpty ||
+                        (selectedPlayers.length < 2))
+                    ? null
+                    : () async {
+                        bool success = await db.groupDao.addGroup(
+                          group: Group(
+                            name: _groupNameController.text.trim(),
+                            members: selectedPlayers,
                           ),
                         );
-                      }
-                    },
-            ),
-            const SizedBox(height: 20),
-          ],
+                        if (!context.mounted) return;
+                        if (success) {
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: CustomTheme.boxColor,
+                              content: Center(
+                                child: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  ).error_creating_group,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
