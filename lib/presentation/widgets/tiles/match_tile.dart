@@ -58,11 +58,7 @@ class _MatchTileState extends State<MatchTile> {
         margin: EdgeInsets.zero,
         width: widget.width,
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: CustomTheme.boxColor,
-          border: Border.all(color: CustomTheme.boxBorder),
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: CustomTheme.standardBoxDecoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
