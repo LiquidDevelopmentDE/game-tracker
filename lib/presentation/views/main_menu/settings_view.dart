@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
+import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -119,17 +122,71 @@ class _SettingsViewState extends State<SettingsView> {
                 });
               },
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              child: Text(
+                textAlign: TextAlign.start,
+                'App',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SettingsListTile(
+              title: 'Lizenzen',
+              icon: Icons.insert_drive_file,
+              suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+              onPressed: () {},
+            ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Center(
-                child: Text(
-                  'Version ${_packageInfo.version} (${_packageInfo.buildNumber})',
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+                child: Column(
+                  spacing: 6,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 40,
+                      children: [
+                        GestureDetector(
+                          child: const Icon(Icons.language),
+                          onTap: () => {
+                            launchUrl(Uri.parse('https://liquid-dev.de')),
+                          },
+                        ),
+                        GestureDetector(
+                          child: const FaIcon(FontAwesomeIcons.github),
+                          onTap: () => {
+                            launchUrl(
+                              Uri.parse(
+                                'https://github.com/liquiddevelopmentde',
+                              ),
+                            ),
+                          },
+                        ),
+                        GestureDetector(
+                          child: const Icon(Icons.email),
+                          onTap: () =>
+                              launchUrl(Uri.parse('mailto:hi@liquid-dev.de')),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '© ${DateFormat('yyyy').format(DateTime.now())} Liquid Development',
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'Version ${_packageInfo.version} (${_packageInfo.buildNumber})',
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

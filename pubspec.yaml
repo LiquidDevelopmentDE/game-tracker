@@ -1,7 +1,7 @@
 name: game_tracker
 description: "Game Tracking App for Card Games"
 publish_to: 'none'
-version: 0.0.4+101
+version: 0.0.4+109
 
 environment:
   sdk: ^3.8.1
@@ -23,6 +23,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   package_info_plus: ^9.0.0
+  font_awesome_flutter: ^10.12.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
