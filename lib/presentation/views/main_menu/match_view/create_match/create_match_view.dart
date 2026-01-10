@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -142,12 +141,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   : games[selectedGameIndex].$1,
               onPressed: () async {
                 selectedGameIndex = await Navigator.of(context).push(
-                  Platform.isIOS ? CupertinoPageRoute(
-                    builder: (context) => ChooseGameView(
-                      games: games,
-                      initialGameIndex: selectedGameIndex,
-                    ),
-                  ) : MaterialPageRoute(
+                  AdaptivePageRoute(
                     builder: (context) => ChooseGameView(
                       games: games,
                       initialGameIndex: selectedGameIndex,
@@ -175,12 +169,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   : translateRulesetToString(selectedRuleset!, context),
               onPressed: () async {
                 selectedRuleset = await Navigator.of(context).push(
-                  Platform.isIOS ? CupertinoPageRoute(
-                  builder: (context) => ChooseRulesetView(
-                    rulesets: _rulesets,
-                    initialRulesetIndex: selectedRulesetIndex,
-                  ),
-                  ) : MaterialPageRoute(
+                  AdaptivePageRoute(
                     builder: (context) => ChooseRulesetView(
                       rulesets: _rulesets,
                       initialRulesetIndex: selectedRulesetIndex,
@@ -202,12 +191,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   : selectedGroup!.name,
               onPressed: () async {
                 selectedGroup = await Navigator.of(context).push(
-                  Platform.isIOS ? CupertinoPageRoute(
-                  builder: (context) => ChooseGroupView(
-                    groups: groupsList,
-                    initialGroupId: selectedGroupId,
-                  ),
-                  ): MaterialPageRoute(
+                  AdaptivePageRoute(
                     builder: (context) => ChooseGroupView(
                       groups: groupsList,
                       initialGroupId: selectedGroupId,
@@ -257,7 +241,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                       if (context.mounted) {
                         Navigator.pushReplacement(
                           context,
-                          CupertinoPageRoute(
+                          AdaptivePageRoute(
                             fullscreenDialog: true,
                             builder: (context) => MatchResultView(
                               match: match,

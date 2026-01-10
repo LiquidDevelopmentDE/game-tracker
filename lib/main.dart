@@ -45,7 +45,8 @@ class GameTracker extends StatelessWidget {
           brightness: Brightness.dark,
         ).copyWith(surface: CustomTheme.backgroundColor),
         pageTransitionsTheme: const PageTransitionsTheme(
-          builders: {TargetPlatform.iOS: CupertinoPageTransitionsBuilder()},
+          builders: {TargetPlatform.iOS: CupertinoPageTransitionsBuilder(), TargetPlatform.android: PredictiveBackPageTransitionsBuilder()
+          },
         ),
       ),
       home: const CustomNavigationBar(),
