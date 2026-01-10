@@ -4,6 +4,7 @@ import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -13,9 +14,18 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+    installerStore: 'Unknown',
+  );
   @override
   void initState() {
     super.initState();
+    _initPackageInfo();
   }
 
   @override
@@ -25,102 +35,107 @@ class _SettingsViewState extends State<SettingsView> {
       child: Scaffold(
         appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
         backgroundColor: CustomTheme.backgroundColor,
-        body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) =>
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
-                      child: Text(
-                        textAlign: TextAlign.start,
-                        loc.menu,
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 10,
-                      ),
-                      child: Text(
-                        textAlign: TextAlign.start,
-                        loc.settings,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SettingsListTile(
-                      title: loc.export_data,
-                      icon: Icons.upload_rounded,
-                      suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                      onPressed: () async {
-                        final String json =
-                            await DataTransferService.getAppDataAsJson(context);
-                        final result = await DataTransferService.exportData(
-                          json,
-                          'game_tracker-data',
-                        );
-                        if (!context.mounted) return;
-                        showExportSnackBar(context: context, result: result);
-                      },
-                    ),
-                    SettingsListTile(
-                      title: loc.import_data,
-                      icon: Icons.download_rounded,
-                      suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                      onPressed: () async {
-                        final result = await DataTransferService.importData(
-                          context,
-                        );
-                        if (!context.mounted) return;
-                        showImportSnackBar(context: context, result: result);
-                      },
-                    ),
-                    SettingsListTile(
-                      title: loc.delete_all_data,
-                      icon: Icons.delete_rounded,
-                      suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                      onPressed: () {
-                        showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(loc.delete_all_data),
-                            content: Text(loc.this_cannot_be_undone),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(false),
-                                child: Text(loc.cancel),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(true),
-                                child: Text(loc.delete),
-                              ),
-                            ],
-                          ),
-                        ).then((confirmed) {
-                          if (confirmed == true && context.mounted) {
-                            DataTransferService.deleteAllData(context);
-                            showSnackbar(
-                              context: context,
-                              message: AppLocalizations.of(
-                                context,
-                              ).data_successfully_deleted,
-                            );
-                          }
-                        });
-                      },
-                    ),
-                  ],
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
+              child: Text(
+                textAlign: TextAlign.start,
+                loc.menu,
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              child: Text(
+                textAlign: TextAlign.start,
+                loc.settings,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SettingsListTile(
+              title: loc.export_data,
+              icon: Icons.upload_rounded,
+              suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+              onPressed: () async {
+                final String json = await DataTransferService.getAppDataAsJson(
+                  context,
+                );
+                final result = await DataTransferService.exportData(
+                  json,
+                  'game_tracker-data',
+                );
+                if (!context.mounted) return;
+                showExportSnackBar(context: context, result: result);
+              },
+            ),
+            SettingsListTile(
+              title: loc.import_data,
+              icon: Icons.download_rounded,
+              suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+              onPressed: () async {
+                final result = await DataTransferService.importData(context);
+                if (!context.mounted) return;
+                showImportSnackBar(context: context, result: result);
+              },
+            ),
+            SettingsListTile(
+              title: loc.delete_all_data,
+              icon: Icons.delete_rounded,
+              suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+              onPressed: () {
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(loc.delete_all_data),
+                    content: Text(loc.this_cannot_be_undone),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(loc.cancel),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(loc.delete),
+                      ),
+                    ],
+                  ),
+                ).then((confirmed) {
+                  if (confirmed == true && context.mounted) {
+                    DataTransferService.deleteAllData(context);
+                    showSnackbar(
+                      context: context,
+                      message: AppLocalizations.of(
+                        context,
+                      ).data_successfully_deleted,
+                    );
+                  }
+                });
+              },
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: Text(
+                  'Version ${_packageInfo.version} (${_packageInfo.buildNumber})',
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -195,5 +210,12 @@ class _SettingsViewState extends State<SettingsView> {
             : null,
       ),
     );
+  }
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
   }
 }
