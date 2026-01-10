@@ -67,10 +67,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete => 'Delete';
 
   @override
-  String get delete_all_data => 'Delete all data?';
+  String get delete_all_data => 'Delete all data';
 
   @override
-  String get delete_group => 'Delete this group?';
+  String get delete_group => 'Delete this group';
 
   @override
   String get edit_group => 'Edit Group';

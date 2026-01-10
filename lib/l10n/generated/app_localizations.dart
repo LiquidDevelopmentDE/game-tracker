@@ -164,13 +164,13 @@ abstract class AppLocalizations {
   /// **'Create match'**
   String get create_match;
 
-  /// Appbar text to create a group
+  /// Button text to create a new group
   ///
   /// In en, this message translates to:
   /// **'Create new group'**
   String get create_new_group;
 
-  /// Appbar text to create a match
+  /// Button text to create a new match
   ///
   /// In en, this message translates to:
   /// **'Create new match'**
@@ -209,13 +209,13 @@ abstract class AppLocalizations {
   /// Confirmation dialog for deleting all data
   ///
   /// In en, this message translates to:
-  /// **'Delete all data?'**
+  /// **'Delete all data'**
   String get delete_all_data;
 
   /// Confirmation dialog for deleting a group
   ///
   /// In en, this message translates to:
-  /// **'Delete this group?'**
+  /// **'Delete this group'**
   String get delete_group;
 
   /// Button & Appbar label for editing a group

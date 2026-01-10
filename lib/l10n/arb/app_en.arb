@@ -34,10 +34,10 @@
     "description": "Button text to create a match"
   },
   "@create_new_group": {
-    "description": "Appbar text to create a group"
+    "description": "Button text to create a new group"
   },
   "@create_new_match": {
-    "description": "Appbar text to create a match"
+    "description": "Button text to create a new match"
   },
   "@data_successfully_deleted": {
     "description": "Success message after deleting data"
@@ -289,7 +289,7 @@
   "data_successfully_imported": "Data successfully imported",
   "days_ago": "{count} days ago",
   "delete": "Delete",
-  "delete_all_data": "Delete all data?",
+  "delete_all_data": "Delete all data",
   "delete_group": "Delete this group",
   "edit_group": "Edit Group",
   "error_creating_group": "Error while creating group, please try again",
