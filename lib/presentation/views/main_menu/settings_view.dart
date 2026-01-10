@@ -93,7 +93,7 @@ class _SettingsViewState extends State<SettingsView> {
                 showDialog<bool>(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(loc.delete_all_data),
+                    title: Text('${loc.delete_all_data}?'),
                     content: Text(loc.this_cannot_be_undone),
                     actions: [
                       TextButton(
