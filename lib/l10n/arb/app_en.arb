@@ -277,7 +277,7 @@
   "data_successfully_imported": "Data successfully imported",
   "days_ago": "{count} days ago",
   "delete": "Delete",
-  "delete_all_data": "Delete all data?",
+  "delete_all_data": "Delete all data",
   "error_creating_group": "Error while creating group, please try again",
   "error_reading_file": "Error reading file",
   "export_canceled": "Export canceled",

@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// Confirmation dialog for deleting all data
   ///
   /// In en, this message translates to:
-  /// **'Delete all data?'**
+  /// **'Delete all data'**
   String get delete_all_data;
 
   /// Error message when group creation fails

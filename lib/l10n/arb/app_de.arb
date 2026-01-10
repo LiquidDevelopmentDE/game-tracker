@@ -17,7 +17,7 @@
   "data_successfully_imported": "Daten erfolgreich importiert",
   "days_ago": "vor {count} Tagen",
   "delete": "Löschen",
-  "delete_all_data": "Alle Daten löschen?",
+  "delete_all_data": "Alle Daten löschen",
   "error_creating_group": "Fehler beim Erstellen der Gruppe, bitte erneut versuchen",
   "error_reading_file": "Fehler beim Lesen der Datei",
   "export_canceled": "Export abgebrochen",
