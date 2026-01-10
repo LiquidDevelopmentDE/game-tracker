@@ -21,105 +21,107 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
-      backgroundColor: CustomTheme.backgroundColor,
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) =>
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
-                    child: Text(
-                      textAlign: TextAlign.start,
-                      loc.menu,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 10,
-                    ),
-                    child: Text(
-                      textAlign: TextAlign.start,
-                      loc.settings,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SettingsListTile(
-                    title: loc.export_data,
-                    icon: Icons.upload_rounded,
-                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () async {
-                      final String json =
-                          await DataTransferService.getAppDataAsJson(context);
-                      final result = await DataTransferService.exportData(
-                        json,
-                        'game_tracker-data',
-                      );
-                      if (!context.mounted) return;
-                      showExportSnackBar(context: context, result: result);
-                    },
-                  ),
-                  SettingsListTile(
-                    title: loc.import_data,
-                    icon: Icons.download_rounded,
-                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () async {
-                      final result = await DataTransferService.importData(
-                        context,
-                      );
-                      if (!context.mounted) return;
-                      showImportSnackBar(context: context, result: result);
-                    },
-                  ),
-                  SettingsListTile(
-                    title: loc.delete_all_data,
-                    icon: Icons.delete_rounded,
-                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () {
-                      showDialog<bool>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text(loc.delete_all_data),
-                          content: Text(loc.this_cannot_be_undone),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: Text(loc.cancel),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(true),
-                              child: Text(loc.delete),
-                            ),
-                          ],
+    return ScaffoldMessenger(
+      child: Scaffold(
+        appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
+        backgroundColor: CustomTheme.backgroundColor,
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) =>
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
+                      child: Text(
+                        textAlign: TextAlign.start,
+                        loc.menu,
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ).then((confirmed) {
-                        if (confirmed == true && context.mounted) {
-                          DataTransferService.deleteAllData(context);
-                          showSnackbar(
-                            context: context,
-                            message: AppLocalizations.of(
-                              context,
-                            ).data_successfully_deleted,
-                          );
-                        }
-                      });
-                    },
-                  ),
-                ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 10,
+                      ),
+                      child: Text(
+                        textAlign: TextAlign.start,
+                        loc.settings,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SettingsListTile(
+                      title: loc.export_data,
+                      icon: Icons.upload_rounded,
+                      suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                      onPressed: () async {
+                        final String json =
+                            await DataTransferService.getAppDataAsJson(context);
+                        final result = await DataTransferService.exportData(
+                          json,
+                          'game_tracker-data',
+                        );
+                        if (!context.mounted) return;
+                        showExportSnackBar(context: context, result: result);
+                      },
+                    ),
+                    SettingsListTile(
+                      title: loc.import_data,
+                      icon: Icons.download_rounded,
+                      suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                      onPressed: () async {
+                        final result = await DataTransferService.importData(
+                          context,
+                        );
+                        if (!context.mounted) return;
+                        showImportSnackBar(context: context, result: result);
+                      },
+                    ),
+                    SettingsListTile(
+                      title: loc.delete_all_data,
+                      icon: Icons.delete_rounded,
+                      suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                      onPressed: () {
+                        showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(loc.delete_all_data),
+                            content: Text(loc.this_cannot_be_undone),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(false),
+                                child: Text(loc.cancel),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(true),
+                                child: Text(loc.delete),
+                              ),
+                            ],
+                          ),
+                        ).then((confirmed) {
+                          if (confirmed == true && context.mounted) {
+                            DataTransferService.deleteAllData(context);
+                            showSnackbar(
+                              context: context,
+                              message: AppLocalizations.of(
+                                context,
+                              ).data_successfully_deleted,
+                            );
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
+        ),
       ),
     );
   }
