@@ -140,7 +140,11 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
         filteredGroups.clear();
         filteredGroups.addAll(
           widget.groups.where(
-            (group) => group.name.toLowerCase().contains(query.toLowerCase()),
+                (group) =>
+            group.name.toLowerCase().contains(query.toLowerCase()) ||
+                group.members.any(
+                      (player) => player.name.toLowerCase().contains(query.toLowerCase()),
+                ),
           ),
         );
       }
