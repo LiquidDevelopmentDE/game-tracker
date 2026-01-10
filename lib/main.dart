@@ -47,7 +47,7 @@ class GameTracker extends StatelessWidget {
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
           },
         ),
       ),
