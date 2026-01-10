@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
 
   /// Recent matches to display, initially filled with skeleton matches
   List<Match> recentMatches = List.filled(
-    3,
+    2,
     Match(
       name: 'Skeleton Match',
       group: Group(
