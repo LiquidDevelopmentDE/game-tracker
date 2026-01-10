@@ -34,10 +34,10 @@
     "description": "Button text to create a match"
   },
   "@create_new_group": {
-    "description": "Button text to create a new group"
+    "description": "Appbar text to create a new group"
   },
   "@create_new_match": {
-    "description": "Button text to create a new match"
+    "description": "Appbar text to create a new match"
   },
   "@data_successfully_deleted": {
     "description": "Success message after deleting data"
