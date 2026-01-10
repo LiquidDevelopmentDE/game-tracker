@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
@@ -105,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
                                 match: match,
                                 onTap: () async {
                                   await Navigator.of(context).push(
-                                    MaterialPageRoute(
+                                    adaptivePageRoute(
                                       fullscreenDialog: true,
                                       builder: (context) =>
                                           MatchResultView(match: match),
