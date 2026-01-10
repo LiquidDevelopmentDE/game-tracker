@@ -10,17 +10,17 @@ import 'package:game_tracker/presentation/widgets/player_selection.dart';
 import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
 import 'package:provider/provider.dart';
 
-class CreateGroupView extends StatefulWidget {
-  const CreateGroupView({super.key, this.groupToEdit});
+class GroupDetailView extends StatefulWidget {
+  const GroupDetailView({super.key, this.groupToEdit});
 
   /// The group to edit, if any
   final Group? groupToEdit;
 
   @override
-  State<CreateGroupView> createState() => _CreateGroupViewState();
+  State<GroupDetailView> createState() => _GroupDetailViewState();
 }
 
-class _CreateGroupViewState extends State<CreateGroupView> {
+class _GroupDetailViewState extends State<GroupDetailView> {
   late final AppDatabase db;
 
   /// GlobalKey for ScaffoldMessenger to show snackbars
@@ -145,7 +145,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           );
                           */
                           success = false;
-                        };
+                        }
                         if (!context.mounted) return;
                         if (success) {
                           Navigator.pop(context);

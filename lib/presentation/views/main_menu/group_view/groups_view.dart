@@ -78,7 +78,7 @@ class _GroupsViewState extends State<GroupsView> {
                       context,
                       adaptivePageRoute(
                         builder: (context) {
-                          return CreateGroupView(groupToEdit: groups[index]);
+                          return GroupDetailView(groupToEdit: groups[index]);
                         },
                       ),
                     );
@@ -100,7 +100,7 @@ class _GroupsViewState extends State<GroupsView> {
                   context,
                   adaptivePageRoute(
                     builder: (context) {
-                      return const CreateGroupView();
+                      return const GroupDetailView();
                     },
                   ),
                 );
