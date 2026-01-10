@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
-import 'package:game_tracker/presentation/widgets/tiles/match_summary_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/match_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +45,6 @@ class _HomeViewState extends State<HomeView> {
           Player(name: 'Skeleton Player 2'),
         ],
       ),
-      winner: Player(name: 'Skeleton Player 1'),
     ),
   );
 
@@ -90,121 +91,92 @@ class _HomeViewState extends State<HomeView> {
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
                     title: loc.recent_matches,
-                    icon: Icons.timer,
-                    content: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: Visibility(
-                        visible: !isLoading && loadedRecentMatches.isNotEmpty,
-                        replacement: Center(
-                          heightFactor: 12,
-                          child: Text(
-                            AppLocalizations.of(
-                              context,
-                            ).no_recent_matches_available,
+                    icon: Icons.history_rounded,
+                    content: Column(
+                      children: [
+                        if (recentMatches.isNotEmpty)
+                          for (Match match in recentMatches)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6.0,
+                              ),
+                              child: MatchTile(
+                                compact: true,
+                                width: constraints.maxWidth * 0.9,
+                                match: match,
+                                onTap: () async {
+                                  await Navigator.of(context).push(
+                                    adaptivePageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          MatchResultView(match: match),
+                                    ),
+                                  );
+                                  await updatedWinnerinRecentMatches(match.id);
+                                },
+                              ),
+                            )
+                        else
+                          Center(
+                            heightFactor: 5,
+                            child: Text(loc.no_recent_matches_available),
                           ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            MatchSummaryTile(
-                              matchTitle: recentMatches[0].name,
-                              game: 'Winner',
-                              ruleset: 'Ruleset',
-                              players: _getPlayerText(
-                                recentMatches[0],
-                                context,
-                              ),
-                              winner: recentMatches[0].winner == null
-                                  ? AppLocalizations.of(
-                                      context,
-                                    ).match_in_progress
-                                  : recentMatches[0].winner!.name,
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child: Divider(),
-                            ),
-                            if (loadedRecentMatches.length > 1) ...[
-                              MatchSummaryTile(
-                                matchTitle: recentMatches[1].name,
-                                game: 'Winner',
-                                ruleset: 'Ruleset',
-                                players: _getPlayerText(
-                                  recentMatches[1],
-                                  context,
-                                ),
-                                winner: recentMatches[1].winner == null
-                                    ? AppLocalizations.of(
-                                        context,
-                                      ).match_in_progress
-                                    : recentMatches[1].winner!.name,
-                              ),
-                              const SizedBox(height: 8),
-                            ] else ...[
-                              Center(
-                                heightFactor: 5.35,
-                                child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  ).no_second_match_available,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
-                InfoTile(
-                  width: constraints.maxWidth * 0.95,
-                  title: loc.quick_create,
-                  icon: Icons.add_box_rounded,
-                  content: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 1',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 2',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 3',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 4',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 5',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 6',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ],
+                Padding(
+                  padding: EdgeInsets.zero,
+                  child: InfoTile(
+                    width: constraints.maxWidth * 0.95,
+                    title: loc.quick_create,
+                    icon: Icons.add_box_rounded,
+                    content: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 1',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 2',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 3',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 4',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 5',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 6',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+                SizedBox(height: MediaQuery.paddingOf(context).bottom),
               ],
             ),
           ),
@@ -215,7 +187,7 @@ class _HomeViewState extends State<HomeView> {
 
   /// Loads the data for the HomeView from the database.
   /// This includes the match count, group count, and recent matches.
-  void loadHomeViewData() {
+  Future<void> loadHomeViewData() async {
     final db = Provider.of<AppDatabase>(context, listen: false);
     Future.wait([
       db.matchDao.getMatchCount(),
@@ -231,11 +203,6 @@ class _HomeViewState extends State<HomeView> {
                 ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
               .take(2)
               .toList();
-      if (loadedRecentMatches.length < 2) {
-        recentMatches.add(
-          Match(name: 'Dummy Match', winner: null, group: null, players: null),
-        );
-      }
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -244,18 +211,15 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  /// Generates a text representation of the players in the match.
-  /// If the match has a group, it returns the group name and the number of additional players.
-  /// If there is no group, it returns the count of players.
-  String _getPlayerText(Match game, context) {
-    final loc = AppLocalizations.of(context);
-    if (game.group == null) {
-      final playerCount = game.players?.length ?? 0;
-      return loc.players_count(playerCount);
+  /// Updates the winner information for a specific match in the recent matches list.
+  Future<void> updatedWinnerinRecentMatches(String matchId) async {
+    final db = Provider.of<AppDatabase>(context, listen: false);
+    final winner = await db.matchDao.getWinner(matchId: matchId);
+    final matchIndex = recentMatches.indexWhere((match) => match.id == matchId);
+    if (matchIndex != -1) {
+      setState(() {
+        recentMatches[matchIndex].winner = winner;
+      });
     }
-    if (game.players == null || game.players!.isEmpty) {
-      return game.group!.name;
-    }
-    return '${game.group!.name} + ${game.players!.length}';
   }
 }

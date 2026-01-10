@@ -10,14 +10,28 @@ import 'package:intl/intl.dart';
 /// creation date, associated group, winner, and players.
 /// - [match]: The match data to be displayed.
 /// - [onTap]: The callback invoked when the tile is tapped.
+/// - [width]: Optional width for the tile.
+/// - [compact]: Whether to display the tile in a compact mode
 class MatchTile extends StatefulWidget {
-  const MatchTile({super.key, required this.match, required this.onTap});
+  const MatchTile({
+    super.key,
+    required this.match,
+    required this.onTap,
+    this.width,
+    this.compact = false,
+  });
 
   /// The match data to be displayed.
   final Match match;
 
   /// The callback invoked when the tile is tapped.
   final VoidCallback onTap;
+
+  /// Optional width for the tile.
+  final double? width;
+
+  /// Whether to display the tile in a compact mode
+  final bool compact;
 
   @override
   State<MatchTile> createState() => _MatchTileState();
@@ -41,13 +55,10 @@ class _MatchTileState extends State<MatchTile> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        margin: CustomTheme.tileMargin,
+        margin: EdgeInsets.zero,
+        width: widget.width,
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: CustomTheme.boxColor,
-          border: Border.all(color: CustomTheme.boxBorder),
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: CustomTheme.standardBoxDecoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -80,7 +91,22 @@ class _MatchTileState extends State<MatchTile> {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      group.name,
+                      '${group.name}${widget.match.players != null ? ' + ${widget.match.players?.length}' : ''}',
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+            ] else if (widget.compact) ...[
+              Row(
+                children: [
+                  const Icon(Icons.person, size: 16, color: Colors.grey),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      '${widget.match.players!.length} ${loc.players}',
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -127,9 +153,46 @@ class _MatchTileState extends State<MatchTile> {
                 ),
               ),
               const SizedBox(height: 12),
+            ] else ...[
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.amber.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.watch_later,
+                      size: 20,
+                      color: Colors.amber,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        loc.match_in_progress,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: CustomTheme.textColor,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
             ],
 
-            if (_allPlayers.isNotEmpty) ...[
+            if (_allPlayers.isNotEmpty && widget.compact == false) ...[
               Text(
                 loc.players,
                 style: const TextStyle(

@@ -9,7 +9,7 @@ class Match {
   final String name;
   final List<Player>? players;
   final Group? group;
-  final Player? winner;
+  Player? winner;
 
   Match({
     String? id,
