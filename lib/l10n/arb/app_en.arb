@@ -290,7 +290,7 @@
   "days_ago": "{count} days ago",
   "delete": "Delete",
   "delete_all_data": "Delete all data?",
-  "delete_group": "Delete this group?",
+  "delete_group": "Delete this group",
   "edit_group": "Edit Group",
   "error_creating_group": "Error while creating group, please try again",
   "error_deleting_group": "Error while deleting group, please try again",

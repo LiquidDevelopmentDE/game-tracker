@@ -18,7 +18,7 @@
   "days_ago": "vor {count} Tagen",
   "delete": "Löschen",
   "delete_all_data": "Alle Daten löschen?",
-  "delete_all_data": "Diese Gruppe löschen?",
+  "delete_all_data": "Diese Gruppe löschen",
   "edit_group": "Gruppe bearbeiten",
   "error_creating_group": "Fehler beim Erstellen der Gruppe, bitte erneut versuchen",
   "error_deleting_group": "Fehler beim Löschen der Gruppe, bitte erneut versuchen",
