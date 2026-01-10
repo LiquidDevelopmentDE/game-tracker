@@ -78,22 +78,25 @@ class _MatchViewState extends State<MatchView> {
                       height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: MatchTile(
-                      onTap: () async {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => MatchResultView(
-                              match: matches[index],
-                              onWinnerChanged: loadGames,
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: MatchTile(
+                        width: MediaQuery.sizeOf(context).width * 0.95,
+                        onTap: () async {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => MatchResultView(
+                                match: matches[index],
+                                onWinnerChanged: loadGames,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      match: matches[index],
+                          );
+                        },
+                        match: matches[index],
+                      ),
                     ),
                   );
                 },
