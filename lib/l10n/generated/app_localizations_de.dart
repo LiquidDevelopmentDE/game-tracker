@@ -67,7 +67,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get delete => 'Löschen';
 
   @override
-  String get delete_all_data => 'Alle Daten löschen?';
+  String get delete_all_data => 'Alle Daten löschen';
 
   @override
   String get error_creating_group =>

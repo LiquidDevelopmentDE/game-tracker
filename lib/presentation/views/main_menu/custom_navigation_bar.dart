@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/group_view/groups_view.dart';
@@ -58,7 +59,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             onPressed: () async {
               await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const SettingsView()),
+                adaptivePageRoute(builder: (_) => const SettingsView()),
               );
               setState(() {
                 tabKeyCount++;

@@ -1,7 +1,7 @@
 import 'dart:core' hide Match;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -78,20 +78,26 @@ class _MatchViewState extends State<MatchView> {
                       height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
-                  return MatchTile(
-                    onTap: () async {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) => MatchResultView(
-                            match: matches[index],
-                            onWinnerChanged: loadGames,
-                          ),
-                        ),
-                      );
-                    },
-                    match: matches[index],
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: MatchTile(
+                        width: MediaQuery.sizeOf(context).width * 0.95,
+                        onTap: () async {
+                          Navigator.push(
+                            context,
+                            adaptivePageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => MatchResultView(
+                                match: matches[index],
+                                onWinnerChanged: loadGames,
+                              ),
+                            ),
+                          );
+                        },
+                        match: matches[index],
+                      ),
+                    ),
                   );
                 },
               ),
@@ -105,7 +111,7 @@ class _MatchViewState extends State<MatchView> {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  adaptivePageRoute(
                     builder: (context) =>
                         CreateMatchView(onWinnerChanged: loadGames),
                   ),
