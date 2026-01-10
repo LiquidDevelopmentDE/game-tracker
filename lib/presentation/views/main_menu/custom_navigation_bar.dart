@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
@@ -58,7 +57,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             onPressed: () async {
               await Navigator.push(
                 context,
-                AdaptivePageRoute(builder: (_) => const SettingsView()),
+                adaptivePageRoute(builder: (_) => const SettingsView()),
               );
               setState(() {
                 tabKeyCount++;

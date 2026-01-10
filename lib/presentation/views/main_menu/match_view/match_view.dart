@@ -1,5 +1,4 @@
 import 'dart:core' hide Match;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/constants.dart';
@@ -82,7 +81,7 @@ class _MatchViewState extends State<MatchView> {
                     onTap: () async {
                       Navigator.push(
                         context,
-                        AdaptivePageRoute(
+                        adaptivePageRoute(
                           fullscreenDialog: true,
                           builder: (context) => MatchResultView(
                             match: matches[index],
@@ -105,7 +104,7 @@ class _MatchViewState extends State<MatchView> {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  AdaptivePageRoute(
+                  adaptivePageRoute(
                       builder: (context) =>
                           CreateMatchView(onWinnerChanged: loadGames))
                 );

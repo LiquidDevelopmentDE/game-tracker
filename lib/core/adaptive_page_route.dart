@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Route<T> AdaptivePageRoute<T>({
+Route<T> adaptivePageRoute<T>({
   required Widget Function(BuildContext) builder,
   bool fullscreenDialog = false,
 }) {

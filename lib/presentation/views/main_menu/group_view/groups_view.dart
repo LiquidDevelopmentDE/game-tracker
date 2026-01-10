@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/constants.dart';
@@ -87,7 +86,7 @@ class _GroupsViewState extends State<GroupsView> {
               onPressed: () async {
                 await Navigator.push(
                   context,
-                  AdaptivePageRoute(
+                  adaptivePageRoute(
                     builder: (context) {
                       return const CreateGroupView();
                     },
