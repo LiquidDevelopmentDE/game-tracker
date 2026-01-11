@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/presentation/views/main_menu/settings_view/license_detail_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/settings_view/oss_licenses.dart';
+import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/license_detail_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
 
 class LicenseTile extends StatelessWidget {
   final Package package;
