@@ -116,6 +116,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalid_schema => 'Invalid Schema';
 
   @override
+  String get licenses => 'Licenses';
+
+  @override
+  String get no_licenses_found => 'No licenses found';
+
+  @override
+  String get no_license_text_available => 'No license text available';
+
+  @override
+  String get error => 'Error';
+
+  @override
   String get least_points => 'Least Points';
 
   @override
