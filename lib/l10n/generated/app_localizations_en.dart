@@ -119,15 +119,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get licenses => 'Licenses';
 
   @override
-  String get no_licenses_found => 'No licenses found';
-
-  @override
-  String get no_license_text_available => 'No license text available';
-
-  @override
-  String get error => 'Error';
-
-  @override
   String get least_points => 'Least Points';
 
   @override
@@ -150,6 +141,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no_groups_created_yet => 'No groups created yet';
+
+  @override
+  String get no_licenses_found => 'No licenses found';
+
+  @override
+  String get no_license_text_available => 'No license text available';
 
   @override
   String get no_matches_created_yet => 'No matches created yet';

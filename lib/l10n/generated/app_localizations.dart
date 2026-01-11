@@ -308,24 +308,6 @@ abstract class AppLocalizations {
   /// **'Licenses'**
   String get licenses;
 
-  /// Message when no licenses are found
-  ///
-  /// In en, this message translates to:
-  /// **'No licenses found'**
-  String get no_licenses_found;
-
-  /// Message when no license text is available
-  ///
-  /// In en, this message translates to:
-  /// **'No license text available'**
-  String get no_license_text_available;
-
-  /// Error label
-  ///
-  /// In en, this message translates to:
-  /// **'Error'**
-  String get error;
-
   /// Title for least points ruleset
   ///
   /// In en, this message translates to:
@@ -373,6 +355,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No groups created yet'**
   String get no_groups_created_yet;
+
+  /// Message when no licenses are found
+  ///
+  /// In en, this message translates to:
+  /// **'No licenses found'**
+  String get no_licenses_found;
+
+  /// Message when no license text is available
+  ///
+  /// In en, this message translates to:
+  /// **'No license text available'**
+  String get no_license_text_available;
 
   /// Message when no matches exist
   ///
