@@ -45,7 +45,7 @@ class _SettingsViewState extends State<SettingsView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
+              padding: const EdgeInsets.only(left: 16, bottom: 10),
               child: Text(
                 textAlign: TextAlign.start,
                 loc.menu,
@@ -56,7 +56,7 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
               child: Text(
                 textAlign: TextAlign.start,
                 loc.settings,
@@ -68,7 +68,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
             SettingsListTile(
               title: loc.export_data,
-              icon: Icons.upload_rounded,
+              icon: Icons.upload,
               suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
               onPressed: () async {
                 final String json = await DataTransferService.getAppDataAsJson(
@@ -84,7 +84,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
             SettingsListTile(
               title: loc.import_data,
-              icon: Icons.download_rounded,
+              icon: Icons.download,
               suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
               onPressed: () async {
                 final result = await DataTransferService.importData(context);
@@ -94,7 +94,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
             SettingsListTile(
               title: loc.delete_all_data,
-              icon: Icons.delete_rounded,
+              icon: Icons.delete,
               suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
               onPressed: () {
                 showDialog<bool>(
@@ -127,7 +127,7 @@ class _SettingsViewState extends State<SettingsView> {
               },
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
               child: Text(
                 textAlign: TextAlign.start,
                 'App',

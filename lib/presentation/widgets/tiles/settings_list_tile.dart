@@ -47,13 +47,26 @@ class SettingsListTile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: CustomTheme.primaryColor.withAlpha(40),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          icon,
+                          size: 28,
+                          color: CustomTheme.primaryColor.withGreen(40),
+                        ),
+                      ),
+                      /* Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: CustomTheme.primaryColor,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(icon, size: 24),
-                      ),
+                      ),*/
                       const SizedBox(width: 16),
                       Text(title, style: const TextStyle(fontSize: 18)),
                     ],

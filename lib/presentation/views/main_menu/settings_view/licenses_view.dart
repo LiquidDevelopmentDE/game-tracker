@@ -22,7 +22,7 @@ class LicensesView extends StatelessWidget {
         itemBuilder: (context, index) {
           final package = allDependencies[index];
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             child: LicenseTile(package: package),
           );
         },
