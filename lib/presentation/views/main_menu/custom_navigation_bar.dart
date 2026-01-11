@@ -73,14 +73,59 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       backgroundColor: CustomTheme.backgroundColor,
       body: tabs[currentIndex],
       extendBody: true,
-      bottomNavigationBar: ClipRRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            decoration: BoxDecoration(
-              color: CustomTheme.boxColor.withValues(alpha: 0.8),
+      bottomNavigationBar: SizedBox(
+        height: 70 + MediaQuery.of(context).padding.bottom,
+        child: Stack(
+          children: [
+            // Dynamisch generierte Blur-Layer für ultra-smooth Übergang
+            ...List.generate(35, (index) {
+              // Verwende kubische Kurve für noch natürlicheren, weicheren Übergang
+              final progress = index / 34.0; // 0.0 bis 1.0
+              final cubic = progress * progress * progress; // Kubische Kurve
+              final blurStrength = 0.5 + (cubic * 50.0); // Sehr sanft von 0.5 bis 50.5
+
+              // Höhe geht jetzt komplett von 100% bis 0% (ganz nach unten)
+              // Mit extra Dichte am unteren Ende für weicheren Übergang
+              final heightFactor = index < 25
+                  ? 1.0 - (progress * 0.7)  // Erste 25 Layer: 100% bis 30%
+                  : 0.3 - ((index - 25) / 34.0); // Letzte 10 Layer: 30% bis 0% (dichter)
+
+              return Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: (70 + MediaQuery.of(context).padding.bottom) * heightFactor.clamp(0.05, 1.0),
+                child: ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: blurStrength,
+                      sigmaY: blurStrength,
+                    ),
+                    child: Container(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+              );
+            }),
+            // Gradient-Overlay
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      CustomTheme.boxColor.withValues(alpha: 1),
+                      CustomTheme.boxColor.withValues(alpha: 0.0),
+                    ],
+                    stops: const [0.4, 1],
+                  ),
+                ),
+              ),
             ),
-            child: SafeArea(
+            // Navbar-Inhalt
+            SafeArea(
               child: SizedBox(
                 height: 70,
                 child: Row(
@@ -118,7 +163,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
