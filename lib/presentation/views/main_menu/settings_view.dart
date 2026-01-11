@@ -98,13 +98,22 @@ class _SettingsViewState extends State<SettingsView> {
                     content: loc.this_cannot_be_undone,
                     actions: [
                       TextButton(
+                        style: TextButton.styleFrom(
+                          splashFactory: NoSplash.splashFactory,
+                          overlayColor: Colors.transparent,
+                        ),
                         onPressed: () => Navigator.of(context).pop(false),
                         child: Text(loc.cancel, style: const TextStyle(color: CustomTheme.textColor),),
                       ),
                       TextButton(
+                        style: TextButton.styleFrom(
+                          splashFactory: NoSplash.splashFactory,
+                          overlayColor: Colors.transparent,
+                        ),
                         onPressed: () => Navigator.of(context).pop(true),
                         child: Text(loc.delete, style: TextStyle(color: CustomTheme.secondaryColor),),
                       ),
+
                     ],
                   ),
                 ).then((confirmed) {

@@ -20,6 +20,7 @@ class CustomAlertDialog extends StatelessWidget {
       content: Text(content, style: const TextStyle(color: CustomTheme.textColor),),
       actions: actions,
       backgroundColor: CustomTheme.boxColor,
+      actionsAlignment: MainAxisAlignment.spaceAround,
       shape: RoundedRectangleBorder(
         borderRadius: CustomTheme.standardBorderRadiusAll,
         side: BorderSide(color: CustomTheme.boxBorder),
