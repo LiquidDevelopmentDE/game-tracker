@@ -80,7 +80,7 @@ class LicenseDetailView extends StatelessWidget {
                   ],
                   if (package.homepage != null &&
                       package.homepage!.isNotEmpty) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     SelectableText(
                       package.homepage!,
                       textAlign: TextAlign.center,
@@ -93,7 +93,7 @@ class LicenseDetailView extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
