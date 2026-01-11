@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses_view.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
 import 'package:intl/intl.dart';
@@ -131,10 +132,14 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ),
             SettingsListTile(
-              title: 'Lizenzen',
+              title: loc.licenses,
               icon: Icons.insert_drive_file,
               suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const LicensesView()),
+                );
+              },
             ),
             const Spacer(),
             Padding(

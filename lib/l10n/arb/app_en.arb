@@ -107,6 +107,18 @@
   "@invalid_schema": {
     "description": "Error message for invalid schema"
   },
+  "@licenses": {
+    "description": "Licenses menu item"
+  },
+  "@no_licenses_found": {
+    "description": "Message when no licenses are found"
+  },
+  "@no_license_text_available": {
+    "description": "Message when no license text is available"
+  },
+  "@error": {
+    "description": "Error label"
+  },
   "@least_points": {
     "description": "Title for least points ruleset"
   },
@@ -293,6 +305,10 @@
   "import_data": "Import data",
   "info": "Info",
   "invalid_schema": "Invalid Schema",
+  "licenses": "Licenses",
+  "no_licenses_found": "No licenses found",
+  "no_license_text_available": "No license text available",
+  "error": "Error",
   "least_points": "Least Points",
   "match_in_progress": "Match in progress...",
   "match_name": "Match name",
