@@ -105,7 +105,8 @@ class _MatchViewState extends State<MatchView> {
           ),
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom,
-            child: CustomWidthButton(
+            child: SizedBox.shrink()
+            /* CustomWidthButton(
               text: loc.create_match,
               sizeRelativeToWidth: 0.90,
               onPressed: () async {
@@ -118,6 +119,7 @@ class _MatchViewState extends State<MatchView> {
                 );
               },
             ),
+            */
           ),
         ],
       ),
