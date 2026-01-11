@@ -131,9 +131,6 @@
   "@matches": {
     "description": "Label for matches"
   },
-  "@menu": {
-    "description": "Menu label"
-  },
   "@most_points": {
     "description": "Title for most points ruleset"
   },
@@ -229,6 +226,9 @@
   "@selected_players": {
     "description": "Shows the number of selected players"
   },
+  "@settings": {
+    "description": "Label for the App Settings"
+  },
   "@single_loser": {
     "description": "Title for single loser ruleset"
   },
@@ -319,7 +319,6 @@
   "match_in_progress": "Match in progress...",
   "match_name": "Match name",
   "matches": "Matches",
-  "menu": "Menu",
   "most_points": "Most Points",
   "no_data_available": "No data available",
   "no_groups_created_yet": "No groups created yet",
@@ -350,6 +349,7 @@
   "search_for_players": "Search for players",
   "select_winner": "Select Winner:",
   "selected_players": "Selected players",
+  "settings": "Settings",
   "single_loser": "Single Loser",
   "single_winner": "Single Winner",
   "statistics": "Statistics",

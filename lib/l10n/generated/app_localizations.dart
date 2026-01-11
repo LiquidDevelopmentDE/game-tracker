@@ -350,12 +350,6 @@ abstract class AppLocalizations {
   /// **'Matches'**
   String get matches;
 
-  /// Menu label
-  ///
-  /// In en, this message translates to:
-  /// **'Menu'**
-  String get menu;
-
   /// Title for most points ruleset
   ///
   /// In en, this message translates to:
@@ -535,6 +529,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selected players'**
   String get selected_players;
+
+  /// Label for the App Settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
 
   /// Title for single loser ruleset
   ///

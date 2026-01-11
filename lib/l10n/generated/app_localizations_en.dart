@@ -140,9 +140,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get matches => 'Matches';
 
   @override
-  String get menu => 'Menu';
-
-  @override
   String get most_points => 'Most Points';
 
   @override
@@ -238,6 +235,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selected_players => 'Selected players';
+
+  @override
+  String get settings => 'Settings';
 
   @override
   String get single_loser => 'Single Loser';
