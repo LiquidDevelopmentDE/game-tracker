@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:game_tracker/core/custom_theme.dart';
@@ -146,34 +149,41 @@ class _SettingsViewState extends State<SettingsView> {
               padding: const EdgeInsets.all(20),
               child: Center(
                 child: Column(
-                  spacing: 6,
+                  spacing: 4,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      spacing: 40,
-                      children: [
-                        GestureDetector(
-                          child: const Icon(Icons.language),
-                          onTap: () => {
-                            launchUrl(Uri.parse('https://liquid-dev.de')),
-                          },
-                        ),
-                        GestureDetector(
-                          child: const FaIcon(FontAwesomeIcons.github),
-                          onTap: () => {
-                            launchUrl(
-                              Uri.parse(
-                                'https://github.com/liquiddevelopmentde',
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 40,
+                        children: [
+                          GestureDetector(
+                            child: const Icon(Icons.language),
+                            onTap: () => {
+                              launchUrl(Uri.parse('https://liquid-dev.de')),
+                            },
+                          ),
+                          GestureDetector(
+                            child: const FaIcon(FontAwesomeIcons.github),
+                            onTap: () => {
+                              launchUrl(
+                                Uri.parse(
+                                  'https://github.com/liquiddevelopmentde',
+                                ),
                               ),
+                            },
+                          ),
+                          GestureDetector(
+                            child: Icon(
+                              Platform.isIOS
+                                  ? CupertinoIcons.mail_solid
+                                  : Icons.email,
                             ),
-                          },
-                        ),
-                        GestureDetector(
-                          child: const Icon(Icons.email),
-                          onTap: () =>
-                              launchUrl(Uri.parse('mailto:hi@liquid-dev.de')),
-                        ),
-                      ],
+                            onTap: () =>
+                                launchUrl(Uri.parse('mailto:hi@liquid-dev.de')),
+                          ),
+                        ],
+                      ),
                     ),
                     Text(
                       '© ${DateFormat('yyyy').format(DateTime.now())} Liquid Development',
