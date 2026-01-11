@@ -99,7 +99,7 @@ class _SettingsViewState extends State<SettingsView> {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: Text(loc.cancel, style: TextStyle(color: CustomTheme.textColor),),
+                        child: Text(loc.cancel, style: const TextStyle(color: CustomTheme.textColor),),
                       ),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(true),
