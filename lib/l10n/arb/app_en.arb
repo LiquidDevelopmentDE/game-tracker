@@ -39,6 +39,9 @@
   "@create_new_match": {
     "description": "Button text to create a new match"
   },
+  "@data": {
+    "description": "Data label"
+  },
   "@data_successfully_deleted": {
     "description": "Success message after deleting data"
   },
@@ -107,11 +110,17 @@
   "@invalid_schema": {
     "description": "Error message for invalid schema"
   },
-  "@licenses": {
-    "description": "Licenses menu item"
-  },
   "@least_points": {
     "description": "Title for least points ruleset"
+  },
+  "@legal": {
+    "description": "Legal section header"
+  },
+  "@legal_notice": {
+    "description": "Legal notice menu item"
+  },
+  "@licenses": {
+    "description": "Licenses menu item"
   },
   "@match_in_progress": {
     "description": "Message when match is in progress"
@@ -184,6 +193,9 @@
       }
     }
   },
+  "@privacy_policy": {
+    "description": "Privacy policy menu item"
+  },
   "@quick_create": {
     "description": "Title for quick create section"
   },
@@ -216,9 +228,6 @@
   },
   "@selected_players": {
     "description": "Shows the number of selected players"
-  },
-  "@settings": {
-    "description": "Settings label"
   },
   "@single_loser": {
     "description": "Title for single loser ruleset"
@@ -281,6 +290,7 @@
   "create_match": "Create match",
   "create_new_group": "Create new group",
   "create_new_match": "Create new match",
+  "data": "Data",
   "data_successfully_deleted": "Data successfully deleted",
   "data_successfully_exported": "Data successfully exported",
   "data_successfully_imported": "Data successfully imported",
@@ -302,8 +312,10 @@
   "import_data": "Import data",
   "info": "Info",
   "invalid_schema": "Invalid Schema",
-  "licenses": "Licenses",
   "least_points": "Least Points",
+  "legal": "Legal",
+  "legal_notice": "Legal Notice",
+  "licenses": "Licenses",
   "match_in_progress": "Match in progress...",
   "match_name": "Match name",
   "matches": "Matches",
@@ -326,6 +338,7 @@
   "player_name": "Player name",
   "players": "Players",
   "players_count": "{count} Players",
+  "privacy_policy": "Privacy Policy",
   "quick_create": "Quick Create",
   "recent_matches": "Recent Matches",
   "ruleset": "Ruleset",
@@ -337,7 +350,6 @@
   "search_for_players": "Search for players",
   "select_winner": "Select Winner:",
   "selected_players": "Selected players",
-  "settings": "Settings",
   "single_loser": "Single Loser",
   "single_winner": "Single Winner",
   "statistics": "Statistics",

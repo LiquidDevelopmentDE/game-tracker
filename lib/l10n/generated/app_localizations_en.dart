@@ -50,6 +50,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_new_match => 'Create new match';
 
   @override
+  String get data => 'Data';
+
+  @override
   String get data_successfully_deleted => 'Data successfully deleted';
 
   @override
@@ -116,10 +119,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalid_schema => 'Invalid Schema';
 
   @override
-  String get licenses => 'Licenses';
+  String get least_points => 'Least Points';
 
   @override
-  String get least_points => 'Least Points';
+  String get legal => 'Legal';
+
+  @override
+  String get legal_notice => 'Legal Notice';
+
+  @override
+  String get licenses => 'Licenses';
 
   @override
   String get match_in_progress => 'Match in progress...';
@@ -191,6 +200,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get privacy_policy => 'Privacy Policy';
+
+  @override
   String get quick_create => 'Quick Create';
 
   @override
@@ -226,9 +238,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selected_players => 'Selected players';
-
-  @override
-  String get settings => 'Settings';
 
   @override
   String get single_loser => 'Single Loser';

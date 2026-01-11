@@ -50,6 +50,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_new_match => 'Neues Spiel erstellen';
 
   @override
+  String get data => 'Daten';
+
+  @override
   String get data_successfully_deleted => 'Daten erfolgreich gelöscht';
 
   @override
@@ -116,10 +119,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get invalid_schema => 'Ungültiges Schema';
 
   @override
-  String get licenses => 'Lizenzen';
+  String get least_points => 'Niedrigste Punkte';
 
   @override
-  String get least_points => 'Niedrigste Punkte';
+  String get legal => 'Rechtliches';
+
+  @override
+  String get legal_notice => 'Impressum';
+
+  @override
+  String get licenses => 'Lizenzen';
 
   @override
   String get match_in_progress => 'Spiel läuft...';
@@ -191,6 +200,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get privacy_policy => 'Datenschutzerklärung';
+
+  @override
   String get quick_create => 'Schnellzugriff';
 
   @override
@@ -226,9 +238,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get selected_players => 'Ausgewählte Spieler:innen';
-
-  @override
-  String get settings => 'Einstellungen';
 
   @override
   String get single_loser => 'Ein:e Verlierer:in';

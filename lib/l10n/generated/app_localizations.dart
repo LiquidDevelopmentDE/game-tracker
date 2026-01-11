@@ -176,6 +176,12 @@ abstract class AppLocalizations {
   /// **'Create new match'**
   String get create_new_match;
 
+  /// Data label
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get data;
+
   /// Success message after deleting data
   ///
   /// In en, this message translates to:
@@ -302,17 +308,29 @@ abstract class AppLocalizations {
   /// **'Invalid Schema'**
   String get invalid_schema;
 
-  /// Licenses menu item
-  ///
-  /// In en, this message translates to:
-  /// **'Licenses'**
-  String get licenses;
-
   /// Title for least points ruleset
   ///
   /// In en, this message translates to:
   /// **'Least Points'**
   String get least_points;
+
+  /// Legal section header
+  ///
+  /// In en, this message translates to:
+  /// **'Legal'**
+  String get legal;
+
+  /// Legal notice menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Notice'**
+  String get legal_notice;
+
+  /// Licenses menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Licenses'**
+  String get licenses;
 
   /// Message when match is in progress
   ///
@@ -446,6 +464,12 @@ abstract class AppLocalizations {
   /// **'{count} Players'**
   String players_count(int count);
 
+  /// Privacy policy menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacy_policy;
+
   /// Title for quick create section
   ///
   /// In en, this message translates to:
@@ -511,12 +535,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selected players'**
   String get selected_players;
-
-  /// Settings label
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
 
   /// Title for single loser ruleset
   ///
