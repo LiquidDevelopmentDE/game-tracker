@@ -5,6 +5,7 @@ import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:game_tracker/presentation/widgets/custom_alert_dialog.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -92,17 +93,17 @@ class _SettingsViewState extends State<SettingsView> {
               onPressed: () {
                 showDialog<bool>(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('${loc.delete_all_data}?'),
-                    content: Text(loc.this_cannot_be_undone),
+                  builder: (context) => CustomAlertDialog(
+                    title: '${loc.delete_all_data}?',
+                    content: loc.this_cannot_be_undone,
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: Text(loc.cancel),
+                        child: Text(loc.cancel, style: TextStyle(color: CustomTheme.textColor),),
                       ),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(true),
-                        child: Text(loc.delete),
+                        child: Text(loc.delete, style: TextStyle(color: CustomTheme.secondaryColor),),
                       ),
                     ],
                   ),
