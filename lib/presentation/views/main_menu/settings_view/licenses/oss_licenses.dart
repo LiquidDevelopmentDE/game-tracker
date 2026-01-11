@@ -38,6 +38,7 @@ const allDependencies = <Package>[
   _cross_file,
   _crypto,
   _csslib,
+  _cupertino_icons,
   _dart_pubspec_licenses,
   _dart_style,
   _dbus,
@@ -153,28 +154,29 @@ const allDependencies = <Package>[
 /// Direct `dependencies`.
 const dependencies = <Package>[
   _flutter,
+  _clock,
+  _cupertino_icons,
   _drift,
   _drift_flutter,
+  _file_picker,
+  _file_saver,
+  _font_awesome_flutter,
+  _intl,
+  _json_schema,
+  _package_info_plus,
   _path_provider,
   _provider,
   _skeletonizer,
-  _uuid,
-  _file_picker,
-  _json_schema,
-  _file_saver,
-  _clock,
-  _intl,
-  _package_info_plus,
-  _font_awesome_flutter,
-  _url_launcher
+  _url_launcher,
+  _uuid
 ];
 
 /// Direct `dev_dependencies`.
 const devDependencies = <Package>[
+  _build_runner,
   _dart_pubspec_licenses,
-  _flutter_lints,
   _drift_dev,
-  _build_runner
+  _flutter_lints
 ];
 
 /// Package license definition.
@@ -1466,6 +1468,40 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
+/// cupertino_icons 1.0.8
+const _cupertino_icons = Package(
+    name: 'cupertino_icons',
+    description: 'Default icons asset for Cupertino widgets based on Apple styled icons',
+    repository: 'https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons',
+    authors: [],
+    version: '1.0.8',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [],
+    devDependencies: [PackageRef('flutter')],
+    license: '''The MIT License (MIT)
+
+Copyright (c) 2016 Vladimir Kharlampidi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
   );
 
 /// dart_pubspec_licenses 3.0.15
@@ -7255,16 +7291,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
-/// game_tracker 0.0.4+111
+/// game_tracker 0.0.5+127
 const _game_tracker = Package(
     name: 'game_tracker',
     description: 'Game Tracking App for Card Games',
     authors: [],
-    version: '0.0.4+111',
+    version: '0.0.5+127',
     spdxIdentifiers: [],
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('flutter'), PackageRef('drift'), PackageRef('drift_flutter'), PackageRef('path_provider'), PackageRef('provider'), PackageRef('skeletonizer'), PackageRef('uuid'), PackageRef('file_picker'), PackageRef('json_schema'), PackageRef('file_saver'), PackageRef('clock'), PackageRef('intl'), PackageRef('package_info_plus'), PackageRef('font_awesome_flutter'), PackageRef('url_launcher')],
-    devDependencies: [PackageRef('dart_pubspec_licenses'), PackageRef('flutter_lints'), PackageRef('drift_dev'), PackageRef('build_runner')],
+    dependencies: [PackageRef('flutter'), PackageRef('clock'), PackageRef('cupertino_icons'), PackageRef('drift'), PackageRef('drift_flutter'), PackageRef('file_picker'), PackageRef('file_saver'), PackageRef('font_awesome_flutter'), PackageRef('intl'), PackageRef('json_schema'), PackageRef('package_info_plus'), PackageRef('path_provider'), PackageRef('provider'), PackageRef('skeletonizer'), PackageRef('url_launcher'), PackageRef('uuid')],
+    devDependencies: [PackageRef('build_runner'), PackageRef('dart_pubspec_licenses'), PackageRef('drift_dev'), PackageRef('flutter_lints')],
   );
 
