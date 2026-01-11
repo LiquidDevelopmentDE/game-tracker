@@ -9,10 +9,8 @@ body:
       label: Beschreibung
       description: Beschreibe klar und pregnant das Fehlerverhalten
       placeholder: |
-        - Welchen Zweck erfüllt das Feature?
-        - Welches Problem löst das Feature?
-        - Wer profitiert davon? 
-        - Warum ist es wichtig?
+        - Was genau ist das unerwünschte Verhalten?
+        - Welche Auswirkungen hat der Fehler?
     validations:
       required: true
 
