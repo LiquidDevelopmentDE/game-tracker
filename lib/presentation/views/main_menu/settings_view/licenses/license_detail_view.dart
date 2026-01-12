@@ -24,7 +24,6 @@ class LicenseDetailView extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-
                     children: [
                       Container(
                         margin: const EdgeInsetsGeometry.only(right: 15),
