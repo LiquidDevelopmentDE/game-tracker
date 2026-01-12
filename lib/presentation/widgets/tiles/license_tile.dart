@@ -20,15 +20,15 @@ class LicenseTile extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         decoration: CustomTheme.standardBoxDecoration.copyWith(
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
             Container(
-              width: 48,
-              height: 48,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 color: CustomTheme.primaryColor.withAlpha(40),
                 borderRadius: BorderRadius.circular(10),
@@ -36,7 +36,7 @@ class LicenseTile extends StatelessWidget {
               child: Icon(
                 Icons.description,
                 color: CustomTheme.primaryColor,
-                size: 24,
+                size: 32,
               ),
             ),
             const SizedBox(width: 16),
