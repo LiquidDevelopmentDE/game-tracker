@@ -38,7 +38,7 @@ class SettingsListTile extends StatelessWidget {
             onTap: onPressed ?? () {},
             child: Container(
               margin: EdgeInsets.zero,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               decoration: CustomTheme.standardBoxDecoration,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,8 +47,8 @@ class SettingsListTile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: 48,
-                        height: 48,
+                        width: 44,
+                        height: 44,
                         decoration: BoxDecoration(
                           color: CustomTheme.primaryColor.withAlpha(40),
                           borderRadius: BorderRadius.circular(10),
