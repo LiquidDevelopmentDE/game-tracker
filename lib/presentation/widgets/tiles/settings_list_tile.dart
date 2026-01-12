@@ -59,14 +59,6 @@ class SettingsListTile extends StatelessWidget {
                           color: CustomTheme.primaryColor.withGreen(40),
                         ),
                       ),
-                      /* Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: CustomTheme.primaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(icon, size: 24),
-                      ),*/
                       const SizedBox(width: 16),
                       Text(title, style: const TextStyle(fontSize: 18)),
                     ],
