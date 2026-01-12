@@ -1,0 +1,273 @@
+import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
+import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/core/enums.dart';
+import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
+import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_game_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_group_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_ruleset_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
+import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
+import 'package:game_tracker/presentation/widgets/player_selection.dart';
+import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
+import 'package:game_tracker/presentation/widgets/tiles/choose_tile.dart';
+import 'package:provider/provider.dart';
+
+class CreateMatchView extends StatefulWidget {
+  final VoidCallback? onWinnerChanged;
+  const CreateMatchView({super.key, this.onWinnerChanged});
+
+  @override
+  State<CreateMatchView> createState() => _CreateMatchViewState();
+}
+
+class _CreateMatchViewState extends State<CreateMatchView> {
+  late final AppDatabase db;
+
+  /// Controller for the match name input field
+  final TextEditingController _matchNameController = TextEditingController();
+
+  /// Hint text for the match name input field
+  String? hintText;
+
+  /// List of all groups from the database
+  List<Group> groupsList = [];
+
+  /// List of all players from the database
+  List<Player> playerList = [];
+
+  /// List of players filtered based on the selected group
+  /// If a group is selected, this list contains all players from [playerList]
+  /// who are not members of the selected group. If no group is selected,
+  /// this list is identical to [playerList].
+  List<Player> filteredPlayerList = [];
+
+  /// The currently selected group
+  Group? selectedGroup;
+
+  /// The index of the currently selected group in [groupsList] to mark it in
+  /// the [ChooseGroupView]
+  String selectedGroupId = '';
+
+  /// The currently selected ruleset
+  Ruleset? selectedRuleset;
+
+  /// The index of the currently selected ruleset in [rulesets] to mark it in
+  /// the [ChooseRulesetView]
+  int selectedRulesetIndex = -1;
+
+  /// The index of the currently selected game in [games] to mark it in
+  /// the [ChooseGameView]
+  int selectedGameIndex = -1;
+
+  /// The currently selected players
+  List<Player>? selectedPlayers;
+
+  /// List of available rulesets with their localized string representations
+  late final List<(Ruleset, String)> _rulesets;
+
+  @override
+  void initState() {
+    super.initState();
+    _matchNameController.addListener(() {
+      setState(() {});
+    });
+
+    db = Provider.of<AppDatabase>(context, listen: false);
+
+    Future.wait([
+      db.groupDao.getAllGroups(),
+      db.playerDao.getAllPlayers(),
+    ]).then((result) async {
+      groupsList = result[0] as List<Group>;
+      playerList = result[1] as List<Player>;
+      setState(() {
+        filteredPlayerList = List.from(playerList);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _matchNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final loc = AppLocalizations.of(context);
+    hintText ??= loc.match_name;
+    _rulesets = [
+      (Ruleset.singleWinner, loc.ruleset_single_winner),
+      (Ruleset.singleLoser, loc.ruleset_single_loser),
+      (Ruleset.mostPoints, loc.ruleset_most_points),
+      (Ruleset.leastPoints, loc.ruleset_least_points),
+    ];
+  }
+
+  // TODO: Replace when games are implemented
+  List<(String, String, Ruleset)> games = [
+    ('Example Game 1', 'This is a description', Ruleset.leastPoints),
+    ('Example Game 2', '', Ruleset.singleWinner),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+    return ScaffoldMessenger(
+      child: Scaffold(
+        backgroundColor: CustomTheme.backgroundColor,
+        appBar: AppBar(title: Text(loc.create_new_match)),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: CustomTheme.tileMargin,
+                child: TextInputField(
+                  controller: _matchNameController,
+                  hintText: hintText ?? '',
+                ),
+              ),
+              ChooseTile(
+                title: loc.game,
+                trailingText: selectedGameIndex == -1
+                    ? loc.none
+                    : games[selectedGameIndex].$1,
+                onPressed: () async {
+                  selectedGameIndex = await Navigator.of(context).push(
+                    adaptivePageRoute(
+                      builder: (context) => ChooseGameView(
+                        games: games,
+                        initialGameIndex: selectedGameIndex,
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    if (selectedGameIndex != -1) {
+                      hintText = games[selectedGameIndex].$1;
+                      selectedRuleset = games[selectedGameIndex].$3;
+                      selectedRulesetIndex = _rulesets.indexWhere(
+                        (r) => r.$1 == selectedRuleset,
+                      );
+                    } else {
+                      hintText = loc.match_name;
+                      selectedRuleset = null;
+                    }
+                  });
+                },
+              ),
+              ChooseTile(
+                title: loc.ruleset,
+                trailingText: selectedRuleset == null
+                    ? loc.none
+                    : translateRulesetToString(selectedRuleset!, context),
+                onPressed: () async {
+                  selectedRuleset = await Navigator.of(context).push(
+                    adaptivePageRoute(
+                      builder: (context) => ChooseRulesetView(
+                        rulesets: _rulesets,
+                        initialRulesetIndex: selectedRulesetIndex,
+                      ),
+                    ),
+                  );
+                  if (!mounted) return;
+                  selectedRulesetIndex = _rulesets.indexWhere(
+                    (r) => r.$1 == selectedRuleset,
+                  );
+                  selectedGameIndex = -1;
+                  setState(() {});
+                },
+              ),
+              ChooseTile(
+                title: loc.group,
+                trailingText: selectedGroup == null
+                    ? loc.none_group
+                    : selectedGroup!.name,
+                onPressed: () async {
+                  selectedGroup = await Navigator.of(context).push(
+                    adaptivePageRoute(
+                      builder: (context) => ChooseGroupView(
+                        groups: groupsList,
+                        initialGroupId: selectedGroupId,
+                      ),
+                    ),
+                  );
+                  selectedGroupId = selectedGroup?.id ?? '';
+                  if (selectedGroup != null) {
+                    filteredPlayerList = playerList
+                        .where(
+                          (p) => !selectedGroup!.members.any((m) => m.id == p.id),
+                        )
+                        .toList();
+                  } else {
+                    filteredPlayerList = List.from(playerList);
+                  }
+                  setState(() {});
+                },
+              ),
+              Expanded(
+                child: PlayerSelection(
+                  key: ValueKey(selectedGroup?.id ?? 'no_group'),
+                  initialSelectedPlayers: selectedPlayers ?? [],
+                  availablePlayers: filteredPlayerList,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPlayers = value;
+                    });
+                  },
+                ),
+              ),
+              CustomWidthButton(
+                text: loc.create_match,
+                sizeRelativeToWidth: 0.95,
+                buttonType: ButtonType.primary,
+                onPressed: _enableCreateGameButton()
+                    ? () async {
+                        Match match = Match(
+                          name: _matchNameController.text.isEmpty
+                              ? (hintText ?? '')
+                              : _matchNameController.text.trim(),
+                          createdAt: DateTime.now(),
+                          group: selectedGroup,
+                          players: selectedPlayers,
+                        );
+                        await db.matchDao.addMatch(match: match);
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            adaptivePageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => MatchResultView(
+                                match: match,
+                                onWinnerChanged: widget.onWinnerChanged,
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                    : null,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Determines whether the "Create Match" button should be enabled.
+  ///
+  /// Returns `true` if:
+  /// - A ruleset is selected AND
+  /// - Either a group is selected OR at least 2 players are selected
+  bool _enableCreateGameButton() {
+    return (selectedGroup != null ||
+            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
+        selectedRuleset != null;
+  }
+}

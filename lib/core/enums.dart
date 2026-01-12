@@ -1,4 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
+
 /// Button types used for styling the [CustomWidthButton]
+/// - [ButtonType.primary]: Primary button style.
+/// - [ButtonType.secondary]: Secondary button style.
+/// - [ButtonType.tertiary]: Tertiary button style.
 enum ButtonType { primary, secondary, tertiary }
 
 /// Result types for import operations in the [SettingsView]
@@ -23,9 +29,24 @@ enum ImportResult {
 /// - [ExportResult.unknownException]: An exception occurred during export.
 enum ExportResult { success, canceled, unknownException }
 
-/// Different rulesets available for games
-/// - [Ruleset.singleWinner]: The game is won by a single player
-/// - [Ruleset.singleLoser]: The game is lost by a single player
+/// Different rulesets available for matches
+/// - [Ruleset.singleWinner]: The match is won by a single player
+/// - [Ruleset.singleLoser]: The match is lost by a single player
 /// - [Ruleset.mostPoints]: The player with the most points wins.
-/// - [Ruleset.lastPoints]: The player with the fewest points wins.
-enum Ruleset { singleWinner, singleLoser, mostPoints, lastPoints }
+/// - [Ruleset.leastPoints]: The player with the fewest points wins.
+enum Ruleset { singleWinner, singleLoser, mostPoints, leastPoints }
+
+/// Translates a [Ruleset] enum value to its corresponding localized string.
+String translateRulesetToString(Ruleset ruleset, BuildContext context) {
+  final loc = AppLocalizations.of(context);
+  switch (ruleset) {
+    case Ruleset.singleWinner:
+      return loc.single_winner;
+    case Ruleset.singleLoser:
+      return loc.single_loser;
+    case Ruleset.mostPoints:
+      return loc.most_points;
+    case Ruleset.leastPoints:
+      return loc.least_points;
+  }
+}

@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
+/// A tile widget that displays text with an optional icon that can be tapped.
+/// - [text]: The text to display in the tile.
+/// - [iconEnabled]: A boolean to determine if the icon should be displayed.
+/// - [onIconTap]: The callback to be invoked when the icon is tapped.
 class TextIconTile extends StatelessWidget {
-  final String text;
-  final bool iconEnabled;
-  final VoidCallback? onIconTap;
-
   const TextIconTile({
     super.key,
     required this.text,
-    this.onIconTap,
     this.iconEnabled = true,
+    this.onIconTap,
   });
+
+  /// The text to display in the tile.
+  final String text;
+
+  /// A boolean to determine if the icon should be displayed.
+  final bool iconEnabled;
+
+  /// The callback to be invoked when the icon is tapped.
+  final VoidCallback? onIconTap;
 
   @override
   Widget build(BuildContext context) {

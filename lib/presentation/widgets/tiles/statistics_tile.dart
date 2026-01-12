@@ -1,8 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 
+/// A tile widget that displays statistical data using horizontal bars.
+/// - [icon]: The icon displayed next to the title.
+/// - [title]: The title text displayed on the tile.
+/// - [width]: The width of the tile.
+/// - [values]: A list of tuples containing labels and their corresponding numeric values.
+/// - [itemCount]: The maximum number of items to display.
+/// - [barColor]: The color of the bars representing the values.
 class StatisticsTile extends StatelessWidget {
   const StatisticsTile({
     super.key,
@@ -14,16 +22,27 @@ class StatisticsTile extends StatelessWidget {
     required this.barColor,
   });
 
+  /// The icon displayed next to the title.
   final IconData icon;
+
+  /// The title text displayed on the tile.
   final String title;
+
+  /// The width of the tile.
   final double width;
+
+  /// A list of tuples containing labels and their corresponding numeric values.
   final List<(String, num)> values;
+
+  /// The maximum number of items to display.
   final int itemCount;
+
+  /// The color of the bars representing the values.
   final Color barColor;
 
   @override
   Widget build(BuildContext context) {
-    final maxBarWidth = MediaQuery.of(context).size.width * 0.65;
+    final loc = AppLocalizations.of(context);
 
     return InfoTile(
       width: width,
@@ -33,42 +52,60 @@ class StatisticsTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Visibility(
           visible: values.isNotEmpty,
-          replacement: const Center(
+          replacement: Center(
             heightFactor: 4,
-            child: Text('No data available.'),
+            child: Text(loc.no_data_available),
           ),
-          child: Column(
-            children: List.generate(min(values.length, itemCount), (index) {
-              /// The maximum wins among all players
-              final maxGames = values.isNotEmpty ? values[0].$2 : 0;
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final maxBarWidth = constraints.maxWidth * 0.65;
+              return Column(
+                children: List.generate(min(values.length, itemCount), (index) {
+                  /// The maximum wins among all players
+                  final maxMatches = values.isNotEmpty ? values[0].$2 : 0;
 
-              /// Fraction of wins
-              final double fraction = (maxGames > 0)
-                  ? (values[index].$2 / maxGames)
-                  : 0.0;
+                  /// Fraction of wins
+                  final double fraction = (maxMatches > 0)
+                      ? (values[index].$2 / maxMatches)
+                      : 0.0;
 
-              /// Calculated width for current the bar
-              final double barWidth = maxBarWidth * fraction;
+                  /// Calculated width for current the bar
+                  final double barWidth = maxBarWidth * fraction;
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Stack(
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          height: 24,
-                          width: barWidth,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: barColor,
-                          ),
+                        Stack(
+                          children: [
+                            Container(
+                              height: 24,
+                              width: barWidth,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: barColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4.0),
+                              child: Text(
+                                values[index].$1,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
+                        const Spacer(),
+                        Center(
                           child: Text(
-                            values[index].$1,
+                            values[index].$2 <= 1 && values[index].$2 is double
+                                ? values[index].$2.toStringAsFixed(2)
+                                : values[index].$2.toString(),
+                            textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -77,23 +114,10 @@ class StatisticsTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Spacer(),
-                    Center(
-                      child: Text(
-                        values[index].$2 <= 1 && values[index].$2 is double
-                            ? values[index].$2.toStringAsFixed(2)
-                            : values[index].$2.toString(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                }),
               );
-            }),
+            },
           ),
         ),
       ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// A navigation bar item widget that represents a single tab in a navigation bar.
+/// - [index]: The index of the tab.
+/// - [isSelected]: A boolean indicating whether the tab is currently selected.
+/// - [icon]: The icon to display for the tab.
+/// - [label]: The label to display for the tab.
+/// - [onTabTapped]: The callback to be invoked when the tab is tapped.
 class NavbarItem extends StatefulWidget {
-  final int index;
-  final bool isSelected;
-  final IconData icon;
-  final String label;
-  final Function(int) onTabTapped;
-
   const NavbarItem({
     super.key,
     required this.index,
@@ -15,6 +15,21 @@ class NavbarItem extends StatefulWidget {
     required this.label,
     required this.onTabTapped,
   });
+
+  /// The index of the tab.
+  final int index;
+
+  /// A boolean indicating whether the tab is currently selected.
+  final bool isSelected;
+
+  /// The icon to display for the tab.
+  final IconData icon;
+
+  /// The label to display for the tab.
+  final String label;
+
+  /// The callback to be invoked when the tab is tapped.
+  final Function(int) onTabTapped;
 
   @override
   State<NavbarItem> createState() => _NavbarItemState();

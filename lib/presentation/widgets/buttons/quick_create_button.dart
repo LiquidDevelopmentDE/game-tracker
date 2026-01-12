@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
+/// A button widget designed for quick creating matches in the [HomeView]
+/// - [text]: The text to display on the button.
+/// - [onPressed]: The callback to be invoked when the button is pressed.
 class QuickCreateButton extends StatefulWidget {
-  final String text;
-  final VoidCallback? onPressed;
   const QuickCreateButton({
     super.key,
     required this.text,
     required this.onPressed,
   });
+
+  /// The text to display on the button.
+  final String text;
+
+  /// The callback to be invoked when the button is pressed.
+  final VoidCallback? onPressed;
 
   @override
   State<QuickCreateButton> createState() => _QuickCreateButtonState();
@@ -22,7 +29,9 @@ class _QuickCreateButtonState extends State<QuickCreateButton> {
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(140, 45),
         backgroundColor: CustomTheme.primaryColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: CustomTheme.standardBorderRadiusAll,
+        ),
       ),
       child: Text(
         widget.text,

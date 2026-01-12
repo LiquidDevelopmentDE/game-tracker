@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
+/// A customizable settings list tile widget that displays an icon, title, and an optional suffix widget.
+/// - [icon]: The icon displayed on the left side of the tile.
+/// - [title]: The title text displayed next to the icon.
+/// - [suffixWidget]: An optional widget displayed on the right side of the tile.
+/// - [onPressed]: The callback invoked when the tile is tapped.
 class SettingsListTile extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final IconData icon;
-  final String title;
-  final Widget? suffixWidget;
   const SettingsListTile({
     super.key,
-    required this.title,
     required this.icon,
+    required this.title,
     this.suffixWidget,
     this.onPressed,
   });
+
+  /// The icon displayed on the left side of the tile.
+  final IconData icon;
+
+  /// The title text displayed next to the icon.
+  final String title;
+
+  /// An optional widget displayed on the right side of the tile.
+  final Widget? suffixWidget;
+
+  /// The callback invoked when the tile is tapped.
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,7 @@ class SettingsListTile extends StatelessWidget {
             onTap: onPressed ?? () {},
             child: Container(
               margin: EdgeInsets.zero,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               decoration: CustomTheme.standardBoxDecoration,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,12 +47,17 @@ class SettingsListTile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        width: 44,
+                        height: 44,
                         decoration: BoxDecoration(
-                          color: CustomTheme.primaryColor,
-                          shape: BoxShape.circle,
+                          color: CustomTheme.primaryColor.withAlpha(40),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Icon(icon, size: 24),
+                        child: Icon(
+                          icon,
+                          size: 28,
+                          color: CustomTheme.primaryColor.withGreen(40),
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Text(title, style: const TextStyle(fontSize: 18)),

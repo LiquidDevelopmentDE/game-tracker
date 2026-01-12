@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/quick_create_button.dart';
-import 'package:game_tracker/presentation/widgets/tiles/game_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/match_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -18,15 +22,22 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late Future<int> _gameCountFuture;
-  late Future<int> _groupCountFuture;
-  late Future<List<Game>> _recentGamesFuture;
   bool isLoading = true;
 
-  late final List<Game> skeletonData = List.filled(
+  /// Amount of matches in the database
+  int matchCount = 0;
+
+  /// Amount of groups in the database
+  int groupCount = 0;
+
+  /// Loaded recent matches from the database
+  List<Match> loadedRecentMatches = [];
+
+  /// Recent matches to display, initially filled with skeleton matches
+  List<Match> recentMatches = List.filled(
     2,
-    Game(
-      name: 'Skeleton Game',
+    Match(
+      name: 'Skeleton Match',
       group: Group(
         name: 'Skeleton Group',
         members: [
@@ -34,35 +45,22 @@ class _HomeViewState extends State<HomeView> {
           Player(name: 'Skeleton Player 2'),
         ],
       ),
-      winner: Player(name: 'Skeleton Player 1'),
     ),
   );
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-    final db = Provider.of<AppDatabase>(context, listen: false);
-    _gameCountFuture = db.gameDao.getGameCount();
-    _groupCountFuture = db.groupDao.getGroupCount();
-    _recentGamesFuture = db.gameDao.getAllGames();
-
-    Future.wait([_gameCountFuture, _groupCountFuture, _recentGamesFuture]).then(
-      (_) async {
-        await Future.delayed(const Duration(milliseconds: 250));
-        if (mounted) {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      },
-    );
+    loadHomeViewData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return AppSkeleton(
+          fixLayoutBuilder: true,
           enabled: isLoading,
           child: SingleChildScrollView(
             child: Column(
@@ -71,38 +69,20 @@ class _HomeViewState extends State<HomeView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    FutureBuilder<int>(
-                      future: _gameCountFuture,
-                      builder: (context, snapshot) {
-                        final int count = (snapshot.hasData)
-                            ? snapshot.data!
-                            : 0;
-                        return QuickInfoTile(
-                          width: constraints.maxWidth * 0.45,
-                          height: constraints.maxHeight * 0.15,
-                          title: 'Games',
-                          icon: Icons.groups_rounded,
-                          value: count,
-                        );
-                      },
+                    QuickInfoTile(
+                      width: constraints.maxWidth * 0.45,
+                      height: constraints.maxHeight * 0.15,
+                      title: loc.matches,
+                      icon: Icons.groups_rounded,
+                      value: matchCount,
                     ),
                     SizedBox(width: constraints.maxWidth * 0.05),
-                    FutureBuilder<int>(
-                      future: _groupCountFuture,
-                      builder: (context, snapshot) {
-                        final int count =
-                            (snapshot.connectionState == ConnectionState.done &&
-                                snapshot.hasData)
-                            ? snapshot.data!
-                            : 0;
-                        return QuickInfoTile(
-                          width: constraints.maxWidth * 0.45,
-                          height: constraints.maxHeight * 0.15,
-                          title: 'Groups',
-                          icon: Icons.groups_rounded,
-                          value: count,
-                        );
-                      },
+                    QuickInfoTile(
+                      width: constraints.maxWidth * 0.45,
+                      height: constraints.maxHeight * 0.15,
+                      title: loc.groups,
+                      icon: Icons.groups_rounded,
+                      value: groupCount,
                     ),
                   ],
                 ),
@@ -110,137 +90,93 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: InfoTile(
                     width: constraints.maxWidth * 0.95,
-                    title: 'Recent Games',
-                    icon: Icons.timer,
-                    content: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: FutureBuilder(
-                        future: _recentGamesFuture,
-                        builder:
-                            (
-                              BuildContext context,
-                              AsyncSnapshot<List<Game>> snapshot,
-                            ) {
-                              if (snapshot.hasError) {
-                                return const Center(
-                                  heightFactor: 4,
-                                  child: Text(
-                                    'Error while loading recent games.',
-                                  ),
-                                );
-                              }
-                              final List<Game> games =
-                                  (isLoading
-                                            ? skeletonData
-                                            : (snapshot.data ?? [])
-                                        ..sort(
-                                          (a, b) => b.createdAt.compareTo(
-                                            a.createdAt,
-                                          ),
-                                        ))
-                                      .take(2)
-                                      .toList();
-                              if (games.isNotEmpty) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    GameTile(
-                                      gameTitle: games[0].name,
-                                      gameType: 'Winner',
-                                      ruleset: 'Ruleset',
-                                      players: _getPlayerText(games[0]),
-                                      winner: games[0].winner == null
-                                          ? 'Game in progress...'
-                                          : games[0].winner!.name,
+                    title: loc.recent_matches,
+                    icon: Icons.history_rounded,
+                    content: Column(
+                      children: [
+                        if (recentMatches.isNotEmpty)
+                          for (Match match in recentMatches)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6.0,
+                              ),
+                              child: MatchTile(
+                                compact: true,
+                                width: constraints.maxWidth * 0.9,
+                                match: match,
+                                onTap: () async {
+                                  await Navigator.of(context).push(
+                                    adaptivePageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          MatchResultView(match: match),
                                     ),
-                                    const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 8.0,
-                                      ),
-                                      child: Divider(),
-                                    ),
-                                    if (games.length > 1) ...[
-                                      GameTile(
-                                        gameTitle: games[1].name,
-                                        gameType: 'Winner',
-                                        ruleset: 'Ruleset',
-                                        players: _getPlayerText(games[1]),
-                                        winner: games[1].winner == null
-                                            ? 'Game in progress...'
-                                            : games[1].winner!.name,
-                                      ),
-                                      const SizedBox(height: 8),
-                                    ] else ...[
-                                      const Center(
-                                        heightFactor: 4,
-                                        child: Text(
-                                          'No second game available.',
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                );
-                              } else {
-                                return const Center(
-                                  heightFactor: 12,
-                                  child: Text('No recent games available.'),
-                                );
-                              }
-                            },
-                      ),
+                                  );
+                                  await updatedWinnerinRecentMatches(match.id);
+                                },
+                              ),
+                            )
+                        else
+                          Center(
+                            heightFactor: 5,
+                            child: Text(loc.no_recent_matches_available),
+                          ),
+                      ],
                     ),
                   ),
                 ),
-                InfoTile(
-                  width: constraints.maxWidth * 0.95,
-                  title: 'Quick Create',
-                  icon: Icons.add_box_rounded,
-                  content: Column(
-                    spacing: 8,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 1',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 2',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 3',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 4',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          QuickCreateButton(
-                            text: 'Category 5',
-                            onPressed: () {},
-                          ),
-                          QuickCreateButton(
-                            text: 'Category 6',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ],
+                Padding(
+                  padding: EdgeInsets.zero,
+                  child: InfoTile(
+                    width: constraints.maxWidth * 0.95,
+                    title: loc.quick_create,
+                    icon: Icons.add_box_rounded,
+                    content: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 1',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 2',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 3',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 4',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickCreateButton(
+                              text: 'Category 5',
+                              onPressed: () {},
+                            ),
+                            QuickCreateButton(
+                              text: 'Category 6',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+                SizedBox(height: MediaQuery.paddingOf(context).bottom),
               ],
             ),
           ),
@@ -249,14 +185,41 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  String _getPlayerText(Game game) {
-    if (game.group == null) {
-      final playerCount = game.players?.length ?? 0;
-      return '$playerCount Players';
+  /// Loads the data for the HomeView from the database.
+  /// This includes the match count, group count, and recent matches.
+  Future<void> loadHomeViewData() async {
+    final db = Provider.of<AppDatabase>(context, listen: false);
+    Future.wait([
+      db.matchDao.getMatchCount(),
+      db.groupDao.getGroupCount(),
+      db.matchDao.getAllMatches(),
+      Future.delayed(Constants.minimumSkeletonDuration),
+    ]).then((results) {
+      matchCount = results[0] as int;
+      groupCount = results[1] as int;
+      loadedRecentMatches = results[2] as List<Match>;
+      recentMatches =
+          (loadedRecentMatches
+                ..sort((a, b) => b.createdAt.compareTo(a.createdAt)))
+              .take(2)
+              .toList();
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
+  }
+
+  /// Updates the winner information for a specific match in the recent matches list.
+  Future<void> updatedWinnerinRecentMatches(String matchId) async {
+    final db = Provider.of<AppDatabase>(context, listen: false);
+    final winner = await db.matchDao.getWinner(matchId: matchId);
+    final matchIndex = recentMatches.indexWhere((match) => match.id == matchId);
+    if (matchIndex != -1) {
+      setState(() {
+        recentMatches[matchIndex].winner = winner;
+      });
     }
-    if (game.players == null || game.players!.isEmpty) {
-      return game.group!.name;
-    }
-    return '${game.group!.name} + ${game.players!.length}';
   }
 }

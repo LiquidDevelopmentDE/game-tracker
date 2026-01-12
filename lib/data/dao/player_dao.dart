@@ -50,6 +50,8 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   }
 
   /// Adds multiple [players] to the database in a batch operation.
+  /// Uses insertOrIgnore to avoid triggering cascade deletes on
+  /// player_group associations when players already exist.
   Future<bool> addPlayersAsList({required List<Player> players}) async {
     if (players.isEmpty) return false;
 
@@ -65,7 +67,7 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
               ),
             )
             .toList(),
-        mode: InsertMode.insertOrReplace,
+        mode: InsertMode.insertOrIgnore,
       ),
     );
 

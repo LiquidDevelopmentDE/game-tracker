@@ -3,16 +3,22 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 
+/// A tile widget that displays information about a group, including its name and members.
+/// - [group]: The group data to be displayed.
+/// - [isHighlighted]: Whether the tile should be highlighted.
 class GroupTile extends StatelessWidget {
   const GroupTile({super.key, required this.group, this.isHighlighted = false});
 
+  /// The group data to be displayed.
   final Group group;
+
+  /// Whether the tile should be highlighted.
   final bool isHighlighted;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: CustomTheme.standardMargin,
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: isHighlighted
           ? CustomTheme.highlightedBoxDecoration
@@ -56,7 +62,9 @@ class GroupTile extends StatelessWidget {
             spacing: 12.0,
             runSpacing: 8.0,
             children: <Widget>[
-              for (var member in group.members)
+              for (var member in [
+                ...group.members,
+              ]..sort((a, b) => a.name.compareTo(b.name)))
                 TextIconTile(text: member.name, iconEnabled: false),
             ],
           ),

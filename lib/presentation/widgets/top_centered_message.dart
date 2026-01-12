@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// A widget that displays a message centered at the top of the screen with an icon, title, and message.
+/// - [icon]: The icon to display above the title.
+/// - [title]: The title text to display.
+/// - [message]: The message text to display below the title.
 class TopCenteredMessage extends StatelessWidget {
   const TopCenteredMessage({
     super.key,
@@ -8,9 +12,14 @@ class TopCenteredMessage extends StatelessWidget {
     required this.message,
   });
 
-  final String title;
-  final String message;
+  /// The icon to display above the title.
   final IconData icon;
+
+  /// The title text to display.
+  final String title;
+
+  /// The message text to display below the title.
+  final String message;
 
   @override
   Widget build(BuildContext context) {
