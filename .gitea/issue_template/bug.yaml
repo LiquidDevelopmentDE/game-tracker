@@ -34,13 +34,6 @@ body:
       options: ['Android', 'iOS']
 
   - type: textarea
-    id: bahaviour
-    attributes:
-      label: Unerwünschtes Verhalten
-      description: Beschreibe, was passiert ist, obwohl es nicht passieren sollte
-      placeholder: Bei Verhalten X tritt folgendes Verhalten auf ...
-
-  - type: textarea
     id: solution
     attributes:
       label: Lösungsidee
