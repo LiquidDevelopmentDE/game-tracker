@@ -181,6 +181,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                   icon: Icons.info,
                   title: loc.info,
                   message: _getInfoText(context),
+                  fullscreen: false,
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
