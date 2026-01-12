@@ -84,18 +84,21 @@ class LicenseDetailView extends StatelessWidget {
                     GestureDetector(
                       onTap: () async {
                         final uri = Uri.parse(package.homepage!);
-                        if (await canLaunchUrl(uri)) {
-                          launchUrl(uri);
-                        }
+                        await launchUrl(uri, mode: LaunchMode.platformDefault);
                       },
-                      child: Text(
-                        package.homepage!,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: CustomTheme.secondaryColor,
-                          decoration: TextDecoration.underline,
-                          decorationColor: CustomTheme.secondaryColor,
+                      child: SizedBox(
+                        width: 300,
+                        child: Text(
+                          package.homepage!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: CustomTheme.secondaryColor,
+                            decoration: TextDecoration.underline,
+                            decorationColor: CustomTheme.secondaryColor,
+                          ),
                         ),
                       ),
                     ),
