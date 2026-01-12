@@ -50,6 +50,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_new_match => 'Create new match';
 
   @override
+  String get data => 'Data';
+
+  @override
   String get data_successfully_deleted => 'Data successfully deleted';
 
   @override
@@ -119,6 +122,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get least_points => 'Least Points';
 
   @override
+  String get legal => 'Legal';
+
+  @override
+  String get legal_notice => 'Legal Notice';
+
+  @override
+  String get licenses => 'Licenses';
+
+  @override
   String get match_in_progress => 'Match in progress...';
 
   @override
@@ -128,9 +140,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get matches => 'Matches';
 
   @override
-  String get menu => 'Menu';
-
-  @override
   String get most_points => 'Most Points';
 
   @override
@@ -138,6 +147,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no_groups_created_yet => 'No groups created yet';
+
+  @override
+  String get no_licenses_found => 'No licenses found';
+
+  @override
+  String get no_license_text_available => 'No license text available';
 
   @override
   String get no_matches_created_yet => 'No matches created yet';
@@ -180,6 +195,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String players_count(int count) {
     return '$count Players';
   }
+
+  @override
+  String get privacy_policy => 'Privacy Policy';
 
   @override
   String get quick_create => 'Quick Create';
