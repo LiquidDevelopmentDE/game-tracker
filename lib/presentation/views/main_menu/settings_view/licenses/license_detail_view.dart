@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LicenseDetailView extends StatelessWidget {
   final Package package;
@@ -80,12 +81,22 @@ class LicenseDetailView extends StatelessWidget {
                   if (package.homepage != null &&
                       package.homepage!.isNotEmpty) ...[
                     const SizedBox(height: 8),
-                    SelectableText(
-                      package.homepage!,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade500,
+                    GestureDetector(
+                      onTap: () async {
+                        final uri = Uri.parse(package.homepage!);
+                        if (await canLaunchUrl(uri)) {
+                          launchUrl(uri);
+                        }
+                      },
+                      child: Text(
+                        package.homepage!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: CustomTheme.secondaryColor,
+                          decoration: TextDecoration.underline,
+                          decorationColor: CustomTheme.secondaryColor,
+                        ),
                       ),
                     ),
                   ],
