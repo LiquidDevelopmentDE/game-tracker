@@ -31,7 +31,7 @@ body:
       description: Gebe an, auf welchen Platformen dieser Fehler auftritt
       list: false
       multiple: true
-      options: ['Android', 'iOS', 'Web']
+      options: ['Android', 'iOS']
 
   - type: textarea
     id: bahaviour
