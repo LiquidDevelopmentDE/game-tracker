@@ -40,6 +40,15 @@ body:
       description: Beschreibe, was passiert ist, obwohl es nicht passieren sollte
       placeholder: Bei Verhalten X tritt folgendes Verhalten auf ...
 
+  - type: textarea
+    id: solution
+    attributes:
+      label: Lösungsidee
+      description: Beschreibe, wie das Problem bzw. gelöst werden kann
+      placeholder: |
+        - Button X ändern, sodass ...
+        - Funktion X so erweitern, dass ...
+        - Design anpassen, sodass ...
 
   - type: textarea
     attributes:
