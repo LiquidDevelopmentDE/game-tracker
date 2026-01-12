@@ -4,7 +4,7 @@
 
 ![Version](https://img.shields.io/badge/App--Version-Alpha-orange)
 ![Flutter](https://img.shields.io/badge/Flutter-3.38.6-027DFD?logo=flutter)
-![Dart](https://img.shields.io/badge/Dart-3.9.2-027DFD?logo=dart)
+![Dart](https://img.shields.io/badge/Dart-3.10.7-027DFD?logo=dart)
 
 ### Versions Supported
 
