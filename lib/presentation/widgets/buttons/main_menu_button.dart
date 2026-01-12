@@ -66,19 +66,19 @@ class _MainMenuButtonState extends State<MainMenuButton>
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (widget.icon != null) ...[
-                Icon(widget.icon, size: 28, color: Colors.black),
+                Icon(widget.icon, size: 26, color: Colors.black),
                 const SizedBox(width: 7),
               ],
               Text(
                 widget.text,
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
