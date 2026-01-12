@@ -1,7 +1,7 @@
 name: game_tracker
 description: "Game Tracking App for Card Games"
 publish_to: 'none'
-version: 0.0.5+161
+version: 0.0.5+166
 
 environment:
   sdk: ^3.8.1

@@ -77,38 +77,41 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
         height: 70 + MediaQuery.of(context).padding.bottom,
         child: Stack(
           children: [
-            // Dynamisch generierte Blur-Layer für ultra-smooth Übergang
-            ...List.generate(35, (index) {
-              // Verwende kubische Kurve für noch natürlicheren, weicheren Übergang
-              final progress = index / 34.0; // 0.0 bis 1.0
-              final cubic = progress * progress * progress; // Kubische Kurve
-              final blurStrength = 0.5 + (cubic * 50.0); // Sehr sanft von 0.5 bis 50.5
+            // Dynamically generated blur layers for ultra-smooth transition
+            ...List.generate(34, (index) {
+              // Use cubic curve for an even more natural, smoother transition
+              final progress = index / 34.0; // 0.0 to 1.0
+              final cubic = progress * progress * progress; // cubic curve
+              final blurStrength =
+                  0.5 + (cubic * 50.0); // Very smooth from 0.5 to 50.5
 
-              // Höhe geht jetzt komplett von 100% bis 0% (ganz nach unten)
-              // Mit extra Dichte am unteren Ende für weicheren Übergang
+              // Height goes completely from 100% to 0% (all the way down)
+              // With extra density at the bottom for softer transition
               final heightFactor = index < 25
-                  ? 1.0 - (progress * 0.7)  // Erste 25 Layer: 100% bis 30%
-                  : 0.3 - ((index - 25) / 34.0); // Letzte 10 Layer: 30% bis 0% (dichter)
+                  // First 25 layers: 100% to 30%
+                  ? 1.0 - (progress * 0.7)
+                  // Last 10 layers: 30% to 0% (denser)
+                  : 0.3 - ((index - 25) / 34.0);
 
               return Positioned(
                 left: 0,
                 right: 0,
                 bottom: 0,
-                height: (70 + MediaQuery.of(context).padding.bottom) * heightFactor.clamp(0.05, 1.0),
+                height:
+                    (70 + MediaQuery.of(context).padding.bottom) *
+                    heightFactor.clamp(0.05, 1.0),
                 child: ClipRect(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
                       sigmaX: blurStrength,
                       sigmaY: blurStrength,
                     ),
-                    child: Container(
-                      color: Colors.transparent,
-                    ),
+                    child: Container(color: Colors.transparent),
                   ),
                 ),
               );
             }),
-            // Gradient-Overlay
+            // Gradient overlay
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -117,14 +120,16 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
                     end: Alignment.topCenter,
                     colors: [
                       CustomTheme.boxColor.withValues(alpha: 1),
+                      CustomTheme.boxColor.withValues(alpha: 0.5),
+                      CustomTheme.boxColor.withValues(alpha: 0.2),
                       CustomTheme.boxColor.withValues(alpha: 0.0),
                     ],
-                    stops: const [0.4, 1],
+                    stops: const [0.0, 0.4, 0.8, 1],
                   ),
                 ),
               ),
             ),
-            // Navbar-Inhalt
+            // Navbar content
             SafeArea(
               child: SizedBox(
                 height: 70,
