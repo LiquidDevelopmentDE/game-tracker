@@ -1,0 +1,98 @@
+import 'package:flutter/material.dart';
+
+/// A button for the main menu with an optional icon and a press animation.
+/// - [text]: The text of the button.
+/// - [icon]: The icon of the button.
+/// - [onPressed]: The callback to be invoked when the button is pressed.
+class MainMenuButton extends StatefulWidget {
+  const MainMenuButton({
+    super.key,
+    required this.text,
+    this.icon,
+    required this.onPressed,
+  });
+
+  /// The text of the button.
+  final String text;
+
+  /// The icon of the button.
+  final IconData? icon;
+
+  /// The callback to be invoked when the button is pressed.
+  final void Function() onPressed;
+
+  @override
+  State<MainMenuButton> createState() => _MainMenuButtonState();
+}
+
+class _MainMenuButtonState extends State<MainMenuButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: GestureDetector(
+        onTapDown: (_) {
+          _animationController.forward();
+        },
+        onTapUp: (_) async {
+          await _animationController.reverse();
+          if (mounted) {
+            widget.onPressed();
+          }
+        },
+        onTapCancel: () {
+          _animationController.reverse();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (widget.icon != null) ...[
+                Icon(widget.icon, size: 28, color: Colors.black),
+                const SizedBox(width: 7),
+              ],
+              Text(
+                widget.text,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+}
