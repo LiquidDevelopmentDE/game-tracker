@@ -4,21 +4,23 @@ import 'package:uuid/uuid.dart';
 
 class Group {
   final String id;
-  final DateTime createdAt;
   final String name;
+  final String? description;
+  final DateTime createdAt;
   final List<Player> members;
 
   Group({
     String? id,
     DateTime? createdAt,
     required this.name,
+    this.description,
     required this.members,
   }) : id = id ?? const Uuid().v4(),
        createdAt = createdAt ?? clock.now();
 
   @override
   String toString() {
-    return 'Group{id: $id, name: $name,members: $members}';
+    return 'Group{id: $id, name: $name, description: $description, members: $members}';
   }
 
   /// Creates a Group instance from a JSON object.
@@ -26,6 +28,7 @@ class Group {
     : id = json['id'],
       createdAt = DateTime.parse(json['createdAt']),
       name = json['name'],
+      description = json['description'],
       members = (json['members'] as List)
           .map((memberJson) => Player.fromJson(memberJson))
           .toList();
@@ -35,6 +38,7 @@ class Group {
     'id': id,
     'createdAt': createdAt.toIso8601String(),
     'name': name,
+    'description': description,
     'members': members.map((member) => member.toJson()).toList(),
   };
 }
