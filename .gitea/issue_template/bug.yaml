@@ -1,0 +1,51 @@
+name: Bug Report
+about: Erstelle eine Bug Report
+labels: 'Task/Bug'
+title: ''
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Beschreibung
+      description: Beschreibe klar und pregnant das Fehlerverhalten
+      placeholder: |
+        - Was genau ist das unerwünschte Verhalten?
+        - Welche Auswirkungen hat der Fehler?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Schritte zur Reproduktion
+      description: Beschreibe, wie der Fehler reproduziert werden kann
+      placeholder: |
+        - 1. Schritt 1  
+        - 2. Schritt 2  
+        - 3. ...
+
+  - type: dropdown
+    id: enviroment
+    attributes:
+      label: Umgebung
+      description: Gebe an, auf welchen Platformen dieser Fehler auftritt
+      list: false
+      multiple: true
+      options: ['Android', 'iOS']
+
+  - type: textarea
+    id: bahaviour
+    attributes:
+      label: Unerwünschtes Verhalten
+      description: Beschreibe, was passiert ist, obwohl es nicht passieren sollte
+      placeholder: Bei Verhalten X tritt folgendes Verhalten auf ...
+
+
+  - type: textarea
+    attributes:
+      label: Verwandte Issues
+      description: Verweise auf ähnliche Issues oder PRs
+      placeholder: |
+        - Knüpft an Issue #35 an
+        - Ersetzt Issue #12
+        - Brauch Implementierung von #43
