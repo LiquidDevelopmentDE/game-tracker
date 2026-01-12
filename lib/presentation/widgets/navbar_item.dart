@@ -96,7 +96,7 @@ class _NavbarItemState extends State<NavbarItem>
                   color: widget.isSelected
                       ? CustomTheme.navBarItemSelectedColor
                       : CustomTheme.navBarItemUnselectedColor,
-                  size: 26,
+                  size: 32,
                 ),
               ),
               const SizedBox(height: 4),
