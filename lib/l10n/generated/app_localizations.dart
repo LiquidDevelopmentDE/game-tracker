@@ -176,6 +176,12 @@ abstract class AppLocalizations {
   /// **'Create new match'**
   String get create_new_match;
 
+  /// Data label
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get data;
+
   /// Success message after deleting data
   ///
   /// In en, this message translates to:
@@ -308,6 +314,24 @@ abstract class AppLocalizations {
   /// **'Least Points'**
   String get least_points;
 
+  /// Legal section header
+  ///
+  /// In en, this message translates to:
+  /// **'Legal'**
+  String get legal;
+
+  /// Legal notice menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Notice'**
+  String get legal_notice;
+
+  /// Licenses menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Licenses'**
+  String get licenses;
+
   /// Message when match is in progress
   ///
   /// In en, this message translates to:
@@ -326,12 +350,6 @@ abstract class AppLocalizations {
   /// **'Matches'**
   String get matches;
 
-  /// Menu label
-  ///
-  /// In en, this message translates to:
-  /// **'Menu'**
-  String get menu;
-
   /// Title for most points ruleset
   ///
   /// In en, this message translates to:
@@ -349,6 +367,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No groups created yet'**
   String get no_groups_created_yet;
+
+  /// Message when no licenses are found
+  ///
+  /// In en, this message translates to:
+  /// **'No licenses found'**
+  String get no_licenses_found;
+
+  /// Message when no license text is available
+  ///
+  /// In en, this message translates to:
+  /// **'No license text available'**
+  String get no_license_text_available;
 
   /// Message when no matches exist
   ///
@@ -428,6 +458,12 @@ abstract class AppLocalizations {
   /// **'{count} Players'**
   String players_count(int count);
 
+  /// Privacy policy menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacy_policy;
+
   /// Title for quick create section
   ///
   /// In en, this message translates to:
@@ -494,7 +530,7 @@ abstract class AppLocalizations {
   /// **'Selected players'**
   String get selected_players;
 
-  /// Settings label
+  /// Label for the App Settings
   ///
   /// In en, this message translates to:
   /// **'Settings'**
