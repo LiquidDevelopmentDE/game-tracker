@@ -8,13 +8,18 @@ import 'package:game_tracker/core/custom_theme.dart';
 /// Parameters:
 /// - [onPressed]: Callback function that is triggered when the button is pressed.
 /// - [child]: The child widget to be displayed inside the button, typically a text or icon.
+/// - [backgroundColor]: Optional background color for the button container. If null, uses the standard box color from CustomTheme.
 class AnimatedDialogButton extends StatefulWidget {
-  const AnimatedDialogButton({super.key, required this.onPressed, required this.child});
+  const AnimatedDialogButton({
+    super.key,
+    required this.onPressed,
+    required this.child,
+    this.backgroundColor,
+  });
 
-  /// Callback function that is triggered when the button is pressed.
   final VoidCallback onPressed;
-  /// The child widget to be displayed inside the button, typically a text or icon.
   final Widget child;
+  final Color? backgroundColor;
 
   @override
   State<AnimatedDialogButton> createState() => _AnimatedDialogButtonState();
@@ -37,7 +42,11 @@ class _AnimatedDialogButtonState extends State<AnimatedDialogButton> {
           opacity: _isPressed ? 0.6 : 1.0,
           duration: const Duration(milliseconds: 100),
           child: Container(
-            decoration: CustomTheme.standardBoxDecoration,
+            decoration: widget.backgroundColor != null
+                ? CustomTheme.standardBoxDecoration.copyWith(
+                    color: widget.backgroundColor,
+                  )
+                : CustomTheme.standardBoxDecoration,
             padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 6),
             child: widget.child,
           ),
