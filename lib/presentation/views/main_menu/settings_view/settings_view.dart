@@ -123,11 +123,21 @@ class _SettingsViewState extends State<SettingsView> {
                           actions: [
                             AnimatedDialogButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: Text(loc.cancel, style: const TextStyle(color: CustomTheme.textColor)),
+                              child: Text(
+                                loc.cancel,
+                                style: const TextStyle(
+                                  color: CustomTheme.textColor,
+                                ),
+                              ),
                             ),
                             AnimatedDialogButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: Text(loc.delete, style: TextStyle(color: CustomTheme.secondaryColor)),
+                              child: Text(
+                                loc.delete,
+                                style: TextStyle(
+                                  color: CustomTheme.secondaryColor,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -135,7 +145,7 @@ class _SettingsViewState extends State<SettingsView> {
                         if (confirmed == true && context.mounted) {
                           DataTransferService.deleteAllData(context);
                           showSnackbar(
-                            context: context,
+                            context: scaffoldMessengerContext,
                             message: AppLocalizations.of(
                               context,
                             ).data_successfully_deleted,
