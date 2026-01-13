@@ -295,6 +295,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   /// [message] - The message to display in the snackbar.
   void showSnackBarMessage(String message) {
     if (!context.mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: CustomTheme.boxColor,
