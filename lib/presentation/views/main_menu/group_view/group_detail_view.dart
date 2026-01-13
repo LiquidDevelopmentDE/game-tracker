@@ -83,12 +83,13 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 ],
               ),
             ).then((confirmed) async {
-              if (confirmed == true && context.mounted) {
+              if (confirmed == true && mounted) {
                 bool success = await db.groupDao.deleteGroup(groupId: widget.groupToEdit!.id);
                 if (!context.mounted) return;
                 if (success) {
                   Navigator.pop(context);
                 } else {
+                  if (!mounted) return;
                   showSnackbar(message: loc.error_deleting_group);
                 }
               }

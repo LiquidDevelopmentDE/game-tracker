@@ -22,7 +22,7 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
 
-  /// GlobalKey for ScaffoldMessenger to show snackbars
+  /// GlobalKey for ScaffoldMessenger to show snackbars only on this screen
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   PackageInfo _packageInfo = PackageInfo(
@@ -84,8 +84,8 @@ class _SettingsViewState extends State<SettingsView> {
                     json,
                     'game_tracker-data',
                   );
-                  if (!context.mounted) return;
-                  showExportSnackBar(context: context, result: result);
+                  if (!mounted) return;
+                  showExportSnackBar(result: result);
                 },
               ),
               SettingsListTile(
@@ -94,8 +94,8 @@ class _SettingsViewState extends State<SettingsView> {
                 suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                 onPressed: () async {
                   final result = await DataTransferService.importData(context);
-                  if (!context.mounted) return;
-                  showImportSnackBar(context: context, result: result);
+                  if (!mounted) return;
+                  showImportSnackBar(result: result);
                 },
               ),
               SettingsListTile(
@@ -123,7 +123,6 @@ class _SettingsViewState extends State<SettingsView> {
                     if (confirmed == true && context.mounted) {
                       DataTransferService.deleteAllData(context);
                       showSnackbar(
-                        context: context,
                         message: AppLocalizations.of(
                           context,
                         ).data_successfully_deleted,
@@ -237,62 +236,56 @@ class _SettingsViewState extends State<SettingsView> {
 
   /// Displays a snackbar based on the import result.
   ///
-  /// [context] The BuildContext to show the snackbar in.
   /// [result] The result of the import operation.
   void showImportSnackBar({
-    required BuildContext context,
     required ImportResult result,
   }) {
     final loc = AppLocalizations.of(context);
     switch (result) {
       case ImportResult.success:
-        showSnackbar(context: context, message: loc.data_successfully_imported);
+        showSnackbar(message: loc.data_successfully_imported);
       case ImportResult.invalidSchema:
-        showSnackbar(context: context, message: loc.invalid_schema);
+        showSnackbar(message: loc.invalid_schema);
       case ImportResult.fileReadError:
-        showSnackbar(context: context, message: loc.error_reading_file);
+        showSnackbar(message: loc.error_reading_file);
       case ImportResult.canceled:
-        showSnackbar(context: context, message: loc.import_canceled);
+        showSnackbar(message: loc.import_canceled);
       case ImportResult.formatException:
-        showSnackbar(context: context, message: loc.format_exception);
+        showSnackbar(message: loc.format_exception);
       case ImportResult.unknownException:
-        showSnackbar(context: context, message: loc.unknown_exception);
+        showSnackbar(message: loc.unknown_exception);
     }
   }
 
   /// Displays a snackbar based on the export result.
   ///
-  /// [context] The BuildContext to show the snackbar in.
   /// [result] The result of the export operation.
   void showExportSnackBar({
-    required BuildContext context,
     required ExportResult result,
   }) {
     final loc = AppLocalizations.of(context);
     switch (result) {
       case ExportResult.success:
-        showSnackbar(context: context, message: loc.data_successfully_exported);
+        showSnackbar(message: loc.data_successfully_exported);
       case ExportResult.canceled:
-        showSnackbar(context: context, message: loc.export_canceled);
+        showSnackbar(message: loc.export_canceled);
       case ExportResult.unknownException:
-        showSnackbar(context: context, message: loc.unknown_exception);
+        showSnackbar(message: loc.unknown_exception);
     }
   }
 
   /// Displays a snackbar with the given message and optional action.
   ///
-  /// [context] The BuildContext to show the snackbar in.
   /// [message] The message to display in the snackbar.
   /// [duration] The duration for which the snackbar is displayed.
   /// [action] An optional callback function to execute when the action button is pressed.
   void showSnackbar({
-    required BuildContext context,
     required String message,
     Duration duration = const Duration(seconds: 3),
     VoidCallback? action,
   }) {
     final loc = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
+    final messenger = _scaffoldMessengerKey.currentState!;
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
