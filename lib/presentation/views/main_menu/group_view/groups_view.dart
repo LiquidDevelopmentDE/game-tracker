@@ -8,7 +8,7 @@ import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/group_view/group_detail_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
-import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
+import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
@@ -91,10 +91,10 @@ class _GroupsViewState extends State<GroupsView> {
             ),
           ),
           Positioned(
-            bottom: MediaQuery.paddingOf(context).bottom,
-            child: CustomWidthButton(
+            bottom: MediaQuery.paddingOf(context).bottom + 20,
+            child: MainMenuButton(
               text: loc.create_group,
-              sizeRelativeToWidth: 0.90,
+              icon: Icons.group_add,
               onPressed: () async {
                 await Navigator.push(
                   context,
