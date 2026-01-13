@@ -14,7 +14,7 @@ class AnimatedDialogButton extends StatefulWidget {
   /// Creates an instance of `AnimatedDialogButton`.
   ///
   /// The [onPressed] and [child] parameters are required.
-  const AnimatedDialogButton({required this.onPressed, required this.child});
+  const AnimatedDialogButton({super.key, required this.onPressed, required this.child});
 
   @override
   State<AnimatedDialogButton> createState() => _AnimatedDialogButtonState();
@@ -38,7 +38,7 @@ class _AnimatedDialogButtonState extends State<AnimatedDialogButton> {
           duration: const Duration(milliseconds: 100),
           child: Container(
             decoration: CustomTheme.standardBoxDecoration,
-            padding: EdgeInsets.symmetric(horizontal: 26, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 6),
             child: widget.child,
           ),
         ),
