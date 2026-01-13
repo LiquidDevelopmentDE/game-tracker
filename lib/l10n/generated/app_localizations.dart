@@ -164,13 +164,13 @@ abstract class AppLocalizations {
   /// **'Create match'**
   String get create_match;
 
-  /// Button text to create a new group
+  /// Appbar text to create a new group
   ///
   /// In en, this message translates to:
   /// **'Create new group'**
   String get create_new_group;
 
-  /// Button text to create a new match
+  /// Appbar text to create a new match
   ///
   /// In en, this message translates to:
   /// **'Create new match'**
