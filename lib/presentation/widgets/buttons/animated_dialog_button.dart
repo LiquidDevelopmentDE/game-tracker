@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-/// A custom animated button widget that provides a scaling and opacity effect
-/// when pressed. This widget is designed to be used in dialogs or other UI
-/// components where a visually appealing button is required.
-///
-/// Parameters:
-/// - [onPressed]: Callback function that is triggered when the button is pressed.
-/// - [child]: The child widget to be displayed inside the button, typically a text or icon.
 class AnimatedDialogButton extends StatefulWidget {
-  const AnimatedDialogButton({super.key, required this.onPressed, required this.child});
+  /// A custom animated button widget that provides a scaling and opacity effect
+  /// when pressed.
+  /// - [onPressed]: Callback function that is triggered when the button is pressed.
+  /// - [child]: The child widget to be displayed inside the button, typically a text or icon.
+  const AnimatedDialogButton({
+    super.key,
+    required this.onPressed,
+    required this.child,
+  });
 
   /// Callback function that is triggered when the button is pressed.
   final VoidCallback onPressed;
+
   /// The child widget to be displayed inside the button, typically a text or icon.
   final Widget child;
 
