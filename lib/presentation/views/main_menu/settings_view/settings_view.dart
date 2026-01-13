@@ -111,8 +111,7 @@ class _SettingsViewState extends State<SettingsView> {
                         ),
                         AnimatedDialogButton(
                           onPressed: () => Navigator.of(context).pop(true),
-                          child: Text(loc.delete, style: TextStyle(color: CustomTheme.textColor)),
-                          backgroundColor: CustomTheme.secondaryColor,
+                          child: Text(loc.delete, style: TextStyle(color: CustomTheme.secondaryColor)),
                         ),
                       ],
                     ),
