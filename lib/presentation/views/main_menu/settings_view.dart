@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -97,11 +98,11 @@ class _SettingsViewState extends State<SettingsView> {
                     title: '${loc.delete_all_data}?',
                     content: loc.this_cannot_be_undone,
                     actions: [
-                      _PressableButton(
+                      AnimatedDialogButton(
                         onPressed: () => Navigator.of(context).pop(false),
                         child: Text(loc.cancel, style: const TextStyle(color: CustomTheme.textColor)),
                       ),
-                      _PressableButton(
+                      AnimatedDialogButton(
                         onPressed: () => Navigator.of(context).pop(true),
                         child: Text(loc.delete, style: TextStyle(color: CustomTheme.secondaryColor)),
                       ),
@@ -218,59 +219,3 @@ class _SettingsViewState extends State<SettingsView> {
     });
   }
 }
-
-class _PressableButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final Widget child;
-
-  const _PressableButton({required this.onPressed, required this.child});
-
-  @override
-  State<_PressableButton> createState() => _PressableButtonState();
-}
-
-class _PressableButtonState extends State<_PressableButton> {
-  bool _isPressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
-      onTapUp: (_) => setState(() => _isPressed = false),
-      onTapCancel: () => setState(() => _isPressed = false),
-      onTap: widget.onPressed,
-      child: AnimatedScale(
-        scale: _isPressed ? 0.95 : 1.0,
-        duration: const Duration(milliseconds: 100),
-        child: AnimatedOpacity(
-          opacity: _isPressed ? 0.6 : 1.0,
-          duration: const Duration(milliseconds: 100),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: widget.child,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-/*
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          splashFactory: NoSplash.splashFactory,
-                          overlayColor: Colors.transparent,
-                        ),
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: Text(loc.cancel, style: const TextStyle(color: CustomTheme.textColor),),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          splashFactory: NoSplash.splashFactory,
-                          overlayColor: Colors.transparent,
-                        ),
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: Text(loc.delete, style: TextStyle(color: CustomTheme.secondaryColor),),
-                      ),
- */
