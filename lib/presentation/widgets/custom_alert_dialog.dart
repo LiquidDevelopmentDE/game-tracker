@@ -5,23 +5,23 @@ import 'package:game_tracker/core/custom_theme.dart';
 ///
 /// This widget provides a styled alternative to the default Flutter AlertDialog,
 /// with consistent colors, borders, and layout that match the app's custom theme.
+///
+/// Parameters:
+/// - [title]: The title text displayed at the top of the dialog.
+/// - [content]: The main content text displayed in the body of the dialog.
+/// - [actions]: A list of action widgets (typically buttons) displayed at the bottom
+///   of the dialog. These actions are horizontally spaced around the dialog's width.
 class CustomAlertDialog extends StatelessWidget {
-  /// The title text displayed at the top of the dialog.
-  final String title;
-
-  /// The main content text displayed in the body of the dialog.
-  final String content;
-
-  /// A list of action widgets (typically buttons) displayed at the bottom of the dialog.
-  /// These actions are horizontally spaced around the dialog's width.
-  final List<Widget> actions;
-
   const CustomAlertDialog({
     super.key,
     required this.title,
     required this.content,
     required this.actions,
   });
+
+  final String title;
+  final String content;
+  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context) {
