@@ -3,10 +3,10 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 
-/// A tile widget that displays information about a group, including its name and members.
-/// - [group]: The group data to be displayed.
-/// - [isHighlighted]: Whether the tile should be highlighted.
 class GroupTile extends StatelessWidget {
+  /// A tile widget that displays information about a group, including its name and members.
+  /// - [group]: The group data to be displayed.
+  /// - [isHighlighted]: Whether the tile should be highlighted.
   const GroupTile({super.key, required this.group, this.isHighlighted = false});
 
   /// The group data to be displayed.

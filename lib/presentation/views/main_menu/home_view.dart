@@ -15,6 +15,8 @@ import 'package:game_tracker/presentation/widgets/tiles/quick_info_tile.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
+  /// The main home view of the application, displaying quick info,
+  /// recent matches, and quick create options.
   const HomeView({super.key});
 
   @override

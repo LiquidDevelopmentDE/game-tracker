@@ -14,6 +14,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatefulWidget {
+  /// The settings view of the application, allowing users to manage data
+  /// and view legal information.
   const SettingsView({super.key});
 
   @override

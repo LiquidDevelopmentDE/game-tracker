@@ -6,13 +6,13 @@ import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
 
-/// A tile widget that displays information about a match, including its name,
-/// creation date, associated group, winner, and players.
-/// - [match]: The match data to be displayed.
-/// - [onTap]: The callback invoked when the tile is tapped.
-/// - [width]: Optional width for the tile.
-/// - [compact]: Whether to display the tile in a compact mode
 class MatchTile extends StatefulWidget {
+  /// A tile widget that displays information about a match, including its name,
+  /// creation date, associated group, winner, and players.
+  /// - [match]: The match data to be displayed.
+  /// - [onTap]: The callback invoked when the tile is tapped.
+  /// - [width]: Optional width for the tile.
+  /// - [compact]: Whether to display the tile in a compact mode
   const MatchTile({
     super.key,
     required this.match,

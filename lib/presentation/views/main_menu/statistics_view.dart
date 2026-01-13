@@ -10,6 +10,7 @@ import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
 class StatisticsView extends StatefulWidget {
+  /// A view that displays player statistics
   const StatisticsView({super.key});
 
   @override

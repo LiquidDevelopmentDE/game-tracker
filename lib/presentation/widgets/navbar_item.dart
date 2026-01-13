@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-/// A navigation bar item widget that represents a single tab in a navigation bar.
-/// - [index]: The index of the tab.
-/// - [isSelected]: A boolean indicating whether the tab is currently selected.
-/// - [icon]: The icon to display for the tab.
-/// - [label]: The label to display for the tab.
-/// - [onTabTapped]: The callback to be invoked when the tab is tapped.
 class NavbarItem extends StatefulWidget {
+  /// A navigation bar item widget that represents a single tab in a navigation bar.
+  /// - [index]: The index of the tab.
+  /// - [isSelected]: A boolean indicating whether the tab is currently selected.
+  /// - [icon]: The icon to display for the tab.
+  /// - [label]: The label to display for the tab.
+  /// - [onTabTapped]: The callback to be invoked when the tab is tapped.
   const NavbarItem({
     super.key,
     required this.index,

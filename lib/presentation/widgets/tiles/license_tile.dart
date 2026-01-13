@@ -4,9 +4,12 @@ import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses
 import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
 
 class LicenseTile extends StatelessWidget {
-  final Package package;
-
+  /// A tile widget that displays information about a software package license.
+  /// - [package]: The package data to be displayed.
   const LicenseTile({super.key, required this.package});
+
+  /// The package data to be displayed.
+  final Package package;
 
   @override
   Widget build(BuildContext context) {

@@ -5,9 +5,12 @@ import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses
 import 'package:url_launcher/url_launcher.dart';
 
 class LicenseDetailView extends StatelessWidget {
-  final Package package;
-
+  /// A detailed view displaying information about a software package license.
+  /// - [package]: The package data to be displayed.
   const LicenseDetailView({super.key, required this.package});
+
+  /// The package data to be displayed.
+  final Package package;
 
   @override
   Widget build(BuildContext context) {

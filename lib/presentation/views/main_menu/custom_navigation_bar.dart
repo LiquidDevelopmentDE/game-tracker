@@ -12,6 +12,8 @@ import 'package:game_tracker/presentation/views/main_menu/statistics_view.dart';
 import 'package:game_tracker/presentation/widgets/navbar_item.dart';
 
 class CustomNavigationBar extends StatefulWidget {
+  /// A custom navigation bar widget that provides tabbed navigation
+  /// between different views: Home, Matches, Groups, and Statistics.
   const CustomNavigationBar({super.key});
 
   @override

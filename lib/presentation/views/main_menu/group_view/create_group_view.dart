@@ -11,6 +11,7 @@ import 'package:game_tracker/presentation/widgets/text_input/text_input_field.da
 import 'package:provider/provider.dart';
 
 class CreateGroupView extends StatefulWidget {
+  /// A view that allows the user to create a new group
   const CreateGroupView({super.key});
 
   @override
