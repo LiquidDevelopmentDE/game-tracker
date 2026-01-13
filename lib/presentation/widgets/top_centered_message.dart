@@ -10,6 +10,7 @@ class TopCenteredMessage extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.message,
+    this.fullscreen = true,
   });
 
   /// The icon to display above the title.
@@ -21,13 +22,18 @@ class TopCenteredMessage extends StatelessWidget {
   /// The message text to display below the title.
   final String message;
 
+  final bool fullscreen;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 100),
+      padding: fullscreen ? const EdgeInsets.only(top: 100) : null,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       alignment: Alignment.topCenter,
       child: Column(
+        mainAxisAlignment: fullscreen
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
         children: [
           Icon(icon, size: 45),
           const SizedBox(height: 10),
