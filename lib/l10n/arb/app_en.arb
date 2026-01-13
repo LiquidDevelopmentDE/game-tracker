@@ -356,7 +356,7 @@
   "stats": "Stats",
   "successfully_added_player": "Successfully added player {playerName}",
   "there_is_no_group_matching_your_search": "There is no group matching your search",
-  "this_cannot_be_undone": "This can't be undone",
+  "this_cannot_be_undone": "This can't be undone.",
   "today_at": "Today at",
   "undo": "Undo",
   "unknown_exception": "Unknown Exception (see console)",
