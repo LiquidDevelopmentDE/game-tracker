@@ -7,14 +7,20 @@ import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 
 class ChooseGroupView extends StatefulWidget {
-  final List<Group> groups;
-  final String initialGroupId;
-
+  /// A view that allows the user to choose a group from a list of groups.
+  /// - [groups]: A list of available groups to choose from
+  /// - [initialGroupId]: The ID of the initially selected group
   const ChooseGroupView({
     super.key,
     required this.groups,
     required this.initialGroupId,
   });
+
+  /// A list of available groups to choose from
+  final List<Group> groups;
+
+  /// The ID of the initially selected group
+  final String initialGroupId;
 
   @override
   State<ChooseGroupView> createState() => _ChooseGroupViewState();
@@ -140,10 +146,11 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
         filteredGroups.clear();
         filteredGroups.addAll(
           widget.groups.where(
-                (group) =>
-            group.name.toLowerCase().contains(query.toLowerCase()) ||
+            (group) =>
+                group.name.toLowerCase().contains(query.toLowerCase()) ||
                 group.members.any(
-                      (player) => player.name.toLowerCase().contains(query.toLowerCase()),
+                  (player) =>
+                      player.name.toLowerCase().contains(query.toLowerCase()),
                 ),
           ),
         );

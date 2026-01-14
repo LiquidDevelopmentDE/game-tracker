@@ -6,14 +6,20 @@ import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.d
 import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
 class ChooseGameView extends StatefulWidget {
-  final List<(String, String, Ruleset)> games;
-  final int initialGameIndex;
-
+  /// A view that allows the user to choose a game from a list of available games
+  /// - [games]: A list of tuples containing the game name, description and ruleset
+  /// - [initialGameIndex]: The index of the initially selected game
   const ChooseGameView({
     super.key,
     required this.games,
     required this.initialGameIndex,
   });
+
+  /// A list of tuples containing the game name, description and ruleset
+  final List<(String, String, Ruleset)> games;
+
+  /// The index of the initially selected game
+  final int initialGameIndex;
 
   @override
   State<ChooseGameView> createState() => _ChooseGameViewState();

@@ -5,6 +5,7 @@ import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses
 import 'package:game_tracker/presentation/widgets/tiles/license_tile.dart';
 
 class LicensesView extends StatelessWidget {
+  /// A view that displays a list of open source licenses used in the app
   const LicensesView({super.key});
 
   @override

@@ -19,6 +19,7 @@ import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
 class MatchView extends StatefulWidget {
+  /// A view that displays a list of matches
   const MatchView({super.key});
 
   @override
