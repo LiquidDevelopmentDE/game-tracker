@@ -7,6 +7,8 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses_view.dart';
+import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
+import 'package:game_tracker/presentation/widgets/custom_alert_dialog.dart';
 import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:game_tracker/services/data_transfer_service.dart';
 import 'package:intl/intl.dart';
@@ -116,33 +118,38 @@ class _SettingsViewState extends State<SettingsView> {
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
                       showDialog<bool>(
-                        context: scaffoldMessengerContext,
-                        builder: (dialogContext) => AlertDialog(
-                          title: Text('${loc.delete_all_data}?'),
-                          content: Text(loc.this_cannot_be_undone),
+                        context: context,
+                        builder: (context) => CustomAlertDialog(
+                          title: '${loc.delete_all_data}?',
+                          content: loc.this_cannot_be_undone,
                           actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.of(dialogContext).pop(false),
-                              child: Text(loc.cancel),
+                            AnimatedDialogButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: Text(
+                                loc.cancel,
+                                style: const TextStyle(
+                                  color: CustomTheme.textColor,
+                                ),
+                              ),
                             ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.of(dialogContext).pop(true),
-                              child: Text(loc.delete),
+                            AnimatedDialogButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: Text(
+                                loc.delete,
+                                style: TextStyle(
+                                  color: CustomTheme.secondaryColor,
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ).then((confirmed) {
-                        if (confirmed == true &&
-                            scaffoldMessengerContext.mounted) {
-                          DataTransferService.deleteAllData(
-                            scaffoldMessengerContext,
-                          );
+                        if (confirmed == true && context.mounted) {
+                          DataTransferService.deleteAllData(context);
                           showSnackbar(
                             context: scaffoldMessengerContext,
                             message: AppLocalizations.of(
-                              scaffoldMessengerContext,
+                              context,
                             ).data_successfully_deleted,
                           );
                         }
