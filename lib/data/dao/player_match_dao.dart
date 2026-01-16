@@ -1,23 +1,31 @@
 import 'package:drift/drift.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/db/tables/player_match_table.dart';
+import 'package:game_tracker/data/db/tables/team_table.dart';
 import 'package:game_tracker/data/dto/player.dart';
 
 part 'player_match_dao.g.dart';
 
-@DriftAccessor(tables: [PlayerMatchTable])
+@DriftAccessor(tables: [PlayerMatchTable, TeamTable])
 class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
     with _$PlayerMatchDaoMixin {
   PlayerMatchDao(super.db);
 
   /// Associates a player with a match by inserting a record into the
-  /// [PlayerMatchTable].
+  /// [PlayerMatchTable]. Optionally associates with a team and sets initial score.
   Future<void> addPlayerToMatch({
     required String matchId,
     required String playerId,
+    String? teamId,
+    int score = 0,
   }) async {
     await into(playerMatchTable).insert(
-      PlayerMatchTableCompanion.insert(playerId: playerId, matchId: matchId),
+      PlayerMatchTableCompanion.insert(
+        playerId: playerId,
+        matchId: matchId,
+        teamId: Value(teamId),
+        score: score,
+      ),
       mode: InsertMode.insertOrIgnore,
     );
   }
@@ -36,6 +44,50 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
     );
     final players = await Future.wait(futures);
     return players;
+  }
+
+  /// Retrieves a player's score for a specific match.
+  /// Returns null if the player is not in the match.
+  Future<int?> getPlayerScore({
+    required String matchId,
+    required String playerId,
+  }) async {
+    final result = await (select(playerMatchTable)
+          ..where(
+            (p) => p.matchId.equals(matchId) & p.playerId.equals(playerId),
+          ))
+        .getSingleOrNull();
+    return result?.score;
+  }
+
+  /// Updates the score for a player in a match.
+  /// Returns `true` if the update was successful, otherwise `false`.
+  Future<bool> updatePlayerScore({
+    required String matchId,
+    required String playerId,
+    required int newScore,
+  }) async {
+    final rowsAffected = await (update(playerMatchTable)
+          ..where(
+            (p) => p.matchId.equals(matchId) & p.playerId.equals(playerId),
+          ))
+        .write(PlayerMatchTableCompanion(score: Value(newScore)));
+    return rowsAffected > 0;
+  }
+
+  /// Updates the team for a player in a match.
+  /// Returns `true` if the update was successful, otherwise `false`.
+  Future<bool> updatePlayerTeam({
+    required String matchId,
+    required String playerId,
+    required String? teamId,
+  }) async {
+    final rowsAffected = await (update(playerMatchTable)
+          ..where(
+            (p) => p.matchId.equals(matchId) & p.playerId.equals(playerId),
+          ))
+        .write(PlayerMatchTableCompanion(teamId: Value(teamId)));
+    return rowsAffected > 0;
   }
 
   /// Checks if there are any players associated with the given [matchId].
@@ -114,6 +166,7 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
               (id) => PlayerMatchTableCompanion.insert(
                 playerId: id,
                 matchId: matchId,
+                score: 0,
               ),
             )
             .toList();
@@ -126,5 +179,24 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
         );
       }
     });
+  }
+
+  /// Retrieves all players in a specific team for a match.
+  Future<List<Player>> getPlayersInTeam({
+    required String matchId,
+    required String teamId,
+  }) async {
+    final result = await (select(playerMatchTable)
+          ..where(
+            (p) => p.matchId.equals(matchId) & p.teamId.equals(teamId),
+          ))
+        .get();
+
+    if (result.isEmpty) return [];
+
+    final futures = result.map(
+      (row) => db.playerDao.getPlayerById(playerId: row.playerId),
+    );
+    return Future.wait(futures);
   }
 }
