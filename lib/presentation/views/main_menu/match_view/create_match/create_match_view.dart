@@ -19,8 +19,12 @@ import 'package:game_tracker/presentation/widgets/tiles/choose_tile.dart';
 import 'package:provider/provider.dart';
 
 class CreateMatchView extends StatefulWidget {
-  final VoidCallback? onWinnerChanged;
+  /// A view that allows creating a new match
+  /// [onWinnerChanged]: Optional callback invoked when the winner is changed
   const CreateMatchView({super.key, this.onWinnerChanged});
+
+  /// Optional callback invoked when the winner is changed
+  final VoidCallback? onWinnerChanged;
 
   @override
   State<CreateMatchView> createState() => _CreateMatchViewState();
@@ -203,7 +207,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   if (selectedGroup != null) {
                     filteredPlayerList = playerList
                         .where(
-                          (p) => !selectedGroup!.members.any((m) => m.id == p.id),
+                          (p) =>
+                              !selectedGroup!.members.any((m) => m.id == p.id),
                         )
                         .toList();
                   } else {

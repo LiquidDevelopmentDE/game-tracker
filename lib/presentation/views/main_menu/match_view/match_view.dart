@@ -1,6 +1,7 @@
 import 'dart:core' hide Match;
 
 import 'package:flutter/material.dart';
+import 'package:fluttericon/rpg_awesome_icons.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
@@ -12,12 +13,13 @@ import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/create_match_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
-import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
+import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/match_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
 class MatchView extends StatefulWidget {
+  /// A view that displays a list of matches
   const MatchView({super.key});
 
   @override
@@ -104,10 +106,10 @@ class _MatchViewState extends State<MatchView> {
             ),
           ),
           Positioned(
-            bottom: MediaQuery.paddingOf(context).bottom,
-            child: CustomWidthButton(
-              text: loc.create_match,
-              sizeRelativeToWidth: 0.90,
+            bottom: MediaQuery.paddingOf(context).bottom + 20,
+            child: MainMenuButton(
+              text: 'Spiel erstellen',
+              icon: RpgAwesome.clovers_card,
               onPressed: () async {
                 Navigator.push(
                   context,

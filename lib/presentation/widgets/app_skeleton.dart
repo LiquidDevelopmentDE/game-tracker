@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-/// A widget that provides a skeleton loading effect to its child widget tree.
-/// - [child]: The widget tree to apply the skeleton effect to.
-/// - [enabled]: A boolean to enable or disable the skeleton effect.
-/// - [fixLayoutBuilder]: A boolean to fix the layout builder for AnimatedSwitcher.
 class AppSkeleton extends StatefulWidget {
+  /// A widget that provides a skeleton loading effect to its child widget tree.
+  /// - [child]: The widget tree to apply the skeleton effect to.
+  /// - [enabled]: A boolean to enable or disable the skeleton effect.
+  /// - [fixLayoutBuilder]: A boolean to fix the layout builder for AnimatedSwitcher.
   const AppSkeleton({
     super.key,
     required this.child,

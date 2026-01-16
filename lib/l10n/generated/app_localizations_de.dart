@@ -50,6 +50,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_new_match => 'Neues Spiel erstellen';
 
   @override
+  String get data => 'Daten';
+
+  @override
   String get data_successfully_deleted => 'Daten erfolgreich gelöscht';
 
   @override
@@ -119,6 +122,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get least_points => 'Niedrigste Punkte';
 
   @override
+  String get legal => 'Rechtliches';
+
+  @override
+  String get legal_notice => 'Impressum';
+
+  @override
+  String get licenses => 'Lizenzen';
+
+  @override
   String get match_in_progress => 'Spiel läuft...';
 
   @override
@@ -128,9 +140,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get matches => 'Spiele';
 
   @override
-  String get menu => 'Menü';
-
-  @override
   String get most_points => 'Höchste Punkte';
 
   @override
@@ -138,6 +147,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get no_groups_created_yet => 'Noch keine Gruppen erstellt';
+
+  @override
+  String get no_licenses_found => 'Keine Lizenzen gefunden';
+
+  @override
+  String get no_license_text_available => 'Kein Lizenztext verfügbar';
 
   @override
   String get no_matches_created_yet => 'Noch keine Spiele erstellt';
@@ -180,6 +195,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String players_count(int count) {
     return '$count Spieler';
   }
+
+  @override
+  String get privacy_policy => 'Datenschutzerklärung';
 
   @override
   String get quick_create => 'Schnellzugriff';
@@ -244,7 +262,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get this_cannot_be_undone =>
-      'Dies kann nicht rückgängig gemacht werden';
+      'Dies kann nicht rückgängig gemacht werden.';
 
   @override
   String get today_at => 'Heute um';

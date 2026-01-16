@@ -11,14 +11,14 @@ import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
 
-/// A widget that allows users to select players from a list,
-/// with search functionality and the ability to add new players.
-/// - [availablePlayers]: An optional list of players to choose from. If null, all
-///   players from the database are used.
-/// - [initialSelectedPlayers]: An optional list of players that should be pre-selected.
-/// - [onChanged]: A callback function that is invoked whenever the selection changes,
-///   providing the updated list of selected players.
 class PlayerSelection extends StatefulWidget {
+  /// A widget that allows users to select players from a list,
+  /// with search functionality and the ability to add new players.
+  /// - [availablePlayers]: An optional list of players to choose from. If null,
+  ///   all players from the database are used.
+  /// - [initialSelectedPlayers]: An optional list of players that should be pre-selected.
+  /// - [onChanged]: A callback function that is invoked whenever the selection
+  ///   changes, providing the updated list of selected players.
   const PlayerSelection({
     super.key,
     this.availablePlayers,
@@ -181,6 +181,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                   icon: Icons.info,
                   title: loc.info,
                   message: _getInfoText(context),
+                  fullscreen: false,
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -294,6 +295,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   /// [message] - The message to display in the snackbar.
   void showSnackBarMessage(String message) {
     if (!context.mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: CustomTheme.boxColor,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-/// A tile widget that displays a title with an icon and some content below it.
-/// - [title]: The title text displayed on the tile.
-/// - [icon]: The icon displayed next to the title.
-/// - [content]: The content widget displayed below the title.
-/// - [padding]: Optional padding for the tile content.
-/// - [height]: Optional height for the tile.
-/// - [width]: Optional width for the tile.
 class InfoTile extends StatefulWidget {
+  /// A tile widget that displays a title with an icon and some content below it.
+  /// - [title]: The title text displayed on the tile.
+  /// - [icon]: The icon displayed next to the title.
+  /// - [content]: The content widget displayed below the title.
+  /// - [padding]: Optional padding for the tile content.
+  /// - [height]: Optional height for the tile.
+  /// - [width]: Optional width for the tile.
   const InfoTile({
     super.key,
     required this.title,

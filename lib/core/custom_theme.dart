@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Theme class that defines colors, border radius, padding, and decorations
 class CustomTheme {
   CustomTheme._(); // Private constructor to prevent instantiation
 
@@ -11,6 +12,8 @@ class CustomTheme {
   static Color onBoxColor = const Color(0xFF181818);
   static Color boxBorder = const Color(0xFF272727);
   static const Color textColor = Colors.white;
+  static Color navBarItemSelectedColor = primaryColor.withGreen(100);
+  static Color navBarItemUnselectedColor = Colors.grey.shade400;
 
   // ==================== Border Radius ====================
   static const double standardBorderRadius = 12.0;
