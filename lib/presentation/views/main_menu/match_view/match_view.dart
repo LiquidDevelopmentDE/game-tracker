@@ -130,7 +130,7 @@ class _MatchViewState extends State<MatchView> {
   void loadGames() {
     Future.wait([
       db.matchDao.getAllMatches(),
-      Future.delayed(Constants.minimumSkeletonDuration),
+      Future.delayed(Constants.MINIMUM_SKELETON_DURATION),
     ]).then((results) {
       if (mounted) {
         setState(() {

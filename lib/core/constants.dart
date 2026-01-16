@@ -3,7 +3,7 @@ class Constants {
   Constants._(); // Private constructor to prevent instantiation
 
   /// Minimum duration of all app skeletons
-  static const Duration minimumSkeletonDuration = Duration(milliseconds: 250);
+  static const Duration MINIMUM_SKELETON_DURATION = Duration(milliseconds: 250);
 
   /// Maximum length for player names
   static const int MAX_PLAYER_NAME_LENGTH = 32;
