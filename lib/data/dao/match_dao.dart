@@ -339,4 +339,40 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
     );
     return rowsAffected > 0;
   }
+
+  // ============================================================
+  // TEMPORARY: Winner methods - these are stubs and do not persist data
+  // TODO: Implement proper winner handling
+  // ============================================================
+
+  /// TEMPORARY: Checks if a match has a winner.
+  /// Currently returns true if the match has any players.
+  Future<bool> hasWinner({required String matchId}) async {
+    final players = await db.playerMatchDao.getPlayersOfMatch(matchId: matchId);
+    return players?.isNotEmpty ?? false;
+  }
+
+  /// TEMPORARY: Gets the winner of a match.
+  /// Currently returns the first player in the match's player list.
+  Future<Player?> getWinner({required String matchId}) async {
+    final players = await db.playerMatchDao.getPlayersOfMatch(matchId: matchId);
+    return (players?.isNotEmpty ?? false) ? players!.first : null;
+  }
+
+  /// TEMPORARY: Sets the winner of a match.
+  /// Currently does nothing - winner is not persisted.
+  Future<bool> setWinner({
+    required String matchId,
+    required String winnerId,
+  }) async {
+    // TODO: Implement winner persistence
+    return true;
+  }
+
+  /// TEMPORARY: Removes the winner of a match.
+  /// Currently does nothing - winner is not persisted.
+  Future<bool> removeWinner({required String matchId}) async {
+    // TODO: Implement winner persistence
+    return true;
+  }
 }
