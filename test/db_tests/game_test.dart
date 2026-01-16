@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
@@ -16,6 +17,7 @@ void main() {
   late Player testPlayer5;
   late Group testGroup1;
   late Group testGroup2;
+  late Game testGame;
   late Match testMatch1;
   late Match testMatch2;
   late Match testMatchOnlyPlayers;
@@ -46,25 +48,30 @@ void main() {
         name: 'Test Group 2',
         members: [testPlayer4, testPlayer5],
       );
+      testGame = Game(name: 'Test Game');
       testMatch1 = Match(
         name: 'First Test Match',
+        game: testGame,
         group: testGroup1,
         players: [testPlayer4, testPlayer5],
         winner: testPlayer4,
       );
       testMatch2 = Match(
         name: 'Second Test Match',
+        game: testGame,
         group: testGroup2,
         players: [testPlayer1, testPlayer2, testPlayer3],
         winner: testPlayer2,
       );
       testMatchOnlyPlayers = Match(
         name: 'Test Match with Players',
+        game: testGame,
         players: [testPlayer1, testPlayer2, testPlayer3],
         winner: testPlayer3,
       );
       testMatchOnlyGroup = Match(
         name: 'Test Match with Group',
+        game: testGame,
         group: testGroup2,
       );
     });
@@ -78,6 +85,7 @@ void main() {
       ],
     );
     await database.groupDao.addGroupsAsList(groups: [testGroup1, testGroup2]);
+    await database.gameDao.addGame(game: testGame);
   });
   tearDown(() async {
     await database.close();
