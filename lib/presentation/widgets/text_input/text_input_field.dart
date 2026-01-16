@@ -6,11 +6,13 @@ class TextInputField extends StatelessWidget {
   /// - [controller]: The controller for the text input field.
   /// - [onChanged]: The callback invoked when the text in the field changes.
   /// - [hintText]: The hint text displayed in the text input field when it is empty
+  /// - [maxLength]: The maximum length of the input text.
   const TextInputField({
     super.key,
     required this.controller,
     required this.hintText,
     this.onChanged,
+    this.maxLength,
   });
 
   /// The controller for the text input field.
@@ -22,11 +24,15 @@ class TextInputField extends StatelessWidget {
   /// The hint text displayed in the text input field when it is empty.
   final String hintText;
 
+  /// The maximum length of the input text.
+  final int? maxLength;
+
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       onChanged: onChanged,
+      maxLength: maxLength,
       decoration: InputDecoration(
         filled: true,
         fillColor: CustomTheme.boxColor,
