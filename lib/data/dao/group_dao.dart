@@ -23,6 +23,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         return Group(
           id: groupData.id,
           name: groupData.name,
+          description: groupData.description,
           members: members,
           createdAt: groupData.createdAt,
         );
@@ -42,6 +43,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
     return Group(
       id: result.id,
       name: result.name,
+      description: result.description,
       members: members,
       createdAt: result.createdAt,
     );
@@ -56,6 +58,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
           GroupTableCompanion.insert(
             id: group.id,
             name: group.name,
+            description: Value(group.description),
             createdAt: group.createdAt,
           ),
           mode: InsertMode.insertOrReplace,
@@ -105,6 +108,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
                 (group) => GroupTableCompanion.insert(
                   id: group.id,
                   name: group.name,
+                  description: Value(group.description),
                   createdAt: group.createdAt,
                 ),
               )
@@ -132,6 +136,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
                   (p) => PlayerTableCompanion.insert(
                     id: p.id,
                     name: p.name,
+                    description: Value(p.description),
                     createdAt: p.createdAt,
                   ),
                 )
