@@ -3,6 +3,7 @@ import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
@@ -229,11 +230,20 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 buttonType: ButtonType.primary,
                 onPressed: _enableCreateGameButton()
                     ? () async {
+                        final selectedGame = games[selectedGameIndex];
+                        final game = Game(
+                          name: selectedGame.$1,
+                          description: selectedGame.$2.isEmpty ? null : selectedGame.$2,
+                          ruleset: selectedGame.$3.name,
+                        );
+                        // Ensure the game exists in the database before creating the match
+                        await db.gameDao.addGame(game: game);
                         Match match = Match(
                           name: _matchNameController.text.isEmpty
                               ? (hintText ?? '')
                               : _matchNameController.text.trim(),
                           createdAt: DateTime.now(),
+                          game: game,
                           group: selectedGroup,
                           players: selectedPlayers,
                         );
@@ -263,10 +273,12 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Determines whether the "Create Match" button should be enabled.
   ///
   /// Returns `true` if:
+  /// - A game is selected AND
   /// - A ruleset is selected AND
   /// - Either a group is selected OR at least 2 players are selected
   bool _enableCreateGameButton() {
-    return (selectedGroup != null ||
+    return selectedGameIndex != -1 &&
+        (selectedGroup != null ||
             (selectedPlayers != null && selectedPlayers!.length > 1)) &&
         selectedRuleset != null;
   }
