@@ -8,7 +8,7 @@ import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
 import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
-import 'package:game_tracker/presentation/widgets/colored_icon.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon_container.dart';
 import 'package:game_tracker/presentation/widgets/custom_alert_dialog.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';

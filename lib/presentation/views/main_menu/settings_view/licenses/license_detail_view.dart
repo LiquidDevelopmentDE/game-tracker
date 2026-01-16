@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
-import 'package:game_tracker/presentation/widgets/colored_icon.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LicenseDetailView extends StatelessWidget {
