@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/views/main_menu/group_view/create_group_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
 import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon.dart';
 import 'package:game_tracker/presentation/widgets/custom_alert_dialog.dart';
 import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
@@ -108,19 +107,11 @@ class _GroupProfileViewState extends State<GroupProfileView> {
                 bottom: 100,
               ),
               children: [
-                Center(
-                  child: Container(
-                    width: 55,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: CustomTheme.primaryColor.withGreen(40),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(
-                      Icons.group,
-                      size: 38,
-                      color: CustomTheme.secondaryColor,
-                    ),
+                const Center(
+                  child: ColoredIconContainer(
+                    icon: Icons.group,
+                    containerSize: 55,
+                    iconSize: 38,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -185,15 +176,19 @@ class _GroupProfileViewState extends State<GroupProfileView> {
               child: MainMenuButton(
                 text: loc.edit_group,
                 icon: Icons.edit,
-                onPressed: () async {
+                onPressed: () {
+                  // TODO: Uncomment when GroupDetailView is implemented
+                  /*
                   await Navigator.push(
                     context,
                     adaptivePageRoute(
                       builder: (context) {
-                        return const CreateGroupView();
+
+                        return const GroupDetailView();
                       },
                     ),
-                  );
+                  );*/
+                  print('Edit Group pressed');
                 },
               ),
             ),
@@ -204,6 +199,8 @@ class _GroupProfileViewState extends State<GroupProfileView> {
   }
 
   /// Builds a single statistic row with a label and value
+  /// - [label]: The label of the statistic
+  /// - [value]: The value of the statistic
   Widget _buildStatRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/license_detail_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon.dart';
 
 class LicenseTile extends StatelessWidget {
   /// A tile widget that displays information about a software package license.
@@ -29,18 +30,10 @@ class LicenseTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: CustomTheme.primaryColor.withAlpha(40),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(
-                Icons.description,
-                color: CustomTheme.primaryColor,
-                size: 32,
-              ),
+            const ColoredIconContainer(
+              icon: Icons.description,
+              containerSize: 50,
+              iconSize: 32,
             ),
             const SizedBox(width: 16),
             Expanded(

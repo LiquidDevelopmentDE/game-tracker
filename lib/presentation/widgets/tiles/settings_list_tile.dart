@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon.dart';
 
 class SettingsListTile extends StatelessWidget {
   /// A customizable settings list tile widget that displays an icon, title, and an optional suffix widget.
@@ -46,18 +47,10 @@ class SettingsListTile extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 44,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: CustomTheme.primaryColor.withAlpha(40),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          icon,
-                          size: 28,
-                          color: CustomTheme.primaryColor.withGreen(40),
-                        ),
+                      ColoredIconContainer(
+                        icon: icon,
+                        containerSize: 44,
+                        iconSize: 28,
                       ),
                       const SizedBox(width: 16),
                       Text(title, style: const TextStyle(fontSize: 18)),

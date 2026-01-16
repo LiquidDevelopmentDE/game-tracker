@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LicenseDetailView extends StatelessWidget {
@@ -29,19 +30,11 @@ class LicenseDetailView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        margin: const EdgeInsetsGeometry.only(right: 15),
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: CustomTheme.primaryColor.withAlpha(40),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.description,
-                          color: CustomTheme.primaryColor,
-                          size: 30,
-                        ),
+                      const ColoredIconContainer(
+                        icon: Icons.description,
+                        margin: EdgeInsetsGeometry.only(right: 15),
+                        containerSize: 60,
+                        iconSize: 30,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
