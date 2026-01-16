@@ -1,13 +1,17 @@
 import 'package:drift/drift.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/db/tables/game_table.dart';
+import 'package:game_tracker/data/db/tables/group_table.dart';
 import 'package:game_tracker/data/db/tables/match_table.dart';
+import 'package:game_tracker/data/db/tables/player_match_table.dart';
+import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 
 part 'match_dao.g.dart';
 
-@DriftAccessor(tables: [MatchTable])
+@DriftAccessor(tables: [MatchTable, GameTable, GroupTable, PlayerMatchTable])
 class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
   MatchDao(super.db);
 
@@ -18,20 +22,22 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
 
     return Future.wait(
       result.map((row) async {
-        final group = await db.groupMatchDao.getGroupOfMatch(matchId: row.id);
+        final game = await db.gameDao.getGameById(gameId: row.gameId);
+        Group? group;
+        if (row.groupId != null) {
+          group = await db.groupDao.getGroupById(groupId: row.groupId!);
+        }
         final players = await db.playerMatchDao.getPlayersOfMatch(
           matchId: row.id,
         );
-        final winner = row.winnerId != null
-            ? await db.playerDao.getPlayerById(playerId: row.winnerId!)
-            : null;
         return Match(
           id: row.id,
-          name: row.name,
+          name: row.name ?? '',
+          game: game,
           group: group,
           players: players,
+          notes: row.notes,
           createdAt: row.createdAt,
-          winner: winner,
         );
       }),
     );
@@ -42,104 +48,135 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
     final query = select(matchTable)..where((g) => g.id.equals(matchId));
     final result = await query.getSingle();
 
+    final game = await db.gameDao.getGameById(gameId: result.gameId);
+
+    Group? group;
+    if (result.groupId != null) {
+      group = await db.groupDao.getGroupById(groupId: result.groupId!);
+    }
+
     List<Player>? players;
     if (await db.playerMatchDao.matchHasPlayers(matchId: matchId)) {
       players = await db.playerMatchDao.getPlayersOfMatch(matchId: matchId);
     }
-    Group? group;
-    if (await db.groupMatchDao.matchHasGroup(matchId: matchId)) {
-      group = await db.groupMatchDao.getGroupOfMatch(matchId: matchId);
-    }
-    Player? winner;
-    if (result.winnerId != null) {
-      winner = await db.playerDao.getPlayerById(playerId: result.winnerId!);
-    }
 
     return Match(
       id: result.id,
-      name: result.name,
-      players: players,
+      name: result.name ?? '',
+      game: game,
       group: group,
-      winner: winner,
+      players: players,
+      notes: result.notes,
       createdAt: result.createdAt,
     );
   }
 
-  /// Adds a new [Match] to the database. Also adds players and group
-  /// associations. This method assumes that the players and groups added to
-  /// this match are already present in the database.
+  /// Adds a new [Match] to the database. Also adds players associations.
+  /// This method assumes that the game and group (if any) are already present
+  /// in the database.
   Future<void> addMatch({required Match match}) async {
+    if (match.game == null) {
+      throw ArgumentError('Match must have a game associated with it');
+    }
+
     await db.transaction(() async {
       await into(matchTable).insert(
         MatchTableCompanion.insert(
           id: match.id,
-          name: match.name,
-          winnerId: Value(match.winner?.id),
+          gameId: match.game!.id,
+          groupId: Value(match.group?.id),
+          name: Value(match.name),
+          notes: Value(match.notes),
           createdAt: match.createdAt,
         ),
         mode: InsertMode.insertOrReplace,
       );
 
       if (match.players != null) {
-        for (final p in match.players ?? []) {
+        for (final p in match.players!) {
           await db.playerMatchDao.addPlayerToMatch(
             matchId: match.id,
             playerId: p.id,
           );
         }
       }
-
-      if (match.group != null) {
-        await db.groupMatchDao.addGroupToMatch(
-          matchId: match.id,
-          groupId: match.group!.id,
-        );
-      }
     });
   }
 
-  /// Adds multiple [Match]s to the database in a batch operation.
+  /// Adds multiple [Match]es to the database in a batch operation.
   /// Also adds associated players and groups if they exist.
   /// If the [matches] list is empty, the method returns immediately.
-  /// This Method should only be used to import matches from a different device.
+  /// This method should only be used to import matches from a different device.
   Future<void> addMatchAsList({required List<Match> matches}) async {
     if (matches.isEmpty) return;
     await db.transaction(() async {
-      // Add all matches in batch
-      await db.batch(
-        (b) => b.insertAll(
-          matchTable,
-          matches
-              .map(
-                (match) => MatchTableCompanion.insert(
-                  id: match.id,
-                  name: match.name,
-                  createdAt: match.createdAt,
-                  winnerId: Value(match.winner?.id),
-                ),
-              )
-              .toList(),
-          mode: InsertMode.insertOrReplace,
-        ),
-      );
+      // Add all games first (deduplicated)
+      final uniqueGames = <String, Game>{};
+      for (final match in matches) {
+        if (match.game != null) {
+          uniqueGames[match.game!.id] = match.game!;
+        }
+      }
+
+      if (uniqueGames.isNotEmpty) {
+        await db.batch(
+          (b) => b.insertAll(
+            db.gameTable,
+            uniqueGames.values
+                .map(
+                  (game) => GameTableCompanion.insert(
+                    id: game.id,
+                    name: game.name,
+                    ruleset: game.ruleset ?? '',
+                    description: Value(game.description),
+                    color: Value(game.color?.toString()),
+                    icon: Value(game.icon),
+                    createdAt: game.createdAt,
+                  ),
+                )
+                .toList(),
+            mode: InsertMode.insertOrIgnore,
+          ),
+        );
+      }
 
       // Add all groups of the matches in batch
-      // Using insertOrIgnore to avoid overwriting existing groups (which would
-      // trigger cascade deletes on player_group associations)
       await db.batch(
         (b) => b.insertAll(
           db.groupTable,
           matches
               .where((match) => match.group != null)
               .map(
-                (matches) => GroupTableCompanion.insert(
-                  id: matches.group!.id,
-                  name: matches.group!.name,
-                  createdAt: matches.group!.createdAt,
+                (match) => GroupTableCompanion.insert(
+                  id: match.group!.id,
+                  name: match.group!.name,
+                  description: Value(match.group!.description),
+                  createdAt: match.group!.createdAt,
                 ),
               )
               .toList(),
           mode: InsertMode.insertOrIgnore,
+        ),
+      );
+
+      // Add all matches in batch
+      await db.batch(
+        (b) => b.insertAll(
+          matchTable,
+          matches
+              .where((match) => match.game != null)
+              .map(
+                (match) => MatchTableCompanion.insert(
+                  id: match.id,
+                  gameId: match.game!.id,
+                  groupId: Value(match.group?.id),
+                  name: Value(match.name),
+                  notes: Value(match.notes),
+                  createdAt: match.createdAt,
+                ),
+              )
+              .toList(),
+          mode: InsertMode.insertOrReplace,
         ),
       );
 
@@ -160,8 +197,6 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       }
 
       if (uniquePlayers.isNotEmpty) {
-        // Using insertOrIgnore to avoid triggering cascade deletes on
-        // player_group/player_match associations when players already exist
         await db.batch(
           (b) => b.insertAll(
             db.playerTable,
@@ -170,6 +205,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                   (p) => PlayerTableCompanion.insert(
                     id: p.id,
                     name: p.name,
+                    description: Value(p.description),
                     createdAt: p.createdAt,
                   ),
                 )
@@ -183,12 +219,13 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
       await db.batch((b) {
         for (final match in matches) {
           if (match.players != null) {
-            for (final p in match.players ?? []) {
+            for (final p in match.players!) {
               b.insert(
                 db.playerMatchTable,
                 PlayerMatchTableCompanion.insert(
                   matchId: match.id,
                   playerId: p.id,
+                  score: 0,
                 ),
                 mode: InsertMode.insertOrIgnore,
               );
@@ -211,22 +248,6 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                 mode: InsertMode.insertOrIgnore,
               );
             }
-          }
-        }
-      });
-
-      // Add all group-match associations in batch
-      await db.batch((b) {
-        for (final match in matches) {
-          if (match.group != null) {
-            b.insert(
-              db.groupMatchTable,
-              GroupMatchTableCompanion.insert(
-                matchId: match.id,
-                groupId: match.group!.id,
-              ),
-              mode: InsertMode.insertOrIgnore,
-            );
           }
         }
       });
@@ -266,52 +287,20 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
     return rowsAffected > 0;
   }
 
-  /// Sets the winner of the match with the given [matchId] to the player with
-  /// the given [winnerId].
+  /// Updates the notes of the match with the given [matchId].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> setWinner({
+  Future<bool> updateMatchNotes({
     required String matchId,
-    required String winnerId,
+    required String? notes,
   }) async {
     final query = update(matchTable)..where((g) => g.id.equals(matchId));
     final rowsAffected = await query.write(
-      MatchTableCompanion(winnerId: Value(winnerId)),
+      MatchTableCompanion(notes: Value(notes)),
     );
     return rowsAffected > 0;
   }
 
-  /// Retrieves the winner of the match with the given [matchId].
-  /// Returns the [Player] who won the match, or `null` if no winner is set.
-  Future<Player?> getWinner({required String matchId}) async {
-    final query = select(matchTable)..where((g) => g.id.equals(matchId));
-    final result = await query.getSingleOrNull();
-    if (result == null || result.winnerId == null) {
-      return null;
-    }
-    final winner = await db.playerDao.getPlayerById(playerId: result.winnerId!);
-    return winner;
-  }
-
-  /// Removes the winner of the match with the given [matchId].
-  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> removeWinner({required String matchId}) async {
-    final query = update(matchTable)..where((g) => g.id.equals(matchId));
-    final rowsAffected = await query.write(
-      const MatchTableCompanion(winnerId: Value(null)),
-    );
-    return rowsAffected > 0;
-  }
-
-  /// Checks if the match with the given [matchId] has a winner set.
-  /// Returns `true` if a winner is set, otherwise `false`.
-  Future<bool> hasWinner({required String matchId}) async {
-    final query = select(matchTable)
-      ..where((g) => g.id.equals(matchId) & g.winnerId.isNotNull());
-    final result = await query.getSingleOrNull();
-    return result != null;
-  }
-
-  /// Changes the title of the match with the given [matchId] to [newName].
+  /// Changes the name of the match with the given [matchId] to [newName].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
   Future<bool> updateMatchName({
     required String matchId,
@@ -320,6 +309,33 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
     final query = update(matchTable)..where((g) => g.id.equals(matchId));
     final rowsAffected = await query.write(
       MatchTableCompanion(name: Value(newName)),
+    );
+    return rowsAffected > 0;
+  }
+
+  /// Updates the game of the match with the given [matchId].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> updateMatchGame({
+    required String matchId,
+    required String gameId,
+  }) async {
+    final query = update(matchTable)..where((g) => g.id.equals(matchId));
+    final rowsAffected = await query.write(
+      MatchTableCompanion(gameId: Value(gameId)),
+    );
+    return rowsAffected > 0;
+  }
+
+  /// Updates the group of the match with the given [matchId].
+  /// Pass null to remove the group association.
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> updateMatchGroup({
+    required String matchId,
+    required String? groupId,
+  }) async {
+    final query = update(matchTable)..where((g) => g.id.equals(matchId));
+    final rowsAffected = await query.write(
+      MatchTableCompanion(groupId: Value(groupId)),
     );
     return rowsAffected > 0;
   }
