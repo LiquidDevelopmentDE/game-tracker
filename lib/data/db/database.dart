@@ -1,15 +1,21 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:game_tracker/data/dao/game_dao.dart';
 import 'package:game_tracker/data/dao/group_dao.dart';
 import 'package:game_tracker/data/dao/match_dao.dart';
 import 'package:game_tracker/data/dao/player_dao.dart';
 import 'package:game_tracker/data/dao/player_group_dao.dart';
 import 'package:game_tracker/data/dao/player_match_dao.dart';
+import 'package:game_tracker/data/dao/score_dao.dart';
+import 'package:game_tracker/data/dao/team_dao.dart';
+import 'package:game_tracker/data/db/tables/game_table.dart';
 import 'package:game_tracker/data/db/tables/group_table.dart';
 import 'package:game_tracker/data/db/tables/match_table.dart';
 import 'package:game_tracker/data/db/tables/player_group_table.dart';
 import 'package:game_tracker/data/db/tables/player_match_table.dart';
 import 'package:game_tracker/data/db/tables/player_table.dart';
+import 'package:game_tracker/data/db/tables/score_table.dart';
+import 'package:game_tracker/data/db/tables/team_table.dart';
 import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
@@ -18,23 +24,29 @@ part 'database.g.dart';
   tables: [
     PlayerTable,
     GroupTable,
+    GameTable,
+    TeamTable,
     MatchTable,
     PlayerGroupTable,
-    PlayerMatchTable
+    PlayerMatchTable,
+    ScoreTable,
   ],
   daos: [
     PlayerDao,
     GroupDao,
+    GameDao,
+    TeamDao,
     MatchDao,
     PlayerGroupDao,
-    PlayerMatchDao
+    PlayerMatchDao,
+    ScoreDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
