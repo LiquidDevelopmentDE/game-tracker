@@ -12,6 +12,7 @@ class Match {
   final Group? group;
   final List<Player>? players;
   final String? notes;
+  Player? winner;
 
   Match({
     String? id,
@@ -21,12 +22,13 @@ class Match {
     this.group,
     this.players,
     this.notes,
+    this.winner,
   }) : id = id ?? const Uuid().v4(),
        createdAt = createdAt ?? clock.now();
 
   @override
   String toString() {
-    return 'Match{id: $id, name: $name, game: $game, group: $group, players: $players, notes: $notes}';
+    return 'Match{id: $id, name: $name, game: $game, group: $group, players: $players, notes: $notes, winner: $winner}';
   }
 
   /// Creates a Match instance from a JSON object.
