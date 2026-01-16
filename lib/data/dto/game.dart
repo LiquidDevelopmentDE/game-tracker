@@ -1,0 +1,50 @@
+import 'package:clock/clock.dart';
+import 'package:uuid/uuid.dart';
+
+class Game {
+  final String id;
+  final DateTime createdAt;
+  final String name;
+  final String? ruleset;
+  final String? description;
+  final int? color;
+  final String? icon;
+
+  Game({
+    String? id,
+    DateTime? createdAt,
+    required this.name,
+    this.ruleset,
+    this.description,
+    this.color,
+    this.icon,
+  }) : id = id ?? const Uuid().v4(),
+       createdAt = createdAt ?? clock.now();
+
+  @override
+  String toString() {
+    return 'Game{id: $id, name: $name, ruleset: $ruleset, description: $description, color: $color, icon: $icon}';
+  }
+
+  /// Creates a Game instance from a JSON object.
+  Game.fromJson(Map<String, dynamic> json)
+    : id = json['id'],
+      createdAt = DateTime.parse(json['createdAt']),
+      name = json['name'],
+      ruleset = json['ruleset'],
+      description = json['description'],
+      color = json['color'],
+      icon = json['icon'];
+
+  /// Converts the Game instance to a JSON object.
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'createdAt': createdAt.toIso8601String(),
+    'name': name,
+    'ruleset': ruleset,
+    'description': description,
+    'color': color,
+    'icon': icon,
+  };
+}
+
