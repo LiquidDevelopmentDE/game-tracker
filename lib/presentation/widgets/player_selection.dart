@@ -221,7 +221,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   void loadPlayerList() {
     _allPlayersFuture = Future.wait([
       db.playerDao.getAllPlayers(),
-      Future.delayed(Constants.minimumSkeletonDuration),
+      Future.delayed(Constants.MINIMUM_SKELETON_DURATION),
     ]).then((results) => results[0] as List<Player>);
     if (mounted) {
       _allPlayersFuture.then((loadedPlayers) {
