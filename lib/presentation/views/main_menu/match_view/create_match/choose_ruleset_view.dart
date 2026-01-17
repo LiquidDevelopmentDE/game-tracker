@@ -5,14 +5,20 @@ import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
 class ChooseRulesetView extends StatefulWidget {
-  final List<(Ruleset, String)> rulesets;
-  final int initialRulesetIndex;
-
+  /// A view that allows the user to choose a ruleset from a list of available rulesets
+  /// - [rulesets]: A list of tuples containing the ruleset and its description
+  /// - [initialRulesetIndex]: The index of the initially selected ruleset
   const ChooseRulesetView({
     super.key,
     required this.rulesets,
     required this.initialRulesetIndex,
   });
+
+  /// A list of tuples containing the ruleset and its description
+  final List<(Ruleset, String)> rulesets;
+
+  /// The index of the initially selected ruleset
+  final int initialRulesetIndex;
 
   @override
   State<ChooseRulesetView> createState() => _ChooseRulesetViewState();

@@ -599,7 +599,7 @@ abstract class AppLocalizations {
   /// Warning message for irreversible actions
   ///
   /// In en, this message translates to:
-  /// **'This can\'t be undone'**
+  /// **'This can\'t be undone.'**
   String get this_cannot_be_undone;
 
   /// Date format for today

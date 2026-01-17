@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-/// A button widget designed for quick creating matches in the [HomeView]
-/// - [text]: The text to display on the button.
-/// - [onPressed]: The callback to be invoked when the button is pressed.
 class QuickCreateButton extends StatefulWidget {
+  /// A button widget designed for quick creating matches in the [HomeView]
+  /// - [text]: The text to display on the button.
+  /// - [onPressed]: The callback to be invoked when the button is pressed.
   const QuickCreateButton({
     super.key,
     required this.text,

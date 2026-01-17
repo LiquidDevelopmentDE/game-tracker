@@ -276,7 +276,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get this_cannot_be_undone =>
-      'Dies kann nicht rückgängig gemacht werden';
+      'Dies kann nicht rückgängig gemacht werden.';
 
   @override
   String get today_at => 'Heute um';

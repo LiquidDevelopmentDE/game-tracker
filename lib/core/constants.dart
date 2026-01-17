@@ -1,3 +1,4 @@
+/// Application-wide constants
 class Constants {
   Constants._(); // Private constructor to prevent instantiation
 

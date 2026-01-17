@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-/// A customizable settings list tile widget that displays an icon, title, and an optional suffix widget.
-/// - [icon]: The icon displayed on the left side of the tile.
-/// - [title]: The title text displayed next to the icon.
-/// - [suffixWidget]: An optional widget displayed on the right side of the tile.
-/// - [onPressed]: The callback invoked when the tile is tapped.
 class SettingsListTile extends StatelessWidget {
+  /// A customizable settings list tile widget that displays an icon, title, and an optional suffix widget.
+  /// - [icon]: The icon displayed on the left side of the tile.
+  /// - [title]: The title text displayed next to the icon.
+  /// - [suffixWidget]: An optional widget displayed on the right side of the tile.
+  /// - [onPressed]: The callback invoked when the tile is tapped.
   const SettingsListTile({
     super.key,
     required this.icon,

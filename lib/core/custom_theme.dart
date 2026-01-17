@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Theme class that defines colors, border radius, padding, and decorations
 class CustomTheme {
   CustomTheme._(); // Private constructor to prevent instantiation
 

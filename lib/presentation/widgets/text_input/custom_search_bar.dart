@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-/// A custom search bar widget that encapsulates a [SearchBar] with additional customization options.
-/// - [controller]: The controller for the search bar's text input.
-/// - [hintText]: The hint text displayed in the search bar when it is empty.
-/// - [trailingButtonShown]: Whether to show the trailing button.
-/// - [trailingButtonicon]: The icon for the trailing button.
-/// - [trailingButtonEnabled]: Whether the trailing button is in enabled state.
-/// - [onTrailingButtonPressed]: The callback invoked when the trailing button is pressed.
-/// - [onChanged]: The callback invoked when the text in the search bar changes.
-/// - [constraints]: The constraints for the search bar.
 class CustomSearchBar extends StatelessWidget {
+  /// A custom search bar widget that encapsulates a [SearchBar] with additional customization options.
+  /// - [controller]: The controller for the search bar's text input.
+  /// - [hintText]: The hint text displayed in the search bar when it is empty.
+  /// - [trailingButtonShown]: Whether to show the trailing button.
+  /// - [trailingButtonicon]: The icon for the trailing button.
+  /// - [trailingButtonEnabled]: Whether the trailing button is in enabled state.
+  /// - [onTrailingButtonPressed]: The callback invoked when the trailing button is pressed.
+  /// - [onChanged]: The callback invoked when the text in the search bar changes.
+  /// - [constraints]: The constraints for the search bar.
   const CustomSearchBar({
     super.key,
     required this.controller,

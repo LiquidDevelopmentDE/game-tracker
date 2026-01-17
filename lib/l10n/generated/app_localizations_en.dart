@@ -275,7 +275,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'There is no group matching your search';
 
   @override
-  String get this_cannot_be_undone => 'This can\'t be undone';
+  String get this_cannot_be_undone => 'This can\'t be undone.';
 
   @override
   String get today_at => 'Today at';

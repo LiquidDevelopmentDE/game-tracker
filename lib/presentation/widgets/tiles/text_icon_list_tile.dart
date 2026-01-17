@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
-/// A list tile widget that displays text with an optional icon button.
-/// - [text]: The text to display in the tile.
-/// - [onPressed]: The callback to be invoked when the icon is pressed.
-/// - [iconEnabled]: A boolean to determine if the icon should be displayed.
 class TextIconListTile extends StatelessWidget {
+  /// A list tile widget that displays text with an optional icon button.
+  /// - [text]: The text to display in the tile.
+  /// - [onPressed]: The callback to be invoked when the icon is pressed.
+  /// - [iconEnabled]: A boolean to determine if the icon should be displayed.
   const TextIconListTile({
     super.key,
     required this.text,

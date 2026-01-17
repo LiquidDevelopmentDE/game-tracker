@@ -8,11 +8,17 @@ import 'package:game_tracker/presentation/widgets/tiles/custom_radio_list_tile.d
 import 'package:provider/provider.dart';
 
 class MatchResultView extends StatefulWidget {
+  /// A view that allows selecting and saving the winner of a match
+  /// [match]: The match for which the winner is to be selected
+  /// [onWinnerChanged]: Optional callback invoked when the winner is changed
+  const MatchResultView({super.key, required this.match, this.onWinnerChanged});
+
+  /// The match for which the winner is to be selected
   final Match match;
 
+  /// Optional callback invoked when the winner is changed
   final VoidCallback? onWinnerChanged;
 
-  const MatchResultView({super.key, required this.match, this.onWinnerChanged});
   @override
   State<MatchResultView> createState() => _MatchResultViewState();
 }
