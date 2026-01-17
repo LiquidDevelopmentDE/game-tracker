@@ -38,6 +38,8 @@ class MatchProfileView extends StatefulWidget {
 class _MatchProfileViewState extends State<MatchProfileView> {
   late final AppDatabase db;
 
+  late Player? currentWinner;
+
   /// All players who participated in the match
   late final List<Player> allPlayers;
 
@@ -46,6 +48,7 @@ class _MatchProfileViewState extends State<MatchProfileView> {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
     allPlayers = _getAllPlayers();
+    currentWinner = widget.match.winner;
   }
 
   @override
@@ -178,7 +181,7 @@ class _MatchProfileViewState extends State<MatchProfileView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         /// TODO: Implement different ruleset results display
-                        if (widget.match.winner != null) ...[
+                        if (currentWinner != null) ...[
                           Text(
                             loc.winner,
                             style: const TextStyle(
@@ -187,7 +190,7 @@ class _MatchProfileViewState extends State<MatchProfileView> {
                             ),
                           ),
                           Text(
-                            widget.match.winner?.name ?? '-',
+                            currentWinner!.name,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -221,7 +224,7 @@ class _MatchProfileViewState extends State<MatchProfileView> {
                     text: loc.enter_results,
                     icon: Icons.note_add,
                     onPressed: () async {
-                      await Navigator.push(
+                      currentWinner = await Navigator.push(
                         context,
                         adaptivePageRoute(
                           fullscreenDialog: true,

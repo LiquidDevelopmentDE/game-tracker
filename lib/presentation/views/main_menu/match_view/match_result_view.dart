@@ -54,7 +54,7 @@ class _MatchResultViewState extends State<MatchResultView> {
           icon: const Icon(Icons.close),
           onPressed: () {
             widget.onWinnerChanged?.call();
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(_selectedPlayer);
           },
         ),
         title: Text(widget.match.name),
