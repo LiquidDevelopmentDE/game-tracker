@@ -144,7 +144,7 @@ class _MatchProfileViewState extends State<MatchProfileView> {
                       const Icon(Icons.group),
                       const SizedBox(width: 8),
                       Text(
-                        '${widget.match.group!.name} ${extraPlayersCount > 0 ? '+ $extraPlayersCount' : ''}',
+                        '${widget.match.group!.name} ${widget.match.players != null ? '+ ${widget.match.players!.length}' : ''}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
