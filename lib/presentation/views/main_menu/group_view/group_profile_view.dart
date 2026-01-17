@@ -126,7 +126,7 @@ class _GroupProfileViewState extends State<GroupProfileView> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  "${loc.created_on} ${DateFormat('dd.MM.yyyy').format(widget.group.createdAt)}",
+                  "${loc.created_on} ${DateFormat('MMM d, yyyy').format(widget.group.createdAt)}",
                   style: const TextStyle(
                     fontSize: 12,
                     color: CustomTheme.textColor,
