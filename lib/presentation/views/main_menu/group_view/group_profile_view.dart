@@ -40,6 +40,7 @@ class _GroupProfileViewState extends State<GroupProfileView> {
   /// Total matches played in this group
   int totalMatches = 0;
 
+  /// The best player in this group
   String bestPlayer = '';
 
   @override
