@@ -10,7 +10,6 @@ import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_group_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_ruleset_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/player_selection.dart';
@@ -58,22 +57,12 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// the [ChooseGroupView]
   String selectedGroupId = '';
 
-  /// The currently selected ruleset
-  Ruleset? selectedRuleset;
-
-  /// The index of the currently selected ruleset in [rulesets] to mark it in
-  /// the [ChooseRulesetView]
-  int selectedRulesetIndex = -1;
-
   /// The index of the currently selected game in [games] to mark it in
   /// the [ChooseGameView]
   int selectedGameIndex = -1;
 
   /// The currently selected players
   List<Player>? selectedPlayers;
-
-  /// List of available rulesets with their localized string representations
-  late final List<(Ruleset, String)> _rulesets;
 
   @override
   void initState() {
@@ -107,15 +96,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     super.didChangeDependencies();
     final loc = AppLocalizations.of(context);
     hintText ??= loc.match_name;
-    _rulesets = [
-      (Ruleset.singleWinner, loc.ruleset_single_winner),
-      (Ruleset.singleLoser, loc.ruleset_single_loser),
-      (Ruleset.mostPoints, loc.ruleset_most_points),
-      (Ruleset.leastPoints, loc.ruleset_least_points),
-    ];
   }
 
-  // TODO: Replace when games are implemented
   List<(String, String, Ruleset)> games = [
     ('Example Game 1', 'This is a description', Ruleset.leastPoints),
     ('Example Game 2', '', Ruleset.singleWinner),
@@ -157,37 +139,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   setState(() {
                     if (selectedGameIndex != -1) {
                       hintText = games[selectedGameIndex].$1;
-                      selectedRuleset = games[selectedGameIndex].$3;
-                      selectedRulesetIndex = _rulesets.indexWhere(
-                        (r) => r.$1 == selectedRuleset,
-                      );
                     } else {
                       hintText = loc.match_name;
-                      selectedRuleset = null;
                     }
                   });
-                },
-              ),
-              ChooseTile(
-                title: loc.ruleset,
-                trailingText: selectedRuleset == null
-                    ? loc.none
-                    : translateRulesetToString(selectedRuleset!, context),
-                onPressed: () async {
-                  selectedRuleset = await Navigator.of(context).push(
-                    adaptivePageRoute(
-                      builder: (context) => ChooseRulesetView(
-                        rulesets: _rulesets,
-                        initialRulesetIndex: selectedRulesetIndex,
-                      ),
-                    ),
-                  );
-                  if (!mounted) return;
-                  selectedRulesetIndex = _rulesets.indexWhere(
-                    (r) => r.$1 == selectedRuleset,
-                  );
-                  selectedGameIndex = -1;
-                  setState(() {});
                 },
               ),
               ChooseTile(
@@ -274,7 +229,6 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// - Either a group is selected OR at least 2 players are selected
   bool _enableCreateGameButton() {
     return (selectedGroup != null ||
-            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
-        selectedRuleset != null;
+            (selectedPlayers != null && selectedPlayers!.length > 1));
   }
 }
