@@ -139,9 +139,9 @@ class _GroupProfileViewState extends State<GroupProfileView> {
                   icon: Icons.people,
                   horizontalAlignment: CrossAxisAlignment.start,
                   content: Wrap(
-                    runAlignment: WrapAlignment.start,
+                    alignment: WrapAlignment.start,
                     crossAxisAlignment: WrapCrossAlignment.start,
-                    spacing: 16,
+                    spacing: 12,
                     runSpacing: 8,
                     children: widget.group.members.map((member) {
                       return TextIconTile(
