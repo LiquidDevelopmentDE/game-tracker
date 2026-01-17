@@ -84,6 +84,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomSearchBar(
+            maxLength: Constants.MAX_PLAYER_NAME_LENGTH,
             controller: _searchBarController,
             constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
             hintText: loc.search_for_players,

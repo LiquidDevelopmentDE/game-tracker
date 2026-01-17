@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
 class CustomSearchBar extends StatelessWidget {
@@ -22,6 +21,7 @@ class CustomSearchBar extends StatelessWidget {
     this.onTrailingButtonPressed,
     this.onChanged,
     this.constraints,
+    this.maxLength,
   });
 
   /// The controller for the search bar's text input.
@@ -48,15 +48,19 @@ class CustomSearchBar extends StatelessWidget {
   /// The constraints for the search bar.
   final BoxConstraints? constraints;
 
+  /// Optional parameter for maximum length of the input text.
+  final int? maxLength;
+
   @override
   Widget build(BuildContext context) {
     /// Enforce maximum length on the input text
-    const maxLength = Constants.MAX_PLAYER_NAME_LENGTH;
-    if (controller.text.length > maxLength) {
-      controller.text = controller.text.substring(0, maxLength);
-      controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: controller.text.length),
-      );
+    if (maxLength != null) {
+      if (controller.text.length > maxLength!) {
+        controller.text = controller.text.substring(0, maxLength);
+        controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: controller.text.length),
+        );
+      }
     }
 
     return SearchBar(
