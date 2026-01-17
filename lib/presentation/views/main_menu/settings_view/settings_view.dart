@@ -304,11 +304,11 @@ class _SettingsViewState extends State<SettingsView> {
     final loc = AppLocalizations.of(context);
     switch (result) {
       case ExportResult.success:
-        showSnackbar(message: loc.data_successfully_exported);
+        showSnackbar(context: context, message: loc.data_successfully_exported);
       case ExportResult.canceled:
-        showSnackbar(message: loc.export_canceled);
+        showSnackbar(context: context, message: loc.export_canceled);
       case ExportResult.unknownException:
-        showSnackbar(message: loc.unknown_exception);
+        showSnackbar(context: context, message: loc.unknown_exception);
     }
   }
 
