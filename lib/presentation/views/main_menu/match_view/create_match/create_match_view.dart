@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -136,6 +137,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 child: TextInputField(
                   controller: _matchNameController,
                   hintText: hintText ?? '',
+                  maxLength: Constants.MAX_MATCH_NAME_LENGTH,
                 ),
               ),
               ChooseTile(
