@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 
 class MainMenuButton extends StatefulWidget {
   /// A button for the main menu with an optional icon and a press animation.
-  /// - [text]: The text of the button.
-  /// - [icon]: The icon of the button.
   /// - [onPressed]: The callback to be invoked when the button is pressed.
+  /// - [icon]: The icon of the button.
+  /// - [text]: The text of the button.
   const MainMenuButton({
     super.key,
-    required this.icon,
     required this.onPressed,
+    required this.icon,
     this.text,
   });
 
-  /// The text of the button.
-  final String? text;
+  /// The callback to be invoked when the button is pressed.
+  final void Function() onPressed;
 
   /// The icon of the button.
   final IconData icon;
 
-  /// The callback to be invoked when the button is pressed.
-  final void Function() onPressed;
+  /// The text of the button.
+  final String? text;
 
   @override
   State<MainMenuButton> createState() => _MainMenuButtonState();
