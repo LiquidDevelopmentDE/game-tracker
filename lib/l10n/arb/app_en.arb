@@ -188,6 +188,9 @@
   "@no_recent_matches_available": {
     "description": "Message when no recent matches exist"
   },
+    "@no_results_entered_yet": {
+        "description": "Message when no results have been entered yet"
+    },
   "@no_second_match_available": {
     "description": "Message when no second match exists"
   },
@@ -371,6 +374,7 @@
   "no_players_found_with_that_name": "No players found with that name",
   "no_players_selected": "No players selected",
   "no_recent_matches_available": "No recent matches available",
+  "no_results_entered_yet": "No results entered yet",
   "no_second_match_available": "No second match available",
   "no_statistics_available": "No statistics available",
   "none": "None",

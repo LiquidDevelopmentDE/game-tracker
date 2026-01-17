@@ -51,10 +51,6 @@ class _MatchProfileViewState extends State<MatchProfileView> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    final extraPlayersCount =
-        (widget.match.players?.length ?? 0) +
-        (widget.match.group?.members.length ?? 0) -
-        allPlayers.length;
 
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
@@ -144,6 +140,7 @@ class _MatchProfileViewState extends State<MatchProfileView> {
                       const Icon(Icons.group),
                       const SizedBox(width: 8),
                       Text(
+                        // TODO: Update after DB changes
                         '${widget.match.group!.name} ${widget.match.players != null ? '+ ${widget.match.players!.length}' : ''}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -180,23 +177,34 @@ class _MatchProfileViewState extends State<MatchProfileView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          loc.winner,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: CustomTheme.textColor,
+                        /// TODO: Implement different ruleset results display
+                        if (widget.match.winner != null) ...[
+                          Text(
+                            loc.winner,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: CustomTheme.textColor,
+                            ),
                           ),
-                        ),
-                        Text(
-                          widget.match.winner?.name ?? '-',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: widget.match.winner != null
-                                ? CustomTheme.primaryColor
-                                : CustomTheme.textColor,
+                          Text(
+                            widget.match.winner?.name ?? '-',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: widget.match.winner != null
+                                  ? CustomTheme.primaryColor
+                                  : CustomTheme.textColor,
+                            ),
                           ),
-                        ),
+                        ] else ...[
+                          Text(
+                            loc.no_results_entered_yet,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: CustomTheme.textColor,
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),

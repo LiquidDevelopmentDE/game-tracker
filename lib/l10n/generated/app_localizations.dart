@@ -464,6 +464,12 @@ abstract class AppLocalizations {
   /// **'No recent matches available'**
   String get no_recent_matches_available;
 
+  /// Message when no results have been entered yet
+  ///
+  /// In en, this message translates to:
+  /// **'No results entered yet'**
+  String get no_results_entered_yet;
+
   /// Message when no second match exists
   ///
   /// In en, this message translates to:

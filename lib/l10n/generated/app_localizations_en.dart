@@ -198,6 +198,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_recent_matches_available => 'No recent matches available';
 
   @override
+  String get no_results_entered_yet => 'No results entered yet';
+
+  @override
   String get no_second_match_available => 'No second match available';
 
   @override

@@ -198,6 +198,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get no_recent_matches_available => 'Keine letzten Spiele verfügbar';
 
   @override
+  String get no_results_entered_yet => 'Noch keine Ergebnisse eingetragen';
+
+  @override
   String get no_second_match_available => 'Kein zweites Spiel verfügbar';
 
   @override
