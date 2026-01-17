@@ -106,7 +106,7 @@ class _StatisticsViewState extends State<StatisticsView> {
     Future.wait([
       db.matchDao.getAllMatches(),
       db.playerDao.getAllPlayers(),
-      Future.delayed(Constants.minimumSkeletonDuration),
+      Future.delayed(Constants.MINIMUM_SKELETON_DURATION),
     ]).then((results) async {
       if (!mounted) return;
       final matches = results[0] as List<Match>;
