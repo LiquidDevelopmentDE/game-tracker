@@ -103,7 +103,6 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     ('Example Game 2', '', Ruleset.singleWinner),
   ];
 
-
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
