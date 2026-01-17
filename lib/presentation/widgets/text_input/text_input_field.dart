@@ -4,9 +4,9 @@ import 'package:game_tracker/core/custom_theme.dart';
 class TextInputField extends StatelessWidget {
   /// A custom text input field widget that encapsulates a [TextField] with specific styling.
   /// - [controller]: The controller for the text input field.
-  /// - [onChanged]: The callback invoked when the text in the field changes.
+  /// - [onChanged]: Optional callback invoked when the text in the field changes.
   /// - [hintText]: The hint text displayed in the text input field when it is empty
-  /// - [maxLength]: The maximum length of the input text.
+  /// - [maxLength]: Optional parameter for maximum length of the input text.
   const TextInputField({
     super.key,
     required this.controller,
@@ -18,13 +18,13 @@ class TextInputField extends StatelessWidget {
   /// The controller for the text input field.
   final TextEditingController controller;
 
-  /// The callback invoked when the text in the field changes.
+  /// Optional callback invoked when the text in the field changes.
   final ValueChanged<String>? onChanged;
 
   /// The hint text displayed in the text input field when it is empty.
   final String hintText;
 
-  /// The maximum length of the input text.
+  /// Optional parameter for maximum length of the input text.
   final int? maxLength;
 
   @override
