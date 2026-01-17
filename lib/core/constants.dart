@@ -12,11 +12,11 @@ class Constants {
   static const int MAX_GROUP_NAME_LENGTH = 32;
 
   /// Maximum length for match names
-  static const int MAX_MATCH_NAME_LENGTH = 256;
+  static const int MAX_MATCH_NAME_LENGTH = 32;
 
   /// Maximum length for game names
-  static const int MAX_GAME_NAME_LENGTH = 256;
+  static const int MAX_GAME_NAME_LENGTH = 32;
 
   /// Maximum length for team names
-  static const int MAX_TEAM_NAME_LENGTH = 256;
+  static const int MAX_TEAM_NAME_LENGTH = 32;
 }
