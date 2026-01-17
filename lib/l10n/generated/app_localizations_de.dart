@@ -82,7 +82,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get delete_group => 'Gruppe löschen';
 
   @override
+  String get delete_match => 'Spiel löschen';
+
+  @override
   String get edit_group => 'Gruppe bearbeiten';
+
+  @override
+  String get enter_results => 'Ergebnisse eintragen';
 
   @override
   String get error_creating_group =>
@@ -150,6 +156,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get match_name => 'Spieltitel';
+
+  @override
+  String get match_profile => 'Spielprofil';
 
   @override
   String get matches => 'Spiele';
@@ -225,6 +234,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get recent_matches => 'Letzte Spiele';
+
+  @override
+  String get results => 'Ergebnisse';
 
   @override
   String get ruleset => 'Regelwerk';

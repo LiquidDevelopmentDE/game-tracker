@@ -82,7 +82,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete_group => 'Delete Group';
 
   @override
+  String get delete_match => 'Delete Match';
+
+  @override
   String get edit_group => 'Edit Group';
+
+  @override
+  String get enter_results => 'Enter Results';
 
   @override
   String get error_creating_group =>
@@ -150,6 +156,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get match_name => 'Match name';
+
+  @override
+  String get match_profile => 'Match Profile';
 
   @override
   String get matches => 'Matches';
@@ -225,6 +234,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recent_matches => 'Recent Matches';
+
+  @override
+  String get results => 'Results';
 
   @override
   String get ruleset => 'Ruleset';

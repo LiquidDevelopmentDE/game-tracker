@@ -1,0 +1,261 @@
+import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
+import 'package:game_tracker/core/custom_theme.dart';
+import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/match.dart';
+import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
+import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
+import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon_container.dart';
+import 'package:game_tracker/presentation/widgets/custom_alert_dialog.dart';
+import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+class MatchProfileView extends StatefulWidget {
+  /// A view that displays the profile of a match
+  /// - [match]: The match to display
+  /// - [callback]: Callback to refresh the match list
+  const MatchProfileView({
+    super.key,
+    required this.match,
+    required this.callback,
+  });
+
+  /// The match to display
+  final Match match;
+
+  /// Callback to refresh the match list
+  final VoidCallback callback;
+
+  @override
+  State<MatchProfileView> createState() => _MatchProfileViewState();
+}
+
+class _MatchProfileViewState extends State<MatchProfileView> {
+  late final AppDatabase db;
+
+  /// All players who participated in the match
+  late final List<Player> allPlayers;
+
+  @override
+  void initState() {
+    super.initState();
+    db = Provider.of<AppDatabase>(context, listen: false);
+    allPlayers = _getAllPlayers();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+    final extraPlayersCount =
+        (widget.match.players?.length ?? 0) +
+        (widget.match.group?.members.length ?? 0) -
+        allPlayers.length;
+
+    return Scaffold(
+      backgroundColor: CustomTheme.backgroundColor,
+      appBar: AppBar(
+        title: Text(loc.match_profile),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              showDialog<bool>(
+                context: context,
+                builder: (context) => CustomAlertDialog(
+                  title: '${loc.delete_match}?',
+                  content: loc.this_cannot_be_undone,
+                  actions: [
+                    AnimatedDialogButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: Text(
+                        loc.cancel,
+                        style: const TextStyle(color: CustomTheme.textColor),
+                      ),
+                    ),
+                    AnimatedDialogButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: Text(
+                        loc.delete,
+                        style: TextStyle(color: CustomTheme.secondaryColor),
+                      ),
+                    ),
+                  ],
+                ),
+              ).then((confirmed) async {
+                if (confirmed! && context.mounted) {
+                  await db.matchDao.deleteMatch(matchId: widget.match.id);
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                  widget.callback.call();
+                }
+              });
+            },
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            ListView(
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 12,
+                top: 20,
+                bottom: 100,
+              ),
+              children: [
+                const Center(
+                  child: ColoredIconContainer(
+                    icon: Icons.sports_esports,
+                    containerSize: 55,
+                    iconSize: 38,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  widget.match.name,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: CustomTheme.textColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '${loc.created_on} ${DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(widget.match.createdAt)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: CustomTheme.textColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                if (widget.match.group != null) ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.group),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${widget.match.group!.name} ${extraPlayersCount > 0 ? '+ $extraPlayersCount' : ''}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                ],
+                InfoTile(
+                  title: loc.players,
+                  icon: Icons.people,
+                  horizontalAlignment: CrossAxisAlignment.start,
+                  content: Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: allPlayers.map((player) {
+                      return TextIconTile(
+                        text: player.name,
+                        iconEnabled: false,
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                InfoTile(
+                  title: loc.results,
+                  icon: Icons.emoji_events,
+                  content: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 8,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          loc.winner,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: CustomTheme.textColor,
+                          ),
+                        ),
+                        Text(
+                          widget.match.winner?.name ?? '-',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: widget.match.winner != null
+                                ? CustomTheme.primaryColor
+                                : CustomTheme.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: MediaQuery.paddingOf(context).bottom,
+              child: Row(
+                children: [
+                  MainMenuButton(icon: Icons.edit, onPressed: () {}),
+                  const SizedBox(width: 15),
+                  MainMenuButton(
+                    text: loc.enter_results,
+                    icon: Icons.note_add,
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        adaptivePageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => MatchResultView(
+                            match: widget.match,
+                            onWinnerChanged: () {
+                              widget.callback.call();
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Gets all players who participated in the match (from group and individual players)
+  List<Player> _getAllPlayers() {
+    final List<Player> players = [];
+
+    // Add group members if group exists
+    if (widget.match.group != null) {
+      players.addAll(widget.match.group!.members);
+    }
+
+    // Add individual players
+    if (widget.match.players != null) {
+      for (var player in widget.match.players!) {
+        // Avoid duplicates
+        if (!players.any((p) => p.id == player.id)) {
+          players.add(player);
+        }
+      }
+    }
+
+    return players;
+  }
+}

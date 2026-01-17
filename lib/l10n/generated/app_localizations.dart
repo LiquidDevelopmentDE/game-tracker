@@ -236,11 +236,23 @@ abstract class AppLocalizations {
   /// **'Delete Group'**
   String get delete_group;
 
+  /// Button text to delete a match
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Match'**
+  String get delete_match;
+
   /// Button text to edit a group
   ///
   /// In en, this message translates to:
   /// **'Edit Group'**
   String get edit_group;
+
+  /// Button text to enter match results
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Results'**
+  String get enter_results;
 
   /// Error message when group creation fails
   ///
@@ -373,6 +385,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Match name'**
   String get match_name;
+
+  /// Title for match profile view
+  ///
+  /// In en, this message translates to:
+  /// **'Match Profile'**
+  String get match_profile;
 
   /// Label for matches
   ///
@@ -517,6 +535,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recent Matches'**
   String get recent_matches;
+
+  /// Label for match results
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get results;
 
   /// Ruleset label
   ///
