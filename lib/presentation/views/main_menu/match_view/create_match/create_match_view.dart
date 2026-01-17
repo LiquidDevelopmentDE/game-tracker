@@ -20,10 +20,13 @@ import 'package:provider/provider.dart';
 class CreateMatchView extends StatefulWidget {
   /// A view that allows creating a new match
   /// [onWinnerChanged]: Optional callback invoked when the winner is changed
-  const CreateMatchView({super.key, this.onWinnerChanged});
+  const CreateMatchView({super.key, this.onWinnerChanged, this.match});
 
   /// Optional callback invoked when the winner is changed
   final VoidCallback? onWinnerChanged;
+
+  /// An optional match to prefill the fields
+  final Match? match;
 
   @override
   State<CreateMatchView> createState() => _CreateMatchViewState();
@@ -83,6 +86,19 @@ class _CreateMatchViewState extends State<CreateMatchView> {
         filteredPlayerList = List.from(playerList);
       });
     });
+
+    if (widget.match != null) {
+      final match = widget.match!;
+      _matchNameController.text = match.name;
+      selectedGroup = match.group;
+      selectedGroupId = match.group?.id ?? '';
+      selectedPlayers = match.players ?? [];
+      if (selectedGroup != null) {
+        filteredPlayerList = playerList
+            .where((p) => !selectedGroup!.members.any((m) => m.id == p.id))
+            .toList();
+      }
+    }
   }
 
   @override
@@ -229,6 +245,6 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// - Either a group is selected OR at least 2 players are selected
   bool _enableCreateGameButton() {
     return (selectedGroup != null ||
-            (selectedPlayers != null && selectedPlayers!.length > 1));
+        (selectedPlayers != null && selectedPlayers!.length > 1));
   }
 }

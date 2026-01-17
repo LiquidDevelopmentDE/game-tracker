@@ -5,6 +5,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/create_match_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
 import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
@@ -218,7 +219,17 @@ class _MatchProfileViewState extends State<MatchProfileView> {
               bottom: MediaQuery.paddingOf(context).bottom,
               child: Row(
                 children: [
-                  MainMenuButton(icon: Icons.edit, onPressed: () {}),
+                  MainMenuButton(
+                    icon: Icons.edit,
+                    onPressed: () => Navigator.push(
+                      context,
+                      adaptivePageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) =>
+                            CreateMatchView(match: widget.match),
+                      ),
+                    ),
+                  ),
                   const SizedBox(width: 15),
                   MainMenuButton(
                     text: loc.enter_results,
