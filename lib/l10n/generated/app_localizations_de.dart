@@ -261,6 +261,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Genau ein:e Gewinner:in wird gewählt; Unentschieden werden durch einen vordefinierten Tie-Breaker aufgelöst.';
 
   @override
+  String get save_changes => 'Änderungen speichern';
+
+  @override
   String get search_for_groups => 'Nach Gruppen suchen';
 
   @override

@@ -81,6 +81,7 @@
   "ruleset_most_points": "Traditionelles Regelwerk: Der/die Spieler:in mit den meisten Punkten gewinnt.",
   "ruleset_single_loser": "Genau ein:e Verlierer:in wird bestimmt; der letzte Platz erhält die Strafe oder Konsequenz.",
   "ruleset_single_winner": "Genau ein:e Gewinner:in wird gewählt; Unentschieden werden durch einen vordefinierten Tie-Breaker aufgelöst.",
+  "save_changes": "Änderungen speichern",
   "search_for_groups": "Nach Gruppen suchen",
   "search_for_players": "Nach Spieler:innen suchen",
   "select_winner": "Gewinner:in wählen:",

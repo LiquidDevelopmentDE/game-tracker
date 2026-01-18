@@ -578,6 +578,12 @@ abstract class AppLocalizations {
   /// **'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.'**
   String get ruleset_single_winner;
 
+  /// Save changes button text
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get save_changes;
+
   /// Hint text for group search input field
   ///
   /// In en, this message translates to:

@@ -87,6 +87,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
       });
     });
 
+    // If a match is provided, prefill the fields
     if (widget.match != null) {
       final match = widget.match!;
       _matchNameController.text = match.name;
@@ -122,6 +123,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final buttonText = widget.match != null
+        ? loc.save_changes
+        : loc.create_match;
+
     return ScaffoldMessenger(
       child: Scaffold(
         backgroundColor: CustomTheme.backgroundColor,
@@ -202,32 +207,12 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 ),
               ),
               CustomWidthButton(
-                text: loc.create_match,
+                text: buttonText,
                 sizeRelativeToWidth: 0.95,
                 buttonType: ButtonType.primary,
                 onPressed: _enableCreateGameButton()
-                    ? () async {
-                        Match match = Match(
-                          name: _matchNameController.text.isEmpty
-                              ? (hintText ?? '')
-                              : _matchNameController.text.trim(),
-                          createdAt: DateTime.now(),
-                          group: selectedGroup,
-                          players: selectedPlayers,
-                        );
-                        await db.matchDao.addMatch(match: match);
-                        if (context.mounted) {
-                          Navigator.pushReplacement(
-                            context,
-                            adaptivePageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => MatchResultView(
-                                match: match,
-                                onWinnerChanged: widget.onWinnerChanged,
-                              ),
-                            ),
-                          );
-                        }
+                    ? () {
+                        buttonNavigation(context);
                       }
                     : null,
               ),
@@ -246,5 +231,34 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   bool _enableCreateGameButton() {
     return (selectedGroup != null ||
         (selectedPlayers != null && selectedPlayers!.length > 1));
+  }
+
+  void buttonNavigation(BuildContext context) async {
+    if (widget.match != null) {
+      // TODO: Implement updating match logic here
+      Navigator.pop(context);
+    } else {
+      Match match = Match(
+        name: _matchNameController.text.isEmpty
+            ? (hintText ?? '')
+            : _matchNameController.text.trim(),
+        createdAt: DateTime.now(),
+        group: selectedGroup,
+        players: selectedPlayers,
+      );
+      await db.matchDao.addMatch(match: match);
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          adaptivePageRoute(
+            fullscreenDialog: true,
+            builder: (context) => MatchResultView(
+              match: match,
+              onWinnerChanged: widget.onWinnerChanged,
+            ),
+          ),
+        );
+      }
+    }
   }
 }

@@ -261,6 +261,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Exactly one winner is chosen; ties are resolved by a predefined tiebreaker.';
 
   @override
+  String get save_changes => 'Save Changes';
+
+  @override
   String get search_for_groups => 'Search for groups';
 
   @override
