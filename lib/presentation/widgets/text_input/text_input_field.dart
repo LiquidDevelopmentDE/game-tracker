@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
 class TextInputField extends StatelessWidget {
@@ -48,6 +49,7 @@ class TextInputField extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
       maxLength: maxLength,
+      maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
       maxLines: maxLines,
       minLines: minLines,
       decoration: InputDecoration(
