@@ -6,7 +6,7 @@ import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/views/main_menu/group_view/group_create_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/group_view/create_group_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
 import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
@@ -188,7 +188,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                     context,
                     adaptivePageRoute(
                       builder: (context) {
-                        return GroupCreateView(
+                        return CreateGroupView(
                           groupToEdit: _group,
                         );
                       },
