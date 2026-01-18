@@ -16,11 +16,11 @@ import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class MatchProfileView extends StatefulWidget {
+class MatchDetailView extends StatefulWidget {
   /// A view that displays the profile of a match
   /// - [match]: The match to display
   /// - [callback]: Callback to refresh the match list
-  const MatchProfileView({
+  const MatchDetailView({
     super.key,
     required this.match,
     required this.callback,
@@ -33,10 +33,10 @@ class MatchProfileView extends StatefulWidget {
   final VoidCallback callback;
 
   @override
-  State<MatchProfileView> createState() => _MatchProfileViewState();
+  State<MatchDetailView> createState() => _MatchDetailViewState();
 }
 
-class _MatchProfileViewState extends State<MatchProfileView> {
+class _MatchDetailViewState extends State<MatchDetailView> {
   late final AppDatabase db;
 
   late Player? currentWinner;

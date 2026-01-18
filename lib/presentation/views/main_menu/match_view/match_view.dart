@@ -11,7 +11,7 @@ import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/create_match_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/match_view/match_profile_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/match_detail_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/match_tile.dart';
@@ -89,7 +89,7 @@ class _MatchViewState extends State<MatchView> {
                           Navigator.push(
                             context,
                             adaptivePageRoute(
-                              builder: (context) => MatchProfileView(
+                              builder: (context) => MatchDetailView(
                                 match: matches[index],
                                 callback: loadGames,
                               ),
