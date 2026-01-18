@@ -112,6 +112,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     return ScaffoldMessenger(
       key: _scaffoldMessengerKey,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(title: Text(loc.create_new_match)),
         body: SafeArea(
