@@ -108,6 +108,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     final loc = AppLocalizations.of(context);
     return ScaffoldMessenger(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(title: Text(loc.create_new_match)),
         body: SafeArea(

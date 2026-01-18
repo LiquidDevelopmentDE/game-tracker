@@ -113,6 +113,7 @@ class _CreateGameViewState extends State<CreateGameView> {
                   minLines: 6,
                   maxLines: 6,
                   maxLength: Constants.MAX_GAME_DESCRIPTION_LENGTH,
+                  showCounterText: true,
                 ),
               ),
               const Spacer(),

@@ -9,6 +9,7 @@ class TextInputField extends StatelessWidget {
   /// - [maxLength]: Optional parameter for maximum length of the input text.
   /// - [maxLines]: The maximum number of lines for the text input field. Defaults to 1.
   /// - [minLines]: The minimum number of lines for the text input field. Defaults to 1.
+  /// - [showCounterText]: Whether to show the counter text in the text input field. Defaults to false.
   const TextInputField({
     super.key,
     required this.controller,
@@ -16,7 +17,8 @@ class TextInputField extends StatelessWidget {
     this.onChanged,
     this.maxLength,
     this.maxLines = 1,
-    this.minLines = 1
+    this.minLines = 1,
+    this.showCounterText = false
   });
 
   /// The controller for the text input field.
@@ -37,6 +39,8 @@ class TextInputField extends StatelessWidget {
   /// The minimum number of lines for the text input field.
   final int? minLines;
 
+  /// Whether to show the counter text in the text input field.
+  final bool showCounterText;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,7 @@ class TextInputField extends StatelessWidget {
         fillColor: CustomTheme.boxColor,
         hintText: hintText,
         hintStyle: const TextStyle(fontSize: 18),
+        counterText: showCounterText ? null : '',
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: CustomTheme.boxBorder),
