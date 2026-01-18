@@ -233,7 +233,7 @@ class _MatchDetailViewState extends State<MatchDetailView> {
                   const SizedBox(width: 15),
                   MainMenuButton(
                     text: loc.enter_results,
-                    icon: Icons.note_add,
+                    icon: Icons.emoji_events,
                     onPressed: () async {
                       currentWinner = await Navigator.push(
                         context,
