@@ -98,6 +98,18 @@ abstract class AppLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @edit_game.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Game'**
+  String get edit_game;
+
   /// Label for all players list
   ///
   /// In en, this message translates to:
@@ -157,6 +169,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not add player'**
   String could_not_add_player(Object playerName);
+
+  /// Button text to create a game
+  ///
+  /// In en, this message translates to:
+  /// **'Create Game'**
+  String get create_game;
 
   /// Button text to create a group
   ///
@@ -229,6 +247,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete all data'**
   String get delete_all_data;
+
+  /// Button text to delete a game
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Game'**
+  String get delete_game;
 
   /// Button text to delete a group
   ///

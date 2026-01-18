@@ -9,6 +9,12 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get description => 'Description';
+
+  @override
+  String get edit_game => 'Edit Game';
+
+  @override
   String get all_players => 'All players';
 
   @override
@@ -39,6 +45,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String could_not_add_player(Object playerName) {
     return 'Could not add player';
   }
+
+  @override
+  String get create_game => 'Create Game';
 
   @override
   String get create_group => 'Create Group';
@@ -77,6 +86,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete_all_data => 'Delete all data';
+
+  @override
+  String get delete_game => 'Delete Game';
 
   @override
   String get delete_group => 'Delete Group';

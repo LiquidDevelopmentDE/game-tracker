@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
+import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/game_view/create_game_view.dart';
 import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
 
@@ -50,6 +53,17 @@ class _ChooseGameViewState extends State<ChooseGameView> {
             Navigator.of(context).pop(selectedGameIndex);
           },
         ),
+        actions: [IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () async {
+            await Navigator.push(context, adaptivePageRoute(
+              builder: (context) => CreateGameView(
+                callback: () {}, //TODO: implement callback
+              ),
+            )
+            );
+          },
+        )],
         title: Text(loc.choose_game),
       ),
       body: PopScope(
@@ -84,7 +98,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                       context,
                     ),
                     isHighlighted: selectedGameIndex == index,
-                    onPressed: () async {
+                    onTap: () async {
                       setState(() {
                         if (selectedGameIndex == index) {
                           selectedGameIndex = -1;
@@ -92,6 +106,16 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                           selectedGameIndex = index;
                         }
                       });
+                    },
+                    onLongPress: () async {
+                      await Navigator.push(context, adaptivePageRoute(
+                        builder: (context) => CreateGameView(
+                          //TODO: implement callback & giving real game to create game view
+                          gameToEdit: Game(name: 'Cabo', description: '', ruleset: 'Highest Points'),
+                          callback: () {},
+                        ),
+                      )
+                      );
                     },
                   );
                 },

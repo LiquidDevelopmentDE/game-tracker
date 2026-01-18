@@ -7,12 +7,16 @@ class TextInputField extends StatelessWidget {
   /// - [onChanged]: Optional callback invoked when the text in the field changes.
   /// - [hintText]: The hint text displayed in the text input field when it is empty
   /// - [maxLength]: Optional parameter for maximum length of the input text.
+  /// - [maxLines]: The maximum number of lines for the text input field. Defaults to 1.
+  /// - [minLines]: The minimum number of lines for the text input field. Defaults to 1.
   const TextInputField({
     super.key,
     required this.controller,
     required this.hintText,
     this.onChanged,
     this.maxLength,
+    this.maxLines = 1,
+    this.minLines = 1
   });
 
   /// The controller for the text input field.
@@ -27,12 +31,21 @@ class TextInputField extends StatelessWidget {
   /// Optional parameter for maximum length of the input text.
   final int? maxLength;
 
+  /// The maximum number of lines for the text input field.
+  final int? maxLines;
+
+  /// The minimum number of lines for the text input field.
+  final int? minLines;
+
+
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       onChanged: onChanged,
       maxLength: maxLength,
+      maxLines: maxLines,
+      minLines: minLines,
       decoration: InputDecoration(
         filled: true,
         fillColor: CustomTheme.boxColor,

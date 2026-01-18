@@ -9,6 +9,12 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
+  String get description => 'Beschreibung';
+
+  @override
+  String get edit_game => 'Spielvorlage bearbeiten';
+
+  @override
   String get all_players => 'Alle Spieler:innen';
 
   @override
@@ -39,6 +45,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String could_not_add_player(Object playerName) {
     return 'Spieler:in $playerName konnte nicht hinzugefügt werden';
   }
+
+  @override
+  String get create_game => 'Spielvorlage erstellen';
 
   @override
   String get create_group => 'Gruppe erstellen';
@@ -77,6 +86,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get delete_all_data => 'Alle Daten löschen';
+
+  @override
+  String get delete_game => 'Spielvorlage löschen';
 
   @override
   String get delete_group => 'Gruppe löschen';
