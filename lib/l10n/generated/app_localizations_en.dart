@@ -95,6 +95,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Error while creating group, please try again';
 
   @override
+  String get error_deleting_group =>
+      'Error while deleting group, please try again';
+
+  @override
+  String get error_editing_group =>
+      'Error while editing group, please try again';
+
+  @override
   String get error_reading_file => 'Error reading file';
 
   @override

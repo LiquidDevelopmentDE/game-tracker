@@ -170,7 +170,7 @@ abstract class AppLocalizations {
   /// **'Create match'**
   String get create_match;
 
-  /// Button text to create a new group
+  /// Appbar text to create a new group
   ///
   /// In en, this message translates to:
   /// **'Create new group'**
@@ -182,7 +182,7 @@ abstract class AppLocalizations {
   /// **'Created on'**
   String get created_on;
 
-  /// Button text to create a new match
+  /// Appbar text to create a new match
   ///
   /// In en, this message translates to:
   /// **'Create new match'**
@@ -230,7 +230,7 @@ abstract class AppLocalizations {
   /// **'Delete all data'**
   String get delete_all_data;
 
-  /// Button text to delete a group
+  /// Confirmation dialog for deleting a group
   ///
   /// In en, this message translates to:
   /// **'Delete Group'**
@@ -242,7 +242,7 @@ abstract class AppLocalizations {
   /// **'Delete Match'**
   String get delete_match;
 
-  /// Button text to edit a group
+  /// Button & Appbar label for editing a group
   ///
   /// In en, this message translates to:
   /// **'Edit Group'**
@@ -259,6 +259,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error while creating group, please try again'**
   String get error_creating_group;
+
+  /// Error message when group deletion fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error while deleting group, please try again'**
+  String get error_deleting_group;
+
+  /// Error message when group editing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error while editing group, please try again'**
+  String get error_editing_group;
 
   /// Error message when file cannot be read
   ///

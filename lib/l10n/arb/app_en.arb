@@ -37,10 +37,10 @@
     "description": "Button text to create a match"
   },
   "@create_new_group": {
-    "description": "Button text to create a new group"
+    "description": "Appbar text to create a new group"
   },
   "@create_new_match": {
-    "description": "Button text to create a new match"
+    "description": "Appbar text to create a new match"
   },
   "@created_on": {
     "description": "Label for creation date"
@@ -72,19 +72,25 @@
     "description": "Confirmation dialog for deleting all data"
   },
   "@delete_group": {
-    "description": "Button text to delete a group"
+    "description": "Confirmation dialog for deleting a group"
   },
   "@delete_match": {
     "description": "Button text to delete a match"
   },
   "@edit_group": {
-    "description": "Button text to edit a group"
+      "description": "Button & Appbar label for editing a group"
   },
   "@enter_results": {
     "description": "Button text to enter match results"
   },
   "@error_creating_group": {
     "description": "Error message when group creation fails"
+  },
+  "@error_deleting_group": {
+      "description": "Error message when group deletion fails"
+  },
+  "@error_editing_group": {
+      "description": "Error message when group editing fails"
   },
   "@error_reading_file": {
     "description": "Error message when file cannot be read"
@@ -343,6 +349,8 @@
   "edit_group": "Edit Group",
   "enter_results": "Enter Results",
   "error_creating_group": "Error while creating group, please try again",
+  "error_deleting_group": "Error while deleting group, please try again",
+  "error_editing_group": "Error while editing group, please try again",
   "error_reading_file": "Error reading file",
   "export_canceled": "Export canceled",
   "export_data": "Export data",

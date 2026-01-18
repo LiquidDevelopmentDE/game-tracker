@@ -67,6 +67,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// The currently selected players
   List<Player>? selectedPlayers;
 
+  /// GlobalKey for ScaffoldMessenger to show snackbars
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   void initState() {
     super.initState();
@@ -128,7 +131,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
         : loc.create_match;
 
     return ScaffoldMessenger(
+      key: _scaffoldMessengerKey,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(title: Text(loc.create_new_match)),
         body: SafeArea(
