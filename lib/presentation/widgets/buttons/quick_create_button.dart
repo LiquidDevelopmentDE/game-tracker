@@ -35,7 +35,11 @@ class _QuickCreateButtonState extends State<QuickCreateButton> {
       ),
       child: Text(
         widget.text,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: const TextStyle(
+          color: CustomTheme.textColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
       ),
     );
   }

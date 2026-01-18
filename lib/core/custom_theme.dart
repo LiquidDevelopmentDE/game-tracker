@@ -7,10 +7,10 @@ class CustomTheme {
   // ==================== Colors ====================
 
   /// Primary color of the app theme
-  static Color primaryColor = const Color(0xFF7505E4);
+  static Color primaryColor = const Color(0xFFef681f);
 
   /// Secondary color of the app theme
-  static Color secondaryColor = const Color(0xFFAFA2FF);
+  static Color secondaryColor = const Color(0xFFf2a981);
 
   /// Background color of the app theme
   static Color backgroundColor = const Color(0xFF0B0B0B);

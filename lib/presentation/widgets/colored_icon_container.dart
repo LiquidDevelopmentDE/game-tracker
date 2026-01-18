@@ -48,7 +48,7 @@ class ColoredIconContainer extends StatelessWidget {
           child: Icon(
             icon,
             size: iconSize,
-            color: CustomTheme.primaryColor.withGreen(40),
+            color: CustomTheme.primaryColor.withBlue(40),
           ),
         ),
       ],
