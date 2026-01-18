@@ -6,8 +6,8 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/views/main_menu/group_view/group_profile_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/group_view/group_detail_view.dart';
+import 'package:game_tracker/presentation/views/main_menu/group_view/group_create_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
 import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
@@ -82,7 +82,7 @@ class _GroupsViewState extends State<GroupsView> {
                         context,
                         adaptivePageRoute(
                           builder: (context) {
-                            return GroupProfileView(
+                            return GroupDetailView(
                               group: groups[index],
                               callback: loadGroups,
                             );
@@ -105,7 +105,7 @@ class _GroupsViewState extends State<GroupsView> {
                   context,
                   adaptivePageRoute(
                     builder: (context) {
-                      return const GroupDetailView();
+                      return const GroupCreateView();
                     },
                   ),
                 );

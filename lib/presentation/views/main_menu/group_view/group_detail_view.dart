@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/adaptive_page_route.dart';
 import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
-import 'package:game_tracker/presentation/widgets/player_selection.dart';
-import 'package:game_tracker/presentation/widgets/text_input/text_input_field.dart';
+import 'package:game_tracker/presentation/views/main_menu/group_view/group_create_view.dart';
+import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
+import 'package:game_tracker/presentation/widgets/buttons/animated_dialog_button.dart';
+import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
+import 'package:game_tracker/presentation/widgets/colored_icon_container.dart';
+import 'package:game_tracker/presentation/widgets/custom_alert_dialog.dart';
+import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
+import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class GroupDetailView extends StatefulWidget {
-  const GroupDetailView({super.key, this.groupToEdit});
+  /// A view that displays the profile of a group
+  /// - [group]: The group to display
+  const GroupDetailView({
+    super.key,
+    required this.group,
+    required this.callback,
+  });
 
-  /// The group to edit, if any
-  final Group? groupToEdit;
+  /// The group to display
+  final Group group;
+
+  final VoidCallback callback;
 
   @override
   State<GroupDetailView> createState() => _GroupDetailViewState();
@@ -22,161 +37,243 @@ class GroupDetailView extends StatefulWidget {
 
 class _GroupDetailViewState extends State<GroupDetailView> {
   late final AppDatabase db;
+  bool isLoading = true;
+  late Group _group;
 
-  /// GlobalKey for ScaffoldMessenger to show snackbars
-  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  /// Total matches played in this group
+  int totalMatches = 0;
 
-  /// Controller for the group name input field
-  final _groupNameController = TextEditingController();
-
-  /// List of currently selected players
-  List<Player> selectedPlayers = [];
-
-  /// List of initially selected players (when editing a group)
-  List<Player> initialSelectedPlayers = [];
+  String bestPlayer = '';
 
   @override
   void initState() {
     super.initState();
+    _group = widget.group;
     db = Provider.of<AppDatabase>(context, listen: false);
-    if(widget.groupToEdit != null) {
-      _groupNameController.text = widget.groupToEdit!.name;
-      setState(() {
-        initialSelectedPlayers = widget.groupToEdit!.members;
-        selectedPlayers = widget.groupToEdit!.members;
-      });
-    }
-    _groupNameController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _groupNameController.dispose();
-    super.dispose();
+    _loadStatistics();
   }
 
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    return ScaffoldMessenger(
-      key: _scaffoldMessengerKey,
-      child: Scaffold(
-        backgroundColor: CustomTheme.backgroundColor,
-        appBar: AppBar(title: Text(widget.groupToEdit == null ? loc.create_new_group : loc.edit_group), actions: widget.groupToEdit == null ? [] : [IconButton(icon: const Icon(Icons.delete), onPressed: () async {
-          if(widget.groupToEdit != null) {
-            showDialog<bool>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text(loc.delete_group),
-                content: Text(loc.this_cannot_be_undone),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text(loc.cancel),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: Text(loc.delete),
-                  ),
-                ],
-              ),
-            ).then((confirmed) async {
-              if (confirmed == true && context.mounted) {
-                bool success = await db.groupDao.deleteGroup(groupId: widget.groupToEdit!.id);
-                if (!context.mounted) return;
-                if (success) {
+
+    return Scaffold(
+      backgroundColor: CustomTheme.backgroundColor,
+      appBar: AppBar(
+        title: Text(loc.group_profile),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              showDialog<bool>(
+                context: context,
+                builder: (context) => CustomAlertDialog(
+                  title: '${loc.delete_group}?',
+                  content: loc.this_cannot_be_undone,
+                  actions: [
+                    AnimatedDialogButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: Text(
+                        loc.cancel,
+                        style: const TextStyle(color: CustomTheme.textColor),
+                      ),
+                    ),
+                    AnimatedDialogButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: Text(
+                        loc.delete,
+                        style: TextStyle(color: CustomTheme.secondaryColor),
+                      ),
+                    ),
+                  ],
+                ),
+              ).then((confirmed) async {
+                if (confirmed! && context.mounted) {
+                  await db.groupDao.deleteGroup(groupId: _group.id);
+                  if (!context.mounted) return;
                   Navigator.pop(context);
-                } else {
-                  if (!mounted) return;
-                  showSnackbar(message: loc.error_deleting_group);
+                  widget.callback.call();
                 }
-              }
-            });
-          }
-        },)],),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: CustomTheme.standardMargin,
-                child: TextInputField(
-                  controller: _groupNameController,
-                  hintText: loc.group_name,
-                ),
-              ),
-              Expanded(
-                child: PlayerSelection(
-                  initialSelectedPlayers: initialSelectedPlayers,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPlayers = [...value];
-                    });
-                  },
-                ),
-              ),
-              CustomWidthButton(
-                text: widget.groupToEdit == null ? loc.create_group : loc.edit_group,
-                sizeRelativeToWidth: 0.95,
-                buttonType: ButtonType.primary,
-                onPressed:
-                    (_groupNameController.text.isEmpty ||
-                        (selectedPlayers.length < 2))
-                    ? null
-                    : () async {
-                        late bool success;
-                        if (widget.groupToEdit == null) {
-                          success = await db.groupDao.addGroup(
-                            group: Group(
-                              name: _groupNameController.text.trim(),
-                              members: selectedPlayers,
-                            ),
-                          );
-                        } else {
-                          //TODO: Implement group editing in database
-                          /*
-                          success = await db.groupDao.updateGroup(
-                            group: Group(
-                              id: widget.groupToEdit!.id,
-                              name: _groupNameController.text.trim(),
-                              members: selectedPlayers,
-                            ),
-                          );
-                          */
-                          success = false;
-                        }
-                        if (!context.mounted) return;
-                        if (success) {
-                          Navigator.pop(context);
-                        } else {
-                          showSnackbar(message: widget.groupToEdit == null ? loc.error_creating_group : loc.error_editing_group);
-                        }
-                      },
-              ),
-              const SizedBox(height: 20),
-            ],
+              });
+            },
           ),
+        ],
+      ),
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            ListView(
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 12,
+                top: 20,
+                bottom: 100,
+              ),
+              children: [
+                const Center(
+                  child: ColoredIconContainer(
+                    icon: Icons.group,
+                    containerSize: 55,
+                    iconSize: 38,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  _group.name,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: CustomTheme.textColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '${loc.created_on} ${DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(_group.createdAt)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: CustomTheme.textColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                InfoTile(
+                  title: loc.members,
+                  icon: Icons.people,
+                  horizontalAlignment: CrossAxisAlignment.start,
+                  content: Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: _group.members.map((member) {
+                      return TextIconTile(
+                        text: member.name,
+                        iconEnabled: false,
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                InfoTile(
+                  title: loc.statistics,
+                  icon: Icons.bar_chart,
+                  content: AppSkeleton(
+                    enabled: isLoading,
+                    child: Column(
+                      children: [
+                        _buildStatRow(
+                          loc.members,
+                          _group.members.length.toString(),
+                        ),
+                        _buildStatRow(
+                          loc.played_matches,
+                          totalMatches.toString(),
+                        ),
+                        _buildStatRow(loc.best_player, bestPlayer),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: MediaQuery.paddingOf(context).bottom,
+              child: MainMenuButton(
+                text: loc.edit_group,
+                icon: Icons.edit,
+                onPressed: () async {
+                  final updatedGroup = await Navigator.push<Group?>(
+                    context,
+                    adaptivePageRoute(
+                      builder: (context) {
+                        return GroupCreateView(
+                          groupToEdit: _group,
+                        );
+                      },
+                    ),
+                  );
+                  if (updatedGroup != null && mounted) {
+                    setState(() {
+                      _group = updatedGroup;
+                    });
+                    _loadStatistics();
+                    widget.callback();
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-  /// Displays a snackbar with the given message and optional action.
-  ///
-  /// [message] The message to display in the snackbar.
-  void showSnackbar({
-    required String message,
-  }) {
-    final messenger = _scaffoldMessengerKey.currentState;
-    if (messenger != null) {
-      messenger.hideCurrentSnackBar();
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(message, style: const TextStyle(color: Colors.white)),
-          backgroundColor: CustomTheme.boxColor,
-        ),
-      );
+
+  /// Builds a single statistic row with a label and value
+  /// - [label]: The label of the statistic
+  /// - [value]: The value of the statistic
+  Widget _buildStatRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: CustomTheme.textColor,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Loads statistics for this group
+  Future<void> _loadStatistics() async {
+    final matches = await db.matchDao.getAllMatches();
+    final groupMatches =
+    matches.where((match) => match.group?.id == _group.id).toList();
+
+    setState(() {
+      totalMatches = groupMatches.length;
+      bestPlayer = _getBestPlayer(groupMatches);
+      isLoading = false;
+    });
+  }
+
+  /// Determines the best player in the group based on match wins
+  String _getBestPlayer(List<Match> matches) {
+    final bestPlayerCounts = <Player, int>{};
+
+    // Count wins for each player
+    for (var match in matches) {
+      if (match.winner != null) {
+        bestPlayerCounts.update(
+          match.winner!,
+              (value) => value + 1,
+          ifAbsent: () => 1,
+        );
+      }
     }
+
+    // Sort players by win count
+    final sortedPlayers = bestPlayerCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    // Get the best player
+    bestPlayer = sortedPlayers.isNotEmpty ? sortedPlayers.first.key.name : '-';
+
+    return bestPlayer;
   }
 }

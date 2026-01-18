@@ -64,6 +64,9 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// The currently selected players
   List<Player>? selectedPlayers;
 
+  /// GlobalKey for ScaffoldMessenger to show snackbars
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   void initState() {
     super.initState();

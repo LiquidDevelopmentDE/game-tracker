@@ -122,6 +122,12 @@ abstract class AppLocalizations {
   /// **'Game Tracker'**
   String get app_name;
 
+  /// Label for best player statistic
+  ///
+  /// In en, this message translates to:
+  /// **'Best Player'**
+  String get best_player;
+
   /// Cancel button text
   ///
   /// In en, this message translates to:
@@ -169,6 +175,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create new group'**
   String get create_new_group;
+
+  /// Label for creation date
+  ///
+  /// In en, this message translates to:
+  /// **'Created on'**
+  String get created_on;
 
   /// Appbar text to create a new match
   ///
@@ -221,7 +233,7 @@ abstract class AppLocalizations {
   /// Confirmation dialog for deleting a group
   ///
   /// In en, this message translates to:
-  /// **'Delete this group'**
+  /// **'Delete Group'**
   String get delete_group;
 
   /// Button & Appbar label for editing a group
@@ -295,6 +307,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Group name'**
   String get group_name;
+
+  /// Title for group profile view
+  ///
+  /// In en, this message translates to:
+  /// **'Group Profile'**
+  String get group_profile;
 
   /// Label for groups
   ///
@@ -373,6 +391,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Matches'**
   String get matches;
+
+  /// Label for group members
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get members;
 
   /// Title for most points ruleset
   ///
@@ -463,6 +487,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not available'**
   String get not_available;
+
+  /// Label for played matches statistic
+  ///
+  /// In en, this message translates to:
+  /// **'Played Matches'**
+  String get played_matches;
 
   /// Placeholder for player name input
   ///

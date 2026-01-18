@@ -21,6 +21,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get app_name => 'Game Tracker';
 
   @override
+  String get best_player => 'Best Player';
+
+  @override
   String get cancel => 'Cancel';
 
   @override
@@ -45,6 +48,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get create_new_group => 'Create new group';
+
+  @override
+  String get created_on => 'Created on';
 
   @override
   String get create_new_match => 'Create new match';
@@ -73,7 +79,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete_all_data => 'Delete all data';
 
   @override
-  String get delete_group => 'Delete this group';
+  String get delete_group => 'Delete Group';
 
   @override
   String get edit_group => 'Edit Group';
@@ -115,6 +121,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get group_name => 'Group name';
 
   @override
+  String get group_profile => 'Group Profile';
+
+  @override
   String get groups => 'Groups';
 
   @override
@@ -152,6 +161,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get matches => 'Matches';
+
+  @override
+  String get members => 'Members';
 
   @override
   String get most_points => 'Most Points';
@@ -198,6 +210,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get not_available => 'Not available';
+
+  @override
+  String get played_matches => 'Played Matches';
 
   @override
   String get player_name => 'Player name';
