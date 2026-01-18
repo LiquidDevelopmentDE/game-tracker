@@ -3,12 +3,17 @@ import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 
-class GroupTile extends StatelessWidget {
+class GroupTile extends StatefulWidget {
   /// A tile widget that displays information about a group, including its name and members.
   /// - [group]: The group data to be displayed.
   /// - [isHighlighted]: Whether the tile should be highlighted.
-  /// - [onTap]: An optional callback function to handle tap events.
-  const GroupTile({super.key, required this.group, this.isHighlighted = false, this.onTap});
+  /// - [onTap]: Callback function to be executed when the tile is tapped.
+  const GroupTile({
+    super.key,
+    required this.group,
+    this.isHighlighted = false,
+    this.onTap,
+  });
 
   /// The group data to be displayed.
   final Group group;
@@ -16,17 +21,22 @@ class GroupTile extends StatelessWidget {
   /// Whether the tile should be highlighted.
   final bool isHighlighted;
 
-  /// Callback function to handle tap events.
+  /// Callback function to be executed when the tile is tapped.
   final VoidCallback? onTap;
 
   @override
+  State<GroupTile> createState() => _GroupTileState();
+}
+
+class _GroupTileState extends State<GroupTile> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: AnimatedContainer(
         margin: CustomTheme.standardMargin,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        decoration: isHighlighted
+        decoration: widget.isHighlighted
             ? CustomTheme.highlightedBoxDecoration
             : CustomTheme.standardBoxDecoration,
         duration: const Duration(milliseconds: 150),
@@ -38,7 +48,7 @@ class GroupTile extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    group.name,
+                    widget.group.name,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -49,7 +59,7 @@ class GroupTile extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${group.members.length}',
+                      '${widget.group.members.length}',
                       style: const TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 18,
@@ -69,7 +79,7 @@ class GroupTile extends StatelessWidget {
               runSpacing: 8.0,
               children: <Widget>[
                 for (var member in [
-                  ...group.members,
+                  ...widget.group.members,
                 ]..sort((a, b) => a.name.compareTo(b.name)))
                   TextIconTile(text: member.name, iconEnabled: false),
               ],

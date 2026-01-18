@@ -12,6 +12,9 @@
   "@app_name": {
     "description": "The name of the App"
   },
+  "@best_player": {
+    "description": "Label for best player statistic"
+  },
   "@cancel": {
     "description": "Cancel button text"
   },
@@ -38,6 +41,9 @@
   },
   "@create_new_match": {
     "description": "Appbar text to create a new match"
+  },
+  "@created_on": {
+    "description": "Label for creation date"
   },
   "@data": {
     "description": "Data label"
@@ -104,6 +110,9 @@
   "@group_name": {
     "description": "Placeholder for group name input"
   },
+  "@group_profile": {
+    "description": "Title for group profile view"
+  },
   "@groups": {
     "description": "Label for groups"
   },
@@ -142,6 +151,9 @@
   },
   "@matches": {
     "description": "Label for matches"
+  },
+  "@members": {
+    "description": "Label for group members"
   },
   "@most_points": {
     "description": "Title for most points ruleset"
@@ -187,6 +199,9 @@
   },
   "@not_available": {
     "description": "Abbreviation for not available"
+  },
+  "@played_matches": {
+    "description": "Label for played matches statistic"
   },
   "@player_name": {
     "description": "Placeholder for player name input"
@@ -293,6 +308,7 @@
   "all_players_selected": "All players selected",
   "amount_of_matches": "Amount of Matches",
   "app_name": "Game Tracker",
+  "best_player": "Best Player",
   "cancel": "Cancel",
   "choose_game": "Choose Game",
   "choose_group": "Choose Group",
@@ -301,6 +317,7 @@
   "create_group": "Create Group",
   "create_match": "Create match",
   "create_new_group": "Create new group",
+  "created_on": "Created on",
   "create_new_match": "Create new match",
   "data": "Data",
   "data_successfully_deleted": "Data successfully deleted",
@@ -309,7 +326,7 @@
   "days_ago": "{count} days ago",
   "delete": "Delete",
   "delete_all_data": "Delete all data",
-  "delete_group": "Delete this group",
+  "delete_group": "Delete Group",
   "edit_group": "Edit Group",
   "error_creating_group": "Error while creating group, please try again",
   "error_deleting_group": "Error while deleting group, please try again",
@@ -322,6 +339,7 @@
   "game_name": "Game Name",
   "group": "Group",
   "group_name": "Group name",
+  "group_profile": "Group Profile",
   "groups": "Groups",
   "home": "Home",
   "import_canceled": "Import canceled",
@@ -335,6 +353,7 @@
   "match_in_progress": "Match in progress...",
   "match_name": "Match name",
   "matches": "Matches",
+  "members": "Members",
   "most_points": "Most Points",
   "no_data_available": "No data available",
   "no_groups_created_yet": "No groups created yet",
@@ -350,6 +369,7 @@
   "none": "None",
   "none_group": "None",
   "not_available": "Not available",
+  "played_matches": "Played Matches",
   "player_name": "Player name",
   "players": "Players",
   "players_count": "{count} Players",

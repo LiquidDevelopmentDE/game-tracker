@@ -6,6 +6,7 @@ import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
+import 'package:game_tracker/presentation/views/main_menu/group_view/group_profile_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/group_view/group_detail_view.dart';
 import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
 import 'package:game_tracker/presentation/widgets/buttons/main_menu_button.dart';
@@ -74,19 +75,22 @@ class _GroupsViewState extends State<GroupsView> {
                       height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
-                  return GroupTile(group: groups[index], onTap: () async {
-                    await Navigator.push(
-                      context,
-                      adaptivePageRoute(
-                        builder: (context) {
-                          return GroupDetailView(groupToEdit: groups[index]);
-                        },
-                      ),
-                    );
-                    setState(() {
-                      loadGroups();
-                    });
-                  });
+                  return GroupTile(
+                    group: groups[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        adaptivePageRoute(
+                          builder: (context) {
+                            return GroupProfileView(
+                              group: groups[index],
+                              callback: loadGroups,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -117,6 +121,9 @@ class _GroupsViewState extends State<GroupsView> {
   }
 
   void loadGroups() {
+    setState(() {
+      isLoading = true;
+    });
     Future.wait([
       db.groupDao.getAllGroups(),
       Future.delayed(Constants.MINIMUM_SKELETON_DURATION),

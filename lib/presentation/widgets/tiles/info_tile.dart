@@ -17,6 +17,7 @@ class InfoTile extends StatefulWidget {
     this.padding,
     this.height,
     this.width,
+    this.horizontalAlignment = CrossAxisAlignment.center,
   });
 
   /// The title text displayed on the tile.
@@ -37,6 +38,9 @@ class InfoTile extends StatefulWidget {
   /// Optional width for the tile.
   final double? width;
 
+  /// The main axis alignment for the content.
+  final CrossAxisAlignment horizontalAlignment;
+
   @override
   State<InfoTile> createState() => _InfoTileState();
 }
@@ -51,7 +55,7 @@ class _InfoTileState extends State<InfoTile> {
       decoration: CustomTheme.standardBoxDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: widget.horizontalAlignment,
         children: [
           Row(
             children: [

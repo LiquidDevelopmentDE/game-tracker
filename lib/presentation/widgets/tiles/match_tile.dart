@@ -230,7 +230,7 @@ class _MatchTileState extends State<MatchTile> {
     } else if (difference.inDays < 7) {
       return loc.days_ago(difference.inDays);
     } else {
-      return DateFormat('MMM d, yyyy').format(dateTime);
+      return '${loc.created_on} ${DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(dateTime)}';
     }
   }
 
