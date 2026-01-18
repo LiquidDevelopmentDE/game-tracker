@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 
 class TextInputField extends StatelessWidget {
@@ -33,11 +34,14 @@ class TextInputField extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
       maxLength: maxLength,
+      maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
       decoration: InputDecoration(
         filled: true,
         fillColor: CustomTheme.boxColor,
         hintText: hintText,
         hintStyle: const TextStyle(fontSize: 18),
+        // Hides the character counter
+        counterText: '',
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: CustomTheme.boxBorder),
