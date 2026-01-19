@@ -160,7 +160,7 @@ void main() {
       }
     });
 
-    test('Updating the match players works coreclty', () async {
+    test('Updating the match players works correctly', () async {
       await database.matchDao.addMatch(match: testMatchOnlyPlayers);
 
       final newPlayers = [testPlayer1, testPlayer2, testPlayer4];
@@ -204,7 +204,7 @@ void main() {
     });
 
     test(
-      'Adding the same player to seperate matches works correctly',
+      'Adding the same player to separate matches works correctly',
       () async {
         final playersList = [testPlayer1, testPlayer2, testPlayer3];
         final match1 = Match(name: 'Match 1', players: playersList);

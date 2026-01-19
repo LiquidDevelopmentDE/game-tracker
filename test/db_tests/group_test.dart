@@ -145,7 +145,7 @@ void main() {
 
       const newGroupName = 'new group name';
 
-      await database.groupDao.updateGroupname(
+      await database.groupDao.updateGroupName(
         groupId: testGroup1.id,
         newName: newGroupName,
       );

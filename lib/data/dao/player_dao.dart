@@ -99,7 +99,7 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   }
 
   /// Updates the name of the player with the given [playerId] to [newName].
-  Future<void> updatePlayername({
+  Future<void> updatePlayerName({
     required String playerId,
     required String newName,
   }) async {

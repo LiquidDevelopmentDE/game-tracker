@@ -63,7 +63,7 @@ void main() {
       final allPlayers = await database.playerDao.getAllPlayers();
       expect(allPlayers.length, 4);
 
-      // Map for connencting fetched players with expected players
+      // Map for connecting fetched players with expected players
       final testPlayers = {
         testPlayer1.id: testPlayer1,
         testPlayer2.id: testPlayer2,
@@ -115,12 +115,12 @@ void main() {
       expect(playerExists, false);
     });
 
-    test('Updating a player name works correcly', () async {
+    test('Updating a player name works correctly', () async {
       await database.playerDao.addPlayer(player: testPlayer1);
 
       const newPlayerName = 'new player name';
 
-      await database.playerDao.updatePlayername(
+      await database.playerDao.updatePlayerName(
         playerId: testPlayer1.id,
         newName: newPlayerName,
       );
