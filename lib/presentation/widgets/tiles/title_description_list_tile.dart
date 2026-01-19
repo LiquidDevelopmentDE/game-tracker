@@ -73,7 +73,6 @@ class TitleDescriptionListTile extends StatelessWidget {
                   const Spacer(),
                   Container(
                     constraints: const BoxConstraints(maxWidth: 115),
-                    margin: const EdgeInsets.only(top: 4),
                     padding: const EdgeInsets.symmetric(
                       vertical: 2,
                       horizontal: 6,

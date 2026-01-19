@@ -43,6 +43,7 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
     final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),

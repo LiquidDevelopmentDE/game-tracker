@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -47,6 +48,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     final loc = AppLocalizations.of(context);
     return ScaffoldMessenger(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(title: Text(loc.create_new_group)),
         body: SafeArea(
@@ -58,6 +60,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                 child: TextInputField(
                   controller: _groupNameController,
                   hintText: loc.group_name,
+                  maxLength: Constants.MAX_GROUP_NAME_LENGTH,
                 ),
               ),
               Expanded(

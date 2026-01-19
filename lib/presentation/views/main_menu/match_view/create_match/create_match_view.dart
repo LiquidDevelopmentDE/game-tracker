@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:game_tracker/core/adaptive_page_route.dart';
+import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/l10n/generated/app_localizations.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_game_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_group_view.dart';
-import 'package:game_tracker/presentation/views/main_menu/match_view/create_match/choose_ruleset_view.dart';
 import 'package:game_tracker/presentation/views/main_menu/match_view/match_result_view.dart';
 import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
 import 'package:game_tracker/presentation/widgets/player_selection.dart';
@@ -58,22 +57,12 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// the [ChooseGroupView]
   String selectedGroupId = '';
 
-  /// The currently selected ruleset
-  Ruleset? selectedRuleset;
-
-  /// The index of the currently selected ruleset in [rulesets] to mark it in
-  /// the [ChooseRulesetView]
-  int selectedRulesetIndex = -1;
-
   /// The index of the currently selected game in [games] to mark it in
   /// the [ChooseGameView]
   int selectedGameIndex = -1;
 
   /// The currently selected players
   List<Player>? selectedPlayers;
-
-  /// List of available rulesets with their localized string representations
-  late final List<(Ruleset, String)> _rulesets;
 
   @override
   void initState() {
@@ -107,15 +96,8 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     super.didChangeDependencies();
     final loc = AppLocalizations.of(context);
     hintText ??= loc.match_name;
-    _rulesets = [
-      (Ruleset.singleWinner, loc.ruleset_single_winner),
-      (Ruleset.singleLoser, loc.ruleset_single_loser),
-      (Ruleset.mostPoints, loc.ruleset_most_points),
-      (Ruleset.leastPoints, loc.ruleset_least_points),
-    ];
   }
 
-  // TODO: Replace when games are implemented
   List<(String, String, Ruleset)> games = [
     ('Example Game 1', 'This is a description', Ruleset.leastPoints),
     ('Example Game 2', '', Ruleset.singleWinner),
@@ -126,6 +108,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     final loc = AppLocalizations.of(context);
     return ScaffoldMessenger(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: CustomTheme.backgroundColor,
         appBar: AppBar(title: Text(loc.create_new_match)),
         body: SafeArea(
@@ -137,6 +120,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 child: TextInputField(
                   controller: _matchNameController,
                   hintText: hintText ?? '',
+                  maxLength: Constants.MAX_MATCH_NAME_LENGTH,
                 ),
               ),
               ChooseTile(
@@ -156,37 +140,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                   setState(() {
                     if (selectedGameIndex != -1) {
                       hintText = games[selectedGameIndex].$1;
-                      selectedRuleset = games[selectedGameIndex].$3;
-                      selectedRulesetIndex = _rulesets.indexWhere(
-                        (r) => r.$1 == selectedRuleset,
-                      );
                     } else {
                       hintText = loc.match_name;
-                      selectedRuleset = null;
                     }
                   });
-                },
-              ),
-              ChooseTile(
-                title: loc.ruleset,
-                trailingText: selectedRuleset == null
-                    ? loc.none
-                    : translateRulesetToString(selectedRuleset!, context),
-                onPressed: () async {
-                  selectedRuleset = await Navigator.of(context).push(
-                    adaptivePageRoute(
-                      builder: (context) => ChooseRulesetView(
-                        rulesets: _rulesets,
-                        initialRulesetIndex: selectedRulesetIndex,
-                      ),
-                    ),
-                  );
-                  if (!mounted) return;
-                  selectedRulesetIndex = _rulesets.indexWhere(
-                    (r) => r.$1 == selectedRuleset,
-                  );
-                  selectedGameIndex = -1;
-                  setState(() {});
                 },
               ),
               ChooseTile(
@@ -235,20 +192,11 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 buttonType: ButtonType.primary,
                 onPressed: _enableCreateGameButton()
                     ? () async {
-                        final selectedGame = games[selectedGameIndex];
-                        final game = Game(
-                          name: selectedGame.$1,
-                          description: selectedGame.$2.isEmpty ? null : selectedGame.$2,
-                          ruleset: selectedGame.$3.name,
-                        );
-                        // Ensure the game exists in the database before creating the match
-                        await db.gameDao.addGame(game: game);
                         Match match = Match(
                           name: _matchNameController.text.isEmpty
                               ? (hintText ?? '')
                               : _matchNameController.text.trim(),
                           createdAt: DateTime.now(),
-                          game: game,
                           group: selectedGroup,
                           players: selectedPlayers,
                         );
@@ -278,13 +226,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   /// Determines whether the "Create Match" button should be enabled.
   ///
   /// Returns `true` if:
-  /// - A game is selected AND
   /// - A ruleset is selected AND
   /// - Either a group is selected OR at least 2 players are selected
   bool _enableCreateGameButton() {
-    return selectedGameIndex != -1 &&
-        (selectedGroup != null ||
-            (selectedPlayers != null && selectedPlayers!.length > 1)) &&
-        selectedRuleset != null;
+    return (selectedGroup != null ||
+            (selectedPlayers != null && selectedPlayers!.length > 1));
   }
 }
