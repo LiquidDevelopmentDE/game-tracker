@@ -89,7 +89,7 @@ class LicenseDetailView extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: CustomTheme.secondaryColor,
                             decoration: TextDecoration.underline,

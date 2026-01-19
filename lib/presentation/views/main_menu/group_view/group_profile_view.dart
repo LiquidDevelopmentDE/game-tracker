@@ -78,7 +78,9 @@ class _GroupProfileViewState extends State<GroupProfileView> {
                       onPressed: () => Navigator.of(context).pop(true),
                       child: Text(
                         loc.delete,
-                        style: TextStyle(color: CustomTheme.secondaryColor),
+                        style: const TextStyle(
+                          color: CustomTheme.secondaryColor,
+                        ),
                       ),
                     ),
                   ],

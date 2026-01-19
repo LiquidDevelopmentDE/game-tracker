@@ -42,12 +42,12 @@ class TextInputField extends StatelessWidget {
         hintStyle: const TextStyle(fontSize: 18),
         // Hides the character counter
         counterText: '',
-        enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: CustomTheme.boxBorder),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: CustomTheme.boxBorder),
         ),
         floatingLabelBehavior: FloatingLabelBehavior.never,

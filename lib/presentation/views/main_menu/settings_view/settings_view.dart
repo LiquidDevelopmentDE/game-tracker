@@ -136,7 +136,7 @@ class _SettingsViewState extends State<SettingsView> {
                               onPressed: () => Navigator.of(context).pop(true),
                               child: Text(
                                 loc.delete,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: CustomTheme.secondaryColor,
                                 ),
                               ),

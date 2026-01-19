@@ -63,18 +63,18 @@ class CustomTheme {
   );
 
   // ==================== App Bar Theme ====================
-  static AppBarTheme appBarTheme = AppBarTheme(
+  static const AppBarTheme appBarTheme = AppBarTheme(
     backgroundColor: backgroundColor,
     foregroundColor: textColor,
     elevation: 0,
     scrolledUnderElevation: 0,
     centerTitle: true,
-    titleTextStyle: const TextStyle(
+    titleTextStyle: TextStyle(
       color: textColor,
       fontSize: 20,
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
     ),
-    iconTheme: const IconThemeData(color: textColor),
+    iconTheme: IconThemeData(color: textColor),
   );
 }
