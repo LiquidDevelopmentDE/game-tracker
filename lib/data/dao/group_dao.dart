@@ -181,7 +181,7 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
 
   /// Updates the name of the group with the given [id] to [newName].
   /// Returns `true` if more than 0 rows were affected, otherwise `false`.
-  Future<bool> updateGroupname({
+  Future<bool> updateGroupName({
     required String groupId,
     required String newName,
   }) async {
@@ -191,6 +191,21 @@ class GroupDao extends DatabaseAccessor<AppDatabase> with _$GroupDaoMixin {
         );
     return rowsAffected > 0;
   }
+
+  /// Updates the description of the group with the given [groupId] to [newDescription].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> updateGroupDescription({
+    required String groupId,
+    required String? newDescription,
+  }) async {
+    final rowsAffected =
+        await (update(groupTable)..where((g) => g.id.equals(groupId))).write(
+          GroupTableCompanion(description: Value(newDescription)),
+        );
+    return rowsAffected > 0;
+  }
+
+
 
   /// Retrieves the number of groups in the database.
   Future<int> getGroupCount() async {
