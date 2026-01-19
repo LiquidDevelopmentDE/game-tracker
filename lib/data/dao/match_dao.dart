@@ -340,6 +340,19 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
     return rowsAffected > 0;
   }
 
+  /// Updates the createdAt timestamp of the match with the given [matchId].
+  /// Returns `true` if more than 0 rows were affected, otherwise `false`.
+  Future<bool> updateMatchCreatedAt({
+    required String matchId,
+    required DateTime createdAt,
+  }) async {
+    final query = update(matchTable)..where((g) => g.id.equals(matchId));
+    final rowsAffected = await query.write(
+      MatchTableCompanion(createdAt: Value(createdAt)),
+    );
+    return rowsAffected > 0;
+  }
+
   // ============================================================
   // TEMPORARY: Winner methods - these are stubs and do not persist data
   // TODO: Implement proper winner handling
