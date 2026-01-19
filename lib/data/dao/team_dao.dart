@@ -20,6 +20,7 @@ class TeamDao extends DatabaseAccessor<AppDatabase> with _$TeamDaoMixin {
         final members = await _getTeamMembers(teamId: row.id);
         return Team(
           id: row.id,
+          name: row.name,
           createdAt: row.createdAt,
           members: members,
         );
@@ -34,6 +35,7 @@ class TeamDao extends DatabaseAccessor<AppDatabase> with _$TeamDaoMixin {
     final members = await _getTeamMembers(teamId: teamId);
     return Team(
       id: result.id,
+      name: result.name,
       createdAt: result.createdAt,
       members: members,
     );
@@ -66,7 +68,7 @@ class TeamDao extends DatabaseAccessor<AppDatabase> with _$TeamDaoMixin {
       await into(teamTable).insert(
         TeamTableCompanion.insert(
           id: team.id,
-          name: '', // Team name from table (not in DTO currently)
+          name: team.name,
           createdAt: team.createdAt,
         ),
         mode: InsertMode.insertOrReplace,
@@ -87,7 +89,7 @@ class TeamDao extends DatabaseAccessor<AppDatabase> with _$TeamDaoMixin {
             .map(
               (team) => TeamTableCompanion.insert(
                 id: team.id,
-                name: '',
+                name: team.name,
                 createdAt: team.createdAt,
               ),
             )
