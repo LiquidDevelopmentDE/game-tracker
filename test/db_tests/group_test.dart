@@ -1,5 +1,5 @@
 import 'package:clock/clock.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -172,6 +172,175 @@ void main() {
 
       final finalCount = await database.groupDao.getGroupCount();
       expect(finalCount, 0);
+    });
+
+    test('getAllGroups returns empty list when no groups exist', () async {
+      final allGroups = await database.groupDao.getAllGroups();
+      expect(allGroups, isEmpty);
+    });
+
+    test('getGroupById throws exception for non-existent group', () async {
+      expect(
+        () => database.groupDao.getGroupById(groupId: 'non-existent-id'),
+        throwsA(isA<StateError>()),
+      );
+    });
+
+    test('addGroup returns false when group already exists', () async {
+      final firstAdd = await database.groupDao.addGroup(group: testGroup1);
+      expect(firstAdd, true);
+
+      final secondAdd = await database.groupDao.addGroup(group: testGroup1);
+      expect(secondAdd, false);
+
+      final allGroups = await database.groupDao.getAllGroups();
+      expect(allGroups.length, 1);
+    });
+
+    test('addGroupsAsList handles empty list correctly', () async {
+      await database.groupDao.addGroupsAsList(groups: []);
+
+      final allGroups = await database.groupDao.getAllGroups();
+      expect(allGroups.length, 0);
+    });
+
+    test('deleteGroup returns false for non-existent group', () async {
+      final deleted = await database.groupDao.deleteGroup(
+        groupId: 'non-existent-id',
+      );
+      expect(deleted, false);
+    });
+
+    test('updateGroupName returns false for non-existent group', () async {
+      final updated = await database.groupDao.updateGroupName(
+        groupId: 'non-existent-id',
+        newName: 'New Name',
+      );
+      expect(updated, false);
+    });
+
+    test('Updating a group description works correctly', () async {
+      await database.groupDao.addGroup(group: testGroup1);
+
+      const newDescription = 'This is a new description';
+
+      final updated = await database.groupDao.updateGroupDescription(
+        groupId: testGroup1.id,
+        newDescription: newDescription,
+      );
+      expect(updated, true);
+
+      final result = await database.groupDao.getGroupById(
+        groupId: testGroup1.id,
+      );
+      expect(result.description, newDescription);
+    });
+
+    test('updateGroupDescription can set description to null', () async {
+      final groupWithDescription = Group(
+        name: 'Group with description',
+        description: 'Initial description',
+        members: [testPlayer1],
+      );
+      await database.groupDao.addGroup(group: groupWithDescription);
+
+      final updated = await database.groupDao.updateGroupDescription(
+        groupId: groupWithDescription.id,
+        newDescription: null,
+      );
+      expect(updated, true);
+
+      final result = await database.groupDao.getGroupById(
+        groupId: groupWithDescription.id,
+      );
+      expect(result.description, isNull);
+    });
+
+    test('updateGroupDescription returns false for non-existent group',
+        () async {
+      final updated = await database.groupDao.updateGroupDescription(
+        groupId: 'non-existent-id',
+        newDescription: 'New Description',
+      );
+      expect(updated, false);
+    });
+
+    test('deleteAllGroups removes all groups', () async {
+      await database.groupDao.addGroupsAsList(
+        groups: [testGroup1, testGroup2],
+      );
+
+      final countBefore = await database.groupDao.getGroupCount();
+      expect(countBefore, 2);
+
+      final deleted = await database.groupDao.deleteAllGroups();
+      expect(deleted, true);
+
+      final countAfter = await database.groupDao.getGroupCount();
+      expect(countAfter, 0);
+    });
+
+    test('deleteAllGroups returns false when no groups exist', () async {
+      final deleted = await database.groupDao.deleteAllGroups();
+      expect(deleted, false);
+    });
+
+    test('Group with special characters in name is stored correctly', () async {
+      final specialGroup = Group(
+        name: 'Group\'s & "Special" <Name>',
+        description: 'Description with émojis 🎮🎲',
+        members: [testPlayer1],
+      );
+      await database.groupDao.addGroup(group: specialGroup);
+
+      final fetchedGroup = await database.groupDao.getGroupById(
+        groupId: specialGroup.id,
+      );
+      expect(fetchedGroup.name, 'Group\'s & "Special" <Name>');
+      expect(fetchedGroup.description, 'Description with émojis 🎮🎲');
+    });
+
+    test('Group with empty members list is stored correctly', () async {
+      final emptyGroup = Group(
+        name: 'Empty Group',
+        members: [],
+      );
+      await database.groupDao.addGroup(group: emptyGroup);
+
+      final fetchedGroup = await database.groupDao.getGroupById(
+        groupId: emptyGroup.id,
+      );
+      expect(fetchedGroup.name, 'Empty Group');
+      expect(fetchedGroup.members, isEmpty);
+    });
+
+    test('Multiple updates to the same group work correctly', () async {
+      await database.groupDao.addGroup(group: testGroup1);
+
+      await database.groupDao.updateGroupName(
+        groupId: testGroup1.id,
+        newName: 'Updated Name',
+      );
+      await database.groupDao.updateGroupDescription(
+        groupId: testGroup1.id,
+        newDescription: 'Updated Description',
+      );
+
+      final updatedGroup = await database.groupDao.getGroupById(
+        groupId: testGroup1.id,
+      );
+      expect(updatedGroup.name, 'Updated Name');
+      expect(updatedGroup.description, 'Updated Description');
+      expect(updatedGroup.members.length, testGroup1.members.length);
+    });
+
+    test('addGroupsAsList with duplicate groups only adds once', () async {
+      await database.groupDao.addGroupsAsList(
+        groups: [testGroup1, testGroup1, testGroup1],
+      );
+
+      final allGroups = await database.groupDao.getAllGroups();
+      expect(allGroups.length, 1);
     });
   });
 }
