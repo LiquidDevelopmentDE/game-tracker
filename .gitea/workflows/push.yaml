@@ -75,7 +75,7 @@ jobs:
   update_version:
     runs-on: ubuntu-latest
     needs: Format
-    if: gitea.ref == 'refs/heads/development'
+    # if: gitea.ref == 'refs/heads/development'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
