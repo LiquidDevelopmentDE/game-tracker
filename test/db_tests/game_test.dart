@@ -50,12 +50,14 @@ void main() {
   });
 
   group('Game Tests', () {
-    // ==================== getAllGames ====================
+
+    // Verifies that getAllGames returns an empty list when the database has no games.
     test('getAllGames returns empty list when no games exist', () async {
       final allGames = await database.gameDao.getAllGames();
       expect(allGames, isEmpty);
     });
 
+    // Verifies that a single game can be added and retrieved with all fields intact.
     test('Adding and fetching a single game works correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -70,6 +72,7 @@ void main() {
       expect(allGames.first.createdAt, testGame1.createdAt);
     });
 
+    // Verifies that multiple games can be added and retrieved correctly.
     test('Adding and fetching multiple games works correctly', () async {
       await database.gameDao.addGame(game: testGame1);
       await database.gameDao.addGame(game: testGame2);
@@ -82,7 +85,7 @@ void main() {
       expect(names, containsAll(['Chess', 'Poker', 'Monopoly']));
     });
 
-    // ==================== getGameById ====================
+    // Verifies that getGameById returns the correct game with all properties.
     test('getGameById returns correct game', () async {
       await database.gameDao.addGame(game: testGame1);
       await database.gameDao.addGame(game: testGame2);
@@ -96,6 +99,7 @@ void main() {
       expect(game.icon, testGame2.icon);
     });
 
+    // Verifies that getGameById throws a StateError when the game doesn't exist.
     test('getGameById throws exception for non-existent game', () async {
       expect(
         () => database.gameDao.getGameById(gameId: 'non-existent-id'),
@@ -103,7 +107,7 @@ void main() {
       );
     });
 
-    // ==================== addGame ====================
+    // Verifies that addGame returns true when a game is successfully added.
     test('addGame returns true when game is added successfully', () async {
       final result = await database.gameDao.addGame(game: testGame1);
       expect(result, true);
@@ -112,6 +116,7 @@ void main() {
       expect(allGames.length, 1);
     });
 
+    // Verifies that addGame returns false when trying to add a duplicate game.
     test('addGame returns false when game already exists', () async {
       final firstAdd = await database.gameDao.addGame(game: testGame1);
       expect(firstAdd, true);
@@ -123,6 +128,7 @@ void main() {
       expect(allGames.length, 1);
     });
 
+    // Verifies that a game with null optional fields can be added and retrieved.
     test('addGame handles game with null optional fields', () async {
       final gameWithNulls = Game(name: 'Simple Game');
       final result = await database.gameDao.addGame(game: gameWithNulls);
@@ -137,7 +143,7 @@ void main() {
       expect(fetchedGame.icon, isNull);
     });
 
-    // ==================== addGamesAsList ====================
+    // Verifies that multiple games can be added at once using addGamesAsList.
     test('addGamesAsList adds multiple games correctly', () async {
       final result = await database.gameDao.addGamesAsList(
         games: [testGame1, testGame2, testGame3],
@@ -148,6 +154,7 @@ void main() {
       expect(allGames.length, 3);
     });
 
+    // Verifies that addGamesAsList returns false when given an empty list.
     test('addGamesAsList returns false for empty list', () async {
       final result = await database.gameDao.addGamesAsList(games: []);
       expect(result, false);
@@ -156,6 +163,7 @@ void main() {
       expect(allGames.length, 0);
     });
 
+    // Verifies that addGamesAsList ignores duplicate games when adding.
     test('addGamesAsList ignores duplicate games', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -168,7 +176,7 @@ void main() {
       expect(allGames.length, 2);
     });
 
-    // ==================== deleteGame ====================
+    // Verifies that deleteGame returns true and removes the game from database.
     test('deleteGame returns true when game is deleted', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -179,6 +187,7 @@ void main() {
       expect(allGames, isEmpty);
     });
 
+    // Verifies that deleteGame returns false for a non-existent game ID.
     test('deleteGame returns false for non-existent game', () async {
       final result = await database.gameDao.deleteGame(
         gameId: 'non-existent-id',
@@ -186,6 +195,7 @@ void main() {
       expect(result, false);
     });
 
+    // Verifies that deleteGame only removes the specified game, leaving others intact.
     test('deleteGame only deletes the specified game', () async {
       await database.gameDao.addGamesAsList(
         games: [testGame1, testGame2, testGame3],
@@ -200,7 +210,7 @@ void main() {
       expect(allGames.any((g) => g.id == testGame3.id), true);
     });
 
-    // ==================== gameExists ====================
+    // Verifies that gameExists returns true when the game exists in database.
     test('gameExists returns true for existing game', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -208,6 +218,7 @@ void main() {
       expect(exists, true);
     });
 
+    // Verifies that gameExists returns false for a non-existent game ID.
     test('gameExists returns false for non-existent game', () async {
       final exists = await database.gameDao.gameExists(
         gameId: 'non-existent-id',
@@ -215,6 +226,7 @@ void main() {
       expect(exists, false);
     });
 
+    // Verifies that gameExists returns false after a game has been deleted.
     test('gameExists returns false after game is deleted', () async {
       await database.gameDao.addGame(game: testGame1);
       await database.gameDao.deleteGame(gameId: testGame1.id);
@@ -223,7 +235,7 @@ void main() {
       expect(exists, false);
     });
 
-    // ==================== updateGameName ====================
+    // Verifies that updateGameName correctly updates only the name field.
     test('updateGameName updates the name correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -239,6 +251,7 @@ void main() {
       expect(updatedGame.ruleset, testGame1.ruleset);
     });
 
+    // Verifies that updateGameName does nothing when game doesn't exist.
     test('updateGameName does nothing for non-existent game', () async {
       await database.gameDao.updateGameName(
         gameId: 'non-existent-id',
@@ -249,7 +262,7 @@ void main() {
       expect(allGames, isEmpty);
     });
 
-    // ==================== updateGameRuleset ====================
+    // Verifies that updateGameRuleset correctly updates only the ruleset field.
     test('updateGameRuleset updates the ruleset correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -265,6 +278,7 @@ void main() {
       expect(updatedGame.name, testGame1.name);
     });
 
+    // Verifies that updateGameRuleset does nothing when game doesn't exist.
     test('updateGameRuleset does nothing for non-existent game', () async {
       await database.gameDao.updateGameRuleset(
         gameId: 'non-existent-id',
@@ -275,7 +289,7 @@ void main() {
       expect(allGames, isEmpty);
     });
 
-    // ==================== updateGameDescription ====================
+    // Verifies that updateGameDescription correctly updates the description.
     test('updateGameDescription updates the description correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -290,6 +304,7 @@ void main() {
       expect(updatedGame.description, 'An updated description');
     });
 
+    // Verifies that updateGameDescription can set the description to null.
     test('updateGameDescription can set description to null', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -304,6 +319,7 @@ void main() {
       expect(updatedGame.description, isNull);
     });
 
+    // Verifies that updateGameDescription does nothing when game doesn't exist.
     test('updateGameDescription does nothing for non-existent game', () async {
       await database.gameDao.updateGameDescription(
         gameId: 'non-existent-id',
@@ -314,7 +330,7 @@ void main() {
       expect(allGames, isEmpty);
     });
 
-    // ==================== updateGameColor ====================
+    // Verifies that updateGameColor correctly updates the color value.
     test('updateGameColor updates the color correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -329,6 +345,7 @@ void main() {
       expect(updatedGame.color, 0xFF00FF00);
     });
 
+    // Verifies that updateGameColor can set the color to null.
     test('updateGameColor can set color to null', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -343,6 +360,7 @@ void main() {
       expect(updatedGame.color, isNull);
     });
 
+    // Verifies that updateGameColor does nothing when game doesn't exist.
     test('updateGameColor does nothing for non-existent game', () async {
       await database.gameDao.updateGameColor(
         gameId: 'non-existent-id',
@@ -353,7 +371,7 @@ void main() {
       expect(allGames, isEmpty);
     });
 
-    // ==================== updateGameIcon ====================
+    // Verifies that updateGameIcon correctly updates the icon value.
     test('updateGameIcon updates the icon correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -368,6 +386,7 @@ void main() {
       expect(updatedGame.icon, 'new_chess_icon');
     });
 
+    // Verifies that updateGameIcon can set the icon to null.
     test('updateGameIcon can set icon to null', () async {
       await database.gameDao.addGame(game: testGame1);
 
@@ -382,6 +401,7 @@ void main() {
       expect(updatedGame.icon, isNull);
     });
 
+    // Verifies that updateGameIcon does nothing when game doesn't exist.
     test('updateGameIcon does nothing for non-existent game', () async {
       await database.gameDao.updateGameIcon(
         gameId: 'non-existent-id',
@@ -392,12 +412,13 @@ void main() {
       expect(allGames, isEmpty);
     });
 
-    // ==================== getGameCount ====================
+    // Verifies that getGameCount returns 0 when no games exist.
     test('getGameCount returns 0 when no games exist', () async {
       final count = await database.gameDao.getGameCount();
       expect(count, 0);
     });
 
+    // Verifies that getGameCount returns the correct count after adding games.
     test('getGameCount returns correct count after adding games', () async {
       await database.gameDao.addGamesAsList(
         games: [testGame1, testGame2, testGame3],
@@ -407,6 +428,7 @@ void main() {
       expect(count, 3);
     });
 
+    // Verifies that getGameCount updates correctly after deleting a game.
     test('getGameCount updates correctly after deletion', () async {
       await database.gameDao.addGamesAsList(
         games: [testGame1, testGame2],
@@ -421,7 +443,7 @@ void main() {
       expect(countAfter, 1);
     });
 
-    // ==================== deleteAllGames ====================
+    // Verifies that deleteAllGames removes all games from the database.
     test('deleteAllGames removes all games', () async {
       await database.gameDao.addGamesAsList(
         games: [testGame1, testGame2, testGame3],
@@ -437,12 +459,13 @@ void main() {
       expect(countAfter, 0);
     });
 
+    // Verifies that deleteAllGames returns false when no games exist.
     test('deleteAllGames returns false when no games exist', () async {
       final result = await database.gameDao.deleteAllGames();
       expect(result, false);
     });
 
-    // ==================== Edge Cases ====================
+    // Verifies that games with special characters (quotes, emojis) are stored correctly.
     test('Game with special characters in name is stored correctly', () async {
       final specialGame = Game(
         name: 'Game\'s & "Special" <Name>',
@@ -457,6 +480,7 @@ void main() {
       expect(fetchedGame.description, 'Description with émojis 🎮🎲');
     });
 
+    // Verifies that games with empty string fields are stored and retrieved correctly.
     test('Game with empty string fields is stored correctly', () async {
       final emptyGame = Game(
         name: '',
@@ -475,6 +499,7 @@ void main() {
       expect(fetchedGame.icon, '');
     });
 
+    // Verifies that games with very long strings (10000 chars) are handled correctly.
     test('Game with very long strings is stored correctly', () async {
       final longString = 'A' * 10000;
       final longGame = Game(
@@ -492,6 +517,7 @@ void main() {
       expect(fetchedGame.ruleset?.length, 10000);
     });
 
+    // Verifies that multiple sequential updates to the same game work correctly.
     test('Multiple updates to the same game work correctly', () async {
       await database.gameDao.addGame(game: testGame1);
 

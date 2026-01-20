@@ -57,6 +57,8 @@ void main() {
   });
 
   group('Score Tests', () {
+
+    // Verifies that a score can be added and retrieved with all fields intact.
     test('Adding and fetching a score works correctly', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -80,6 +82,7 @@ void main() {
       expect(score.change, 10);
     });
 
+    // Verifies that getScoresForMatch returns all scores for a given match.
     test('Getting scores for a match works correctly', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -110,6 +113,7 @@ void main() {
       expect(scores.length, 3);
     });
 
+    // Verifies that getPlayerScoresInMatch returns all scores for a player in a match, ordered by round.
     test('Getting player scores in a match works correctly', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -147,6 +151,7 @@ void main() {
       expect(playerScores[2].score, 30);
     });
 
+    // Verifies that getScoreForRound returns null for a non-existent round number.
     test('Getting score for a non-existent round returns null', () async {
       final score = await database.scoreDao.getScoreForRound(
         playerId: testPlayer1.id,
@@ -157,6 +162,7 @@ void main() {
       expect(score, isNull);
     });
 
+    // Verifies that updateScore correctly updates the score and change values.
     test('Updating a score works correctly', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -187,6 +193,7 @@ void main() {
       expect(score.change, 40);
     });
 
+    // Verifies that updateScore returns false for a non-existent score entry.
     test('Updating a non-existent score returns false', () async {
       final updated = await database.scoreDao.updateScore(
         playerId: testPlayer1.id,
@@ -199,6 +206,7 @@ void main() {
       expect(updated, false);
     });
 
+    // Verifies that deleteScore removes the score entry and returns true.
     test('Deleting a score works correctly', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -225,6 +233,7 @@ void main() {
       expect(score, isNull);
     });
 
+    // Verifies that deleteScore returns false for a non-existent score entry.
     test('Deleting a non-existent score returns false', () async {
       final deleted = await database.scoreDao.deleteScore(
         playerId: testPlayer1.id,
@@ -235,6 +244,7 @@ void main() {
       expect(deleted, false);
     });
 
+    // Verifies that deleteScoresForMatch removes all scores for a match but keeps other match scores.
     test('Deleting scores for a match works correctly', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -275,6 +285,7 @@ void main() {
       expect(match2Scores.length, 1);
     });
 
+    // Verifies that deleteScoresForPlayer removes all scores for a player across all matches.
     test('Deleting scores for a player works correctly', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -317,6 +328,7 @@ void main() {
       expect(player2Scores.length, 1);
     });
 
+    // Verifies that getLatestRoundNumber returns the highest round number for a match.
     test('Getting latest round number works correctly', () async {
       var latestRound = await database.scoreDao.getLatestRoundNumber(
         matchId: testMatch1.id,
@@ -350,6 +362,7 @@ void main() {
       expect(latestRound, 5);
     });
 
+    // Verifies that getTotalScoreForPlayer returns the latest score (cumulative) for a player.
     test('Getting total score for a player works correctly', () async {
       var totalScore = await database.scoreDao.getTotalScoreForPlayer(
         playerId: testPlayer1.id,
@@ -386,6 +399,7 @@ void main() {
       expect(totalScore, 40);
     });
 
+    // Verifies that adding a score with the same player/match/round replaces the existing one.
     test('Adding the same score twice replaces the existing one', () async {
       await database.scoreDao.addScore(
         playerId: testPlayer1.id,
@@ -414,4 +428,3 @@ void main() {
     });
   });
 }
-

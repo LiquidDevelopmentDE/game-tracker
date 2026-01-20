@@ -35,6 +35,8 @@ void main() {
   });
 
   group('Player Tests', () {
+
+    // Verifies that players can be added and retrieved with all fields intact.
     test('Adding and fetching single player works correctly', () async {
       await database.playerDao.addPlayer(player: testPlayer1);
       await database.playerDao.addPlayer(player: testPlayer2);
@@ -55,6 +57,7 @@ void main() {
       expect(fetchedPlayer2.createdAt, testPlayer2.createdAt);
     });
 
+    // Verifies that multiple players can be added at once and retrieved correctly.
     test('Adding and fetching multiple players works correctly', () async {
       await database.playerDao.addPlayersAsList(
         players: [testPlayer1, testPlayer2, testPlayer3, testPlayer4],
@@ -80,6 +83,7 @@ void main() {
       }
     });
 
+    // Verifies that adding the same player twice does not create duplicates.
     test('Adding the same player twice does not create duplicates', () async {
       await database.playerDao.addPlayer(player: testPlayer1);
       await database.playerDao.addPlayer(player: testPlayer1);
@@ -88,6 +92,7 @@ void main() {
       expect(allPlayers.length, 1);
     });
 
+    // Verifies that playerExists returns correct boolean based on player presence.
     test('Player existence check works correctly', () async {
       var playerExists = await database.playerDao.playerExists(
         playerId: testPlayer1.id,
@@ -102,6 +107,7 @@ void main() {
       expect(playerExists, true);
     });
 
+    // Verifies that deletePlayer removes the player and returns true.
     test('Deleting a player works correctly', () async {
       await database.playerDao.addPlayer(player: testPlayer1);
       final playerDeleted = await database.playerDao.deletePlayer(
@@ -115,6 +121,7 @@ void main() {
       expect(playerExists, false);
     });
 
+    // Verifies that updatePlayerName correctly updates only the name field.
     test('Updating a player name works correctly', () async {
       await database.playerDao.addPlayer(player: testPlayer1);
 
@@ -131,6 +138,7 @@ void main() {
       expect(result.name, newPlayerName);
     });
 
+    // Verifies that getPlayerCount returns correct count through add/delete operations.
     test('Getting the player count works correctly', () async {
       var playerCount = await database.playerDao.getPlayerCount();
       expect(playerCount, 0);

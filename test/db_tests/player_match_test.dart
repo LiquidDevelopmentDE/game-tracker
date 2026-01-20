@@ -73,6 +73,8 @@ void main() {
   });
 
   group('Player-Match Tests', () {
+
+    // Verifies that matchHasPlayers returns false initially and true after adding a player.
     test('Match has player works correctly', () async {
       await database.matchDao.addMatch(match: testMatchOnlyGroup);
       await database.playerDao.addPlayer(player: testPlayer1);
@@ -95,6 +97,7 @@ void main() {
       expect(matchHasPlayers, true);
     });
 
+    // Verifies that a player can be added to a match and isPlayerInMatch returns true.
     test('Adding a player to a match works correctly', () async {
       await database.matchDao.addMatch(match: testMatchOnlyGroup);
       await database.playerDao.addPlayer(player: testPlayer5);
@@ -118,6 +121,7 @@ void main() {
       expect(playerAdded, false);
     });
 
+    // Verifies that a player can be removed from a match and the player count decreases.
     test('Removing player from match works correctly', () async {
       await database.matchDao.addMatch(match: testMatchOnlyPlayers);
 
@@ -140,6 +144,7 @@ void main() {
       expect(playerExists, false);
     });
 
+    // Verifies that getPlayersOfMatch returns all players of a match with correct data.
     test('Retrieving players of a match works correctly', () async {
       await database.matchDao.addMatch(match: testMatchOnlyPlayers);
       final players = await database.playerMatchDao.getPlayersOfMatch(
@@ -160,6 +165,7 @@ void main() {
       }
     });
 
+    // Verifies that updatePlayersFromMatch replaces all existing players with new ones.
     test('Updating the match players works correctly', () async {
       await database.matchDao.addMatch(match: testMatchOnlyPlayers);
 
@@ -203,6 +209,7 @@ void main() {
       }
     });
 
+    // Verifies that the same player can be added to multiple different matches.
     test(
       'Adding the same player to separate matches works correctly',
       () async {

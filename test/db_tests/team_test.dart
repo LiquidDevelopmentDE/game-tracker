@@ -56,6 +56,8 @@ void main() {
   });
 
   group('Team Tests', () {
+
+    // Verifies that a single team can be added and retrieved with all fields intact.
     test('Adding and fetching a single team works correctly', () async {
       final added = await database.teamDao.addTeam(team: testTeam1);
       expect(added, true);
@@ -69,6 +71,7 @@ void main() {
       expect(fetchedTeam.createdAt, testTeam1.createdAt);
     });
 
+    // Verifies that multiple teams can be added at once and retrieved correctly.
     test('Adding and fetching multiple teams works correctly', () async {
       await database.teamDao.addTeamsAsList(
         teams: [testTeam1, testTeam2, testTeam3],
@@ -92,6 +95,7 @@ void main() {
       }
     });
 
+    // Verifies that adding the same team twice does not create duplicates and returns false.
     test('Adding the same team twice does not create duplicates', () async {
       await database.teamDao.addTeam(team: testTeam1);
       final addedAgain = await database.teamDao.addTeam(team: testTeam1);
@@ -102,6 +106,7 @@ void main() {
       expect(teamCount, 1);
     });
 
+    // Verifies that teamExists returns correct boolean based on team presence.
     test('Team existence check works correctly', () async {
       var teamExists = await database.teamDao.teamExists(teamId: testTeam1.id);
       expect(teamExists, false);
@@ -112,6 +117,7 @@ void main() {
       expect(teamExists, true);
     });
 
+    // Verifies that deleteTeam removes the team and returns true.
     test('Deleting a team works correctly', () async {
       await database.teamDao.addTeam(team: testTeam1);
 
@@ -126,6 +132,7 @@ void main() {
       expect(teamExists, false);
     });
 
+    // Verifies that deleteTeam returns false for a non-existent team ID.
     test('Deleting a non-existent team returns false', () async {
       final teamDeleted = await database.teamDao.deleteTeam(
         teamId: 'non-existent-id',
@@ -133,6 +140,7 @@ void main() {
       expect(teamDeleted, false);
     });
 
+    // Verifies that getTeamCount returns correct count through add/delete operations.
     test('Getting the team count works correctly', () async {
       var teamCount = await database.teamDao.getTeamCount();
       expect(teamCount, 0);
@@ -158,6 +166,7 @@ void main() {
       expect(teamCount, 0);
     });
 
+    // Verifies that updateTeamName correctly updates only the name field.
     test('Updating team name works correctly', () async {
       await database.teamDao.addTeam(team: testTeam1);
 
@@ -176,6 +185,7 @@ void main() {
       expect(fetchedTeam.name, newName);
     });
 
+    // Verifies that deleteAllTeams removes all teams from the database.
     test('Deleting all teams works correctly', () async {
       await database.teamDao.addTeamsAsList(
         teams: [testTeam1, testTeam2, testTeam3],
@@ -191,16 +201,19 @@ void main() {
       expect(teamCount, 0);
     });
 
+    // Verifies that deleteAllTeams returns false when no teams exist.
     test('Deleting all teams when empty returns false', () async {
       final deleted = await database.teamDao.deleteAllTeams();
       expect(deleted, false);
     });
 
+    // Verifies that addTeamsAsList returns false when given an empty list.
     test('Adding teams as list with empty list returns false', () async {
       final added = await database.teamDao.addTeamsAsList(teams: []);
       expect(added, false);
     });
 
+    // Verifies that addTeamsAsList with duplicate IDs ignores duplicates and keeps the first.
     test('Adding teams with duplicate IDs ignores duplicates', () async {
       final duplicateTeam = Team(
         id: testTeam1.id,
@@ -223,4 +236,3 @@ void main() {
     });
   });
 }
-

@@ -58,6 +58,8 @@ void main() {
     await database.close();
   });
   group('Group Tests', () {
+
+    // Verifies that a single group can be added and retrieved with all fields and members intact.
     test('Adding and fetching a single group works correctly', () async {
       await database.groupDao.addGroup(group: testGroup1);
 
@@ -80,6 +82,7 @@ void main() {
       }
     });
 
+    // Verifies that multiple groups can be added and retrieved with correct members.
     test('Adding and fetching multiple groups works correctly', () async {
       await database.groupDao.addGroupsAsList(
         groups: [testGroup1, testGroup2, testGroup3, testGroup4],
@@ -106,6 +109,7 @@ void main() {
       }
     });
 
+    // Verifies that adding the same group twice does not create duplicates.
     test('Adding the same group twice does not create duplicates', () async {
       await database.groupDao.addGroup(group: testGroup1);
       await database.groupDao.addGroup(group: testGroup1);
@@ -114,6 +118,7 @@ void main() {
       expect(allGroups.length, 1);
     });
 
+    // Verifies that groupExists returns correct boolean based on group presence.
     test('Group existence check works correctly', () async {
       var groupExists = await database.groupDao.groupExists(
         groupId: testGroup1.id,
@@ -126,6 +131,7 @@ void main() {
       expect(groupExists, true);
     });
 
+    // Verifies that deleteGroup removes the group and returns true.
     test('Deleting a group works correctly', () async {
       await database.groupDao.addGroup(group: testGroup1);
 
@@ -140,6 +146,7 @@ void main() {
       expect(groupExists, false);
     });
 
+    // Verifies that updateGroupName correctly updates only the name field.
     test('Updating a group name works correcly', () async {
       await database.groupDao.addGroup(group: testGroup1);
 
@@ -156,6 +163,7 @@ void main() {
       expect(result.name, newGroupName);
     });
 
+    // Verifies that getGroupCount returns correct count through add/delete operations.
     test('Getting the group count works correctly', () async {
       final initialCount = await database.groupDao.getGroupCount();
       expect(initialCount, 0);
@@ -174,11 +182,13 @@ void main() {
       expect(finalCount, 0);
     });
 
+    // Verifies that getAllGroups returns an empty list when no groups exist.
     test('getAllGroups returns empty list when no groups exist', () async {
       final allGroups = await database.groupDao.getAllGroups();
       expect(allGroups, isEmpty);
     });
 
+    // Verifies that getGroupById throws StateError for non-existent group ID.
     test('getGroupById throws exception for non-existent group', () async {
       expect(
         () => database.groupDao.getGroupById(groupId: 'non-existent-id'),
@@ -186,6 +196,7 @@ void main() {
       );
     });
 
+    // Verifies that addGroup returns false when trying to add a duplicate group.
     test('addGroup returns false when group already exists', () async {
       final firstAdd = await database.groupDao.addGroup(group: testGroup1);
       expect(firstAdd, true);
@@ -197,6 +208,7 @@ void main() {
       expect(allGroups.length, 1);
     });
 
+    // Verifies that addGroupsAsList handles an empty list without errors.
     test('addGroupsAsList handles empty list correctly', () async {
       await database.groupDao.addGroupsAsList(groups: []);
 
@@ -204,6 +216,7 @@ void main() {
       expect(allGroups.length, 0);
     });
 
+    // Verifies that deleteGroup returns false for a non-existent group ID.
     test('deleteGroup returns false for non-existent group', () async {
       final deleted = await database.groupDao.deleteGroup(
         groupId: 'non-existent-id',
@@ -211,6 +224,7 @@ void main() {
       expect(deleted, false);
     });
 
+    // Verifies that updateGroupName returns false for a non-existent group ID.
     test('updateGroupName returns false for non-existent group', () async {
       final updated = await database.groupDao.updateGroupName(
         groupId: 'non-existent-id',
@@ -219,6 +233,7 @@ void main() {
       expect(updated, false);
     });
 
+    // Verifies that updateGroupDescription correctly updates the description field.
     test('Updating a group description works correctly', () async {
       await database.groupDao.addGroup(group: testGroup1);
 
@@ -236,6 +251,7 @@ void main() {
       expect(result.description, newDescription);
     });
 
+    // Verifies that updateGroupDescription can set the description to null.
     test('updateGroupDescription can set description to null', () async {
       final groupWithDescription = Group(
         name: 'Group with description',
@@ -256,6 +272,7 @@ void main() {
       expect(result.description, isNull);
     });
 
+    // Verifies that updateGroupDescription returns false for a non-existent group.
     test('updateGroupDescription returns false for non-existent group',
         () async {
       final updated = await database.groupDao.updateGroupDescription(
@@ -265,6 +282,7 @@ void main() {
       expect(updated, false);
     });
 
+    // Verifies that deleteAllGroups removes all groups from the database.
     test('deleteAllGroups removes all groups', () async {
       await database.groupDao.addGroupsAsList(
         groups: [testGroup1, testGroup2],
@@ -280,11 +298,13 @@ void main() {
       expect(countAfter, 0);
     });
 
+    // Verifies that deleteAllGroups returns false when no groups exist.
     test('deleteAllGroups returns false when no groups exist', () async {
       final deleted = await database.groupDao.deleteAllGroups();
       expect(deleted, false);
     });
 
+    // Verifies that groups with special characters (quotes, emojis) are stored correctly.
     test('Group with special characters in name is stored correctly', () async {
       final specialGroup = Group(
         name: 'Group\'s & "Special" <Name>',
@@ -300,6 +320,7 @@ void main() {
       expect(fetchedGroup.description, 'Description with émojis 🎮🎲');
     });
 
+    // Verifies that a group with an empty members list can be stored and retrieved.
     test('Group with empty members list is stored correctly', () async {
       final emptyGroup = Group(
         name: 'Empty Group',
@@ -314,6 +335,7 @@ void main() {
       expect(fetchedGroup.members, isEmpty);
     });
 
+    // Verifies that multiple sequential updates to the same group work correctly.
     test('Multiple updates to the same group work correctly', () async {
       await database.groupDao.addGroup(group: testGroup1);
 
@@ -334,6 +356,7 @@ void main() {
       expect(updatedGroup.members.length, testGroup1.members.length);
     });
 
+    // Verifies that addGroupsAsList with duplicate groups only adds unique ones.
     test('addGroupsAsList with duplicate groups only adds once', () async {
       await database.groupDao.addGroupsAsList(
         groups: [testGroup1, testGroup1, testGroup1],

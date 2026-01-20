@@ -92,6 +92,8 @@ void main() {
   });
 
   group('Match Tests', () {
+
+    // Verifies that a single match can be added and retrieved with all fields, group, and players intact.
     test('Adding and fetching single match works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
 
@@ -137,6 +139,7 @@ void main() {
       }
     });
 
+    // Verifies that multiple matches can be added and retrieved with correct groups and players.
     test('Adding and fetching multiple matches works correctly', () async {
       await database.matchDao.addMatchAsList(
         matches: [
@@ -212,6 +215,7 @@ void main() {
       }
     });
 
+    // Verifies that adding the same match twice does not create duplicates.
     test('Adding the same match twice does not create duplicates', () async {
       await database.matchDao.addMatch(match: testMatch1);
       await database.matchDao.addMatch(match: testMatch1);
@@ -220,6 +224,7 @@ void main() {
       expect(matchCount, 1);
     });
 
+    // Verifies that matchExists returns correct boolean based on match presence.
     test('Match existence check works correctly', () async {
       var matchExists = await database.matchDao.matchExists(
         matchId: testMatch1.id,
@@ -232,6 +237,7 @@ void main() {
       expect(matchExists, true);
     });
 
+    // Verifies that deleteMatch removes the match and returns true.
     test('Deleting a match works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
 
@@ -246,6 +252,7 @@ void main() {
       expect(matchExists, false);
     });
 
+    // Verifies that getMatchCount returns correct count through add/delete operations.
     test('Getting the match count works correctly', () async {
       var matchCount = await database.matchDao.getMatchCount();
       expect(matchCount, 0);
@@ -271,6 +278,7 @@ void main() {
       expect(matchCount, 0);
     });
 
+    // Verifies that hasWinner correctly identifies matches with and without winners.
     test('Checking if match has winner works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
       await database.matchDao.addMatch(match: testMatchOnlyGroup);
@@ -284,6 +292,7 @@ void main() {
       expect(hasWinner, false);
     });
 
+    // Verifies that getWinner returns the correct winner player for a match.
     test('Fetching the winner of a match works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
 
@@ -297,6 +306,7 @@ void main() {
       }
     });
 
+    // Verifies that setWinner correctly updates the winner of a match.
     test('Updating the winner of a match works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
 
@@ -329,6 +339,7 @@ void main() {
       }
     });
 
+    // Verifies that removeWinner clears the winner and hasWinner returns false.
     test('Removing a winner works correctly', () async {
       await database.matchDao.addMatch(match: testMatch2);
 
@@ -347,6 +358,7 @@ void main() {
       expect(removedWinner, null);
     });
 
+    // Verifies that updateMatchName correctly updates only the name field.
     test('Renaming a match works correctly', () async {
       await database.matchDao.addMatch(match: testMatch1);
 

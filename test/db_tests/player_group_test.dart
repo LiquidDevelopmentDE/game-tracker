@@ -41,9 +41,8 @@ void main() {
   });
 
   group('Player-Group Tests', () {
-    /// No need to test if group has players since the members attribute is
-    /// not nullable
 
+    // Verifies that a player can be added to an existing group and isPlayerInGroup returns true.
     test('Adding a player to a group works correctly', () async {
       await database.groupDao.addGroup(group: testGroup);
       await database.playerDao.addPlayer(player: testPlayer4);
@@ -67,6 +66,7 @@ void main() {
       expect(playerAdded, false);
     });
 
+    // Verifies that a player can be removed from a group and the group's member count decreases.
     test('Removing player from group works correctly', () async {
       await database.groupDao.addGroup(group: testGroup);
 
@@ -87,6 +87,7 @@ void main() {
       expect(playerExists, false);
     });
 
+    // Verifies that getPlayersOfGroup returns all members of a group with correct data.
     test('Retrieving players of a group works correctly', () async {
       await database.groupDao.addGroup(group: testGroup);
       final players = await database.playerGroupDao.getPlayersOfGroup(
