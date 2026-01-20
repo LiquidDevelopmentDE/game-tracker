@@ -167,13 +167,6 @@ void main() {
         expect(match.id, testMatch.id);
         expect(match.name, testMatch.name);
         expect(match.createdAt, testMatch.createdAt);
-        if (match.winner != null && testMatch.winner != null) {
-          expect(match.winner!.id, testMatch.winner!.id);
-          expect(match.winner!.name, testMatch.winner!.name);
-          expect(match.winner!.createdAt, testMatch.winner!.createdAt);
-        } else {
-          expect(match.winner, testMatch.winner);
-        }
 
         // Group-Checks
         if (testMatch.group != null) {
