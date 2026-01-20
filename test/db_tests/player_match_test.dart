@@ -214,8 +214,8 @@ void main() {
       'Adding the same player to separate matches works correctly',
       () async {
         final playersList = [testPlayer1, testPlayer2, testPlayer3];
-        final match1 = Match(name: 'Match 1', players: playersList);
-        final match2 = Match(name: 'Match 2', players: playersList);
+        final match1 = Match(name: 'Match 1', game: testGame, players: playersList);
+        final match2 = Match(name: 'Match 2', game: testGame, players: playersList);
 
         await Future.wait([
           database.matchDao.addMatch(match: match1),
