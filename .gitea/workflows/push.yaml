@@ -52,8 +52,8 @@ jobs:
         env:
           GITEA_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
-          git fetch origin ${{ gitea.head_ref }}
-          git checkout ${{ gitea.head_ref }}
+          git fetch origin ${{ gitea.ref_name }}
+          git checkout ${{ gitea.ref_name }}
           
           dart fix --apply lib
           dart fix --apply test
@@ -63,7 +63,7 @@ jobs:
             git config --global user.email "actions@yannick-weigert.de"
             git add lib test
             git commit -m "Auto-format code [skip ci]"
-            git push origin HEAD:${{ gitea.head_ref }}
+            git push origin HEAD:${{ gitea.ref_name }}
           else
             echo "No changes to commit"
           fi
@@ -73,7 +73,7 @@ jobs:
 
   update_version:
     runs-on: ubuntu-latest
-    needs: Format
+    needs: format
     if: gitea.ref == 'refs/heads/development'
     steps:
       - name: Checkout code
@@ -81,7 +81,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.BOT_TOKEN }}
-          ref: ${{ gitea.head_ref }}
+          ref: ${{ gitea.ref_name }}
 
       - name: Increment version number
         uses: https://github.com/stikkyapp/update-pubspec-version@v2
@@ -98,4 +98,4 @@ jobs:
           git config --global user.email "actions@yannick-weigert.de"
           git add pubspec.yaml
           git commit -m "Updated version number [skip ci]"
-          git push origin HEAD:${{ gitea.head_ref }}
+          git push origin HEAD:${{ gitea.ref_name }}
