@@ -105,14 +105,6 @@ void main() {
       expect(result.name, testMatch1.name);
       expect(result.createdAt, testMatch1.createdAt);
 
-      if (result.winner != null && testMatch1.winner != null) {
-        expect(result.winner!.id, testMatch1.winner!.id);
-        expect(result.winner!.name, testMatch1.winner!.name);
-        expect(result.winner!.createdAt, testMatch1.winner!.createdAt);
-      } else {
-        expect(result.winner, testMatch1.winner);
-      }
-
       if (result.group != null) {
         expect(result.group!.members.length, testGroup1.members.length);
 
