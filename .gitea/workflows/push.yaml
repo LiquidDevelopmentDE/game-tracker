@@ -5,6 +5,7 @@ on:
     branches:
       - "development"
       - "main"
+      - "hotfix/*"
 
 jobs:
   test:
@@ -63,7 +64,7 @@ jobs:
             git config --global user.email "actions@yannick-weigert.de"
             git add lib test
             git commit -m "Auto-format code [skip ci]"
-            git push origin HEAD:${{ gitea.head_ref }}
+            git push origin HEAD:${{ gitea.ref_name }}
           else
             echo "No changes to commit"
           fi
@@ -98,4 +99,4 @@ jobs:
           git config --global user.email "actions@yannick-weigert.de"
           git add pubspec.yaml
           git commit -m "Updated version number [skip ci]"
-          git push origin HEAD:${{ gitea.head_ref }}
+          git push origin HEAD:${{ gitea.ref_name }}
