@@ -253,7 +253,7 @@ void main() {
     test('Getting non-existent team throws exception', () async {
       expect(
         () => database.teamDao.getTeamById(teamId: 'non-existent-id'),
-        throwsA(isA<InvalidDataException>()),
+        throwsA(isA<StateError>()),
       );
     });
 
