@@ -1,5 +1,5 @@
 import 'package:clock/clock.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
@@ -162,6 +162,216 @@ void main() {
 
       playerCount = await database.playerDao.getPlayerCount();
       expect(playerCount, 0);
+    });
+
+    // Verifies that getAllPlayers returns an empty list when no players exist.
+    test('getAllPlayers returns empty list when no players exist', () async {
+      final allPlayers = await database.playerDao.getAllPlayers();
+      expect(allPlayers, isEmpty);
+    });
+
+    // Verifies that getPlayerById returns the correct player.
+    test('getPlayerById returns correct player', () async {
+      await database.playerDao.addPlayer(player: testPlayer1);
+      await database.playerDao.addPlayer(player: testPlayer2);
+
+      final fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: testPlayer1.id,
+      );
+
+      expect(fetchedPlayer.id, testPlayer1.id);
+      expect(fetchedPlayer.name, testPlayer1.name);
+      expect(fetchedPlayer.createdAt, testPlayer1.createdAt);
+      expect(fetchedPlayer.description, testPlayer1.description);
+    });
+
+    // Verifies that getPlayerById throws StateError for non-existent player ID.
+    test('getPlayerById throws exception for non-existent player', () async {
+      expect(
+        () => database.playerDao.getPlayerById(playerId: 'non-existent-id'),
+        throwsA(isA<StateError>()),
+      );
+    });
+
+    // Verifies that addPlayer returns false when trying to add a duplicate player.
+    test('addPlayer returns false when player already exists', () async {
+      final firstAdd = await database.playerDao.addPlayer(player: testPlayer1);
+      expect(firstAdd, true);
+
+      final secondAdd = await database.playerDao.addPlayer(player: testPlayer1);
+      expect(secondAdd, false);
+    });
+
+    // Verifies that addPlayersAsList handles empty list correctly.
+    test('addPlayersAsList handles empty list correctly', () async {
+      final result = await database.playerDao.addPlayersAsList(players: []);
+      expect(result, false);
+
+      final allPlayers = await database.playerDao.getAllPlayers();
+      expect(allPlayers, isEmpty);
+    });
+
+    // Verifies that addPlayersAsList ignores duplicate player IDs.
+    test('addPlayersAsList with duplicate IDs ignores duplicates', () async {
+      await database.playerDao.addPlayersAsList(
+        players: [testPlayer1, testPlayer1, testPlayer2],
+      );
+
+      final allPlayers = await database.playerDao.getAllPlayers();
+      expect(allPlayers.length, 2);
+    });
+
+    // Verifies that deletePlayer returns false for non-existent player.
+    test('deletePlayer returns false for non-existent player', () async {
+      final result = await database.playerDao.deletePlayer(
+        playerId: 'non-existent-id',
+      );
+      expect(result, false);
+    });
+
+    // Verifies that updatePlayerName does nothing for non-existent player (no exception).
+    test('updatePlayerName does nothing for non-existent player', () async {
+      // Should not throw, just do nothing
+      await database.playerDao.updatePlayerName(
+        playerId: 'non-existent-id',
+        newName: 'New Name',
+      );
+
+      final allPlayers = await database.playerDao.getAllPlayers();
+      expect(allPlayers, isEmpty);
+    });
+
+    // Verifies that deleteAllPlayers removes all players.
+    test('deleteAllPlayers removes all players', () async {
+      await database.playerDao.addPlayersAsList(
+        players: [testPlayer1, testPlayer2, testPlayer3],
+      );
+
+      var playerCount = await database.playerDao.getPlayerCount();
+      expect(playerCount, 3);
+
+      final result = await database.playerDao.deleteAllPlayers();
+      expect(result, true);
+
+      playerCount = await database.playerDao.getPlayerCount();
+      expect(playerCount, 0);
+    });
+
+    // Verifies that deleteAllPlayers returns false when no players exist.
+    test('deleteAllPlayers returns false when no players exist', () async {
+      final result = await database.playerDao.deleteAllPlayers();
+      expect(result, false);
+    });
+
+    // Verifies that a player with special characters in name is stored correctly.
+    test('Player with special characters in name is stored correctly', () async {
+      final specialPlayer = Player(name: 'Test!@#\$%^&*()_+-=[]{}|;\':",.<>?/`~');
+
+      await database.playerDao.addPlayer(player: specialPlayer);
+
+      final fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: specialPlayer.id,
+      );
+      expect(fetchedPlayer.name, specialPlayer.name);
+    });
+
+    // Verifies that a player with description is stored correctly.
+    test('Player with description is stored correctly', () async {
+      final playerWithDescription = Player(
+        name: 'Described Player',
+        description: 'This is a test description',
+      );
+
+      await database.playerDao.addPlayer(player: playerWithDescription);
+
+      final fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: playerWithDescription.id,
+      );
+      expect(fetchedPlayer.name, playerWithDescription.name);
+      expect(fetchedPlayer.description, playerWithDescription.description);
+    });
+
+    // Verifies that a player with null description is stored correctly.
+    test('Player with null description is stored correctly', () async {
+      final playerWithoutDescription = Player(name: 'No Description Player');
+
+      await database.playerDao.addPlayer(player: playerWithoutDescription);
+
+      final fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: playerWithoutDescription.id,
+      );
+      expect(fetchedPlayer.description, isNull);
+    });
+
+    // Verifies that multiple updates to the same player work correctly.
+    test('Multiple updates to the same player work correctly', () async {
+      await database.playerDao.addPlayer(player: testPlayer1);
+
+      await database.playerDao.updatePlayerName(
+        playerId: testPlayer1.id,
+        newName: 'First Update',
+      );
+
+      var fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: testPlayer1.id,
+      );
+      expect(fetchedPlayer.name, 'First Update');
+
+      await database.playerDao.updatePlayerName(
+        playerId: testPlayer1.id,
+        newName: 'Second Update',
+      );
+
+      fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: testPlayer1.id,
+      );
+      expect(fetchedPlayer.name, 'Second Update');
+
+      await database.playerDao.updatePlayerName(
+        playerId: testPlayer1.id,
+        newName: 'Third Update',
+      );
+
+      fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: testPlayer1.id,
+      );
+      expect(fetchedPlayer.name, 'Third Update');
+    });
+
+    // Verifies that a player with empty string name is stored correctly.
+    test('Player with empty string name is stored correctly', () async {
+      final emptyNamePlayer = Player(name: '');
+
+      await database.playerDao.addPlayer(player: emptyNamePlayer);
+
+      final fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: emptyNamePlayer.id,
+      );
+      expect(fetchedPlayer.name, '');
+    });
+
+    // Verifies that a player with very long name is stored correctly.
+    test('Player with very long name is stored correctly', () async {
+      final longName = 'A' * 1000;
+      final longNamePlayer = Player(name: longName);
+
+      await database.playerDao.addPlayer(player: longNamePlayer);
+
+      final fetchedPlayer = await database.playerDao.getPlayerById(
+        playerId: longNamePlayer.id,
+      );
+      expect(fetchedPlayer.name, longName);
+    });
+
+    // Verifies that addPlayer returns true on first add.
+    test('addPlayer returns true when player is added successfully', () async {
+      final result = await database.playerDao.addPlayer(player: testPlayer1);
+      expect(result, true);
+
+      final playerExists = await database.playerDao.playerExists(
+        playerId: testPlayer1.id,
+      );
+      expect(playerExists, true);
     });
   });
 }
