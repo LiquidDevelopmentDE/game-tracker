@@ -838,7 +838,7 @@ void main() {
         ),
         throwsA(anything),
       );
-    }, skip: 'Skipped: transaction callback is not awaited in the DAO, causing unhandled error');
+    });
 
     // Verifies that a player can be in a match without being assigned to a team.
     test('Player can exist in match without team assignment', () async {
