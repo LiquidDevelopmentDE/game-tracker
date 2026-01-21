@@ -3,6 +3,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/game.dart';
+import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/data/dto/team.dart';
 
@@ -15,6 +17,8 @@ void main() {
   late Team testTeam1;
   late Team testTeam2;
   late Team testTeam3;
+  late Game testGame1;
+  late Game testGame2;
   final fixedDate = DateTime(2025, 11, 19, 00, 11, 23);
   final fakeClock = Clock(() => fixedDate);
 
@@ -44,11 +48,15 @@ void main() {
         name: 'Team Gamma',
         members: [testPlayer1, testPlayer3],
       );
+      testGame1 = Game(name: 'Game 1');
+      testGame2 = Game(name: 'Game 2');
     });
 
     await database.playerDao.addPlayersAsList(
       players: [testPlayer1, testPlayer2, testPlayer3, testPlayer4],
     );
+    await database.gameDao.addGame(game: testGame1);
+    await database.gameDao.addGame(game: testGame2);
   });
 
   tearDown(() async {
@@ -334,10 +342,45 @@ void main() {
 
     // Verifies that teams with overlapping members are independent.
     test('Teams with overlapping members are independent', () async {
-      // testTeam1 has [player1, player2]
-      // testTeam3 has [player1, player3]
+      // Create two matches since player_match has primary key {playerId, matchId}
+      final match1 = Match(name: 'Match 1', game: testGame1);
+      final match2 = Match(name: 'Match 2', game: testGame2);
+      await database.matchDao.addMatch(match: match1);
+      await database.matchDao.addMatch(match: match2);
+
+      // Add teams to database
       await database.teamDao.addTeamsAsList(
         teams: [testTeam1, testTeam3],
+      );
+
+      // Associate players with teams through match1
+      // testTeam1: player1, player2
+      await database.playerMatchDao.addPlayerToMatch(
+        playerId: testPlayer1.id,
+        matchId: match1.id,
+        teamId: testTeam1.id,
+        score: 0,
+      );
+      await database.playerMatchDao.addPlayerToMatch(
+        playerId: testPlayer2.id,
+        matchId: match1.id,
+        teamId: testTeam1.id,
+        score: 0,
+      );
+
+      // Associate players with teams through match2
+      // testTeam3: player1, player3 (overlapping player1)
+      await database.playerMatchDao.addPlayerToMatch(
+        playerId: testPlayer1.id,
+        matchId: match2.id,
+        teamId: testTeam3.id,
+        score: 0,
+      );
+      await database.playerMatchDao.addPlayerToMatch(
+        playerId: testPlayer3.id,
+        matchId: match2.id,
+        teamId: testTeam3.id,
+        score: 0,
       );
 
       final team1 = await database.teamDao.getTeamById(teamId: testTeam1.id);
