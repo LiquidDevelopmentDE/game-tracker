@@ -4,6 +4,7 @@ import 'package:game_tracker/core/constants.dart';
 import 'package:game_tracker/core/custom_theme.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
@@ -192,11 +193,34 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 buttonType: ButtonType.primary,
                 onPressed: _enableCreateGameButton()
                     ? () async {
+                        // Use a game from the games list
+                        Game? gameToUse;
+                        if (selectedGameIndex == -1) {
+                          // Use the first game as default if none selected
+                          final selectedGame = games[0];
+                          gameToUse = Game(
+                            name: selectedGame.$1,
+                            description: selectedGame.$2,
+                            ruleset: selectedGame.$3.name,
+                          );
+                        } else {
+                          // Use the selected game from the list
+                          final selectedGame = games[selectedGameIndex];
+                          gameToUse = Game(
+                            name: selectedGame.$1,
+                            description: selectedGame.$2,
+                            ruleset: selectedGame.$3.name,
+                          );
+                        }
+                        // Add the game to the database if it doesn't exist
+                        await db.gameDao.addGame(game: gameToUse);
+
                         Match match = Match(
                           name: _matchNameController.text.isEmpty
                               ? (hintText ?? '')
                               : _matchNameController.text.trim(),
                           createdAt: DateTime.now(),
+                          game: gameToUse,
                           group: selectedGroup,
                           players: selectedPlayers,
                         );
