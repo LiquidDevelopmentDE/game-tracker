@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_tracker/core/enums.dart';
 import 'package:game_tracker/data/db/database.dart';
+import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
+import 'package:game_tracker/data/dto/team.dart';
 import 'package:json_schema/json_schema.dart';
 import 'package:provider/provider.dart';
 
@@ -17,39 +19,54 @@ class DataTransferService {
   static Future<void> deleteAllData(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
     await db.matchDao.deleteAllMatches();
+    await db.teamDao.deleteAllTeams();
     await db.groupDao.deleteAllGroups();
+    await db.gameDao.deleteAllGames();
     await db.playerDao.deleteAllPlayers();
   }
 
   /// Retrieves all application data and converts it to a JSON string.
-  /// Returns the JSON string representation of the data.
+  /// Returns the JSON string representation of the data in normalized format.
   static Future<String> getAppDataAsJson(BuildContext context) async {
     final db = Provider.of<AppDatabase>(context, listen: false);
     final matches = await db.matchDao.getAllMatches();
     final groups = await db.groupDao.getAllGroups();
     final players = await db.playerDao.getAllPlayers();
+    final games = await db.gameDao.getAllGames();
+    final teams = await db.teamDao.getAllTeams();
 
-    // Construct a JSON representation of the data
+    // Construct a JSON representation of the data in normalized format
     final Map<String, dynamic> jsonMap = {
       'players': players.map((p) => p.toJson()).toList(),
-
+      'games': games.map((g) => g.toJson()).toList(),
       'groups': groups
           .map((g) => {
-        'id': g.id,
-        'name': g.name,
-        'createdAt': g.createdAt.toIso8601String(),
-        'memberIds': (g.members).map((m) => m.id).toList(),
-      }).toList(),
-
+                'id': g.id,
+                'name': g.name,
+                'description': g.description,
+                'createdAt': g.createdAt.toIso8601String(),
+                'memberIds': (g.members).map((m) => m.id).toList(),
+              })
+          .toList(),
+      'teams': teams
+          .map((t) => {
+                'id': t.id,
+                'name': t.name,
+                'createdAt': t.createdAt.toIso8601String(),
+                'memberIds': (t.members).map((m) => m.id).toList(),
+              })
+          .toList(),
       'matches': matches
           .map((m) => {
-        'id': m.id,
-        'name': m.name,
-        'createdAt': m.createdAt.toIso8601String(),
-        'groupId': m.group?.id,
-        'playerIds': (m.players ?? []).map((p) => p.id).toList(),
-        'winnerId': m.winner?.id,
-      }).toList(),
+                'id': m.id,
+                'name': m.name,
+                'createdAt': m.createdAt.toIso8601String(),
+                'gameId': m.game?.id,
+                'groupId': m.group?.id,
+                'playerIds': (m.players ?? []).map((p) => p.id).toList(),
+                'notes': m.notes,
+              })
+          .toList(),
     };
 
     return json.encode(jsonMap);
@@ -107,10 +124,12 @@ class DataTransferService {
       final Map<String, dynamic> decoded = json.decode(jsonString) as Map<String, dynamic>;
 
       final List<dynamic> playersJson = (decoded['players'] as List<dynamic>?) ?? [];
+      final List<dynamic> gamesJson = (decoded['games'] as List<dynamic>?) ?? [];
       final List<dynamic> groupsJson = (decoded['groups'] as List<dynamic>?) ?? [];
+      final List<dynamic> teamsJson = (decoded['teams'] as List<dynamic>?) ?? [];
       final List<dynamic> matchesJson = (decoded['matches'] as List<dynamic>?) ?? [];
 
-      // Players
+      // Import Players
       final List<Player> importedPlayers = playersJson
           .map((p) => Player.fromJson(p as Map<String, dynamic>))
           .toList();
@@ -119,7 +138,16 @@ class DataTransferService {
         for (final p in importedPlayers) p.id: p,
       };
 
-      // Groups
+      // Import Games
+      final List<Game> importedGames = gamesJson
+          .map((g) => Game.fromJson(g as Map<String, dynamic>))
+          .toList();
+
+      final Map<String, Game> gameById = {
+        for (final g in importedGames) g.id: g,
+      };
+
+      // Import Groups
       final List<Group> importedGroups = groupsJson.map((g) {
         final map = g as Map<String, dynamic>;
         final memberIds = (map['memberIds'] as List<dynamic>? ?? []).cast<String>();
@@ -132,6 +160,7 @@ class DataTransferService {
         return Group(
           id: map['id'] as String,
           name: map['name'] as String,
+          description: map['description'] as String?,
           members: members,
           createdAt: DateTime.parse(map['createdAt'] as String),
         );
@@ -141,33 +170,59 @@ class DataTransferService {
         for (final g in importedGroups) g.id: g,
       };
 
-      // Matches
+      // Import Teams
+      final List<Team> importedTeams = teamsJson.map((t) {
+        final map = t as Map<String, dynamic>;
+        final memberIds = (map['memberIds'] as List<dynamic>? ?? []).cast<String>();
+
+        final members = memberIds
+            .map((id) => playerById[id])
+            .whereType<Player>()
+            .toList();
+
+        return Team(
+          id: map['id'] as String,
+          name: map['name'] as String,
+          members: members,
+          createdAt: DateTime.parse(map['createdAt'] as String),
+        );
+      }).toList();
+
+      final Map<String, Team> teamById = {
+        for (final t in importedTeams) t.id: t,
+      };
+
+      // Import Matches
       final List<Match> importedMatches = matchesJson.map((m) {
         final map = m as Map<String, dynamic>;
 
+        final String? gameId = map['gameId'] as String?;
         final String? groupId = map['groupId'] as String?;
         final List<String> playerIds = (map['playerIds'] as List<dynamic>? ?? []).cast<String>();
-        final String? winnerId = map['winnerId'] as String?;
 
+        final game = (gameId == null) ? null : gameById[gameId];
         final group = (groupId == null) ? null : groupById[groupId];
         final players = playerIds
             .map((id) => playerById[id])
             .whereType<Player>()
             .toList();
-        final winner = (winnerId == null) ? null : playerById[winnerId];
 
         return Match(
           id: map['id'] as String,
           name: map['name'] as String,
+          game: game,
           group: group,
-          players: players,
+          players: players.isNotEmpty ? players : null,
           createdAt: DateTime.parse(map['createdAt'] as String),
-          winner: winner,
+          notes: map['notes'] as String?,
         );
       }).toList();
 
+      // Import all data into the database
       await db.playerDao.addPlayersAsList(players: importedPlayers);
+      await db.gameDao.addGamesAsList(games: importedGames);
       await db.groupDao.addGroupsAsList(groups: importedGroups);
+      await db.teamDao.addTeamsAsList(teams: importedTeams);
       await db.matchDao.addMatchAsList(matches: importedMatches);
 
       return ImportResult.success;

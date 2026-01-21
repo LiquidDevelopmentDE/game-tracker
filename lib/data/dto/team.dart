@@ -21,21 +21,20 @@ class Team {
     return 'Team{id: $id, name: $name, members: $members}';
   }
 
-  /// Creates a Team instance from a JSON object.
+  /// Creates a Team instance from a JSON object (memberIds format).
+  /// Player objects are reconstructed from memberIds by the DataTransferService.
   Team.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       name = json['name'],
       createdAt = DateTime.parse(json['createdAt']),
-      members = (json['members'] as List)
-          .map((memberJson) => Player.fromJson(memberJson))
-          .toList();
+      members = []; // Populated during import via DataTransferService
 
-  /// Converts the Team instance to a JSON object.
+  /// Converts the Team instance to a JSON object using normalized format (memberIds only).
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
     'createdAt': createdAt.toIso8601String(),
-    'members': members.map((member) => member.toJson()).toList(),
+    'memberIds': members.map((member) => member.id).toList(),
   };
 }
 

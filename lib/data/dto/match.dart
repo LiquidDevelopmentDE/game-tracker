@@ -28,31 +28,28 @@ class Match {
 
   @override
   String toString() {
-    return 'Match{id: $id, name: $name, game: $game, group: $group, players: $players, notes: $notes, winner: $winner}';
+    return 'Match{id: $id, name: $name, game: $game, group: $group, players: $players, notes: $notes}';
   }
 
-  /// Creates a Match instance from a JSON object.
+  /// Creates a Match instance from a JSON object (ID references format).
+  /// Related objects are reconstructed from IDs by the DataTransferService.
   Match.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       createdAt = DateTime.parse(json['createdAt']),
       name = json['name'],
-      game = json['game'] != null ? Game.fromJson(json['game']) : null,
-      group = json['group'] != null ? Group.fromJson(json['group']) : null,
-      players = json['players'] != null
-          ? (json['players'] as List)
-              .map((playerJson) => Player.fromJson(playerJson))
-              .toList()
-          : null,
+      game = null, // Populated during import via DataTransferService
+      group = null, // Populated during import via DataTransferService
+      players = [], // Populated during import via DataTransferService
       notes = json['notes'];
 
-  /// Converts the Match instance to a JSON object.
+  /// Converts the Match instance to a JSON object using normalized format (ID references only).
   Map<String, dynamic> toJson() => {
     'id': id,
     'createdAt': createdAt.toIso8601String(),
     'name': name,
-    'game': game?.toJson(),
-    'group': group?.toJson(),
-    'players': players?.map((player) => player.toJson()).toList(),
+    'gameId': game?.id,
+    'groupId': group?.id,
+    'playerIds': (players ?? []).map((player) => player.id).toList(),
     'notes': notes,
   };
 }

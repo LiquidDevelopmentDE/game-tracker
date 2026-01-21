@@ -23,22 +23,21 @@ class Group {
     return 'Group{id: $id, name: $name, description: $description, members: $members}';
   }
 
-  /// Creates a Group instance from a JSON object.
+  /// Creates a Group instance from a JSON object (memberIds format).
+  /// Player objects are reconstructed from memberIds by the DataTransferService.
   Group.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       createdAt = DateTime.parse(json['createdAt']),
       name = json['name'],
       description = json['description'],
-      members = (json['members'] as List)
-          .map((memberJson) => Player.fromJson(memberJson))
-          .toList();
+      members = []; // Populated during import via DataTransferService
 
-  /// Converts the Group instance to a JSON object.
+  /// Converts the Group instance to a JSON object using normalized format (memberIds only).
   Map<String, dynamic> toJson() => {
     'id': id,
     'createdAt': createdAt.toIso8601String(),
     'name': name,
     'description': description,
-    'members': members.map((member) => member.toJson()).toList(),
+    'memberIds': members.map((member) => member.id).toList(),
   };
 }

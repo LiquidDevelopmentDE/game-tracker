@@ -15,6 +15,43 @@
           },
           "name": {
             "type": "string"
+          },
+          "description": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "name"
+        ]
+      }
+    },
+    "games": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "ruleset": {
+            "type": ["string", "null"]
+          },
+          "description": {
+            "type": ["string", "null"]
+          },
+          "color": {
+            "type": ["integer", "null"]
+          },
+          "icon": {
+            "type": ["string", "null"]
           }
         },
         "required": [
@@ -25,6 +62,38 @@
       }
     },
     "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "description": {
+            "type": ["string", "null"]
+          },
+          "memberIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "memberIds"
+        ]
+      }
+    },
+    "teams": {
       "type": "array",
       "items": {
         "type": "object",
@@ -67,6 +136,12 @@
           "createdAt": {
             "type": "string"
           },
+          "gameId": {
+            "anyOf": [
+              {"type": "string"},
+              {"type": "null"}
+            ]
+          },
           "groupId": {
             "anyOf": [
               {"type": "string"},
@@ -79,7 +154,7 @@
               "type": "string"
             }
           },
-          "winnerId": {
+          "notes": {
             "anyOf": [
               {"type": "string"},
               {"type": "null"}
@@ -90,7 +165,6 @@
           "id",
           "name",
           "createdAt",
-          "groupId",
           "playerIds"
         ]
       }
@@ -98,7 +172,9 @@
   },
   "required": [
     "players",
+    "games",
     "groups",
+    "teams",
     "matches"
   ]
 }
