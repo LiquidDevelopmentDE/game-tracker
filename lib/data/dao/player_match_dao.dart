@@ -148,7 +148,7 @@ class PlayerMatchDao extends DatabaseAccessor<AppDatabase>
     final playersToAdd = newPlayerIdsSet.difference(currentPlayerIds);
     final playersToRemove = currentPlayerIds.difference(newPlayerIdsSet);
 
-    db.transaction(() async {
+    await db.transaction(() async {
       // Remove old players
       if (playersToRemove.isNotEmpty) {
         await (delete(playerMatchTable)..where(
