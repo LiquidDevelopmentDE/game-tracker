@@ -188,10 +188,6 @@ class DataTransferService {
         );
       }).toList();
 
-      final Map<String, Team> teamById = {
-        for (final t in importedTeams) t.id: t,
-      };
-
       // Import Matches
       final List<Match> importedMatches = matchesJson.map((m) {
         final map = m as Map<String, dynamic>;
