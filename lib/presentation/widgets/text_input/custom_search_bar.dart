@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
+import 'package:tallee/core/custom_theme.dart';
 
 class CustomSearchBar extends StatelessWidget {
   /// A custom search bar widget that encapsulates a [SearchBar] with additional customization options.

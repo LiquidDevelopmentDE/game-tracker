@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
+import 'package:tallee/core/custom_theme.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   /// A custom alert dialog widget that provides a os unspecific AlertDialog,

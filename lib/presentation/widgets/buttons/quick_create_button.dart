@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
+import 'package:tallee/core/custom_theme.dart';
 
 class QuickCreateButton extends StatefulWidget {
   /// A button widget designed for quick creating matches in the [HomeView]

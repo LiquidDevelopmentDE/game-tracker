@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:game_tracker/core/custom_theme.dart';
+import 'package:tallee/core/custom_theme.dart';
 
 class ColoredIconContainer extends StatelessWidget {
   /// A customizable container widget that displays an icon with a colored background.
