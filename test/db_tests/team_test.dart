@@ -48,8 +48,8 @@ void main() {
         name: 'Team Gamma',
         members: [testPlayer1, testPlayer3],
       );
-      testGame1 = Game(name: 'Game 1');
-      testGame2 = Game(name: 'Game 2');
+      testGame1 = Game(name: 'Game 1', color: '0xFF000000');
+      testGame2 = Game(name: 'Game 2', color: '0xFF000000');
     });
 
     await database.playerDao.addPlayersAsList(

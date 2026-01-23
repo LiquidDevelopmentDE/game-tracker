@@ -20,7 +20,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
             name: row.name,
             ruleset: row.ruleset,
             description: row.description,
-            color: row.color != null ? int.tryParse(row.color!) : null,
+            color: row.color,
             icon: row.icon,
             createdAt: row.createdAt,
           ),
@@ -37,7 +37,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
       name: result.name,
       ruleset: result.ruleset,
       description: result.description,
-      color: result.color != null ? int.tryParse(result.color!) : null,
+      color: result.color,
       icon: result.icon,
       createdAt: result.createdAt,
     );
@@ -54,7 +54,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
           name: game.name,
           ruleset: game.ruleset ?? '',
           description: Value(game.description),
-          color: Value(game.color?.toString()),
+          color: game.color,
           icon: Value(game.icon),
           createdAt: game.createdAt,
         ),
@@ -80,7 +80,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
                 name: game.name,
                 ruleset: game.ruleset ?? '',
                 description: Value(game.description),
-                color: Value(game.color?.toString()),
+                color: game.color,
                 icon: Value(game.icon),
                 createdAt: game.createdAt,
               ),
@@ -142,10 +142,10 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
   /// Updates the color of the game with the given [gameId].
   Future<void> updateGameColor({
     required String gameId,
-    required int? newColor,
+    required String newColor,
   }) async {
     await (update(gameTable)..where((g) => g.id.equals(gameId))).write(
-      GameTableCompanion(color: Value(newColor?.toString())),
+      GameTableCompanion(color: Value(newColor)),
     );
   }
 

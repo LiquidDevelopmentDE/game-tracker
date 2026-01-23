@@ -682,9 +682,9 @@ class $GameTableTable extends GameTable
   late final GeneratedColumn<String> color = GeneratedColumn<String>(
     'color',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.string,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _iconMeta = const VerificationMeta('icon');
   @override
@@ -763,6 +763,8 @@ class $GameTableTable extends GameTable
         _colorMeta,
         color.isAcceptableOrUnknown(data['color']!, _colorMeta),
       );
+    } else if (isInserting) {
+      context.missing(_colorMeta);
     }
     if (data.containsKey('icon')) {
       context.handle(
@@ -806,7 +808,7 @@ class $GameTableTable extends GameTable
       color: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}color'],
-      ),
+      )!,
       icon: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}icon'],
@@ -829,7 +831,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
   final String name;
   final String ruleset;
   final String? description;
-  final String? color;
+  final String color;
   final String? icon;
   final DateTime createdAt;
   const GameTableData({
@@ -837,7 +839,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
     required this.name,
     required this.ruleset,
     this.description,
-    this.color,
+    required this.color,
     this.icon,
     required this.createdAt,
   });
@@ -850,9 +852,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
-    if (!nullToAbsent || color != null) {
-      map['color'] = Variable<String>(color);
-    }
+    map['color'] = Variable<String>(color);
     if (!nullToAbsent || icon != null) {
       map['icon'] = Variable<String>(icon);
     }
@@ -868,9 +868,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
-      color: color == null && nullToAbsent
-          ? const Value.absent()
-          : Value(color),
+      color: Value(color),
       icon: icon == null && nullToAbsent ? const Value.absent() : Value(icon),
       createdAt: Value(createdAt),
     );
@@ -886,7 +884,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
       name: serializer.fromJson<String>(json['name']),
       ruleset: serializer.fromJson<String>(json['ruleset']),
       description: serializer.fromJson<String?>(json['description']),
-      color: serializer.fromJson<String?>(json['color']),
+      color: serializer.fromJson<String>(json['color']),
       icon: serializer.fromJson<String?>(json['icon']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
@@ -899,7 +897,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
       'name': serializer.toJson<String>(name),
       'ruleset': serializer.toJson<String>(ruleset),
       'description': serializer.toJson<String?>(description),
-      'color': serializer.toJson<String?>(color),
+      'color': serializer.toJson<String>(color),
       'icon': serializer.toJson<String?>(icon),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
@@ -910,7 +908,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
     String? name,
     String? ruleset,
     Value<String?> description = const Value.absent(),
-    Value<String?> color = const Value.absent(),
+    String? color,
     Value<String?> icon = const Value.absent(),
     DateTime? createdAt,
   }) => GameTableData(
@@ -918,7 +916,7 @@ class GameTableData extends DataClass implements Insertable<GameTableData> {
     name: name ?? this.name,
     ruleset: ruleset ?? this.ruleset,
     description: description.present ? description.value : this.description,
-    color: color.present ? color.value : this.color,
+    color: color ?? this.color,
     icon: icon.present ? icon.value : this.icon,
     createdAt: createdAt ?? this.createdAt,
   );
@@ -971,7 +969,7 @@ class GameTableCompanion extends UpdateCompanion<GameTableData> {
   final Value<String> name;
   final Value<String> ruleset;
   final Value<String?> description;
-  final Value<String?> color;
+  final Value<String> color;
   final Value<String?> icon;
   final Value<DateTime> createdAt;
   final Value<int> rowid;
@@ -990,13 +988,14 @@ class GameTableCompanion extends UpdateCompanion<GameTableData> {
     required String name,
     required String ruleset,
     this.description = const Value.absent(),
-    this.color = const Value.absent(),
+    required String color,
     this.icon = const Value.absent(),
     required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
        ruleset = Value(ruleset),
+       color = Value(color),
        createdAt = Value(createdAt);
   static Insertable<GameTableData> custom({
     Expression<String>? id,
@@ -1025,7 +1024,7 @@ class GameTableCompanion extends UpdateCompanion<GameTableData> {
     Value<String>? name,
     Value<String>? ruleset,
     Value<String?>? description,
-    Value<String?>? color,
+    Value<String>? color,
     Value<String?>? icon,
     Value<DateTime>? createdAt,
     Value<int>? rowid,
@@ -3665,7 +3664,7 @@ typedef $$GameTableTableCreateCompanionBuilder =
       required String name,
       required String ruleset,
       Value<String?> description,
-      Value<String?> color,
+      required String color,
       Value<String?> icon,
       required DateTime createdAt,
       Value<int> rowid,
@@ -3676,7 +3675,7 @@ typedef $$GameTableTableUpdateCompanionBuilder =
       Value<String> name,
       Value<String> ruleset,
       Value<String?> description,
-      Value<String?> color,
+      Value<String> color,
       Value<String?> icon,
       Value<DateTime> createdAt,
       Value<int> rowid,
@@ -3910,7 +3909,7 @@ class $$GameTableTableTableManager
                 Value<String> name = const Value.absent(),
                 Value<String> ruleset = const Value.absent(),
                 Value<String?> description = const Value.absent(),
-                Value<String?> color = const Value.absent(),
+                Value<String> color = const Value.absent(),
                 Value<String?> icon = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -3930,7 +3929,7 @@ class $$GameTableTableTableManager
                 required String name,
                 required String ruleset,
                 Value<String?> description = const Value.absent(),
-                Value<String?> color = const Value.absent(),
+                required String color,
                 Value<String?> icon = const Value.absent(),
                 required DateTime createdAt,
                 Value<int> rowid = const Value.absent(),

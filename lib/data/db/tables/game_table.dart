@@ -5,7 +5,7 @@ class GameTable extends Table {
   TextColumn get name => text()();
   TextColumn get ruleset => text()();
   TextColumn get description => text().nullable()();
-  TextColumn get color => text().nullable()();
+  TextColumn get color => text()();
   TextColumn get icon => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
 

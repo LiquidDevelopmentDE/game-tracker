@@ -46,7 +46,7 @@ void main() {
         name: 'Test Group',
         members: [testPlayer1, testPlayer2, testPlayer3],
       );
-      testGame = Game(name: 'Test Game');
+      testGame = Game(name: 'Test Game', color: '0xFF000000');
       testMatchOnlyGroup = Match(
         name: 'Test Match with Group',
         game: testGame,

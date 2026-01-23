@@ -7,7 +7,7 @@ class Game {
   final String name;
   final String? ruleset;
   final String? description;
-  final int? color;
+  final String color;
   final String? icon;
 
   Game({
@@ -16,7 +16,7 @@ class Game {
     required this.name,
     this.ruleset,
     this.description,
-    this.color,
+    required this.color,
     this.icon,
   }) : id = id ?? const Uuid().v4(),
        createdAt = createdAt ?? clock.now();

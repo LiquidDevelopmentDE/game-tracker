@@ -202,6 +202,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                             name: selectedGame.$1,
                             description: selectedGame.$2,
                             ruleset: selectedGame.$3.name,
+                            color: '0xFF000000',
                           );
                         } else {
                           // Use the selected game from the list
@@ -210,6 +211,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                             name: selectedGame.$1,
                             description: selectedGame.$2,
                             ruleset: selectedGame.$3.name,
+                            color: '0xFF000000',
                           );
                         }
                         // Add the game to the database if it doesn't exist

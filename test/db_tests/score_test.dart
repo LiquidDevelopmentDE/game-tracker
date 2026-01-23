@@ -31,7 +31,7 @@ void main() {
       testPlayer1 = Player(name: 'Alice');
       testPlayer2 = Player(name: 'Bob');
       testPlayer3 = Player(name: 'Charlie');
-      testGame = Game(name: 'Test Game');
+      testGame = Game(name: 'Test Game', color: '0xFF000000');
       testMatch1 = Match(
         name: 'Test Match 1',
         game: testGame,
