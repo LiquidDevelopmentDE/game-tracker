@@ -6,7 +6,7 @@ class Game {
   final DateTime createdAt;
   final String name;
   final String? ruleset;
-  final String? description;
+  final String description;
   final String color;
   final String? icon;
 
@@ -15,7 +15,7 @@ class Game {
     DateTime? createdAt,
     required this.name,
     this.ruleset,
-    this.description,
+    required this.description,
     required this.color,
     this.icon,
   }) : id = id ?? const Uuid().v4(),

@@ -48,7 +48,7 @@ void main() {
         name: 'Test Group 2',
         members: [testPlayer4, testPlayer5],
       );
-      testGame = Game(name: 'Test Game', color: '0xFF000000');
+      testGame = Game(name: 'Test Game', description: 'A test game', color: '0xFF000000');
       testMatch1 = Match(
         name: 'First Test Match',
         game: testGame,

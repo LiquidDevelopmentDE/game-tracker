@@ -131,7 +131,7 @@ void main() {
 
     // Verifies that a game with null optional fields can be added and retrieved.
     test('addGame handles game with null optional fields', () async {
-      final gameWithNulls = Game(name: 'Simple Game', color: '0xFF000000');
+      final gameWithNulls = Game(name: 'Simple Game', description: 'A simple game', color: '0xFF000000');
       final result = await database.gameDao.addGame(game: gameWithNulls);
       expect(result, true);
 
@@ -139,7 +139,7 @@ void main() {
         gameId: gameWithNulls.id,
       );
       expect(fetchedGame.name, 'Simple Game');
-      expect(fetchedGame.description, isNull);
+      expect(fetchedGame.description, 'A simple game');
       expect(fetchedGame.color, '0xFF000000');
       expect(fetchedGame.icon, isNull);
     });
@@ -305,19 +305,19 @@ void main() {
       expect(updatedGame.description, 'An updated description');
     });
 
-    // Verifies that updateGameDescription can set the description to null.
-    test('updateGameDescription can set description to null', () async {
+    // Verifies that updateGameDescription can set the description to an empty string.
+    test('updateGameDescription can set description to empty string', () async {
       await database.gameDao.addGame(game: testGame1);
 
       await database.gameDao.updateGameDescription(
         gameId: testGame1.id,
-        newDescription: null,
+        newDescription: '',
       );
 
       final updatedGame = await database.gameDao.getGameById(
         gameId: testGame1.id,
       );
-      expect(updatedGame.description, isNull);
+      expect(updatedGame.description, '');
     });
 
     // Verifies that updateGameDescription does nothing when game doesn't exist.
@@ -502,7 +502,7 @@ void main() {
         gameId: longGame.id,
       );
       expect(fetchedGame.name.length, 10000);
-      expect(fetchedGame.description?.length, 10000);
+      expect(fetchedGame.description.length, 10000);
       expect(fetchedGame.ruleset?.length, 10000);
     });
 
