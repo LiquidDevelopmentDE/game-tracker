@@ -8,7 +8,7 @@
 // https://pub.dev/packages/dart_pubspec_licenses
 
 /// This package.
-const thisPackage = _game_tracker;
+const thisPackage = _tallee;
 
 /// All dependencies including transitive dependencies.
 const allDependencies = <Package>[
@@ -7291,9 +7291,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
-/// game_tracker 0.0.5+127
-const _game_tracker = Package(
-    name: 'game_tracker',
+/// tallee 0.0.5+127
+const _tallee = Package(
+    name: 'tallee',
     description: 'Game Tracking App for Card Games',
     authors: [],
     version: '0.0.5+127',
