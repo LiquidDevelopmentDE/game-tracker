@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/core/enums.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/enums.dart';
 
-/// A custom button widget that is designed to have a width relative to the screen size.
-/// It supports three types of buttons: primary, secondary, and text buttons.
-/// - [text]: The text to display on the button.
-/// - [buttonType]: The type of button to display. Defaults to [ButtonType.primary].
-/// - [sizeRelativeToWidth]: The size of the button relative to the width of the screen.
-/// - [onPressed]: The callback to be invoked when the button is pressed.
 class CustomWidthButton extends StatelessWidget {
+  /// A custom button widget that is designed to have a width relative to the screen size.
+  /// It supports three types of buttons: primary, secondary, and text buttons.
+  /// - [text]: The text to display on the button.
+  /// - [buttonType]: The type of button to display. Defaults to [ButtonType.primary].
+  /// - [sizeRelativeToWidth]: The size of the button relative to the width of the screen.
+  /// - [onPressed]: The callback to be invoked when the button is pressed.
   const CustomWidthButton({
     super.key,
     required this.text,

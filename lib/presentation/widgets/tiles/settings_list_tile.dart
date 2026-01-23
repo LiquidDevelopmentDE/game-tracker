@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/presentation/widgets/colored_icon_container.dart';
 
-/// A customizable settings list tile widget that displays an icon, title, and an optional suffix widget.
-/// - [icon]: The icon displayed on the left side of the tile.
-/// - [title]: The title text displayed next to the icon.
-/// - [suffixWidget]: An optional widget displayed on the right side of the tile.
-/// - [onPressed]: The callback invoked when the tile is tapped.
 class SettingsListTile extends StatelessWidget {
+  /// A customizable settings list tile widget that displays an icon, title, and an optional suffix widget.
+  /// - [icon]: The icon displayed on the left side of the tile.
+  /// - [title]: The title text displayed next to the icon.
+  /// - [suffixWidget]: An optional widget displayed on the right side of the tile.
+  /// - [onPressed]: The callback invoked when the tile is tapped.
   const SettingsListTile({
     super.key,
     required this.icon,
@@ -46,18 +47,10 @@ class SettingsListTile extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 44,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: CustomTheme.primaryColor.withAlpha(40),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          icon,
-                          size: 28,
-                          color: CustomTheme.primaryColor.withGreen(40),
-                        ),
+                      ColoredIconContainer(
+                        icon: icon,
+                        containerSize: 44,
+                        iconSize: 28,
                       ),
                       const SizedBox(width: 16),
                       Text(title, style: const TextStyle(fontSize: 18)),

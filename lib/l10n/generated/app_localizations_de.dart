@@ -18,7 +18,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get amount_of_matches => 'Anzahl der Spiele';
 
   @override
-  String get app_name => 'Game Tracker';
+  String get app_name => 'Tallee';
+
+  @override
+  String get best_player => 'Beste:r Spieler:in';
 
   @override
   String get cancel => 'Abbrechen';
@@ -47,6 +50,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_new_group => 'Neue Gruppe erstellen';
 
   @override
+  String get created_on => 'Erstellt am';
+
+  @override
   String get create_new_match => 'Neues Spiel erstellen';
 
   @override
@@ -71,6 +77,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get delete_all_data => 'Alle Daten löschen';
+
+  @override
+  String get delete_group => 'Gruppe löschen';
+
+  @override
+  String get edit_group => 'Gruppe bearbeiten';
 
   @override
   String get error_creating_group =>
@@ -99,6 +111,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get group_name => 'Gruppenname';
+
+  @override
+  String get group_profile => 'Gruppenprofil';
 
   @override
   String get groups => 'Gruppen';
@@ -138,6 +153,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get matches => 'Spiele';
+
+  @override
+  String get members => 'Mitglieder';
 
   @override
   String get most_points => 'Höchste Punkte';
@@ -184,6 +202,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get not_available => 'Nicht verfügbar';
+
+  @override
+  String get played_matches => 'Gespielte Spiele';
 
   @override
   String get player_name => 'Spieler:innenname';
@@ -262,7 +283,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get this_cannot_be_undone =>
-      'Dies kann nicht rückgängig gemacht werden';
+      'Dies kann nicht rückgängig gemacht werden.';
 
   @override
   String get today_at => 'Heute um';

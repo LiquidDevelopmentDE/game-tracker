@@ -3,17 +3,21 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/core/enums.dart';
-import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses_view.dart';
-import 'package:game_tracker/presentation/widgets/tiles/settings_list_tile.dart';
-import 'package:game_tracker/services/data_transfer_service.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/enums.dart';
+import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/views/main_menu/settings_view/licenses_view.dart';
+import 'package:tallee/presentation/widgets/buttons/animated_dialog_button.dart';
+import 'package:tallee/presentation/widgets/custom_alert_dialog.dart';
+import 'package:tallee/presentation/widgets/tiles/settings_list_tile.dart';
+import 'package:tallee/services/data_transfer_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatefulWidget {
+  /// The settings view of the application, allowing users to manage data
+  /// and view legal information.
   const SettingsView({super.key});
 
   @override
@@ -37,194 +41,228 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     return ScaffoldMessenger(
-      child: Scaffold(
-        appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
-        backgroundColor: CustomTheme.backgroundColor,
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 10),
-                child: Text(
-                  textAlign: TextAlign.start,
-                  loc.settings,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
-                child: Text(
-                  textAlign: TextAlign.start,
-                  loc.data,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SettingsListTile(
-                title: loc.export_data,
-                icon: Icons.upload,
-                suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                onPressed: () async {
-                  final String json =
-                      await DataTransferService.getAppDataAsJson(context);
-                  final result = await DataTransferService.exportData(
-                    json,
-                    'game_tracker-data',
-                  );
-                  if (!context.mounted) return;
-                  showExportSnackBar(context: context, result: result);
-                },
-              ),
-              SettingsListTile(
-                title: loc.import_data,
-                icon: Icons.download,
-                suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                onPressed: () async {
-                  final result = await DataTransferService.importData(context);
-                  if (!context.mounted) return;
-                  showImportSnackBar(context: context, result: result);
-                },
-              ),
-              SettingsListTile(
-                title: loc.delete_all_data,
-                icon: Icons.delete,
-                suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                onPressed: () {
-                  showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('${loc.delete_all_data}?'),
-                      content: Text(loc.this_cannot_be_undone),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: Text(loc.cancel),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          child: Text(loc.delete),
-                        ),
-                      ],
+      child: Builder(
+        builder: (scaffoldMessengerContext) {
+          return Scaffold(
+            appBar: AppBar(backgroundColor: CustomTheme.backgroundColor),
+            backgroundColor: CustomTheme.backgroundColor,
+            body: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, bottom: 10),
+                    child: Text(
+                      textAlign: TextAlign.start,
+                      loc.settings,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ).then((confirmed) {
-                    if (confirmed == true && context.mounted) {
-                      DataTransferService.deleteAllData(context);
-                      showSnackbar(
-                        context: context,
-                        message: AppLocalizations.of(
-                          context,
-                        ).data_successfully_deleted,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      top: 10,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      textAlign: TextAlign.start,
+                      loc.data,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SettingsListTile(
+                    title: loc.export_data,
+                    icon: Icons.upload,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: () async {
+                      final String json =
+                          await DataTransferService.getAppDataAsJson(
+                            scaffoldMessengerContext,
+                          );
+                      final result = await DataTransferService.exportData(
+                        json,
+                        'tallee-data',
                       );
-                    }
-                  });
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
-                child: Text(
-                  textAlign: TextAlign.start,
-                  loc.legal,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                      if (!scaffoldMessengerContext.mounted) return;
+                      showExportSnackBar(
+                        context: scaffoldMessengerContext,
+                        result: result,
+                      );
+                    },
                   ),
-                ),
-              ),
-              SettingsListTile(
-                title: loc.licenses,
-                icon: Icons.insert_drive_file,
-                suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const LicensesView(),
-                    ),
-                  );
-                },
-              ),
-              SettingsListTile(
-                title: loc.legal_notice,
-                icon: Icons.account_balance_sharp,
-                suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                onPressed: null,
-              ),
-              SettingsListTile(
-                title: loc.privacy_policy,
-                icon: Icons.gpp_good_rounded,
-                suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                onPressed: null,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 20),
-                child: Center(
-                  child: Column(
-                    spacing: 4,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: 40,
-                          children: [
-                            GestureDetector(
-                              child: const Icon(Icons.language),
-                              onTap: () => {
-                                launchUrl(Uri.parse('https://liquid-dev.de')),
-                              },
-                            ),
-                            GestureDetector(
-                              child: const FaIcon(FontAwesomeIcons.github),
-                              onTap: () => {
-                                launchUrl(
-                                  Uri.parse(
-                                    'https://github.com/liquiddevelopmentde',
-                                  ),
+                  SettingsListTile(
+                    title: loc.import_data,
+                    icon: Icons.download,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: () async {
+                      final result = await DataTransferService.importData(
+                        scaffoldMessengerContext,
+                      );
+                      if (!scaffoldMessengerContext.mounted) return;
+                      showImportSnackBar(
+                        context: scaffoldMessengerContext,
+                        result: result,
+                      );
+                    },
+                  ),
+                  SettingsListTile(
+                    title: loc.delete_all_data,
+                    icon: Icons.delete,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: () {
+                      showDialog<bool>(
+                        context: context,
+                        builder: (context) => CustomAlertDialog(
+                          title: '${loc.delete_all_data}?',
+                          content: loc.this_cannot_be_undone,
+                          actions: [
+                            AnimatedDialogButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: Text(
+                                loc.cancel,
+                                style: const TextStyle(
+                                  color: CustomTheme.textColor,
                                 ),
-                              },
-                            ),
-                            GestureDetector(
-                              child: Icon(
-                                Platform.isIOS
-                                    ? CupertinoIcons.mail_solid
-                                    : Icons.email,
                               ),
-                              onTap: () => launchUrl(
-                                Uri.parse('mailto:hi@liquid-dev.de'),
+                            ),
+                            AnimatedDialogButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: Text(
+                                loc.delete,
+                                style: const TextStyle(
+                                  color: CustomTheme.secondaryColor,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Text(
-                        '© ${DateFormat('yyyy').format(DateTime.now())} Liquid Development',
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        'Version ${_packageInfo.version} (${_packageInfo.buildNumber})',
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                      ).then((confirmed) {
+                        if (confirmed == true && context.mounted) {
+                          DataTransferService.deleteAllData(context);
+                          showSnackbar(
+                            context: scaffoldMessengerContext,
+                            message: AppLocalizations.of(
+                              context,
+                            ).data_successfully_deleted,
+                          );
+                        }
+                      });
+                    },
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      top: 10,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      textAlign: TextAlign.start,
+                      loc.legal,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SettingsListTile(
+                    title: loc.licenses,
+                    icon: Icons.insert_drive_file,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const LicensesView(),
+                        ),
+                      );
+                    },
+                  ),
+                  SettingsListTile(
+                    title: loc.legal_notice,
+                    icon: Icons.account_balance_sharp,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: null,
+                  ),
+                  SettingsListTile(
+                    title: loc.privacy_policy,
+                    icon: Icons.gpp_good_rounded,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: null,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30, bottom: 20),
+                    child: Center(
+                      child: Column(
+                        spacing: 4,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              spacing: 40,
+                              children: [
+                                GestureDetector(
+                                  child: const Icon(Icons.language),
+                                  onTap: () => {
+                                    launchUrl(
+                                      Uri.parse('https://liquid-dev.de'),
+                                    ),
+                                  },
+                                ),
+                                GestureDetector(
+                                  child: const FaIcon(FontAwesomeIcons.github),
+                                  onTap: () => {
+                                    launchUrl(
+                                      Uri.parse(
+                                        'https://github.com/liquiddevelopmentde',
+                                      ),
+                                    ),
+                                  },
+                                ),
+                                GestureDetector(
+                                  child: Icon(
+                                    Platform.isIOS
+                                        ? CupertinoIcons.mail_solid
+                                        : Icons.email,
+                                  ),
+                                  onTap: () => launchUrl(
+                                    Uri.parse('mailto:hi@liquid-dev.de'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '© ${DateFormat('yyyy').format(DateTime.now())} Liquid Development',
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Version ${_packageInfo.version} (${_packageInfo.buildNumber})',
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -285,10 +323,11 @@ class _SettingsViewState extends State<SettingsView> {
     Duration duration = const Duration(seconds: 3),
     VoidCallback? action,
   }) {
+    if (!context.mounted) return;
+
     final loc = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    messenger.hideCurrentSnackBar();
-    messenger.showSnackBar(
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: const TextStyle(color: Colors.white)),
         backgroundColor: CustomTheme.onBoxColor,

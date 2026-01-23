@@ -119,8 +119,14 @@ abstract class AppLocalizations {
   /// The name of the App
   ///
   /// In en, this message translates to:
-  /// **'Game Tracker'**
+  /// **'Tallee'**
   String get app_name;
+
+  /// Label for best player statistic
+  ///
+  /// In en, this message translates to:
+  /// **'Best Player'**
+  String get best_player;
 
   /// Cancel button text
   ///
@@ -170,6 +176,12 @@ abstract class AppLocalizations {
   /// **'Create new group'**
   String get create_new_group;
 
+  /// Label for creation date
+  ///
+  /// In en, this message translates to:
+  /// **'Created on'**
+  String get created_on;
+
   /// Button text to create a new match
   ///
   /// In en, this message translates to:
@@ -217,6 +229,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete all data'**
   String get delete_all_data;
+
+  /// Button text to delete a group
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Group'**
+  String get delete_group;
+
+  /// Button text to edit a group
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Group'**
+  String get edit_group;
 
   /// Error message when group creation fails
   ///
@@ -271,6 +295,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Group name'**
   String get group_name;
+
+  /// Title for group profile view
+  ///
+  /// In en, this message translates to:
+  /// **'Group Profile'**
+  String get group_profile;
 
   /// Label for groups
   ///
@@ -349,6 +379,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Matches'**
   String get matches;
+
+  /// Label for group members
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get members;
 
   /// Title for most points ruleset
   ///
@@ -439,6 +475,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not available'**
   String get not_available;
+
+  /// Label for played matches statistic
+  ///
+  /// In en, this message translates to:
+  /// **'Played Matches'**
+  String get played_matches;
 
   /// Placeholder for player name input
   ///
@@ -575,7 +617,7 @@ abstract class AppLocalizations {
   /// Warning message for irreversible actions
   ///
   /// In en, this message translates to:
-  /// **'This can\'t be undone'**
+  /// **'This can\'t be undone.'**
   String get this_cannot_be_undone;
 
   /// Date format for today

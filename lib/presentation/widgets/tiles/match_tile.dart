@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/data/dto/match.dart';
-import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
 import 'package:intl/intl.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/data/dto/match.dart';
+import 'package:tallee/data/dto/player.dart';
+import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/widgets/tiles/text_icon_tile.dart';
 
-/// A tile widget that displays information about a match, including its name,
-/// creation date, associated group, winner, and players.
-/// - [match]: The match data to be displayed.
-/// - [onTap]: The callback invoked when the tile is tapped.
-/// - [width]: Optional width for the tile.
-/// - [compact]: Whether to display the tile in a compact mode
 class MatchTile extends StatefulWidget {
+  /// A tile widget that displays information about a match, including its name,
+  /// creation date, associated group, winner, and players.
+  /// - [match]: The match data to be displayed.
+  /// - [onTap]: The callback invoked when the tile is tapped.
+  /// - [width]: Optional width for the tile.
+  /// - [compact]: Whether to display the tile in a compact mode
   const MatchTile({
     super.key,
     required this.match,
@@ -230,7 +230,7 @@ class _MatchTileState extends State<MatchTile> {
     } else if (difference.inDays < 7) {
       return loc.days_ago(difference.inDays);
     } else {
-      return DateFormat('MMM d, yyyy').format(dateTime);
+      return '${loc.created_on} ${DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(dateTime)}';
     }
   }
 

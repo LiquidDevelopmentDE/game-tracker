@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/core/enums.dart';
-import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
-import 'package:game_tracker/presentation/widgets/tiles/title_description_list_tile.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/enums.dart';
+import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/widgets/text_input/custom_search_bar.dart';
+import 'package:tallee/presentation/widgets/tiles/title_description_list_tile.dart';
 
 class ChooseGameView extends StatefulWidget {
-  final List<(String, String, Ruleset)> games;
-  final int initialGameIndex;
-
+  /// A view that allows the user to choose a game from a list of available games
+  /// - [games]: A list of tuples containing the game name, description and ruleset
+  /// - [initialGameIndex]: The index of the initially selected game
   const ChooseGameView({
     super.key,
     required this.games,
     required this.initialGameIndex,
   });
+
+  /// A list of tuples containing the game name, description and ruleset
+  final List<(String, String, Ruleset)> games;
+
+  /// The index of the initially selected game
+  final int initialGameIndex;
 
   @override
   State<ChooseGameView> createState() => _ChooseGameViewState();
@@ -37,6 +43,7 @@ class _ChooseGameViewState extends State<ChooseGameView> {
     final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),

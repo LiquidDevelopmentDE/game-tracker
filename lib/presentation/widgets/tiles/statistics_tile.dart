@@ -1,17 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/widgets/tiles/info_tile.dart';
+import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/widgets/tiles/info_tile.dart';
 
-/// A tile widget that displays statistical data using horizontal bars.
-/// - [icon]: The icon displayed next to the title.
-/// - [title]: The title text displayed on the tile.
-/// - [width]: The width of the tile.
-/// - [values]: A list of tuples containing labels and their corresponding numeric values.
-/// - [itemCount]: The maximum number of items to display.
-/// - [barColor]: The color of the bars representing the values.
 class StatisticsTile extends StatelessWidget {
+  /// A tile widget that displays statistical data using horizontal bars.
+  /// - [icon]: The icon displayed next to the title.
+  /// - [title]: The title text displayed on the tile.
+  /// - [width]: The width of the tile.
+  /// - [values]: A list of tuples containing labels and their corresponding numeric values.
+  /// - [itemCount]: The maximum number of items to display.
+  /// - [barColor]: The color of the bars representing the values.
   const StatisticsTile({
     super.key,
     required this.icon,

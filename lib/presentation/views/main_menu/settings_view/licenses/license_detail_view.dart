@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/views/main_menu/settings_view/licenses/oss_licenses.dart';
+import 'package:tallee/presentation/widgets/colored_icon_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LicenseDetailView extends StatelessWidget {
-  final Package package;
-
+  /// A detailed view displaying information about a software package license.
+  /// - [package]: The package data to be displayed.
   const LicenseDetailView({super.key, required this.package});
+
+  /// The package data to be displayed.
+  final Package package;
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +30,11 @@ class LicenseDetailView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        margin: const EdgeInsetsGeometry.only(right: 15),
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: CustomTheme.primaryColor.withAlpha(40),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.description,
-                          color: CustomTheme.primaryColor,
-                          size: 30,
-                        ),
+                      const ColoredIconContainer(
+                        icon: Icons.description,
+                        margin: EdgeInsetsGeometry.only(right: 15),
+                        containerSize: 60,
+                        iconSize: 30,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +89,7 @@ class LicenseDetailView extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: CustomTheme.secondaryColor,
                             decoration: TextDecoration.underline,

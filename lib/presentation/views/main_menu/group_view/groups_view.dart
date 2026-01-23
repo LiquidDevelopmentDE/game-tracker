@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/adaptive_page_route.dart';
-import 'package:game_tracker/core/constants.dart';
-import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/group.dart';
-import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/views/main_menu/group_view/create_group_view.dart';
-import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
-import 'package:game_tracker/presentation/widgets/buttons/custom_width_button.dart';
-import 'package:game_tracker/presentation/widgets/tiles/group_tile.dart';
-import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
+import 'package:tallee/core/adaptive_page_route.dart';
+import 'package:tallee/core/constants.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/data/db/database.dart';
+import 'package:tallee/data/dto/group.dart';
+import 'package:tallee/data/dto/player.dart';
+import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/views/main_menu/group_view/create_group_view.dart';
+import 'package:tallee/presentation/views/main_menu/group_view/group_profile_view.dart';
+import 'package:tallee/presentation/widgets/app_skeleton.dart';
+import 'package:tallee/presentation/widgets/buttons/main_menu_button.dart';
+import 'package:tallee/presentation/widgets/tiles/group_tile.dart';
+import 'package:tallee/presentation/widgets/top_centered_message.dart';
 
 class GroupsView extends StatefulWidget {
+  /// A view that displays a list of groups
   const GroupsView({super.key});
 
   @override
@@ -73,16 +75,31 @@ class _GroupsViewState extends State<GroupsView> {
                       height: MediaQuery.paddingOf(context).bottom - 20,
                     );
                   }
-                  return GroupTile(group: groups[index]);
+                  return GroupTile(
+                    group: groups[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        adaptivePageRoute(
+                          builder: (context) {
+                            return GroupProfileView(
+                              group: groups[index],
+                              callback: loadGroups,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             ),
           ),
           Positioned(
-            bottom: MediaQuery.paddingOf(context).bottom,
-            child: CustomWidthButton(
+            bottom: MediaQuery.paddingOf(context).bottom + 20,
+            child: MainMenuButton(
               text: loc.create_group,
-              sizeRelativeToWidth: 0.90,
+              icon: Icons.group_add,
               onPressed: () async {
                 await Navigator.push(
                   context,
@@ -104,9 +121,12 @@ class _GroupsViewState extends State<GroupsView> {
   }
 
   void loadGroups() {
+    setState(() {
+      isLoading = true;
+    });
     Future.wait([
       db.groupDao.getAllGroups(),
-      Future.delayed(Constants.minimumSkeletonDuration),
+      Future.delayed(Constants.MINIMUM_SKELETON_DURATION),
     ]).then((results) {
       loadedGroups = results[0] as List<Group>;
       setState(() {

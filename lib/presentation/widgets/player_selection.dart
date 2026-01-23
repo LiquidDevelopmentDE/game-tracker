@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/constants.dart';
-import 'package:game_tracker/core/custom_theme.dart';
-import 'package:game_tracker/data/db/database.dart';
-import 'package:game_tracker/data/dto/player.dart';
-import 'package:game_tracker/l10n/generated/app_localizations.dart';
-import 'package:game_tracker/presentation/widgets/app_skeleton.dart';
-import 'package:game_tracker/presentation/widgets/text_input/custom_search_bar.dart';
-import 'package:game_tracker/presentation/widgets/tiles/text_icon_list_tile.dart';
-import 'package:game_tracker/presentation/widgets/tiles/text_icon_tile.dart';
-import 'package:game_tracker/presentation/widgets/top_centered_message.dart';
 import 'package:provider/provider.dart';
+import 'package:tallee/core/constants.dart';
+import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/data/db/database.dart';
+import 'package:tallee/data/dto/player.dart';
+import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/widgets/app_skeleton.dart';
+import 'package:tallee/presentation/widgets/text_input/custom_search_bar.dart';
+import 'package:tallee/presentation/widgets/tiles/text_icon_list_tile.dart';
+import 'package:tallee/presentation/widgets/tiles/text_icon_tile.dart';
+import 'package:tallee/presentation/widgets/top_centered_message.dart';
 
-/// A widget that allows users to select players from a list,
-/// with search functionality and the ability to add new players.
-/// - [availablePlayers]: An optional list of players to choose from. If null, all
-///   players from the database are used.
-/// - [initialSelectedPlayers]: An optional list of players that should be pre-selected.
-/// - [onChanged]: A callback function that is invoked whenever the selection changes,
-///   providing the updated list of selected players.
 class PlayerSelection extends StatefulWidget {
+  /// A widget that allows users to select players from a list,
+  /// with search functionality and the ability to add new players.
+  /// - [availablePlayers]: An optional list of players to choose from. If null,
+  ///   all players from the database are used.
+  /// - [initialSelectedPlayers]: An optional list of players that should be pre-selected.
+  /// - [onChanged]: A callback function that is invoked whenever the selection
+  ///   changes, providing the updated list of selected players.
   const PlayerSelection({
     super.key,
     this.availablePlayers,
@@ -84,6 +84,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomSearchBar(
+            maxLength: Constants.MAX_PLAYER_NAME_LENGTH,
             controller: _searchBarController,
             constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
             hintText: loc.search_for_players,
@@ -181,6 +182,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
                   icon: Icons.info,
                   title: loc.info,
                   message: _getInfoText(context),
+                  fullscreen: false,
                 ),
                 child: ListView.builder(
                   itemCount: suggestedPlayers.length,
@@ -218,7 +220,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   void loadPlayerList() {
     _allPlayersFuture = Future.wait([
       db.playerDao.getAllPlayers(),
-      Future.delayed(Constants.minimumSkeletonDuration),
+      Future.delayed(Constants.MINIMUM_SKELETON_DURATION),
     ]).then((results) => results[0] as List<Player>);
     if (mounted) {
       _allPlayersFuture.then((loadedPlayers) {
@@ -294,6 +296,7 @@ class _PlayerSelectionState extends State<PlayerSelection> {
   /// [message] - The message to display in the snackbar.
   void showSnackBarMessage(String message) {
     if (!context.mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: CustomTheme.boxColor,

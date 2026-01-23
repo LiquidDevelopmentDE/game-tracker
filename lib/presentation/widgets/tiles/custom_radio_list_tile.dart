@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:game_tracker/core/custom_theme.dart';
+import 'package:tallee/core/custom_theme.dart';
 
-/// A custom radio list tile widget that encapsulates a [Radio] button with additional styling and functionality.
-/// - [text]: The text to display next to the radio button.
-/// - [value]: The value associated with the radio button.
-/// - [onContainerTap]: The callback invoked when the container is tapped.
 class CustomRadioListTile<T> extends StatelessWidget {
+  /// A custom radio list tile widget that encapsulates a [Radio] button with additional styling and functionality.
+  /// - [text]: The text to display next to the radio button.
+  /// - [value]: The value associated with the radio button.
+  /// - [onContainerTap]: The callback invoked when the container is tapped.
   const CustomRadioListTile({
     super.key,
     required this.text,
