@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/db/tables/game_table.dart';
 import 'package:game_tracker/data/dto/game.dart';
+import 'package:game_tracker/core/enums.dart';
 
 part 'game_dao.g.dart';
 
@@ -18,7 +19,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
           (row) => Game(
             id: row.id,
             name: row.name,
-            ruleset: row.ruleset,
+            ruleset: Ruleset.values.firstWhere((e) => e.name == row.ruleset),
             description: row.description,
             color: row.color,
             icon: row.icon,
@@ -35,7 +36,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
     return Game(
       id: result.id,
       name: result.name,
-      ruleset: result.ruleset,
+      ruleset: Ruleset.values.firstWhere((e) => e.name == result.ruleset),
       description: result.description,
       color: result.color,
       icon: result.icon,
@@ -52,7 +53,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
         GameTableCompanion.insert(
           id: game.id,
           name: game.name,
-          ruleset: game.ruleset ?? '',
+          ruleset: game.ruleset.name,
           description: game.description,
           color: game.color,
           icon: Value(game.icon),
@@ -78,7 +79,7 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
               (game) => GameTableCompanion.insert(
                 id: game.id,
                 name: game.name,
-                ruleset: game.ruleset ?? '',
+                ruleset: game.ruleset.name,
                 description: game.description,
                 color: game.color,
                 icon: Value(game.icon),
@@ -122,10 +123,10 @@ class GameDao extends DatabaseAccessor<AppDatabase> with _$GameDaoMixin {
   /// Updates the ruleset of the game with the given [gameId].
   Future<void> updateGameRuleset({
     required String gameId,
-    required String newRuleset,
+    required Ruleset newRuleset,
   }) async {
     await (update(gameTable)..where((g) => g.id.equals(gameId))).write(
-      GameTableCompanion(ruleset: Value(newRuleset)),
+      GameTableCompanion(ruleset: Value(newRuleset.name)),
     );
   }
 

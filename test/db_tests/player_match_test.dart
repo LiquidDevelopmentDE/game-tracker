@@ -8,6 +8,7 @@ import 'package:game_tracker/data/dto/group.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/data/dto/team.dart';
+import 'package:game_tracker/core/enums.dart';
 
 void main() {
   late AppDatabase database;
@@ -46,7 +47,7 @@ void main() {
         name: 'Test Group',
         members: [testPlayer1, testPlayer2, testPlayer3],
       );
-      testGame = Game(name: 'Test Game', description: 'A test game', color: '0xFF000000');
+      testGame = Game(name: 'Test Game', ruleset: Ruleset.singleWinner, description: 'A test game', color: '0xFF000000');
       testMatchOnlyGroup = Match(
         name: 'Test Match with Group',
         game: testGame,

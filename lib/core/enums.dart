@@ -29,24 +29,27 @@ enum ImportResult {
 /// - [ExportResult.unknownException]: An exception occurred during export.
 enum ExportResult { success, canceled, unknownException }
 
-/// Different rulesets available for matches
-/// - [Ruleset.singleWinner]: The match is won by a single player
-/// - [Ruleset.singleLoser]: The match is lost by a single player
-/// - [Ruleset.mostPoints]: The player with the most points wins.
-/// - [Ruleset.leastPoints]: The player with the fewest points wins.
-enum Ruleset { singleWinner, singleLoser, mostPoints, leastPoints }
+/// Different rulesets available for games
+/// - [Ruleset.highestScore]: The player with the highest score wins.
+/// - [Ruleset.lowestScore]: The player with the lowest score wins.
+/// - [Ruleset.singleWinner]: The match is won by a single player.
+/// - [Ruleset.singleLoser]: The match has a single loser.
+/// - [Ruleset.multipleWinners]: Multiple players can be winners.
+enum Ruleset { highestScore, lowestScore, singleWinner, singleLoser, multipleWinners }
 
 /// Translates a [Ruleset] enum value to its corresponding localized string.
 String translateRulesetToString(Ruleset ruleset, BuildContext context) {
   final loc = AppLocalizations.of(context);
   switch (ruleset) {
+    case Ruleset.highestScore:
+      return loc.highest_score;
+    case Ruleset.lowestScore:
+      return loc.lowest_score;
     case Ruleset.singleWinner:
       return loc.single_winner;
     case Ruleset.singleLoser:
       return loc.single_loser;
-    case Ruleset.mostPoints:
-      return loc.most_points;
-    case Ruleset.leastPoints:
-      return loc.least_points;
+    case Ruleset.multipleWinners:
+      return loc.multiple_winners;
   }
 }

@@ -7,6 +7,7 @@ import 'package:game_tracker/data/dto/game.dart';
 import 'package:game_tracker/data/dto/match.dart';
 import 'package:game_tracker/data/dto/player.dart';
 import 'package:game_tracker/data/dto/team.dart';
+import 'package:game_tracker/core/enums.dart';
 
 void main() {
   late AppDatabase database;
@@ -48,8 +49,8 @@ void main() {
         name: 'Team Gamma',
         members: [testPlayer1, testPlayer3],
       );
-      testGame1 = Game(name: 'Game 1', description: 'Test game 1', color: '0xFF000000');
-      testGame2 = Game(name: 'Game 2', description: 'Test game 2', color: '0xFF000000');
+      testGame1 = Game(name: 'Game 1', ruleset: Ruleset.singleWinner, description: 'Test game 1', color: '0xFF000000');
+      testGame2 = Game(name: 'Game 2', ruleset: Ruleset.highestScore, description: 'Test game 2', color: '0xFF000000');
     });
 
     await database.playerDao.addPlayersAsList(

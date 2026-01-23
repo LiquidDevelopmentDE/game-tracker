@@ -127,7 +127,7 @@ class MatchDao extends DatabaseAccessor<AppDatabase> with _$MatchDaoMixin {
                   (game) => GameTableCompanion.insert(
                     id: game.id,
                     name: game.name,
-                    ruleset: game.ruleset ?? '',
+                    ruleset: game.ruleset.name,
                     description: game.description,
                     color: game.color,
                     icon: Value(game.icon),

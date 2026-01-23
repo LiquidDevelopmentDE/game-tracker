@@ -4,6 +4,7 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_tracker/data/db/database.dart';
 import 'package:game_tracker/data/dto/game.dart';
+import 'package:game_tracker/core/enums.dart';
 
 void main() {
   late AppDatabase database;
@@ -24,7 +25,7 @@ void main() {
     withClock(fakeClock, () {
       testGame1 = Game(
         name: 'Chess',
-        ruleset: 'winner.single',
+        ruleset: Ruleset.singleWinner,
         description: 'A classic strategy game',
         color: '0xFF0000FF',
         icon: 'chess_icon',
@@ -32,14 +33,15 @@ void main() {
       testGame2 = Game(
         id: 'game2',
         name: 'Poker',
-        ruleset: 'Texas Hold\'em rules',
-        description: 'winner.multiple',
+        ruleset: Ruleset.multipleWinners,
+        description: 'Card game with multiple winners',
         color: '0xFFFF0000',
         icon: 'poker_icon',
       );
       testGame3 = Game(
         id: 'game3',
         name: 'Monopoly',
+        ruleset: Ruleset.highestScore,
         description: 'A board game about real estate',
         color: '0xFF000000',
       );
@@ -131,7 +133,7 @@ void main() {
 
     // Verifies that a game with null optional fields can be added and retrieved.
     test('addGame handles game with null optional fields', () async {
-      final gameWithNulls = Game(name: 'Simple Game', description: 'A simple game', color: '0xFF000000');
+      final gameWithNulls = Game(name: 'Simple Game', ruleset: Ruleset.lowestScore, description: 'A simple game', color: '0xFF000000');
       final result = await database.gameDao.addGame(game: gameWithNulls);
       expect(result, true);
 
@@ -269,13 +271,13 @@ void main() {
 
       await database.gameDao.updateGameRuleset(
         gameId: testGame1.id,
-        newRuleset: 'New ruleset for chess',
+        newRuleset: Ruleset.highestScore,
       );
 
       final updatedGame = await database.gameDao.getGameById(
         gameId: testGame1.id,
       );
-      expect(updatedGame.ruleset, 'New ruleset for chess');
+      expect(updatedGame.ruleset, Ruleset.highestScore);
       expect(updatedGame.name, testGame1.name);
     });
 
@@ -283,7 +285,7 @@ void main() {
     test('updateGameRuleset does nothing for non-existent game', () async {
       await database.gameDao.updateGameRuleset(
         gameId: 'non-existent-id',
-        newRuleset: 'New Ruleset',
+        newRuleset: Ruleset.lowestScore,
       );
 
       final allGames = await database.gameDao.getAllGames();
@@ -455,6 +457,7 @@ void main() {
     test('Game with special characters in name is stored correctly', () async {
       final specialGame = Game(
         name: 'Game\'s & "Special" <Name>',
+        ruleset: Ruleset.multipleWinners,
         description: 'Description with émojis 🎮🎲',
         color: '0xFF000000',
       );
@@ -471,7 +474,7 @@ void main() {
     test('Game with empty string fields is stored correctly', () async {
       final emptyGame = Game(
         name: '',
-        ruleset: '',
+        ruleset: Ruleset.singleWinner,
         description: '',
         icon: '',
         color: '0xFF000000',
@@ -482,7 +485,7 @@ void main() {
         gameId: emptyGame.id,
       );
       expect(fetchedGame.name, '');
-      expect(fetchedGame.ruleset, '');
+      expect(fetchedGame.ruleset, Ruleset.singleWinner);
       expect(fetchedGame.description, '');
       expect(fetchedGame.icon, '');
     });
@@ -493,7 +496,7 @@ void main() {
       final longGame = Game(
         name: longString,
         description: longString,
-        ruleset: longString,
+        ruleset: Ruleset.multipleWinners,
         color: '0xFF000000',
       );
       await database.gameDao.addGame(game: longGame);
@@ -503,7 +506,7 @@ void main() {
       );
       expect(fetchedGame.name.length, 10000);
       expect(fetchedGame.description.length, 10000);
-      expect(fetchedGame.ruleset?.length, 10000);
+      expect(fetchedGame.ruleset, Ruleset.multipleWinners);
     });
 
     // Verifies that multiple sequential updates to the same game work correctly.

@@ -100,7 +100,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   }
 
   List<(String, String, Ruleset)> games = [
-    ('Example Game 1', 'This is a description', Ruleset.leastPoints),
+    ('Example Game 1', 'This is a description', Ruleset.lowestScore),
     ('Example Game 2', '', Ruleset.singleWinner),
   ];
 
@@ -201,7 +201,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                           gameToUse = Game(
                             name: selectedGame.$1,
                             description: selectedGame.$2,
-                            ruleset: selectedGame.$3.name,
+                            ruleset: selectedGame.$3,
                             color: '0xFF000000',
                           );
                         } else {
@@ -210,7 +210,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                           gameToUse = Game(
                             name: selectedGame.$1,
                             description: selectedGame.$2,
-                            ruleset: selectedGame.$3.name,
+                            ruleset: selectedGame.$3,
                             color: '0xFF000000',
                           );
                         }
