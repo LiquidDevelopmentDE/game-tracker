@@ -3,7 +3,7 @@
     <h2 align="center">Tallee</h2>
 </p>
 <p align="center">
-An open-source app to track card- and board games, manageplayersand groups and get statistics about your played games.
+An open-source app to track card- and board games, manage players & groups and get statistics about your played games.
 </p>
 <p align="center">
     <a href="https://apps.apple.com/">
@@ -20,8 +20,6 @@ An open-source app to track card- and board games, manageplayersand groups and g
       />
     </a>
 </p>
-
-
 
 ![Version](https://img.shields.io/badge/App--Version-0.0.1_Alpha-orange)
 ![Flutter](https://img.shields.io/badge/Flutter-3.38.6-027DFD?logo=flutter)
