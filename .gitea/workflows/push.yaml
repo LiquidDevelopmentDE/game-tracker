@@ -92,6 +92,7 @@ jobs:
         run: |
           git config --global user.name "Gitea Actions [bot]"
           git config --global user.email "actions@yannick-weigert.de"
+          git pull origin ${{ gitea.ref_name }}
           git add pubspec.yaml
           git commit -m "Updated version number [skip ci]"
           git push origin HEAD:${{ gitea.ref_name }}
@@ -123,6 +124,7 @@ jobs:
           if [ -n "$(git status --porcelain lib test)" ]; then
             git config --global user.name "Gitea Actions [bot]"
             git config --global user.email "actions@yannick-weigert.de"
+            git pull origin ${{ gitea.ref_name }}
             git add lib test
             git commit -m "Updated licenses [skip ci]"
             git push origin HEAD:${{ gitea.ref_name }}
