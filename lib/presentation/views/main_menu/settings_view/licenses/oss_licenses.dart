@@ -31,6 +31,7 @@ const allDependencies = <Package>[
   _cli_config,
   _cli_util,
   _clock,
+  _code_assets,
   _code_builder,
   _collection,
   _convert,
@@ -62,6 +63,7 @@ const allDependencies = <Package>[
   _frontend_server_client,
   _glob,
   _graphs,
+  _hooks,
   _html,
   _http,
   _http_multi_server,
@@ -81,8 +83,10 @@ const allDependencies = <Package>[
   _material_color_utilities,
   _meta,
   _mime,
+  _native_toolchain_c,
   _nested,
   _node_preamble,
+  _objective_c,
   _package_config,
   _package_info_plus,
   _package_info_plus_platform_interface,
@@ -1185,6 +1189,47 @@ const _clock = Package(
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.''',
+  );
+
+/// code_assets 1.0.0
+const _code_assets = Package(
+    name: 'code_assets',
+    description: 'This library contains the hook protocol specification for bundling native code with Dart packages.',
+    repository: 'https://github.com/dart-lang/native/tree/main/pkgs/code_assets',
+    authors: [],
+    version: '1.0.0',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('collection'), PackageRef('hooks')],
+    devDependencies: [PackageRef('json_schema'), PackageRef('test')],
+    license: '''Copyright 2025, the Dart project authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google LLC nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
 /// code_builder 4.11.1
@@ -2573,13 +2618,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
-/// flutter 3.38.2
+/// flutter 3.38.6
 const _flutter = Package(
     name: 'flutter',
     description: 'A framework for writing Flutter applications',
     homepage: 'https://flutter.dev',
     authors: [],
-    version: '3.38.2',
+    version: '3.38.6',
     spdxIdentifiers: ['BSD-3-Clause'],
     isMarkdown: false,
     isSdk: true,
@@ -2874,6 +2919,47 @@ const _graphs = Package(
     dependencies: [PackageRef('collection')],
     devDependencies: [PackageRef('test'), PackageRef('analyzer'), PackageRef('path'), PackageRef('pool')],
     license: '''Copyright 2017, the Dart project authors. 
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google LLC nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
+/// hooks 1.0.0
+const _hooks = Package(
+    name: 'hooks',
+    description: 'A library that contains a Dart API for the JSON-based protocol for `hook/build.dart` and `hook/link.dart`.',
+    repository: 'https://github.com/dart-lang/native/tree/main/pkgs/hooks',
+    authors: [],
+    version: '1.0.0',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('collection'), PackageRef('crypto'), PackageRef('logging'), PackageRef('meta'), PackageRef('pub_semver'), PackageRef('yaml')],
+    devDependencies: [PackageRef('args'), PackageRef('code_assets'), PackageRef('glob'), PackageRef('json_schema'), PackageRef('path'), PackageRef('test')],
+    license: '''Copyright 2025, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -3861,6 +3947,47 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
+/// native_toolchain_c 0.17.4
+const _native_toolchain_c = Package(
+    name: 'native_toolchain_c',
+    description: 'A library to invoke the native C compiler installed on the host machine.',
+    repository: 'https://github.com/dart-lang/native/tree/main/pkgs/native_toolchain_c',
+    authors: [],
+    version: '0.17.4',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('code_assets'), PackageRef('glob'), PackageRef('hooks'), PackageRef('logging'), PackageRef('meta'), PackageRef('pub_semver')],
+    devDependencies: [PackageRef('collection'), PackageRef('test')],
+    license: '''Copyright 2023, the Dart project authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google LLC nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
 /// nested 1.0.0
 const _nested = Package(
     name: 'nested',
@@ -3945,6 +4072,47 @@ met:
     * Neither the name of Google Inc. nor the names of its
       contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
+/// objective_c 9.2.4
+const _objective_c = Package(
+    name: 'objective_c',
+    description: 'A library to access Objective C from Flutter that acts as a support library for package:ffigen.',
+    repository: 'https://github.com/dart-lang/native/tree/main/pkgs/objective_c',
+    authors: [],
+    version: '9.2.4',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('code_assets'), PackageRef('collection'), PackageRef('ffi'), PackageRef('hooks'), PackageRef('logging'), PackageRef('native_toolchain_c'), PackageRef('pub_semver')],
+    devDependencies: [PackageRef('args'), PackageRef('path'), PackageRef('test'), PackageRef('yaml')],
+    license: '''Copyright 2024, the Dart project authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google LLC nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -4243,18 +4411,18 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
-/// path_provider_foundation 2.5.1
+/// path_provider_foundation 2.6.0
 const _path_provider_foundation = Package(
     name: 'path_provider_foundation',
     description: 'iOS and macOS implementation of the path_provider plugin',
     repository: 'https://github.com/flutter/packages/tree/main/packages/path_provider/path_provider_foundation',
     authors: [],
-    version: '2.5.1',
+    version: '2.6.0',
     spdxIdentifiers: ['BSD-3-Clause'],
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('flutter'), PackageRef('path_provider_platform_interface')],
-    devDependencies: [PackageRef('path')],
+    dependencies: [PackageRef('ffi'), PackageRef('flutter'), PackageRef('objective_c'), PackageRef('path_provider_platform_interface')],
+    devDependencies: [],
     license: '''Copyright 2013 The Flutter Authors
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -7191,7 +7359,7 @@ const _win32 = Package(
     isMarkdown: false,
     isSdk: false,
     dependencies: [PackageRef('ffi')],
-    devDependencies: [PackageRef('args'), PackageRef('path'), PackageRef('test')],
+    devDependencies: [PackageRef('args'), PackageRef('hooks'), PackageRef('path'), PackageRef('test')],
     license: '''BSD 3-Clause License
 
 Copyright (c) 2024, Halil Durmus
@@ -7331,12 +7499,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
-/// tallee 0.0.12+240
+/// tallee 0.0.14+242
 const _tallee = Package(
     name: 'tallee',
     description: 'Tracking App for Card Games',
     authors: [],
-    version: '0.0.12+240',
+    version: '0.0.14+242',
     spdxIdentifiers: [],
     isMarkdown: false,
     isSdk: false,
