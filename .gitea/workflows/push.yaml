@@ -13,18 +13,60 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Flutter (wget)
+      # Required for Flutter action
+      - name: Install jq
         run: |
-          wget --show-progress --progress=bar:force:noscroll:giga https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.38.2-stable.tar.xz
-          tar xf flutter_linux_3.38.2-stable.tar.xz
-          git config --global --add safe.directory "$(pwd)/flutter"
-          echo "$(pwd)/flutter/bin" >> $GITEA_PATH
+          apt-get update
+          apt-get install -y jq 
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.38.6
 
       - name: Get dependencies
-        run: flutter pub get
+        run: |
+          git config --global --add safe.directory /opt/hostedtoolcache/flutter/stable-3.38.6-x64
+          flutter pub get
 
       - name: Run tests
         run: flutter test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java (Temurin 17)
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      # Required for Flutter action
+      - name: Install jq
+        run: |
+          apt-get update
+          apt-get install -y jq 
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.38.6
+
+      - name: Get dependencies
+        run: |
+          git config --global --add safe.directory /opt/hostedtoolcache/flutter/stable-3.38.6-x64
+          flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
 
   format:
     runs-on: ubuntu-latest
@@ -32,15 +74,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Flutter (wget)
+      # Required for Flutter action
+      - name: Install jq
         run: |
-          wget --show-progress --progress=bar:force:noscroll:giga https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.38.2-stable.tar.xz
-          tar xf flutter_linux_3.38.2-stable.tar.xz
-          git config --global --add safe.directory "$(pwd)/flutter"
-          echo "$(pwd)/flutter/bin" >> $GITEA_PATH
+          apt-get update
+          apt-get install -y jq 
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.38.6
 
       - name: Get dependencies
-        run: flutter pub get
+        run: |
+          git config --global --add safe.directory /opt/hostedtoolcache/flutter/stable-3.38.6-x64
+          flutter pub get
 
       - name: Check code format
         id: check_format
