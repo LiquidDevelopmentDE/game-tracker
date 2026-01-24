@@ -7499,12 +7499,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
-/// tallee 0.0.14+242
+/// tallee 0.0.13+245
 const _tallee = Package(
     name: 'tallee',
     description: 'Tracking App for Card Games',
     authors: [],
-    version: '0.0.14+242',
+    version: '0.0.13+245',
     spdxIdentifiers: [],
     isMarkdown: false,
     isSdk: false,
