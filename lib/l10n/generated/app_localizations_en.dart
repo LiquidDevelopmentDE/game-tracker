@@ -96,12 +96,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get color_yellow => 'Yellow';
 
   @override
+  String get coming_soon => 'Coming soon';
+
+  @override
   String get confirm => 'Confirm';
 
   @override
   String could_not_add_player(String playerName) {
     return 'Could not add player $playerName';
   }
+
+  @override
+  String get create => 'Create';
 
   @override
   String get create_game => 'Create Game';

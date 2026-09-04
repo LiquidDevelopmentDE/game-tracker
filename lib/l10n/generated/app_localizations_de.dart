@@ -96,12 +96,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get color_yellow => 'Gelb';
 
   @override
+  String get coming_soon => 'Demnächst verfügbar';
+
+  @override
   String get confirm => 'Bestätigen';
 
   @override
   String could_not_add_player(String playerName) {
     return 'Spieler:in $playerName konnte nicht hinzugefügt werden';
   }
+
+  @override
+  String get create => 'Erstellen';
 
   @override
   String get create_game => 'Spielvorlage erstellen';

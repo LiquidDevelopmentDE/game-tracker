@@ -5,6 +5,7 @@ import 'package:tallee/core/constants/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/views/main_menu/create_view/create_view.dart';
 import 'package:tallee/presentation/views/main_menu/game_view/game_view.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/group_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_view.dart';
@@ -53,6 +54,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       KeyedSubtree(
         key: ValueKey('groups_${tabKeyCount}_$refreshRevision'),
         child: const GroupView(),
+      ),
+      KeyedSubtree(
+        key: ValueKey('create_${tabKeyCount}_$refreshRevision'),
+        child: const CreateView(),
       ),
       KeyedSubtree(
         key: ValueKey('games_${tabKeyCount}_$refreshRevision'),
@@ -104,7 +109,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             ),
 
           // Only in GameView
-          if (currentIndex == 2)
+          if (currentIndex == 3)
             HapticIconButton(
               key: ValueKey(
                 gameSearchProvider.isSearching
@@ -177,13 +182,20 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
               NavbarItem(
                 index: 2,
                 isSelected: currentIndex == 2,
-                icon: GAME_ICON,
-                label: loc.games,
+                icon: Icons.add_rounded,
+                label: loc.create,
                 onTabTapped: onTabTapped,
               ),
               NavbarItem(
                 index: 3,
                 isSelected: currentIndex == 3,
+                icon: GAME_ICON,
+                label: loc.games,
+                onTabTapped: onTabTapped,
+              ),
+              NavbarItem(
+                index: 4,
+                isSelected: currentIndex == 4,
                 icon: Icons.bar_chart_rounded,
                 label: loc.statistics,
                 onTabTapped: onTabTapped,
@@ -212,8 +224,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       case 1:
         return loc.groups;
       case 2:
-        return loc.games;
+        return loc.create;
       case 3:
+        return loc.games;
+      case 4:
         return loc.statistics;
       default:
         return '';

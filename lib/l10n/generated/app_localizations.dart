@@ -266,6 +266,12 @@ abstract class AppLocalizations {
   /// **'Yellow'**
   String get color_yellow;
 
+  /// No description provided for @coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get coming_soon;
+
   /// No description provided for @confirm.
   ///
   /// In en, this message translates to:
@@ -277,6 +283,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not add player {playerName}'**
   String could_not_add_player(String playerName);
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
 
   /// No description provided for @create_game.
   ///

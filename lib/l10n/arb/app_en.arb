@@ -28,6 +28,7 @@
   "color_red": "Red",
   "color_teal": "Teal",
   "color_yellow": "Yellow",
+  "coming_soon": "Coming soon",
   "confirm": "Confirm",
   "could_not_add_player": "Could not add player {playerName}",
   "@could_not_add_player": {
@@ -37,6 +38,7 @@
       }
     }
   },
+  "create": "Create",
   "create_game": "Create Game",
   "create_group": "Create Group",
   "create_match": "Create Match",
