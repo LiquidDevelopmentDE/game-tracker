@@ -40,7 +40,7 @@ class _GameViewState extends State<GameView> {
     4,
     Game(
       name: 'Skeleton game name',
-      ruleset: Ruleset.singleWinner,
+      ruleset: Ruleset.winner,
       color: AppColor.blue,
       description: 'Skeleton description for the game tile',
     ),
@@ -154,6 +154,7 @@ class _GameViewState extends State<GameView> {
 
                         itemBuilder: (BuildContext context, int index) {
                           return GameTile(
+                            gameCount: getGameCount(filteredGames[index]),
                             onTap: () async {
                               Navigator.push(
                                 context,

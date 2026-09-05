@@ -10,7 +10,7 @@ import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/adaptive_page_route.dart';
 import 'package:tallee/presentation/utils/name_display.dart';
-import 'package:tallee/presentation/views/main_menu/player_detail_view.dart';
+import 'package:tallee/presentation/views/main_menu/player_view/player_detail_view.dart';
 import 'package:tallee/presentation/widgets/cards/team_card.dart';
 import 'package:tallee/presentation/widgets/game_label.dart';
 import 'package:tallee/presentation/widgets/tiles/text_icon_tile/pair_tile.dart';
@@ -273,7 +273,7 @@ class _MatchTileState extends State<MatchTile> {
                           adaptivePageRoute(
                             builder: (context) => PlayerDetailView(
                               player: pair.members.first,
-                              onPlayerNameUpdated: () {
+                              onPlayerUpdated: () {
                                 widget.onPlayerEdited?.call();
                               },
                             ),
@@ -307,7 +307,7 @@ class _MatchTileState extends State<MatchTile> {
                         adaptivePageRoute(
                           builder: (context) => PlayerDetailView(
                             player: player,
-                            onPlayerNameUpdated: () {
+                            onPlayerUpdated: () {
                               widget.onPlayerEdited?.call();
                             },
                           ),
@@ -375,7 +375,7 @@ class _MatchTileState extends State<MatchTile> {
     );
 
     final namesToRender =
-        ruleset == Ruleset.multipleWinners ||
+        ruleset == Ruleset.winner ||
             ruleset == Ruleset.highestScore ||
             ruleset == Ruleset.lowestScore ||
             ruleset == Ruleset.lives
@@ -470,10 +470,9 @@ class _MatchTileState extends State<MatchTile> {
     final icon = getRulesetIcon(widget.match.game.ruleset);
 
     switch (widget.match.game.ruleset) {
-      case Ruleset.singleWinner:
-      case Ruleset.multipleWinners:
+      case Ruleset.winner:
         return Icon(icon, size: 20, color: Colors.amber);
-      case Ruleset.singleLoser:
+      case Ruleset.loser:
         return Icon(icon, size: 20, color: Colors.blue);
       case Ruleset.lowestScore:
         return Icon(icon, size: 20, color: Colors.orange);

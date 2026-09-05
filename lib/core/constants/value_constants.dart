@@ -1,5 +1,14 @@
+/// URL to the LIQUID website
+const String LIQUID_WEBSITE_URL = 'https://liquid-dev.de/';
+
 /// URL to the legal section on the LIQUID website
 const String LIQUID_WEBSITE_LEGAL_URL = 'https://liquid-dev.de/legal';
+
+/// URL to the LIQUID github organization profile
+const String LIQUID_GITHUB_URL = 'https://github.com/liquiddevelopmentde';
+
+/// Email for contacting LIQUID
+const String LIQUID_CONTACT_EMAIL = 'hello@liquid-dev.de';
 
 /// Treshold for fuzzy search
 const int FUZZY_SEARCH_THRESHOLD = 50;
@@ -24,6 +33,12 @@ const int MAX_TEAM_NAME_LENGTH = 32;
 
 /// Maximum length for game descriptions
 const int MAX_GAME_DESCRIPTION_LENGTH = 256;
+
+/// Maximum length for player descriptions
+const int MAX_PLAYER_DESCRIPTION_LENGTH = 256;
+
+/// Maximum length for group descriptions
+const int MAX_GROUP_DESCRIPTION_LENGTH = 256;
 
 /// Range for score input
 const ({int min, int max}) SCORE_INPUT_BOUNDARIES = (min: -99999, max: 99999);
