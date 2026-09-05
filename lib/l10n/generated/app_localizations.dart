@@ -254,6 +254,12 @@ abstract class AppLocalizations {
   /// **'Click another player to create a pair'**
   String get click_another_player_to_create_a_pair;
 
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
   /// No description provided for @code_copied.
   ///
   /// In en, this message translates to:
@@ -337,12 +343,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not add player {playerName}'**
   String could_not_add_player(String playerName);
-
-  /// No description provided for @close.
-  ///
-  /// In en, this message translates to:
-  /// **'Close'**
-  String get close;
 
   /// No description provided for @create_as_new.
   ///
@@ -1598,6 +1598,12 @@ abstract class AppLocalizations {
   /// **'Unknown Exception (see console)'**
   String get unknown_exception;
 
+  /// No description provided for @whats_new.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new?'**
+  String get whats_new;
+
   /// No description provided for @winner.
   ///
   /// In en, this message translates to:
@@ -1609,12 +1615,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Winrate'**
   String get winrate;
-
-  /// No description provided for @whats_new.
-  ///
-  /// In en, this message translates to:
-  /// **'What\'s new?'**
-  String get whats_new;
 
   /// No description provided for @worst_score.
   ///

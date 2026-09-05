@@ -8,8 +8,9 @@ import 'package:tallee/presentation/widgets/colored_icon_container.dart';
 import 'package:tallee/services/package_info_service.dart';
 
 class UpdateView extends StatelessWidget {
-  /// An update screen displaying a markdown file
-  const UpdateView({super.key});
+  const UpdateView({super.key, this.scrollController});
+
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -18,95 +19,89 @@ class UpdateView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  margin: const EdgeInsets.all(10),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                  decoration: CustomTheme.standardBoxDecoration,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 10,
-                          left: 10,
-                          top: 12,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          spacing: 10,
-                          children: [
-                            const ColoredIconContainer(
-                              containerSize: 65,
-                              iconSize: 65 / 1.5,
-                              icon: Icons.newspaper,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                children: [
+                  buildHeader(loc, packageInfo),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                    child: FutureBuilder<String>(
+                      future: loadMarkdownFiles(context),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Padding(
+                            padding: EdgeInsets.all(24),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: CustomTheme.primaryColor,
+                              ),
                             ),
-                            Column(
-                              spacing: 2,
-                              children: [
-                                Text(
-                                  loc.whats_new,
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Version ${packageInfo.version} (${packageInfo.buildNumber})',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: CustomTheme.hintColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      FutureBuilder<String>(
-                        future: loadMarkdownFiles(context),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          if (snapshot.hasError) {
-                            return Center(
-                              child: Text(loc.error_loading_whats_new),
-                            );
-                          }
-                          return Markdown(
-                            data: snapshot.data ?? '',
-                            selectable: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            styleSheet: buildMarkdownSheet(context),
                           );
-                        },
-                      ),
-                    ],
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text(loc.error_loading_whats_new),
+                          );
+                        }
+                        return Markdown(
+                          data: snapshot.data ?? '',
+                          selectable: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          styleSheet: buildMarkdownSheet(context),
+                        );
+                      },
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
+          ),
+          SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
               child: BottomAnimatedButton(
                 buttonConstraints: const BoxConstraints(minWidth: 390),
                 buttonText: loc.close,
-                onPressed: () => Navigator.pop(context),
+                onPressed: () =>
+                    Navigator.of(context, rootNavigator: true).pop(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildHeader(AppLocalizations loc, PackageInfo packageInfo) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, top: 28, right: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 6,
+        children: [
+          // Icon
+          const ColoredIconContainer(containerSize: 60, icon: Icons.newspaper),
+
+          // Title
+          Text(
+            loc.whats_new,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+
+          // Version
+          Text(
+            'Version ${packageInfo.version}',
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade300),
+          ),
+        ],
       ),
     );
   }

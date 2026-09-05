@@ -92,6 +92,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Klicke einen weiteren Spieler an, um ein Paar zu erstellen';
 
   @override
+  String get close => 'Schließen';
+
+  @override
   String get code_copied => 'Code in die Zwischenablage kopiert';
 
   @override
@@ -135,9 +138,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String could_not_add_player(String playerName) {
     return 'Spieler:in $playerName konnte nicht hinzugefügt werden';
   }
-
-  @override
-  String get close => 'Schließen';
 
   @override
   String get create_as_new => 'Neu erstellen';
@@ -860,13 +860,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
 
   @override
+  String get whats_new => 'Neuigkeiten';
+
+  @override
   String get winner => 'Gewinner:in';
 
   @override
   String get winrate => 'Siegquote';
-
-  @override
-  String get whats_new => 'Neuigkeiten';
 
   @override
   String get worst_score => 'Schlechteste Punktzahl';

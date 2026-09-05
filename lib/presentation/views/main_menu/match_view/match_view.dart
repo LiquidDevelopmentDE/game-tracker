@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
@@ -78,18 +79,23 @@ class _MatchViewState extends State<MatchView> {
       },
     );
 
-    Once.runOnEveryNewVersion(
-      key: 'whats-new-screen',
-      callback: () {
-        Navigator.push(
-          context,
-          adaptivePageRoute(
-            fullscreenDialog: true,
-            builder: (context) => const UpdateView(),
-          ),
-        );
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      // TODO: Uncomment
+      /* Once.runOnEveryNewVersion(
+        key: 'whats-new-screen',
+        callback: () {*/
+      Navigator.of(context, rootNavigator: true).push(
+        CupertinoSheetRoute(
+          enableDrag: false,
+          scrollableBuilder: (context, controller) =>
+              UpdateView(scrollController: controller),
+        ),
+      );
+      /* },
+      );*/
+    });
 
     loadMatches();
   }

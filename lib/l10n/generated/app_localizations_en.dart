@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Click another player to create a pair';
 
   @override
+  String get close => 'Close';
+
+  @override
   String get code_copied => 'Code copied to clipboard';
 
   @override
@@ -132,9 +135,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String could_not_add_player(String playerName) {
     return 'Could not add player $playerName';
   }
-
-  @override
-  String get close => 'Close';
 
   @override
   String get create_as_new => 'Create as new';
@@ -851,13 +851,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknown_exception => 'Unknown Exception (see console)';
 
   @override
+  String get whats_new => 'What\'s new?';
+
+  @override
   String get winner => 'Winner';
 
   @override
   String get winrate => 'Winrate';
-
-  @override
-  String get whats_new => 'What\'s new?';
 
   @override
   String get worst_score => 'Worst score';
