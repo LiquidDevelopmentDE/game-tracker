@@ -14,7 +14,7 @@ import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/adaptive_page_route.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/create_match/create_match_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_detail_view.dart';
-import 'package:tallee/presentation/views/update_view.dart';
+import 'package:tallee/presentation/views/news/news_view.dart';
 import 'package:tallee/presentation/widgets/app_skeleton.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
 import 'package:tallee/presentation/widgets/text_input/custom_search_bar.dart';
@@ -92,7 +92,7 @@ class _MatchViewState extends State<MatchView> {
           CupertinoSheetRoute(
             enableDrag: false,
             scrollableBuilder: (context, controller) =>
-                UpdateView(scrollController: controller),
+                NewsView(scrollController: controller),
           ),
         );
         /* },

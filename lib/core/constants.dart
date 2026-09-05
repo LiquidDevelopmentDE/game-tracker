@@ -21,6 +21,11 @@ class Constants {
   /// Minimum duration of all app skeletons
   static const Duration MINIMUM_SKELETON_DURATION = Duration(milliseconds: 250);
 
+  /// Delay before navigating to a view after opening the app
+  static const Duration OPEN_WITH_NAVIGATION_DELAY = Duration(
+    milliseconds: 300,
+  );
+
   /// Maximum length for player names
   static const int MAX_PLAYER_NAME_LENGTH = 32;
 
