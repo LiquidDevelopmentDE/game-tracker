@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:open_with_app/open_with_app.dart';
 import 'package:provider/provider.dart';
+import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/enums.dart';
 import 'package:tallee/core/self_signed_cert_http_overrides.dart';
@@ -176,13 +177,15 @@ class _TalleeState extends State<Tallee> {
             messengerKey: scaffoldMessengerKey,
           );
 
-    navigator.push(
-      adaptivePageRoute(
-        settings: RouteSettings(name: path),
-        fullscreenDialog: true,
-        builder: (_) => route,
-      ),
-    );
+    Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
+      navigator.push(
+        adaptivePageRoute(
+          settings: RouteSettings(name: path),
+          fullscreenDialog: true,
+          builder: (_) => route,
+        ),
+      );
+    });
   }
 
   @override
