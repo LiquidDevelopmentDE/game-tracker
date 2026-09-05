@@ -66,7 +66,6 @@ class CreateView extends StatelessWidget {
               right: CreateTile(
                 icon: PLAYER_ICON,
                 label: loc.players,
-                subtitle: loc.coming_soon,
                 onTap: null,
               ),
             ),
