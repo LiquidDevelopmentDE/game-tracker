@@ -154,6 +154,7 @@ class _GameViewState extends State<GameView> {
 
                         itemBuilder: (BuildContext context, int index) {
                           return GameTile(
+                            gameCount: getGameCount(filteredGames[index]),
                             onTap: () async {
                               Navigator.push(
                                 context,
