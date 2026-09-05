@@ -86,15 +86,18 @@ class _MatchViewState extends State<MatchView> {
       /* Once.runOnEveryNewVersion(
         key: 'whats-new-screen',
         callback: () {*/
-      Navigator.of(context, rootNavigator: true).push(
-        CupertinoSheetRoute(
-          enableDrag: false,
-          scrollableBuilder: (context, controller) =>
-              UpdateView(scrollController: controller),
-        ),
-      );
-      /* },
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (!mounted) return;
+        Navigator.of(context, rootNavigator: true).push(
+          CupertinoSheetRoute(
+            enableDrag: false,
+            scrollableBuilder: (context, controller) =>
+                UpdateView(scrollController: controller),
+          ),
+        );
+        /* },
       );*/
+      });
     });
 
     loadMatches();
