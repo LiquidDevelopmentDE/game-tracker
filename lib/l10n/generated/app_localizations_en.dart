@@ -123,9 +123,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get color_yellow => 'Yellow';
 
   @override
-  String get coming_soon => 'Coming soon';
-
-  @override
   String get confirm => 'Confirm';
 
   @override
@@ -158,13 +155,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_new_match => 'Create new match';
 
   @override
+  String get create_player => 'Create Player';
+
+  @override
   String get create_statistic => 'Create statistic';
 
   @override
   String get create_teams => 'Create teams';
-
-  @override
-  String get create_player => 'Create Player';
 
   @override
   String get created_on => 'Created on';

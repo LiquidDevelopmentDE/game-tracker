@@ -126,9 +126,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get color_yellow => 'Gelb';
 
   @override
-  String get coming_soon => 'Demnächst verfügbar';
-
-  @override
   String get confirm => 'Bestätigen';
 
   @override
@@ -161,13 +158,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_new_match => 'Neues Spiel erstellen';
 
   @override
+  String get create_player => 'Spieler:in erstellen';
+
+  @override
   String get create_statistic => 'Statistik erstellen';
 
   @override
   String get create_teams => 'Teams erstellen';
-
-  @override
-  String get create_player => 'Spieler:in erstellen';
 
   @override
   String get created_on => 'Erstellt am';

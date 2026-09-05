@@ -91,39 +91,37 @@ class _CreateTileState extends State<CreateTile>
               ),
               borderRadius: CustomTheme.standardBorderRadiusAll,
             ),
-            child: Expanded(
-              child: Column(
-                spacing: 4,
-                children: [
-                  // Icon container
-                  Container(
-                    width: 80,
-                    height: 80,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: widget.highlighted
-                          ? CustomTheme.primaryColor
-                          : CustomTheme.onBoxColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    ),
-                    child: Icon(widget.icon, size: 45),
+            child: Column(
+              spacing: 4,
+              children: [
+                // Icon container
+                Container(
+                  width: 80,
+                  height: 80,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: widget.highlighted
+                        ? CustomTheme.primaryColor
+                        : CustomTheme.onBoxColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
                   ),
+                  child: Icon(widget.icon, size: 45),
+                ),
 
-                  // Label text
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Text(
-                      widget.label,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        overflow: TextOverflow.visible,
-                      ),
+                // Label text
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Text(
+                    widget.label,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      overflow: TextOverflow.visible,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

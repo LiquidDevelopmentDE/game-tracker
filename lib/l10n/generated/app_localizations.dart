@@ -320,12 +320,6 @@ abstract class AppLocalizations {
   /// **'Yellow'**
   String get color_yellow;
 
-  /// No description provided for @coming_soon.
-  ///
-  /// In en, this message translates to:
-  /// **'Coming soon'**
-  String get coming_soon;
-
   /// No description provided for @confirm.
   ///
   /// In en, this message translates to:
@@ -386,6 +380,12 @@ abstract class AppLocalizations {
   /// **'Create new match'**
   String get create_new_match;
 
+  /// No description provided for @create_player.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Player'**
+  String get create_player;
+
   /// No description provided for @create_statistic.
   ///
   /// In en, this message translates to:
@@ -397,12 +397,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create teams'**
   String get create_teams;
-
-  /// No description provided for @create_player.
-  ///
-  /// In en, this message translates to:
-  /// **'Create Player'**
-  String get create_player;
 
   /// No description provided for @created_on.
   ///
