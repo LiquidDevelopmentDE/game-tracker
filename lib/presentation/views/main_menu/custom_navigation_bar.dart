@@ -5,7 +5,7 @@ import 'package:tallee/core/constants/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/adaptive_page_route.dart';
-import 'package:tallee/presentation/views/main_menu/create_view/create_view.dart';
+import 'package:tallee/presentation/views/main_menu/create_view.dart';
 import 'package:tallee/presentation/views/main_menu/game_view/game_view.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/group_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
