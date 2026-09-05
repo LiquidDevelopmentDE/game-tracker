@@ -39,6 +39,7 @@
   "color_teal": "Teal",
   "color_yellow": "Yellow",
   "confirm": "Confirm",
+  "continue_": "Continue",
   "copy_code": "Copy Code",
   "could_not_add_player": "Could not add player {playerName}",
   "@could_not_add_player": {
@@ -105,7 +106,6 @@
     }
   },
   "error_loading_privacy_policy": "Error loading privacy policy",
-  "error_loading_whats_new": "Error loading what's new",
   "error_reading_file": "Error reading file",
   "error_while_processing_file_try_again": "Error while processing file. Please try again.",
   "expires_in": "Expires in {time}",
@@ -336,6 +336,7 @@
   "type": "Type",
   "unexpected_error": "An unexpected error occurred.",
   "unknown_exception": "Unknown Exception (see console)",
+  "version": "Version",
   "whats_new": "What's new?",
   "winner": "Winner",
   "winrate": "Winrate",

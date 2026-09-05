@@ -39,6 +39,7 @@
   "color_teal": "Türkis",
   "color_yellow": "Gelb",
   "confirm": "Bestätigen",
+  "continue_": "Weiter",
   "copy_code": "Code kopieren",
   "could_not_add_player": "Spieler:in {playerName} konnte nicht hinzugefügt werden",
   "@could_not_add_player": {
@@ -105,7 +106,6 @@
     }
   },
   "error_loading_privacy_policy": "Fehler beim Laden der Datenschutzerklärung",
-  "error_loading_whats_new": "Fehler beim Laden der Neuigkeiten",
   "error_reading_file": "Fehler beim Lesen der Datei",
   "error_while_processing_file_try_again": "Fehler beim Verarbeiten der Datei. Bitte versuche es erneut",
   "expires_in": "Läuft ab in {time}",
@@ -327,6 +327,7 @@
   "type": "Typ",
   "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten.",
   "unknown_exception": "Unbekannter Fehler (siehe Konsole)",
+  "version": "Version",
   "whats_new": "Neuigkeiten",
   "winner": "Gewinner:in",
   "winrate": "Siegquote",

@@ -771,6 +771,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get version => 'Version';
+
+  @override
+  String get continue_ => 'Continue';
+
+  @override
   String get successfully_processed_file => 'Successfully processed file';
 
   @override

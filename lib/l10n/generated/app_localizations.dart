@@ -1448,6 +1448,18 @@ abstract class AppLocalizations {
   /// **'Successfully added player {playerName}'**
   String successfully_added_player(String playerName);
 
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
+
   /// No description provided for @successfully_processed_file.
   ///
   /// In en, this message translates to:
