@@ -44,10 +44,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
 
-    final matchSearchProvider = Provider.of<MatchSearchProvider>(context);
-    final groupSearchProvider = Provider.of<GroupSearchProvider>(context);
-    final gameSearchProvider = Provider.of<GameSearchProvider>(context);
-
     final refreshRevision = context.watch<DataRefreshProvider>().revision;
 
     // Pretty ugly but works
@@ -106,48 +102,9 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
           ),
         ),
         actions: [
-          // Only in MatchView
-          if (currentIndex == 0)
-            HapticIconButton(
-              key: ValueKey(
-                matchSearchProvider.isSearching
-                    ? 'match_search_close_button'
-                    : 'match_search_open_button',
-              ),
-              icon: matchSearchProvider.isSearching
-                  ? const Icon(Icons.close)
-                  : const Icon(Icons.search),
-              onPressed: () => matchSearchProvider.toggleSearch(),
-            ),
+          getSearchButton(currentIndex),
 
-          // Only in GroupView
-          if (currentIndex == 1)
-            HapticIconButton(
-              key: ValueKey(
-                groupSearchProvider.isSearching
-                    ? 'group_search_close_button'
-                    : 'group_search_open_button',
-              ),
-              icon: Icon(
-                groupSearchProvider.isSearching ? Icons.close : Icons.search,
-              ),
-              onPressed: () => groupSearchProvider.toggleSearch(),
-            ),
-
-          // Only in GameView
-          if (currentIndex == 3)
-            HapticIconButton(
-              key: ValueKey(
-                gameSearchProvider.isSearching
-                    ? 'game_search_close_button'
-                    : 'game_search_open_button',
-              ),
-              icon: Icon(
-                gameSearchProvider.isSearching ? Icons.close : Icons.search,
-              ),
-              onPressed: () => gameSearchProvider.toggleSearch(),
-            ),
-
+          // Settings
           HapticIconButton(
             onPressed: () async {
               final navigator = Navigator.of(context);
@@ -260,5 +217,54 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       default:
         return '';
     }
+  }
+
+  Widget getSearchButton(int currentTabIndex) {
+    bool isSearching;
+    VoidCallback toggle;
+    String closeKey;
+    String openKey;
+
+    switch (currentTabIndex) {
+      case 0:
+        final p = context.watch<MatchSearchProvider>();
+        isSearching = p.isSearching;
+        toggle = p.toggleSearch;
+        closeKey = 'match_search_close_button';
+        openKey = 'match_search_open_button';
+        break;
+      case 1:
+        final p = context.watch<GroupSearchProvider>();
+        isSearching = p.isSearching;
+        toggle = p.toggleSearch;
+        closeKey = 'group_search_close_button';
+        openKey = 'group_search_open_button';
+        break;
+      case 2:
+        final p = context.watch<GameSearchProvider>();
+        isSearching = p.isSearching;
+        toggle = p.toggleSearch;
+        closeKey = 'game_search_close_button';
+        openKey = 'game_search_open_button';
+        break;
+      default:
+        return const SizedBox.shrink();
+    }
+
+    final List<int> tabsWithSearch = [0, 1, 3];
+    final bool visible = tabsWithSearch.contains(currentTabIndex);
+
+    return IgnorePointer(
+      ignoring: !visible,
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 200),
+        opacity: visible ? 1.0 : 0.0,
+        child: HapticIconButton(
+          key: ValueKey(isSearching ? closeKey : openKey),
+          icon: Icon(isSearching ? Icons.close : Icons.search),
+          onPressed: toggle,
+        ),
+      ),
+    );
   }
 }
