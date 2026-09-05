@@ -6,8 +6,12 @@ class CreateTile extends StatefulWidget {
   /// A tappable tile used in the create tab to start creating a new entity.
   /// - [icon]: The icon representing the entity to create.
   /// - [label]: The label describing the entity to create.
-  /// - [onTap]: The callback invoked when the tile is tapped. When `null`,
-  ///   the tile is rendered in a disabled state.
+  /// - [onTap]: The callback invoked when the tile is tapped. It should return
+  ///   a [Future] that completes when the pushed view is popped again. When
+  ///   `null`, the tile is rendered in a disabled state.
+  /// - [afterTap]: Optional callback invoked *after* the [onTap] future
+  ///   completes, i.e. after the pushed view has been popped. Useful to switch
+  ///   to another tab once the entity has been created.
   /// - [highlighted]: Whether the tile should be visually emphasized.
   const CreateTile({
     super.key,
@@ -15,12 +19,14 @@ class CreateTile extends StatefulWidget {
     required this.label,
     required this.onTap,
     this.highlighted = false,
+    this.afterTap,
   });
 
   final IconData icon;
   final String label;
-  final VoidCallback? onTap;
+  final Future<void> Function()? onTap;
   final bool highlighted;
+  final VoidCallback? afterTap;
 
   @override
   State<CreateTile> createState() => _CreateTileState();
@@ -62,9 +68,11 @@ class _CreateTileState extends State<CreateTile>
         onTapUp: enabled ? (_) async => await controller.reverse() : null,
         onTapCancel: enabled ? () => controller.reverse() : null,
         onTap: enabled
-            ? () {
+            ? () async {
                 HapticFeedback.selectionClick();
-                widget.onTap!.call();
+                await widget.onTap!.call();
+                if (!mounted) return;
+                widget.afterTap?.call();
               }
             : null,
         child: Opacity(

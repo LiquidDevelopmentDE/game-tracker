@@ -13,15 +13,10 @@ import 'package:tallee/state/data_refresh_provider.dart';
 
 class CreateView extends StatelessWidget {
   /// A view that lets the user create the different entities of the app.
-  ///
-  /// The tiles are laid out in a 1 - 2 - 2 grid: the highlighted match tile
-  /// spans the full width on top, followed by two rows with two tiles each.
-  const CreateView({super.key});
+  /// - [onNavigateToTab] callback for switching the tab
+  const CreateView({super.key, this.onNavigateToTab});
 
-  /// Notifies the app that data changed so the other tabs reload their data.
-  void _notifyDataChanged(BuildContext context) {
-    context.read<DataRefreshProvider>().refresh();
-  }
+  final void Function(int index)? onNavigateToTab;
 
   @override
   Widget build(BuildContext context) {
@@ -33,67 +28,102 @@ class CreateView extends StatelessWidget {
         padding: CustomTheme.listViewPadding(context)
             .add(const EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
         child: Column(
+          spacing: 12,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Create match tile
             CreateTile(
               icon: MATCH_ICON,
               label: loc.create_match,
               highlighted: true,
+              afterTap: () => onNavigateToTab?.call(0),
               onTap: () => Navigator.push(
                 context,
                 adaptivePageRoute(
                   builder: (_) => CreateMatchView(
-                    onWinnerChanged: () => _notifyDataChanged(context),
-                    onMatchesUpdated: () => _notifyDataChanged(context),
+                    onWinnerChanged: () => notifyDataChanged(context),
+                    onMatchesUpdated: () => notifyDataChanged(context),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            _buildRow(
-              left: CreateTile(
-                icon: GROUP_ICON,
-                label: loc.create_group,
-                onTap: () => Navigator.push(
-                  context,
-                  adaptivePageRoute(
-                    builder: (_) => CreateGroupView(
-                      onMembersChanged: () => _notifyDataChanged(context),
+
+            // Second row
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 12,
+                children: [
+                  Expanded(
+                    // Create group tile
+                    child: CreateTile(
+                      icon: GROUP_ICON,
+                      label: loc.create_group,
+                      afterTap: () => onNavigateToTab?.call(1),
+                      onTap: () => Navigator.push(
+                        context,
+                        adaptivePageRoute(
+                          builder: (_) => CreateGroupView(
+                            onMembersChanged: () => notifyDataChanged(context),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              right: CreateTile(
-                icon: PLAYER_ICON,
-                label: loc.players,
-                onTap: null,
+
+                  // Create player tile
+                  Expanded(
+                    child: CreateTile(
+                      icon: PLAYER_ICON,
+                      label: loc.players,
+                      onTap: null,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 12),
-            _buildRow(
-              left: CreateTile(
-                icon: STATISTIC_ICON,
-                label: loc.create_statistic,
-                onTap: () => Navigator.push(
-                  context,
-                  adaptivePageRoute(
-                    builder: (_) => CreateStatisticView(
-                      onStatisticCreated: (_) => _notifyDataChanged(context),
+
+            // Third row
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 12,
+                children: [
+                  Expanded(
+                    // Create statistic tile
+                    child: CreateTile(
+                      icon: STATISTIC_ICON,
+                      label: loc.create_statistic,
+                      afterTap: () => onNavigateToTab?.call(4),
+                      onTap: () => Navigator.push(
+                        context,
+                        adaptivePageRoute(
+                          builder: (_) => CreateStatisticView(
+                            onStatisticCreated: (_) =>
+                                notifyDataChanged(context),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              right: CreateTile(
-                icon: GAME_ICON,
-                label: loc.create_game,
-                onTap: () => Navigator.push(
-                  context,
-                  adaptivePageRoute(
-                    builder: (_) => CreateGameView(
-                      onGameChanged: () => _notifyDataChanged(context),
+
+                  // Create game tile
+                  Expanded(
+                    child: CreateTile(
+                      icon: GAME_ICON,
+                      label: loc.create_game,
+                      afterTap: () => onNavigateToTab?.call(3),
+                      onTap: () => Navigator.push(
+                        context,
+                        adaptivePageRoute(
+                          builder: (_) => CreateGameView(
+                            onGameChanged: () => notifyDataChanged(context),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
@@ -102,16 +132,8 @@ class CreateView extends StatelessWidget {
     );
   }
 
-  Widget _buildRow({required Widget left, required Widget right}) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(child: left),
-          const SizedBox(width: 12),
-          Expanded(child: right),
-        ],
-      ),
-    );
+  /// Notifies the app that data changed so the other tabs reload their data.
+  void notifyDataChanged(BuildContext context) {
+    context.read<DataRefreshProvider>().refresh();
   }
 }

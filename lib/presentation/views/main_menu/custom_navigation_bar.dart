@@ -33,6 +33,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   /// Currently selected tab index
   int currentIndex = 0;
 
+  /// Direction of the last tab switch, used to animate the transition
+  /// (`1` = new tab slides in from the right, `-1` = from the left).
+  int slideDirection = 1;
+
   /// Key count to force rebuild of tab views
   int tabKeyCount = 0;
 
@@ -58,7 +62,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       ),
       KeyedSubtree(
         key: ValueKey('create_${tabKeyCount}_$refreshRevision'),
-        child: const CreateView(),
+        child: CreateView(onNavigateToTab: onTabTapped),
       ),
       KeyedSubtree(
         key: ValueKey('games_${tabKeyCount}_$refreshRevision'),
@@ -80,22 +84,27 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
         ),
         backgroundColor: CustomTheme.backgroundColor,
         scrolledUnderElevation: 0,
-        leading: currentIndex == 0
-            ? IconButton(
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    adaptivePageRoute(builder: (_) => const MatchReceiveView()),
-                  );
-                  if (mounted) {
-                    setState(() {
-                      tabKeyCount++;
-                    });
-                  }
-                },
-                icon: const Icon(Icons.qr_code_scanner),
-              )
-            : null,
+        leading: IgnorePointer(
+          ignoring: currentIndex != 0,
+          child: AnimatedOpacity(
+            opacity: currentIndex == 0 ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 200),
+            child: IconButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  adaptivePageRoute(builder: (_) => const MatchReceiveView()),
+                );
+                if (mounted) {
+                  setState(() {
+                    tabKeyCount++;
+                  });
+                }
+              },
+              icon: const Icon(Icons.qr_code_scanner),
+            ),
+          ),
+        ),
         actions: [
           // Only in MatchView
           if (currentIndex == 0)
@@ -226,8 +235,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
 
   /// Handles tab tap events. Updates the current [index] state.
   void onTabTapped(int index) {
+    if (index == currentIndex) return;
     HapticFeedback.selectionClick();
     setState(() {
+      slideDirection = index > currentIndex ? 1 : -1;
       currentIndex = index;
     });
   }
