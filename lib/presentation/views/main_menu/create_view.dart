@@ -75,7 +75,7 @@ class CreateView extends StatelessWidget {
                   Expanded(
                     child: CreateTile(
                       icon: PLAYER_ICON,
-                      label: loc.players,
+                      label: loc.create_player,
                       onTap: null,
                     ),
                   ),

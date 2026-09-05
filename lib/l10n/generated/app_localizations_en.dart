@@ -164,6 +164,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_teams => 'Create teams';
 
   @override
+  String get create_player => 'Create Player';
+
+  @override
   String get created_on => 'Created on';
 
   @override

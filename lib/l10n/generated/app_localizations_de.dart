@@ -167,6 +167,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_teams => 'Teams erstellen';
 
   @override
+  String get create_player => 'Spieler:in erstellen';
+
+  @override
   String get created_on => 'Erstellt am';
 
   @override

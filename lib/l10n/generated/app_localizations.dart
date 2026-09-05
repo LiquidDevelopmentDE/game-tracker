@@ -398,6 +398,12 @@ abstract class AppLocalizations {
   /// **'Create teams'**
   String get create_teams;
 
+  /// No description provided for @create_player.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Player'**
+  String get create_player;
+
   /// No description provided for @created_on.
   ///
   /// In en, this message translates to:
