@@ -132,6 +132,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get confirm => 'Bestätigen';
 
   @override
+  String get continue_ => 'Weiter';
+
+  @override
   String get copy_code => 'Code kopieren';
 
   @override
@@ -286,9 +289,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get error_loading_privacy_policy =>
       'Fehler beim Laden der Datenschutzerklärung';
-
-  @override
-  String get error_loading_whats_new => 'Fehler beim Laden der Neuigkeiten';
 
   @override
   String get error_reading_file => 'Fehler beim Lesen der Datei';
@@ -778,12 +778,6 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get version => 'Version';
-
-  @override
-  String get continue_ => 'Weiter';
-
-  @override
   String get successfully_processed_file => 'Datei erfolgreich verarbeitet';
 
   @override
@@ -864,6 +858,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
+
+  @override
+  String get version => 'Version';
 
   @override
   String get whats_new => 'Neuigkeiten';

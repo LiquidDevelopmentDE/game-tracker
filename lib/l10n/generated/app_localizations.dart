@@ -332,6 +332,12 @@ abstract class AppLocalizations {
   /// **'Confirm'**
   String get confirm;
 
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
+
   /// No description provided for @copy_code.
   ///
   /// In en, this message translates to:
@@ -601,12 +607,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading privacy policy'**
   String get error_loading_privacy_policy;
-
-  /// No description provided for @error_loading_whats_new.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading what\'s new'**
-  String get error_loading_whats_new;
 
   /// No description provided for @error_reading_file.
   ///
@@ -1448,18 +1448,6 @@ abstract class AppLocalizations {
   /// **'Successfully added player {playerName}'**
   String successfully_added_player(String playerName);
 
-  /// No description provided for @version.
-  ///
-  /// In en, this message translates to:
-  /// **'Version'**
-  String get version;
-
-  /// No description provided for @continue_.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue'**
-  String get continue_;
-
   /// No description provided for @successfully_processed_file.
   ///
   /// In en, this message translates to:
@@ -1609,6 +1597,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown Exception (see console)'**
   String get unknown_exception;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
 
   /// No description provided for @whats_new.
   ///

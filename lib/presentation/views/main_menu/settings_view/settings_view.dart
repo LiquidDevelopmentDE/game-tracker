@@ -226,7 +226,7 @@ class _SettingsViewState extends State<SettingsView> {
                             ),
                           ),
                           Text(
-                            'Version ${packageInfo.version} (${packageInfo.buildNumber})',
+                            '${loc.version} ${packageInfo.version} (${packageInfo.buildNumber})',
                             style: TextStyle(
                               color: Colors.grey.shade600,
                               fontSize: 14,
