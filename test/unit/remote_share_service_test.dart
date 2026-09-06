@@ -34,14 +34,20 @@ void main() {
         return null;
       });
   group('RemoteShareService', () {
-    late Player player;
+    late Player player1;
+    late Player player2;
     late Game game;
     late Match match;
 
     setUp(() {
-      player = Player(
+      player1 = Player(
         id: 'player-1',
         name: 'Alice',
+        createdAt: DateTime.parse('2024-01-01T10:00:00.000Z'),
+      );
+      player2 = Player(
+        id: 'player-2',
+        name: 'Bob',
         createdAt: DateTime.parse('2024-01-01T10:00:00.000Z'),
       );
       game = Game(
@@ -55,8 +61,11 @@ void main() {
         createdAt: DateTime.parse('2024-01-01T10:00:00.000Z'),
         name: 'Friday Session',
         game: game,
-        players: [player],
-        scores: {player.id: ScoreEntry(score: 42)},
+        players: [player1, player2],
+        scores: {
+          player1.id: ScoreEntry(score: 42),
+          player2.id: ScoreEntry(score: 24),
+        },
       );
     });
 

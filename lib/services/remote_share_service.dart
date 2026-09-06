@@ -12,7 +12,6 @@ import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
-import 'package:tallee/services/local_share_service.dart';
 import 'package:tallee/services/shared.dart';
 import 'package:uuid/uuid.dart';
 
@@ -70,14 +69,13 @@ class RemoteShareService {
 
       final payload = data['payload'];
       final jsonMap = jsonEncode(payload);
-      print('jsonMap: $jsonMap');
-      final result = await LocalShareService.validateJson(jsonMap);
+      final result = await parseAndValidateMatch(jsonMap, '');
 
-      if (result.$1 != ImportResult.success) {
-        return (result: result.$1, match: null);
+      if (result.result != ImportResult.success) {
+        return (result: result.result, match: null);
       }
 
-      return (result: ImportResult.success, match: Match.fromJson(result.$2!));
+      return (result: ImportResult.success, match: result.match!);
     } on SocketException catch (e) {
       print(e);
       print(e.message);
