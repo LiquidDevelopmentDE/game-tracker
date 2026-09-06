@@ -55,8 +55,9 @@ String translateMatchImportResultToString(
     case ImportResult.success:
       return loc.data_successfully_imported;
     case ImportResult.invalidSchema:
+      return '${loc.invalid_file} ${loc.check_app_version}';
     case ImportResult.invalidData:
-      return '${loc.invalid_file}\n${loc.choose_other_file}';
+      return '${loc.invalid_file} ${loc.choose_other_file}';
     case ImportResult.incompatibleVersion:
       return loc.incompatible_version;
     case ImportResult.unknownException:

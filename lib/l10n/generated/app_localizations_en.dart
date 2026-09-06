@@ -134,6 +134,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get check_app_version =>
+      'Please check your app version and share the match again';
+
+  @override
+  String get invalid_match => 'Invalid match data';
+
+  @override
   String get create_as_new => 'Create as new';
 
   @override

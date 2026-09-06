@@ -137,6 +137,13 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get check_app_version =>
+      'Bitte überprüft eure App-Version und teilt das Spiel erneut';
+
+  @override
+  String get invalid_match => 'Ungültige Spieldaten';
+
+  @override
   String get create_as_new => 'Neu erstellen';
 
   @override

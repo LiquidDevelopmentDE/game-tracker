@@ -139,7 +139,8 @@ void main() {
         });
         final service = TestRemoteShareService(httpClient: client);
 
-        final loadedMatch = await service.getMatchByToken('share-token');
+        final result = await service.getMatchByToken('share-token');
+        final loadedMatch = result.match!;
 
         expect(loadedMatch.id, match.id);
         expect(loadedMatch.name, match.name);

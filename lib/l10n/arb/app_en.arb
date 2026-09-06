@@ -47,6 +47,8 @@
       }
     }
   },
+  "check_app_version": "Please check your app version and share the match again",
+  "invalid_match": "Invalid match data",
   "create_as_new": "Create as new",
   "create_game": "Create Game",
   "create_group": "Create Group",

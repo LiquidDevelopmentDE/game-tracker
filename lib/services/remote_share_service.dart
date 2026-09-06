@@ -12,6 +12,7 @@ import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
+import 'package:tallee/services/local_share_service.dart';
 import 'package:tallee/services/shared.dart';
 import 'package:uuid/uuid.dart';
 
@@ -49,7 +50,9 @@ class RemoteShareService {
     }
   }
 
-  Future<Match> getMatchByToken(String token) async {
+  Future<({ImportResult result, Match? match})> getMatchByToken(
+    String token,
+  ) async {
     try {
       final response = await httpClient.get(
         Uri.parse('${getApiBaseUrl()}/v1/shares/$token'),
@@ -65,7 +68,16 @@ class RemoteShareService {
         throw ParsingException();
       }
 
-      return Match.fromJson(data['payload']);
+      final payload = data['payload'];
+      final jsonMap = jsonEncode(payload);
+      print('jsonMap: $jsonMap');
+      final result = await LocalShareService.validateJson(jsonMap);
+
+      if (result.$1 != ImportResult.success) {
+        return (result: result.$1, match: null);
+      }
+
+      return (result: ImportResult.success, match: Match.fromJson(result.$2!));
     } on SocketException catch (e) {
       print(e);
       print(e.message);
@@ -129,19 +141,6 @@ class RemoteShareService {
     try {
       final decoded = json.decode(jsonString) as Map<String, dynamic>;
 
-      final isCorrectVersion = isSchemaVersionCorrect(
-        jsonMap: decoded,
-        schemaVersion: Constants.MATCH_DATA_SCHEMA_VERSION,
-      );
-
-      if (!isCorrectVersion) {
-        return (
-          result: ImportResult.incompatibleVersion,
-          match: null,
-          filePath: filePath,
-        );
-      }
-
       final isValidSchema = await validateJsonSchema(
         jsonString,
         'assets/match_schema.json',
@@ -150,6 +149,19 @@ class RemoteShareService {
       if (!isValidSchema) {
         return (
           result: ImportResult.invalidSchema,
+          match: null,
+          filePath: filePath,
+        );
+      }
+
+      final isCorrectVersion = isSchemaVersionCorrect(
+        jsonMap: decoded,
+        schemaVersion: Constants.MATCH_DATA_SCHEMA_VERSION,
+      );
+
+      if (!isCorrectVersion) {
+        return (
+          result: ImportResult.incompatibleVersion,
           match: null,
           filePath: filePath,
         );

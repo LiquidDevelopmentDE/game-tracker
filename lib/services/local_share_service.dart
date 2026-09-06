@@ -125,7 +125,7 @@ class LocalShareService {
       return (ImportResult.fileReadError, null);
     }
 
-    final (status, _) = await _validateJson(jsonString);
+    final (status, _) = await validateJson(jsonString);
     if (status != ImportResult.success &&
         status != ImportResult.matchSchemaDetected) {
       return (status, null);
@@ -138,7 +138,7 @@ class LocalShareService {
   ///
   /// Returns the decoded map on success, or an error status with a `null` map
   /// when validation fails or the JSON is malformed.
-  static Future<(ImportResult, Map<String, dynamic>?)> _validateJson(
+  static Future<(ImportResult, Map<String, dynamic>?)> validateJson(
     String jsonString,
   ) async {
     try {
@@ -197,7 +197,8 @@ class LocalShareService {
     AppDatabase db,
     String jsonString,
   ) async {
-    final (status, decoded) = await _validateJson(jsonString);
+    final (status, decoded) = await validateJson(jsonString);
+    print('decoded: $decoded');
     if (status != ImportResult.success || decoded == null) {
       return status;
     }

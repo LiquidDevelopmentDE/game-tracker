@@ -338,6 +338,18 @@ abstract class AppLocalizations {
   /// **'Could not add player {playerName}'**
   String could_not_add_player(String playerName);
 
+  /// No description provided for @check_app_version.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your app version and share the match again'**
+  String get check_app_version;
+
+  /// No description provided for @invalid_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid match data'**
+  String get invalid_match;
+
   /// No description provided for @create_as_new.
   ///
   /// In en, this message translates to:

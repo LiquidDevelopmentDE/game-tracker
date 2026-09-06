@@ -47,6 +47,8 @@
       }
     }
   },
+  "check_app_version": "Bitte überprüft eure App-Version und teilt das Spiel erneut",
+  "invalid_match": "Ungültige Spieldaten",
   "create_as_new": "Neu erstellen",
   "create_game": "Spielvorlage erstellen",
   "create_group": "Gruppe erstellen",
