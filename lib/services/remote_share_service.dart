@@ -12,6 +12,7 @@ import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
+import 'package:tallee/services/shared.dart';
 import 'package:uuid/uuid.dart';
 
 class RemoteShareService {
@@ -109,7 +110,10 @@ class RemoteShareService {
     String formattedMatchName = match.name.toSafeFilename();
     var filename = '$formattedMatchName.tallee';
 
-    String jsonString = jsonEncode(match.toJson());
+    final json = match.toJson();
+    json['version'] = Constants.MATCH_DATA_SCHEMA_VERSION;
+
+    String jsonString = jsonEncode(json);
     Uint8List fileBytes = utf8.encode(jsonString);
 
     await FilePicker.saveFile(
@@ -125,15 +129,25 @@ class RemoteShareService {
     String fileName,
   ) async {
     try {
-      final isValid = await validateJsonSchema(
+      final decoded = json.decode(jsonString) as Map<String, dynamic>;
+
+      final isCorrectVersion = isSchemaVersionCorrect(
+        jsonMap: decoded,
+        schemaVersion: Constants.MATCH_DATA_SCHEMA_VERSION,
+      );
+
+      if (!isCorrectVersion) {
+        return (ImportResult.incompatibleVersion, null, fileName);
+      }
+
+      final isValidSchema = await validateJsonSchema(
         jsonString,
         'assets/match_schema.json',
       );
-      if (!isValid) {
+
+      if (!isValidSchema) {
         return (ImportResult.invalidSchema, null, fileName);
       }
-
-      final decoded = json.decode(jsonString) as Map<String, dynamic>;
 
       if (!validateContent(decoded)) {
         return (ImportResult.invalidData, null, fileName);

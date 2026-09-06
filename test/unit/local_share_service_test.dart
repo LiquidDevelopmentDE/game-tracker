@@ -9,10 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tallee/core/common.dart';
+import 'package:tallee/core/constants.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/services/local_share_service.dart';
+import 'package:tallee/services/shared.dart';
 import 'package:tallee/services/shared_preferences_service.dart';
 
 void main() {
@@ -114,6 +115,7 @@ void main() {
 
   // Builds a schema-valid .tallee json string from the test entities.
   String buildJson() => json.encode({
+    'version': Constants.APP_DATA_SCHEMA_VERSION,
     'players': [
       {
         'id': testPlayer1.id,
@@ -1723,6 +1725,77 @@ void main() {
 
         expect(result.$1, ImportResult.invalidSchema);
         expect(result.$2, isNull);
+      });
+    });
+
+    group('isSchemaVersionCorrect()', () {
+      test('returns true for the current schema version', () {
+        const schemaVersion = Constants.APP_DATA_SCHEMA_VERSION;
+        final decoded = <String, dynamic>{'version': schemaVersion};
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: schemaVersion,
+        );
+
+        expect(isVersionCorrect, isTrue);
+      });
+
+      test('returns false when the version field is missing', () {
+        final decoded = <String, dynamic>{};
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: Constants.APP_DATA_SCHEMA_VERSION,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false for an outdated schema version', () {
+        final decoded = <String, dynamic>{
+          'version': Constants.APP_DATA_SCHEMA_VERSION - 1,
+        };
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: Constants.APP_DATA_SCHEMA_VERSION,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false for a newer schema version', () {
+        const schemaVersion = Constants.APP_DATA_SCHEMA_VERSION;
+        final decoded = <String, dynamic>{'version': schemaVersion + 1};
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: schemaVersion,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false when the version is not an integer', () {
+        const schemaVersion = Constants.APP_DATA_SCHEMA_VERSION;
+        final decoded = <String, dynamic>{'version': '$schemaVersion'};
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: schemaVersion,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false when the version is null', () {
+        final decoded = <String, dynamic>{'version': null};
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: Constants.APP_DATA_SCHEMA_VERSION,
+        );
+
+        expect(isVersionCorrect, isFalse);
       });
     });
   });

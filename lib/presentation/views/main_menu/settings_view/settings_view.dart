@@ -274,6 +274,7 @@ class _SettingsViewState extends State<SettingsView> {
         break;
       case ImportResult.invalidSchema:
       case ImportResult.invalidData:
+      case ImportResult.incompatibleVersion:
       case ImportResult.fileReadError:
       case ImportResult.fileNotFound:
       case ImportResult.canceled:
