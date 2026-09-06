@@ -149,6 +149,7 @@
   "invalid_file": "Invalid File.",
   "invalid_qr_code": "This QR code is invalid or expired.",
   "invalid_schema": "Invalid Schema",
+  "incompatible_version": "This file was created with an incompatible version of Tallee and can't be imported.",
   "invalid_token": "Invalid token",
   "last_180_days": "Last 180 days",
   "last_30_days": "Last 30 days",

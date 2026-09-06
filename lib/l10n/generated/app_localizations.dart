@@ -782,6 +782,12 @@ abstract class AppLocalizations {
   /// **'Invalid Schema'**
   String get invalid_schema;
 
+  /// No description provided for @incompatible_version.
+  ///
+  /// In en, this message translates to:
+  /// **'This file was created with an incompatible version of Tallee and can\'t be imported.'**
+  String get incompatible_version;
+
   /// No description provided for @invalid_token.
   ///
   /// In en, this message translates to:

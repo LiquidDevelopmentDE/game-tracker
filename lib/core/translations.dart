@@ -38,6 +38,8 @@ String translateImportResultToString(
       return loc.format_exception;
     case ImportResult.unknownException:
       return loc.unknown_exception;
+    case ImportResult.incompatibleVersion:
+      return loc.incompatible_version;
     case ImportResult.matchSchemaDetected:
       return '';
   }
@@ -55,6 +57,8 @@ String translateMatchImportResultToString(
     case ImportResult.invalidSchema:
     case ImportResult.invalidData:
       return '${loc.invalid_file}\n${loc.choose_other_file}';
+    case ImportResult.incompatibleVersion:
+      return loc.incompatible_version;
     case ImportResult.unknownException:
     case ImportResult.fileNotFound:
     case ImportResult.fileReadError:

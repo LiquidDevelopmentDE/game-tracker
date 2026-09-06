@@ -383,6 +383,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalid_schema => 'Invalid Schema';
 
   @override
+  String get incompatible_version =>
+      'This file was created with an incompatible version of Tallee and can\'t be imported.';
+
+  @override
   String get invalid_token => 'Invalid token';
 
   @override
