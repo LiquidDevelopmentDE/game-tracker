@@ -120,10 +120,7 @@ class RemoteShareService {
     String formattedMatchName = match.name.toSafeFilename();
     var filename = '$formattedMatchName.tallee';
 
-    final json = match.toJson();
-    json['version'] = Constants.MATCH_DATA_SCHEMA_VERSION;
-
-    String jsonString = jsonEncode(json);
+    String jsonString = jsonEncode(match.toJson());
     Uint8List fileBytes = utf8.encode(jsonString);
 
     await FilePicker.saveFile(
