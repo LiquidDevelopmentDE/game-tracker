@@ -1176,8 +1176,8 @@ void main() {
         });
 
         final isValidRoot = await validateJsonSchema(
-          validJson,
-          'assets/app_schema.json',
+          jsonString: validJson,
+          schemaAssetPath: 'assets/app_schema.json',
         );
         expect(isValidRoot, true);
       });
@@ -1283,8 +1283,8 @@ void main() {
           });
 
           final isValid = await validateJsonSchema(
-            validJson,
-            'assets/app_schema.json',
+            jsonString: validJson,
+            schemaAssetPath: 'assets/app_schema.json',
           );
           expect(isValid, true);
         });
@@ -1328,8 +1328,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1372,8 +1372,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1437,8 +1437,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1494,8 +1494,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1517,7 +1517,10 @@ void main() {
         expect(jsonString, isNotEmpty);
 
         final isValid = await tester.runAsync(
-          () => validateJsonSchema(jsonString, 'assets/app_schema.json'),
+          () => validateJsonSchema(
+            jsonString: jsonString,
+            schemaAssetPath: 'assets/app_schema.json',
+          ),
         );
         expect(isValid, true);
       });
@@ -1619,7 +1622,7 @@ void main() {
           bytes: Uint8List.fromList(utf8.encode(content)),
         );
 
-        final result = await readFileContent(file);
+        final result = await readFileContent(file: file);
 
         expect(result, content);
       });
@@ -1640,7 +1643,7 @@ void main() {
           path: tempFile.path,
         );
 
-        final result = await readFileContent(file);
+        final result = await readFileContent(file: file);
 
         expect(result, content);
       });
@@ -1648,7 +1651,7 @@ void main() {
       test('returns null when both bytes and path are null', () async {
         final file = PlatformFile(name: 'data.tallee', size: 0);
 
-        final result = await readFileContent(file);
+        final result = await readFileContent(file: file);
 
         expect(result, isNull);
       });

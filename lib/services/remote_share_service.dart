@@ -137,8 +137,8 @@ class RemoteShareService {
       final decoded = json.decode(jsonString) as Map<String, dynamic>;
 
       final isValidSchema = await validateJsonSchema(
-        jsonString,
-        'assets/match_schema.json',
+        jsonString: jsonString,
+        schemaAssetPath: 'assets/match_schema.json',
       );
 
       if (!isValidSchema) {
@@ -306,7 +306,7 @@ class RemoteShareService {
     }
 
     final file = path.files.single;
-    final jsonString = await readFileContent(file);
+    final jsonString = await readFileContent(file: file);
     final filePath = file.path ?? file.name;
     if (jsonString == null) {
       return (

@@ -6,17 +6,17 @@ import 'package:flutter/services.dart';
 import 'package:json_schema/json_schema.dart';
 
 /// Helper method to read file content from either bytes or path
-Future<String?> readFileContent(PlatformFile file) async {
+Future<String?> readFileContent({required PlatformFile file}) async {
   if (file.bytes != null) return utf8.decode(file.bytes!);
   if (file.path != null) return await File(file.path!).readAsString();
   return null;
 }
 
 /// Validates the given JSON string against the schema.
-Future<bool> validateJsonSchema(
-  String jsonString,
-  String schemaAssetPath,
-) async {
+Future<bool> validateJsonSchema({
+  required String jsonString,
+  required String schemaAssetPath,
+}) async {
   try {
     final schemaString = await rootBundle.loadString(schemaAssetPath);
     final schema = JsonSchema.create(json.decode(schemaString));

@@ -270,8 +270,8 @@ void main() {
       final jsonString = jsonEncode(matchObj.toJson());
 
       final isValid = await validateJsonSchema(
-        jsonString,
-        'assets/match_schema.json',
+        jsonString: jsonString,
+        schemaAssetPath: 'assets/match_schema.json',
       );
       expect(isValid, isTrue);
     });

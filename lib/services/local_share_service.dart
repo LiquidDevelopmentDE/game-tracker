@@ -143,13 +143,13 @@ class LocalShareService {
   ) async {
     try {
       final isAppDataJson = await validateJsonSchema(
-        jsonString,
-        'assets/app_schema.json',
+        jsonString: jsonString,
+        schemaAssetPath: 'assets/app_schema.json',
       );
 
       final isMatchDataJson = await validateJsonSchema(
-        jsonString,
-        'assets/match_schema.json',
+        jsonString: jsonString,
+        schemaAssetPath: 'assets/match_schema.json',
       );
 
       if (!isAppDataJson && !isMatchDataJson) {
