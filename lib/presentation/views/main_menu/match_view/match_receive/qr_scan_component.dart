@@ -28,12 +28,6 @@ class _QrScanComponentState extends State<QrScanComponent> {
   String? errorMessage;
 
   @override
-  void didChangeDependencies() {
-    handleQrCodeDetection(const BarcodeCapture(barcodes: []));
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     controller.dispose();
     super.dispose();
