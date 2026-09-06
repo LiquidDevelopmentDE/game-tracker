@@ -43,14 +43,20 @@ class FileTile extends StatelessWidget {
                   children: [
                     // Filename
                     Expanded(
-                      child: Text(
-                        '${match.name.toSafeFilename()}.tallee',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: CustomTheme.textColor,
+                      child: SizedBox(
+                        height: 24,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${match.name.toSafeFilename()}.tallee',
+                            maxLines: 1,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: CustomTheme.textColor,
+                            ),
+                          ),
                         ),
                       ),
                     ),

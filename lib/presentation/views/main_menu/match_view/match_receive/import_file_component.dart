@@ -182,37 +182,59 @@ class ChooseMatchFile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String title = loc.choose_match_file;
+    String? description;
     if (lastResult != null &&
         lastResult != ImportResult.success &&
         lastResult != ImportResult.canceled) {
-      title = translateMatchImportResultToString(lastResult!, context);
+      title = loc.error_reading_file;
+      description = translateMatchImportResultToString(lastResult!, context);
     }
 
     return Column(
+      spacing: 20,
       key: const ValueKey('choose_match_file'),
       children: [
         const Icon(Icons.file_present, size: 50),
-        const SizedBox(height: 20),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w500,
-            overflow: TextOverflow.visible,
-          ),
-          softWrap: true,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 5),
-        Text(
-          loc.tap_to_browse,
-          style: TextStyle(
-            color: CustomTheme.textColor.withAlpha(180),
-            fontSize: 14,
-            overflow: TextOverflow.visible,
-          ),
-          textAlign: TextAlign.center,
-          softWrap: true,
+        Column(
+          spacing: 14,
+          children: [
+            Column(
+              spacing: 4,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.visible,
+                  ),
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                ),
+                if (description != null)
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      overflow: TextOverflow.visible,
+                    ),
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                  ),
+              ],
+            ),
+            Text(
+              loc.tap_to_browse,
+              style: TextStyle(
+                color: CustomTheme.textColor.withAlpha(180),
+                fontSize: 14,
+                overflow: TextOverflow.visible,
+              ),
+              textAlign: TextAlign.center,
+              softWrap: true,
+            ),
+          ],
         ),
       ],
     );

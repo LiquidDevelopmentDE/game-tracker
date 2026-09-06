@@ -25,7 +25,7 @@ class DisplaySelectedFile extends StatelessWidget {
           loc.successfully_processed_file,
           textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
             overflow: TextOverflow.visible,
           ),
