@@ -142,6 +142,20 @@ class LocalShareService {
     String jsonString,
   ) async {
     try {
+      final isAppDataJson = await validateJsonSchema(
+        jsonString,
+        'assets/app_schema.json',
+      );
+
+      final isMatchDataJson = await validateJsonSchema(
+        jsonString,
+        'assets/match_schema.json',
+      );
+
+      if (!isAppDataJson && !isMatchDataJson) {
+        return (ImportResult.invalidSchema, null);
+      }
+
       final decoded = json.decode(jsonString) as Map<String, dynamic>;
       final isVersionCorrect = isSchemaVersionCorrect(
         jsonMap: decoded,
@@ -152,35 +166,18 @@ class LocalShareService {
         return (ImportResult.incompatibleVersion, null);
       }
 
-      final isAppDataJson = await validateJsonSchema(
-        jsonString,
-        'assets/app_schema.json',
-      );
-
       // Import app data
       if (isAppDataJson) {
         if (!validateContent(decoded)) {
           return (ImportResult.invalidData, null);
         }
-
         return (ImportResult.success, decoded);
       } else {
         // Import match data
-        final isMatchDataJson = await validateJsonSchema(
-          jsonString,
-          'assets/match_schema.json',
-        );
-
-        if (isMatchDataJson) {
-          if (!RemoteShareService.validateContent(decoded)) {
-            return (ImportResult.invalidData, null);
-          }
-
-          return (ImportResult.matchSchemaDetected, null);
-        } else {
-          // Invalid Schema
-          return (ImportResult.invalidSchema, null);
+        if (!RemoteShareService.validateContent(decoded)) {
+          return (ImportResult.invalidData, null);
         }
+        return (ImportResult.matchSchemaDetected, null);
       }
     } on FormatException catch (e, stack) {
       print('[validateJson] FormatException');

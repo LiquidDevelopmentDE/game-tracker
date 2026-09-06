@@ -1062,6 +1062,7 @@ void main() {
 
       test('validateJsonSchema() works correctly', () async {
         final validJson = json.encode({
+          'version': Constants.APP_DATA_SCHEMA_VERSION,
           'players': [
             {
               'id': testPlayer1.id,
@@ -1184,6 +1185,7 @@ void main() {
       group('Schema Validation', () {
         test('validateJsonSchema() returns true for valid data', () async {
           final validJson = json.encode({
+            'version': Constants.MATCH_DATA_SCHEMA_VERSION,
             'players': [
               {
                 'id': testPlayer1.id,
@@ -1666,19 +1668,16 @@ void main() {
         expect(await database.matchDao.getMatchCount(), greaterThan(0));
       });
 
-      test(
-        'returns invalidSchema and writes nothing for invalid json',
-        () async {
-          final result = await LocalShareService.commitImport(
-            database,
-            '{"players": "not a list"}',
-          );
+      test('returns invalidSchema and writes nothing for invalid json', () async {
+        final result = await LocalShareService.commitImport(
+          database,
+          '{"version": ${Constants.APP_DATA_SCHEMA_VERSION}, "players": "not a list"}',
+        );
 
-          expect(result, ImportResult.invalidSchema);
-          expect(await database.playerDao.getPlayerCount(), 0);
-          expect(await database.matchDao.getMatchCount(), 0);
-        },
-      );
+        expect(result, ImportResult.invalidSchema);
+        expect(await database.playerDao.getPlayerCount(), 0);
+        expect(await database.matchDao.getMatchCount(), 0);
+      });
 
       test('returns invalidSchema for malformed json', () async {
         final result = await LocalShareService.commitImport(
