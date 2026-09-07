@@ -41,31 +41,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Once.runOnce(
-        'exampleStats',
-        callback: () {
-          addExampleStatistics();
-        },
-      );
-
-      Once.runOnEveryNewVersion(
-        key: 'whats-new-screen',
-        callback: () {
-          Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
-            if (!mounted) return;
-            Navigator.of(context, rootNavigator: true).push(
-              CupertinoSheetRoute(
-                enableDrag: false,
-                scrollableBuilder: (context, controller) =>
-                    NewsView(scrollController: controller),
-              ),
-            );
-          });
-        },
-      );
-    });
+    addExampleStats();
+    openNewsDialog();
   }
 
   @override
@@ -236,28 +213,56 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     }
   }
 
-  Future<void> addExampleStatistics() async {
-    final db = Provider.of<AppDatabase>(context, listen: false);
-    final stat1 = Statistic(
-      type: StatisticType.totalWins,
-      color: AppColor.blue,
-      displayCount: 3,
-      scopes: [StatisticScope.allPlayers],
+  /// Opens the [NewsView] when the user installs a new version
+  void openNewsDialog() {
+    Once.runOnEveryNewVersion(
+      key: 'whats-new-screen',
+      callback: () {
+        Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
+          if (!mounted) return;
+          Navigator.of(context, rootNavigator: true).push(
+            CupertinoSheetRoute(
+              enableDrag: false,
+              scrollableBuilder: (context, controller) =>
+                  NewsView(scrollController: controller),
+            ),
+          );
+        });
+      },
     );
-    final stat2 = Statistic(
-      type: StatisticType.averageScore,
-      color: AppColor.pink,
-      displayCount: 5,
-      scopes: [StatisticScope.allPlayers],
-    );
-    final stat3 = Statistic(
-      type: StatisticType.averageScore,
-      color: AppColor.green,
-      displayCount: 8,
-      scopes: [StatisticScope.allPlayers],
-    );
-    await db.statisticDao.addStatisticsAsList(
-      statistics: [stat1, stat2, stat3],
-    );
+  }
+
+  /// Adds example statistics to the database the first time the user opens the app
+  void addExampleStats() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Once.runOnce(
+        'example-stats',
+        callback: () async {
+          final db = Provider.of<AppDatabase>(context, listen: false);
+          final stat1 = Statistic(
+            type: StatisticType.totalWins,
+            color: AppColor.blue,
+            displayCount: 3,
+            scopes: [StatisticScope.allPlayers],
+          );
+          final stat2 = Statistic(
+            type: StatisticType.averageScore,
+            color: AppColor.pink,
+            displayCount: 5,
+            scopes: [StatisticScope.allPlayers],
+          );
+          final stat3 = Statistic(
+            type: StatisticType.averageScore,
+            color: AppColor.green,
+            displayCount: 8,
+            scopes: [StatisticScope.allPlayers],
+          );
+
+          await db.statisticDao.addStatisticsAsList(
+            statistics: [stat1, stat2, stat3],
+          );
+        },
+      );
+    });
   }
 }
