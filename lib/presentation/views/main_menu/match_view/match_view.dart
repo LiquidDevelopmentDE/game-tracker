@@ -82,22 +82,21 @@ class _MatchViewState extends State<MatchView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
-      // TODO: Uncomment
-      /* Once.runOnEveryNewVersion(
+      Once.runOnEveryNewVersion(
         key: 'whats-new-screen',
-        callback: () {*/
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (!mounted) return;
-        Navigator.of(context, rootNavigator: true).push(
-          CupertinoSheetRoute(
-            enableDrag: false,
-            scrollableBuilder: (context, controller) =>
-                NewsView(scrollController: controller),
-          ),
-        );
-        /* },
-      );*/
-      });
+        callback: () {
+          Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
+            if (!mounted) return;
+            Navigator.of(context, rootNavigator: true).push(
+              CupertinoSheetRoute(
+                enableDrag: false,
+                scrollableBuilder: (context, controller) =>
+                    NewsView(scrollController: controller),
+              ),
+            );
+          });
+        },
+      );
     });
 
     loadMatches();

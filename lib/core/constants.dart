@@ -18,12 +18,16 @@ class Constants {
   /// Treshold for fuzzy search
   static const int FUZZY_SEARCH_THRESHOLD = 50;
 
+  static const int _MINIMUM_SKELETON_MS = 250;
+
   /// Minimum duration of all app skeletons
-  static const Duration MINIMUM_SKELETON_DURATION = Duration(milliseconds: 250);
+  static const Duration MINIMUM_SKELETON_DURATION = Duration(
+    milliseconds: _MINIMUM_SKELETON_MS,
+  );
 
   /// Delay before navigating to a view after opening the app
   static const Duration OPEN_WITH_NAVIGATION_DELAY = Duration(
-    milliseconds: 300,
+    milliseconds: _MINIMUM_SKELETON_MS + 200,
   );
 
   /// Maximum length for player names
