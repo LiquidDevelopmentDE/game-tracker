@@ -94,7 +94,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          _currentTabTitle(context),
+          currentTabTitle(context),
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         backgroundColor: CustomTheme.backgroundColor,
@@ -222,7 +222,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   }
 
   /// Returns the title of the current tab based on [currentIndex].
-  String _currentTabTitle(BuildContext context) {
+  String currentTabTitle(BuildContext context) {
     final loc = AppLocalizations.of(context);
     switch (currentIndex) {
       case 0:
