@@ -13,8 +13,8 @@ import 'package:tallee/core/enums.dart';
 import 'package:tallee/core/route_names.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/adaptive_page_route.dart';
-import 'package:tallee/presentation/views/custom_feedback_form.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
+import 'package:tallee/presentation/views/main_menu/settings_view/feedback_form_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/licenses/licenses_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/privacy_policy_view.dart';
 import 'package:tallee/presentation/views/preview_import_data_view.dart';
@@ -137,7 +137,7 @@ class _SettingsViewState extends State<SettingsView> {
                         context,
                         MaterialPageRoute<bool>(
                           fullscreenDialog: true,
-                          builder: (context) => const CustomFeedbackForm(),
+                          builder: (context) => const FeedbackFormView(),
                         ),
                       );
                       if (result == true && scaffoldMessengerContext.mounted) {

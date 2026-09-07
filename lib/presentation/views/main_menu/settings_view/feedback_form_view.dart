@@ -8,16 +8,16 @@ import 'package:tallee/presentation/widgets/buttons/bottom_animated_button.dart'
 import 'package:tallee/presentation/widgets/custom_snack_bar.dart';
 import 'package:tallee/presentation/widgets/text_input/text_input_field.dart';
 
-class CustomFeedbackForm extends StatefulWidget {
-  const CustomFeedbackForm({super.key, this.associatedEventId});
+class FeedbackFormView extends StatefulWidget {
+  const FeedbackFormView({super.key, this.associatedEventId});
 
   final SentryId? associatedEventId;
 
   @override
-  State<CustomFeedbackForm> createState() => _CustomFeedbackFormState();
+  State<FeedbackFormView> createState() => _FeedbackFormViewState();
 }
 
-class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
+class _FeedbackFormViewState extends State<FeedbackFormView> {
   final messageController = TextEditingController();
   final emailController = TextEditingController();
   final nameController = TextEditingController();
@@ -153,7 +153,7 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
       final emailText = emailController.text.trim();
       final nameText = nameController.text.trim();
 
-      final email = emailText.isEmpty ? 'feedback@tallee.app' : emailText;
+      final email = emailText.isEmpty ? 'No email provided' : emailText;
       final name = nameText.isEmpty ? 'Anonymous' : nameText;
 
       SentryId targetEventId;
