@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -221,11 +223,16 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
         Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
           if (!mounted) return;
           Navigator.of(context, rootNavigator: true).push(
-            CupertinoSheetRoute(
-              enableDrag: false,
-              scrollableBuilder: (context, controller) =>
-                  NewsView(scrollController: controller),
-            ),
+            Platform.isIOS
+                ? CupertinoSheetRoute(
+                    enableDrag: false,
+                    scrollableBuilder: (context, controller) =>
+                        NewsView(scrollController: controller),
+                  )
+                : adaptivePageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => const NewsView(),
+                  ),
           );
         });
       },
@@ -241,7 +248,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
           final db = Provider.of<AppDatabase>(context, listen: false);
           final stat1 = Statistic(
             type: StatisticType.totalWins,
-            color: AppColor.blue,
+            color: AppColor.orange,
             displayCount: 3,
             scopes: [StatisticScope.allPlayers],
           );

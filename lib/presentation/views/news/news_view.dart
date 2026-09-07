@@ -24,86 +24,89 @@ class NewsView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                spacing: 20,
-                children: [
-                  // Header
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      top: 28,
-                      right: 20,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      spacing: 6,
-                      children: [
-                        // Icon
-                        const ColoredIconContainer(
-                          containerSize: 60,
-                          icon: Icons.newspaper,
-                        ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  spacing: 20,
+                  children: [
+                    // Header
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        top: 28,
+                        right: 20,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        spacing: 6,
+                        children: [
+                          // Icon
+                          const ColoredIconContainer(
+                            containerSize: 60,
+                            icon: Icons.newspaper,
+                          ),
 
-                        // Title
-                        Text(
-                          loc.whats_new,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        // Version
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: CustomTheme.onBoxColor,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            '${loc.version} ${packageInfo.version}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade300,
+                          // Title
+                          Text(
+                            loc.whats_new,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
 
-                  // News items
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Column(
-                      spacing: 20,
-                      children: [
-                        for (final entry in news) NewsCard(newsEntry: entry),
-                      ],
+                          // Version
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: CustomTheme.onBoxColor,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              '${loc.version} ${packageInfo.version}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey.shade300,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+
+                    // News items
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      child: Column(
+                        spacing: 20,
+                        children: [
+                          for (final entry in news) NewsCard(newsEntry: entry),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SafeArea(
-            top: false,
-            child: BottomAnimatedButton(
-              buttonConstraints: const BoxConstraints(minWidth: 390),
-              buttonText: loc.continue_,
-              onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+            SafeArea(
+              top: false,
+              child: BottomAnimatedButton(
+                buttonConstraints: const BoxConstraints(minWidth: 390),
+                buttonText: loc.continue_,
+                onPressed: () =>
+                    Navigator.of(context, rootNavigator: true).pop(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
