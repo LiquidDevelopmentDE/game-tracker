@@ -21,7 +21,10 @@ class _FeedbackFormViewState extends State<FeedbackFormView> {
   final messageController = TextEditingController();
   final emailController = TextEditingController();
   final nameController = TextEditingController();
+
+  final messageFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
+  final nameFocusNode = FocusNode();
 
   bool isSubmitting = false;
   bool emailTouched = false;
@@ -45,7 +48,9 @@ class _FeedbackFormViewState extends State<FeedbackFormView> {
     messageController.dispose();
     emailController.dispose();
     nameController.dispose();
+    messageFocusNode.dispose();
     emailFocusNode.dispose();
+    nameFocusNode.dispose();
     super.dispose();
   }
 
@@ -64,6 +69,7 @@ class _FeedbackFormViewState extends State<FeedbackFormView> {
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(title: Text(loc.send_feedback)),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         maintainBottomViewPadding: true,
         child: Container(
@@ -88,11 +94,14 @@ class _FeedbackFormViewState extends State<FeedbackFormView> {
               const SizedBox(height: 40),
               TextInputField(
                 controller: messageController,
+                focusNode: messageFocusNode,
                 hintText: loc.feedback_hint,
                 maxLines: 5,
                 minLines: 4,
                 maxLength: Constants.MAX_FEEDBACK_MESSAGE_LENGTH,
                 showCounterText: true,
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) => emailFocusNode.requestFocus(),
               ),
               const SizedBox(height: 16),
               TextInputField(
@@ -100,6 +109,8 @@ class _FeedbackFormViewState extends State<FeedbackFormView> {
                 focusNode: emailFocusNode,
                 hintText: loc.email_optional,
                 keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) => nameFocusNode.requestFocus(),
               ),
               if (showEmailError)
                 Align(
@@ -118,7 +129,15 @@ class _FeedbackFormViewState extends State<FeedbackFormView> {
               const SizedBox(height: 16),
               TextInputField(
                 controller: nameController,
+                focusNode: nameFocusNode,
                 hintText: loc.name_optional,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) {
+                  nameFocusNode.unfocus();
+                  if (canSubmit) {
+                    submit(loc);
+                  }
+                },
               ),
               const Spacer(),
               BottomAnimatedButton(
