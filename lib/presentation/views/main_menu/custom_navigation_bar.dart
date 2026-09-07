@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:once/once.dart';
 import 'package:provider/provider.dart';
+import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/data/db/database.dart';
+import 'package:tallee/data/models/statistic.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/adaptive_page_route.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/group_view.dart';
@@ -9,6 +14,7 @@ import 'package:tallee/presentation/views/main_menu/match_view/match_receive/mat
 import 'package:tallee/presentation/views/main_menu/match_view/match_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/settings_view.dart';
 import 'package:tallee/presentation/views/main_menu/statistic_view/statistic_view.dart';
+import 'package:tallee/presentation/views/news/news_view.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
 import 'package:tallee/presentation/widgets/navbar_item.dart';
 import 'package:tallee/state/data_refresh_provider.dart';
@@ -31,6 +37,36 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
 
   /// Key count to force rebuild of tab views
   int tabKeyCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Once.runOnce(
+        'exampleStats',
+        callback: () {
+          addExampleStatistics();
+        },
+      );
+
+      Once.runOnEveryNewVersion(
+        key: 'whats-new-screen',
+        callback: () {
+          Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
+            if (!mounted) return;
+            Navigator.of(context, rootNavigator: true).push(
+              CupertinoSheetRoute(
+                enableDrag: false,
+                scrollableBuilder: (context, controller) =>
+                    NewsView(scrollController: controller),
+              ),
+            );
+          });
+        },
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,5 +234,30 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       default:
         return '';
     }
+  }
+
+  Future<void> addExampleStatistics() async {
+    final db = Provider.of<AppDatabase>(context, listen: false);
+    final stat1 = Statistic(
+      type: StatisticType.totalWins,
+      color: AppColor.blue,
+      displayCount: 3,
+      scopes: [StatisticScope.allPlayers],
+    );
+    final stat2 = Statistic(
+      type: StatisticType.averageScore,
+      color: AppColor.pink,
+      displayCount: 5,
+      scopes: [StatisticScope.allPlayers],
+    );
+    final stat3 = Statistic(
+      type: StatisticType.averageScore,
+      color: AppColor.green,
+      displayCount: 8,
+      scopes: [StatisticScope.allPlayers],
+    );
+    await db.statisticDao.addStatisticsAsList(
+      statistics: [stat1, stat2, stat3],
+    );
   }
 }
