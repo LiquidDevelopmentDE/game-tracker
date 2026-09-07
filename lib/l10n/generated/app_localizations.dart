@@ -560,6 +560,12 @@ abstract class AppLocalizations {
   /// **'Edit player'**
   String get edit_player;
 
+  /// No description provided for @email_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address (optional)'**
+  String get email_optional;
+
   /// No description provided for @enable.
   ///
   /// In en, this message translates to:
@@ -614,6 +620,12 @@ abstract class AppLocalizations {
   /// **'Error reading file'**
   String get error_reading_file;
 
+  /// No description provided for @error_sending_feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback could not be sent. Please try again.'**
+  String get error_sending_feedback;
+
   /// No description provided for @error_while_processing_file_try_again.
   ///
   /// In en, this message translates to:
@@ -643,6 +655,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Favourites'**
   String get favourites;
+
+  /// No description provided for @feedback_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your message or feedback (required)'**
+  String get feedback_hint;
+
+  /// No description provided for @feedback_info_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Your feedback helps us continuously improve Tallee!'**
+  String get feedback_info_text;
 
   /// No description provided for @file_couldnt_be_accessed.
   ///
@@ -775,6 +799,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Input a match share token another person created using Tallee to import the match.'**
   String get input_token_instruction;
+
+  /// No description provided for @invalid_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address.'**
+  String get invalid_email;
 
   /// No description provided for @invalid_file.
   ///
@@ -949,6 +979,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Members'**
   String get members;
+
+  /// No description provided for @name_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (optional)'**
+  String get name_optional;
 
   /// No description provided for @names_or_descriptions_too_long.
   ///
@@ -1382,6 +1418,18 @@ abstract class AppLocalizations {
   /// **'Send this code to a person who also has Tallee to share the current match.'**
   String get send_code_instruction;
 
+  /// No description provided for @send_feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get send_feedback;
+
+  /// No description provided for @sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending...'**
+  String get sending;
+
   /// No description provided for @server_error.
   ///
   /// In en, this message translates to:
@@ -1501,6 +1549,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Teams'**
   String get teams;
+
+  /// No description provided for @thank_you_for_feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback!'**
+  String get thank_you_for_feedback;
 
   /// No description provided for @there_are_no_games_matching_your_search.
   ///

@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:open_with_app/open_with_app.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/enums.dart';
+import 'package:tallee/core/route_names.dart';
 import 'package:tallee/core/self_signed_cert_http_overrides.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
@@ -26,25 +28,42 @@ import 'package:tallee/state/group_search_provider.dart';
 import 'package:tallee/state/match_search_provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  SentryWidgetsFlutterBinding.ensureInitialized();
 
   if (kDebugMode) HttpOverrides.global = SelfSignedCertHttpOverrides();
 
   await dotenv.load();
   await SharedPreferencesService.init();
   await PackageInfoService.init();
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<AppDatabase>(
-          create: (context) => AppDatabase(),
-          dispose: (context, db) => db.close(),
+  await SentryFlutter.init(
+    (options) {
+      // error reporting & feedback is disabled in debugMode
+      options.dsn = kReleaseMode ? dotenv.get('SENTRY_DSN', fallback: '') : '';
+      // Disable sending personal identfiable information
+      options.sendDefaultPii = false;
+      options.enableLogs = true;
+      // Decrease sampleRate in stable to avoid sending too many events
+      options.tracesSampleRate = 1.0;
+      options.environment = kReleaseMode ? 'production' : 'development';
+    },
+    appRunner: () => runApp(
+      SentryWidget(
+        child: MultiProvider(
+          providers: [
+            Provider<AppDatabase>(
+              create: (context) => AppDatabase(),
+              dispose: (context, db) => db.close(),
+            ),
+            ChangeNotifierProvider(create: (context) => MatchSearchProvider()),
+            ChangeNotifierProvider(create: (context) => GroupSearchProvider()),
+            ChangeNotifierProvider(create: (context) => DataRefreshProvider()),
+          ],
+          child: DefaultAssetBundle(
+            bundle: SentryAssetBundle(),
+            child: const Tallee(),
+          ),
         ),
-        ChangeNotifierProvider(create: (context) => MatchSearchProvider()),
-        ChangeNotifierProvider(create: (context) => GroupSearchProvider()),
-        ChangeNotifierProvider(create: (context) => DataRefreshProvider()),
-      ],
-      child: const Tallee(),
+      ),
     ),
   );
 }
@@ -76,6 +95,12 @@ class _TalleeState extends State<Tallee> {
   }
 
   @override
+  void dispose() {
+    fileSubscription?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
@@ -95,6 +120,7 @@ class _TalleeState extends State<Tallee> {
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => AppLocalizations.of(context).app_name,
       themeMode: ThemeMode.dark,
+      navigatorObservers: [SentryNavigatorObserver()],
       theme: ThemeData(
         // main colors
         primaryColor: CustomTheme.primaryColor,
@@ -180,17 +206,11 @@ class _TalleeState extends State<Tallee> {
     Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
       navigator.push(
         adaptivePageRoute(
-          settings: RouteSettings(name: path),
+          settings: const RouteSettings(name: RouteNames.importFile),
           fullscreenDialog: true,
           builder: (_) => route,
         ),
       );
     });
-  }
-
-  @override
-  void dispose() {
-    fileSubscription?.cancel();
-    super.dispose();
   }
 }

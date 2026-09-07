@@ -6,6 +6,7 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:provider/provider.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/route_names.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
@@ -174,6 +175,9 @@ class _MatchViewState extends State<MatchView> {
                               Navigator.push(
                                 context,
                                 adaptivePageRoute(
+                                  settings: const RouteSettings(
+                                    name: RouteNames.matchDetailView,
+                                  ),
                                   builder: (context) => MatchDetailView(
                                     match: filteredMatches[index],
                                     onMatchUpdate: loadMatches,
@@ -200,6 +204,9 @@ class _MatchViewState extends State<MatchView> {
                 Navigator.push(
                   context,
                   adaptivePageRoute(
+                    settings: const RouteSettings(
+                      name: RouteNames.createMatchView,
+                    ),
                     builder: (context) => CreateMatchView(
                       onWinnerChanged: loadMatches,
                       onMatchesUpdated: loadMatches,

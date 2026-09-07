@@ -260,6 +260,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get edit_player => 'Spieler bearbeiten';
 
   @override
+  String get email_optional => 'E-Mail-Adresse (optional)';
+
+  @override
   String get enable => 'Aktivieren';
 
   @override
@@ -294,6 +297,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get error_reading_file => 'Fehler beim Lesen der Datei';
 
   @override
+  String get error_sending_feedback =>
+      'Feedback konnte nicht gesendet werden. Bitte versuche es erneut.';
+
+  @override
   String get error_while_processing_file_try_again =>
       'Fehler beim Verarbeiten der Datei. Bitte versuche es erneut';
 
@@ -310,6 +317,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get favourites => 'Favoriten';
+
+  @override
+  String get feedback_hint => 'Deine Nachricht oder Kritik (erforderlich)';
+
+  @override
+  String get feedback_info_text =>
+      'Dein Feedback hilft uns, Tallee stetig zu verbessern!';
 
   @override
   String get file_couldnt_be_accessed =>
@@ -383,6 +397,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get input_token_instruction =>
       'Gib einen Match-Share-Token ein, den eine andere Person mit Tallee erstellt hat, um das Match zu importieren.';
+
+  @override
+  String get invalid_email => 'Bitte gib eine gültige E-Mail-Adresse ein.';
 
   @override
   String get invalid_file => 'Ungültige Datei.';
@@ -479,6 +496,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get members => 'Mitglieder';
+
+  @override
+  String get name_optional => 'Name (optional)';
 
   @override
   String get names_or_descriptions_too_long =>
@@ -736,6 +756,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sende diesen Code an eine Person, die ebenfalls Tallee hat, um das aktuelle Match zu teilen.';
 
   @override
+  String get send_feedback => 'Feedback senden';
+
+  @override
+  String get sending => 'Wird gesendet...';
+
+  @override
   String server_error(int statusCode) {
     return 'Serverfehler: $statusCode';
   }
@@ -806,6 +832,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get teams => 'Teams';
+
+  @override
+  String get thank_you_for_feedback => 'Vielen Dank für dein Feedback!';
 
   @override
   String get there_are_no_games_matching_your_search =>

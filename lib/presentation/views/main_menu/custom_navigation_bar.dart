@@ -7,6 +7,7 @@ import 'package:once/once.dart';
 import 'package:provider/provider.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/route_names.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/statistic.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
@@ -125,7 +126,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
             onPressed: () async {
               final navigator = Navigator.of(context);
               await navigator.push(
-                adaptivePageRoute(builder: (_) => const SettingsView()),
+                adaptivePageRoute(
+                  settings: const RouteSettings(name: RouteNames.settingsView),
+                  builder: (_) => const SettingsView(),
+                ),
               );
               setState(() {
                 tabKeyCount++;

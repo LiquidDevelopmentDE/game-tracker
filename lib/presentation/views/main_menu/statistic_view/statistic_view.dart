@@ -7,6 +7,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tallee/core/app_color_utils.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/route_names.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/data/statistics/statistic_calculator.dart';
@@ -142,6 +143,10 @@ class _StatisticsViewState extends State<StatisticsView> {
                                           final result =
                                               await Navigator.of(context).push(
                                                 adaptivePageRoute(
+                                                  settings: const RouteSettings(
+                                                    name: RouteNames
+                                                        .chooseGroupView,
+                                                  ),
                                                   fullscreenDialog: true,
                                                   builder: (context) =>
                                                       ChooseGroupView(
@@ -179,6 +184,10 @@ class _StatisticsViewState extends State<StatisticsView> {
                                           final result =
                                               await Navigator.of(context).push(
                                                 adaptivePageRoute(
+                                                  settings: const RouteSettings(
+                                                    name: RouteNames
+                                                        .chooseGameView,
+                                                  ),
                                                   fullscreenDialog: true,
                                                   builder: (context) =>
                                                       ChooseGameView(
@@ -215,6 +224,10 @@ class _StatisticsViewState extends State<StatisticsView> {
                                           final result =
                                               await Navigator.of(context).push(
                                                 adaptivePageRoute(
+                                                  settings: const RouteSettings(
+                                                    name: RouteNames
+                                                        .chooseEnumView,
+                                                  ),
                                                   fullscreenDialog: true,
                                                   builder: (context) =>
                                                       ChooseEnumView<
@@ -263,6 +276,10 @@ class _StatisticsViewState extends State<StatisticsView> {
                                           final result =
                                               await Navigator.of(context).push(
                                                 adaptivePageRoute(
+                                                  settings: const RouteSettings(
+                                                    name: RouteNames
+                                                        .chooseEnumView,
+                                                  ),
                                                   fullscreenDialog: true,
                                                   builder: (context) =>
                                                       ChooseEnumView<Timeframe>(
@@ -390,6 +407,9 @@ class _StatisticsViewState extends State<StatisticsView> {
                   final navigator = Navigator.of(this.context);
                   await navigator.push<Statistic>(
                     adaptivePageRoute(
+                      settings: const RouteSettings(
+                        name: RouteNames.createStatisticView,
+                      ),
                       builder: (context) => CreateStatisticView(
                         onStatisticCreated: (newStats) =>
                             onStatisticsCreated(newStats),
@@ -506,6 +526,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         final navigator = Navigator.of(this.context);
         await navigator.push(
           adaptivePageRoute(
+            settings: const RouteSettings(name: RouteNames.statisticDetailView),
             builder: (context) => StatisticDetailView(
               statistic: statistic,
               values: values,

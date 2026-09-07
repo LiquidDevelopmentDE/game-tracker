@@ -9,9 +9,11 @@ import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/enums.dart';
+import 'package:tallee/core/route_names.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/adaptive_page_route.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
+import 'package:tallee/presentation/views/main_menu/settings_view/feedback_form_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/licenses/licenses_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/privacy_policy_view.dart';
 import 'package:tallee/presentation/views/preview_import_data_view.dart';
@@ -120,6 +122,26 @@ class _SettingsViewState extends State<SettingsView> {
                     onPressed: () =>
                         showDeleteDialog(scaffoldMessengerContext, loc),
                   ),
+                  SettingsListTile(
+                    title: loc.send_feedback,
+                    icon: Icons.chat_bubble_outline_rounded,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: () async {
+                      final result = await Navigator.push<bool>(
+                        context,
+                        MaterialPageRoute<bool>(
+                          fullscreenDialog: true,
+                          builder: (context) => const FeedbackFormView(),
+                        ),
+                      );
+                      if (result == true && scaffoldMessengerContext.mounted) {
+                        showSnackbar(
+                          context: scaffoldMessengerContext,
+                          message: loc.thank_you_for_feedback,
+                        );
+                      }
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 16,
@@ -141,7 +163,10 @@ class _SettingsViewState extends State<SettingsView> {
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
+                        adaptivePageRoute(
+                          settings: const RouteSettings(
+                            name: RouteNames.licensesView,
+                          ),
                           builder: (context) => const LicensesView(),
                         ),
                       );
@@ -373,6 +398,7 @@ class _SettingsViewState extends State<SettingsView> {
     final result = await Navigator.of(scaffoldMessengerContext)
         .push<ImportResult>(
           adaptivePageRoute<ImportResult>(
+            settings: const RouteSettings(name: RouteNames.importFile),
             fullscreenDialog: true,
             builder: (_) => PreviewImportDataView(filePath: path),
           ),
