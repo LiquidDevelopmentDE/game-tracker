@@ -6,7 +6,7 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/share_exceptions.dart';
-import 'package:tallee/data/models/match.dart';
+import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_share/qr_code_component.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_share/save_file_component.dart';
@@ -38,13 +38,13 @@ class _MatchShareViewState extends State<MatchShareView>
 
   Timer? timer;
 
-  DateTime? tokenCreatedAt;
+  DateTime? expiresAt;
 
   late final AppLifecycleListener lifecycleListener;
 
-  int secondsRemaining = 40; // 10 Minutes
+  int secondsRemaining = 600; // 10 Minutes
 
-  static const int totalSeconds = 40;
+  int totalSeconds = 600;
 
   String? shareToken;
 
@@ -199,8 +199,10 @@ class _MatchShareViewState extends State<MatchShareView>
           .then((results) {
             if (mounted) {
               setState(() {
-                final loadedShareToken = results[0] as String?;
-                shareToken = loadedShareToken;
+                final shareResponse = results[0] as ShareResponse;
+                shareToken = shareResponse.token;
+                expiresAt = shareResponse.expiresAt;
+                totalSeconds = shareResponse.ttlSeconds;
                 final qrCode = QrCode.fromData(
                   data: shareToken!,
                   errorCorrectLevel: QrErrorCorrectLevel.H,
@@ -277,10 +279,9 @@ class _MatchShareViewState extends State<MatchShareView>
   }
 
   void updateRemainingTime() {
-    if (tokenCreatedAt == null) return;
+    if (expiresAt == null) return;
 
-    final elapsed = DateTime.now().difference(tokenCreatedAt!).inSeconds;
-    final remaining = totalSeconds - elapsed;
+    final remaining = expiresAt!.difference(DateTime.now()).inSeconds;
 
     if (mounted) {
       setState(() {
@@ -295,8 +296,7 @@ class _MatchShareViewState extends State<MatchShareView>
   }
 
   void startTimer() {
-    tokenCreatedAt = DateTime.now();
-    secondsRemaining = totalSeconds;
+    updateRemainingTime();
     timer?.cancel();
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       updateRemainingTime();
@@ -309,10 +309,14 @@ class _MatchShareViewState extends State<MatchShareView>
     });
 
     try {
-      final newToken = await RemoteShareService().getShareToken(widget.match);
+      final shareResponse = await RemoteShareService().getShareToken(
+        widget.match,
+      );
       if (mounted) {
         setState(() {
-          shareToken = newToken;
+          shareToken = shareResponse.token;
+          expiresAt = shareResponse.expiresAt;
+          totalSeconds = shareResponse.ttlSeconds;
           final qrCode = QrCode.fromData(
             data: shareToken!,
             errorCorrectLevel: QrErrorCorrectLevel.H,
