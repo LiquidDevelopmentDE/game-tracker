@@ -69,85 +69,97 @@ class _FeedbackFormViewState extends State<FeedbackFormView> {
     return Scaffold(
       backgroundColor: CustomTheme.backgroundColor,
       appBar: AppBar(title: Text(loc.send_feedback)),
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         maintainBottomViewPadding: true,
-        child: Container(
-          margin: CustomTheme.standardMargin,
-          child: Column(
-            children: [
-              const SizedBox(height: 80),
-              const Icon(
-                Icons.chat_bubble_outline_rounded,
-                size: 50,
-                color: CustomTheme.primaryColor,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                loc.feedback_info_text,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: CustomTheme.textColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 40),
-              TextInputField(
-                controller: messageController,
-                focusNode: messageFocusNode,
-                hintText: loc.feedback_hint,
-                maxLines: 5,
-                minLines: 4,
-                maxLength: Constants.MAX_FEEDBACK_MESSAGE_LENGTH,
-                showCounterText: true,
-                textInputAction: TextInputAction.next,
-                onSubmitted: (_) => emailFocusNode.requestFocus(),
-              ),
-              const SizedBox(height: 16),
-              TextInputField(
-                controller: emailController,
-                focusNode: emailFocusNode,
-                hintText: loc.email_optional,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                onSubmitted: (_) => nameFocusNode.requestFocus(),
-              ),
-              if (showEmailError)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4, left: 4),
-                    child: Text(
-                      loc.invalid_email,
-                      style: const TextStyle(
-                        color: Colors.redAccent,
-                        fontSize: 12,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: CustomTheme.standardMargin,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 80),
+                      const Icon(
+                        Icons.chat_bubble_outline_rounded,
+                        size: 50,
+                        color: CustomTheme.primaryColor,
                       ),
-                    ),
+                      const SizedBox(height: 20),
+                      Text(
+                        loc.feedback_info_text,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: CustomTheme.textColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      TextInputField(
+                        controller: messageController,
+                        focusNode: messageFocusNode,
+                        hintText: loc.feedback_hint,
+                        maxLines: 5,
+                        minLines: 4,
+                        maxLength: Constants.MAX_FEEDBACK_MESSAGE_LENGTH,
+                        showCounterText: true,
+                        textInputAction: TextInputAction.next,
+                        onSubmitted: (_) => emailFocusNode.requestFocus(),
+                      ),
+                      const SizedBox(height: 16),
+                      TextInputField(
+                        controller: emailController,
+                        focusNode: emailFocusNode,
+                        hintText: loc.email_optional,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        onSubmitted: (_) => nameFocusNode.requestFocus(),
+                      ),
+                      if (showEmailError)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 4, left: 4),
+                            child: Text(
+                              loc.invalid_email,
+                              style: const TextStyle(
+                                color: Colors.redAccent,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 16),
+                      TextInputField(
+                        controller: nameController,
+                        focusNode: nameFocusNode,
+                        hintText: loc.name_optional,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) {
+                          nameFocusNode.unfocus();
+                          if (canSubmit) {
+                            submit(loc);
+                          }
+                        },
+                      ),
+                      const Spacer(),
+                      const SizedBox(height: 16),
+                      BottomAnimatedButton(
+                        sizeRelativeToWidth: 0.95,
+                        buttonText: isSubmitting
+                            ? loc.sending
+                            : loc.send_feedback,
+                        buttonType: ButtonType.primary,
+                        onPressed: canSubmit ? () => submit(loc) : null,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
                   ),
                 ),
-              const SizedBox(height: 16),
-              TextInputField(
-                controller: nameController,
-                focusNode: nameFocusNode,
-                hintText: loc.name_optional,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) {
-                  nameFocusNode.unfocus();
-                  if (canSubmit) {
-                    submit(loc);
-                  }
-                },
               ),
-              const Spacer(),
-              BottomAnimatedButton(
-                sizeRelativeToWidth: 0.95,
-                buttonText: isSubmitting ? loc.sending : loc.send_feedback,
-                buttonType: ButtonType.primary,
-                onPressed: canSubmit ? () => submit(loc) : null,
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
