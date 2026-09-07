@@ -26,7 +26,7 @@ import 'package:tallee/state/group_search_provider.dart';
 import 'package:tallee/state/match_search_provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  SentryWidgetsFlutterBinding.ensureInitialized();
 
   if (kDebugMode) HttpOverrides.global = SelfSignedCertHttpOverrides();
 
