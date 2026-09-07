@@ -8,9 +8,7 @@ import 'package:tallee/presentation/widgets/colored_icon_container.dart';
 import 'package:tallee/services/package_info_service.dart';
 
 class NewsView extends StatelessWidget {
-  const NewsView({super.key, this.scrollController});
-
-  final ScrollController? scrollController;
+  const NewsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,6 @@ class NewsView extends StatelessWidget {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                controller: scrollController,
                 child: Column(
                   spacing: 20,
                   children: [

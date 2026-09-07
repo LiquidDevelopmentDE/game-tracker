@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// Returns a platform-adaptive page route based on the current platform.
+/// Returns a platform-adaptive page route
 /// - On iOS, it returns a [CupertinoPageRoute].
 /// - On other platforms, it returns a [MaterialPageRoute].
 Route<T> adaptivePageRoute<T>({
@@ -20,7 +20,6 @@ Route<T> adaptivePageRoute<T>({
   }
   return MaterialPageRoute<T>(
     settings: settings,
-
     builder: builder,
     fullscreenDialog: fullscreenDialog,
   );

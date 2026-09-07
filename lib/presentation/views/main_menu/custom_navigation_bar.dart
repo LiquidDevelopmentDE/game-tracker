@@ -1,17 +1,15 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:once/once.dart';
 import 'package:provider/provider.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
-import 'package:tallee/core/route_names.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/statistic.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_sheet_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/group_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_view.dart';
@@ -226,18 +224,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       callback: () {
         Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
           if (!mounted) return;
-          Navigator.of(context, rootNavigator: true).push(
-            Platform.isIOS
-                ? CupertinoSheetRoute(
-                    enableDrag: false,
-                    scrollableBuilder: (context, controller) =>
-                        NewsView(scrollController: controller),
-                  )
-                : adaptivePageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) => const NewsView(),
-                  ),
-          );
+          Navigator.of(
+            context,
+            rootNavigator: true,
+          ).push(adaptiveSheetRoute(builder: (context) => const NewsView()));
         });
       },
     );
