@@ -38,9 +38,13 @@ class _MatchShareViewState extends State<MatchShareView>
 
   Timer? timer;
 
-  int secondsRemaining = 600; // 10 Minutes
+  DateTime? tokenCreatedAt;
 
-  static const int totalSeconds = 600;
+  late final AppLifecycleListener lifecycleListener;
+
+  int secondsRemaining = 40; // 10 Minutes
+
+  static const int totalSeconds = 40;
 
   String? shareToken;
 
@@ -53,6 +57,7 @@ class _MatchShareViewState extends State<MatchShareView>
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    lifecycleListener = AppLifecycleListener(onResume: onAppResumed);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       initSharingView();
     });
@@ -60,6 +65,7 @@ class _MatchShareViewState extends State<MatchShareView>
 
   @override
   void dispose() {
+    lifecycleListener.dispose();
     timer?.cancel();
     super.dispose();
   }
@@ -261,24 +267,45 @@ class _MatchShareViewState extends State<MatchShareView>
     );
   }
 
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        setState(() {
-          if (secondsRemaining > 0) {
-            secondsRemaining--;
-          } else {
-            timer.cancel();
-          }
-        });
+  void onAppResumed() {
+    if (serverSharingEnabled && shareToken != null && !isLoading) {
+      updateRemainingTime();
+      if (secondsRemaining <= 0) {
+        renewToken();
       }
+    }
+  }
+
+  void updateRemainingTime() {
+    if (tokenCreatedAt == null) return;
+
+    final elapsed = DateTime.now().difference(tokenCreatedAt!).inSeconds;
+    final remaining = totalSeconds - elapsed;
+
+    if (mounted) {
+      setState(() {
+        if (remaining > 0) {
+          secondsRemaining = remaining;
+        } else {
+          secondsRemaining = 0;
+          timer?.cancel();
+        }
+      });
+    }
+  }
+
+  void startTimer() {
+    tokenCreatedAt = DateTime.now();
+    secondsRemaining = totalSeconds;
+    timer?.cancel();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      updateRemainingTime();
     });
   }
 
   void renewToken() async {
     setState(() {
       isLoading = true;
-      secondsRemaining = totalSeconds;
     });
 
     try {
@@ -292,7 +319,6 @@ class _MatchShareViewState extends State<MatchShareView>
           );
           qrImage = QrImage(qrCode);
           isLoading = false;
-          timer?.cancel();
           startTimer();
         });
       }
