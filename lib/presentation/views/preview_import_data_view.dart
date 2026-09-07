@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/translations.dart';
 import 'package:tallee/data/db/database.dart';
@@ -330,11 +329,6 @@ class _PreviewImportDataViewState extends State<PreviewImportDataView> {
     final result = await LocalShareService.commitImport(db, jsonString);
 
     if (!mounted) return;
-
-    //TODO: Remove test exception
-    await Sentry.captureException(
-      StateError('This is a test exception in ImportFileView.'),
-    );
     finishImport(importResult: result);
   }
 
