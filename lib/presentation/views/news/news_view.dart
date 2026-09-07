@@ -15,6 +15,11 @@ class NewsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final locale = loc.localeName;
+    final news = localizedNews.containsKey(locale)
+        ? localizedNews[locale]!
+        : localizedNews['en']!;
+
     final PackageInfo packageInfo = PackageInfoService.info;
 
     return Scaffold(

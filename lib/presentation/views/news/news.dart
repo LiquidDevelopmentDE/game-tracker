@@ -15,23 +15,48 @@ class News {
   });
 }
 
-final List<News> news = [
-  News(
-    icon: Icons.pin_drop,
-    iconColor: AppColor.red,
-    heading: 'Lorem ipsum',
-    text: 'Lorem ipsum dolor sit amet, _consetetur_ sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.',
-  ),
-  News(
-    icon: Icons.exposure_rounded,
-    iconColor: AppColor.green,
-    heading: 'Lorem ipsum',
-    text: 'labore et **dolore** magna aliquyam erat, sed diam **voluptua**. At vero eos et accusam et justo duo dolores et ea rebum. ',
-  ),
-  News(
-    icon: Icons.dark_mode_rounded,
-    iconColor: AppColor.blue,
-    heading: 'Lorem ipsum',
-    text: 'Stet clita kasd _gubergren_, no sea takimata sanctus est **Lorem* ipsum dolor sit amet.',
-  ),
-];
+final localizedNews = {
+  // german
+  'de': [
+    News(
+      icon: Icons.pin_drop,
+      iconColor: AppColor.red,
+      heading: 'Lorem ipsum',
+      text: 'Lorem ipsum dolor sit amet, _consetetur_ sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.',
+    ),
+    News(
+      icon: Icons.exposure_rounded,
+      iconColor: AppColor.green,
+      heading: 'Lorem ipsum',
+      text: 'labore et **dolore** magna aliquyam erat, sed diam **voluptua**. At vero eos et accusam et justo duo dolores et ea rebum. ',
+    ),
+    News(
+      icon: Icons.dark_mode_rounded,
+      iconColor: AppColor.blue,
+      heading: 'Lorem ipsum',
+      text: 'Stet clita kasd _gubergren_, no sea takimata sanctus est **Lorem* ipsum dolor sit amet.',
+    ),
+  ],
+
+  // englisch
+  'en': [
+    News(
+      icon: Icons.pin_drop,
+      iconColor: AppColor.red,
+      heading: 'Lorem ipsum',
+      text: 'Lorem ipsum dolor sit amet, _consetetur_ sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.',
+    ),
+    News(
+      icon: Icons.exposure_rounded,
+      iconColor: AppColor.green,
+      heading: 'Lorem ipsum',
+      text: 'labore et **dolore** magna aliquyam erat, sed diam **voluptua**. At vero eos et accusam et justo duo dolores et ea rebum. ',
+    ),
+    News(
+      icon: Icons.dark_mode_rounded,
+      iconColor: AppColor.blue,
+      heading: 'Lorem ipsum',
+      text: 'Stet clita kasd _gubergren_, no sea takimata sanctus est **Lorem* ipsum dolor sit amet.',
+    ),
+  ],
+};
