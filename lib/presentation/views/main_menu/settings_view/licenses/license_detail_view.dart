@@ -51,7 +51,7 @@ class LicenseDetailView extends StatelessWidget {
                       // Package version
                       if (package.version != null) ...[
                         Text(
-                          'Version ${package.version}',
+                          '${loc.version} ${package.version}',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontSize: 14,

@@ -26,6 +26,7 @@
   "classifier": "Classifier",
   "classifier_description": "Choose which metric is calculated and shown in this statistic.",
   "click_another_player_to_create_a_pair": "Click another player to create a pair",
+  "close": "Close",
   "code_copied": "Code copied to clipboard",
   "code_pasted_from_clipboard": "Code pasted from clipboard",
   "color": "Color",
@@ -38,6 +39,7 @@
   "color_teal": "Teal",
   "color_yellow": "Yellow",
   "confirm": "Confirm",
+  "continue_": "Continue",
   "copy_code": "Copy Code",
   "could_not_add_player": "Could not add player {playerName}",
   "@could_not_add_player": {
@@ -343,7 +345,9 @@
   "type": "Type",
   "unexpected_error": "An unexpected error occurred.",
   "unknown_exception": "Unknown Exception (see console)",
-  "winners": "Winner",
+  "version": "Version",
+  "whats_new": "What's new?",
+  "winner": "Winner",
   "winrate": "Winrate",
   "worst_score": "Worst score",
   "yesterday_at": "Yesterday at"

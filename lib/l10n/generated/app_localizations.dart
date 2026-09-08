@@ -254,6 +254,12 @@ abstract class AppLocalizations {
   /// **'Click another player to create a pair'**
   String get click_another_player_to_create_a_pair;
 
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
   /// No description provided for @code_copied.
   ///
   /// In en, this message translates to:
@@ -325,6 +331,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm;
+
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
 
   /// No description provided for @copy_code.
   ///
@@ -1640,11 +1652,23 @@ abstract class AppLocalizations {
   /// **'Unknown Exception (see console)'**
   String get unknown_exception;
 
-  /// No description provided for @winners.
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @whats_new.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new?'**
+  String get whats_new;
+
+  /// No description provided for @winner.
   ///
   /// In en, this message translates to:
   /// **'Winner'**
-  String get winners;
+  String get winner;
 
   /// No description provided for @winrate.
   ///

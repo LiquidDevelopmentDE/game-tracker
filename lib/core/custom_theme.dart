@@ -41,6 +41,17 @@ class CustomTheme {
   /// Unselected color for the [NavbarItem]
   static Color navBarItemUnselectedColor = Colors.grey.shade400;
 
+  // ==================== App-Colors ====================
+
+  static Color red = Colors.red;
+  static Color blue = Colors.blue;
+  static Color green = Colors.green;
+  static Color yellow = const Color(0xFFF7CA28);
+  static Color purple = Colors.purple;
+  static Color orange = const Color(0xFFef681f);
+  static Color pink = const Color(0xFFE91E63);
+  static Color teal = const Color(0xFF00BCD4);
+
   // ==================== Border Radius ====================
   static const double standardBorderRadius = 12.0;
   static BorderRadius get standardBorderRadiusAll =>

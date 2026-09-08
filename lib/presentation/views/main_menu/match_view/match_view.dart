@@ -3,15 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
-import 'package:once/once.dart';
 import 'package:provider/provider.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
-import 'package:tallee/core/route_names.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/create_match/create_match_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_detail_view.dart';
 import 'package:tallee/presentation/widgets/app_skeleton.dart';
@@ -70,13 +69,6 @@ class _MatchViewState extends State<MatchView> {
     db = Provider.of<AppDatabase>(context, listen: false);
     _searchProvider = Provider.of<MatchSearchProvider>(context, listen: false);
     _searchProvider.addListener(_handleSearchToggle);
-
-    Once.runOnce(
-      'exampleStats',
-      callback: () {
-        addExampleStatistics();
-      },
-    );
 
     loadMatches();
   }
@@ -308,30 +300,5 @@ class _MatchViewState extends State<MatchView> {
         });
       }
     });
-  }
-
-  Future<void> addExampleStatistics() async {
-    final db = Provider.of<AppDatabase>(context, listen: false);
-    final stat1 = Statistic(
-      type: StatisticType.totalWins,
-      color: AppColor.blue,
-      displayCount: 3,
-      scopes: [StatisticScope.allPlayers],
-    );
-    final stat2 = Statistic(
-      type: StatisticType.averageScore,
-      color: AppColor.pink,
-      displayCount: 5,
-      scopes: [StatisticScope.allPlayers],
-    );
-    final stat3 = Statistic(
-      type: StatisticType.averageScore,
-      color: AppColor.green,
-      displayCount: 8,
-      scopes: [StatisticScope.allPlayers],
-    );
-    await db.statisticDao.addStatisticsAsList(
-      statistics: [stat1, stat2, stat3],
-    );
   }
 }
