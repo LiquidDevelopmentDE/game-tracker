@@ -199,7 +199,7 @@ class _MatchShareViewState extends State<MatchShareView>
           .then((results) {
             if (mounted) {
               setState(() {
-                final shareResponse = results[0] as ShareResponse;
+                final shareResponse = results[0] as ShareCreateResponse;
                 shareToken = shareResponse.token;
                 expiresAt = shareResponse.expiresAt;
                 totalSeconds = shareResponse.ttlSeconds;

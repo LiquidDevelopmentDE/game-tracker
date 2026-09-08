@@ -1,17 +1,17 @@
 import 'package:tallee/core/share_exceptions.dart';
 
-class ShareResponse {
+class ShareCreateResponse {
   final String token;
   final int ttlSeconds;
   final DateTime expiresAt;
 
-  const ShareResponse({
+  const ShareCreateResponse({
     required this.token,
     required this.ttlSeconds,
     required this.expiresAt,
   });
 
-  factory ShareResponse.fromJson(Map<String, dynamic> json) {
+  factory ShareCreateResponse.fromJson(Map<String, dynamic> json) {
     final token = json['token'] as String?;
     final ttlSeconds = json['ttl_seconds'] as int?;
     final expiresAtRaw = json['expires_at'] as String?;
@@ -27,7 +27,7 @@ class ShareResponse {
       throw ParsingException();
     }
 
-    return ShareResponse(
+    return ShareCreateResponse(
       token: token,
       ttlSeconds: ttlSeconds,
       expiresAt: expiresAt,
