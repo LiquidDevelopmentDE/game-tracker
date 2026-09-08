@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/enums.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/core/translations.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
@@ -134,7 +135,7 @@ class _QrScanComponentState extends State<QrScanComponent> {
       final response = await RemoteShareService().getMatchByToken(token);
 
       // If an import error occured
-      if (response.match == null && mounted) {
+      if (response.result != ImportResult.success && mounted) {
         final message = translateMatchImportResultToString(
           response.result,
           context,
