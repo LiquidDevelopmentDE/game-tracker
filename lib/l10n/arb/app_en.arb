@@ -145,7 +145,7 @@
   "import_file_instruction": "Select a match file (.tallee) exported from Tallee match share to import the data.",
   "import_match": "Import match",
   "import_preview_description": "The following data will be imported",
-  "incompatible_version": "This file was created with an incompatible version of Tallee and can't be imported.",
+  "incompatible_version": "This file was created with a different version of Tallee and can't be imported. Please update your app and try again.",
   "info": "Info",
   "input_token_instruction": "Input a match share token another person created using Tallee to import the match.",
   "invalid_file": "Invalid File.",

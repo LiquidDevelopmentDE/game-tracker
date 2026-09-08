@@ -14,7 +14,7 @@
   "best_player": "Beste:r Spieler:in",
   "best_score": "Beste Punktzahl",
   "cancel": "Abbrechen",
-  "check_app_version": "Bitte überprüft eure App-Version und teilt das Spiel erneut",
+  "check_app_version": "Bitte überprüft eure App-Version und teilt das Spiel erneut.",
   "choose_date_range": "Datumsbereich auswählen",
   "choose_game": "Spielvorlage wählen",
   "choose_group": "Gruppe wählen",
@@ -145,7 +145,8 @@
   "import_file_instruction": "Wähle eine Spiel-Datei (.tallee), die aus einem Tallee-Spiel-Share exportiert wurde, um die Daten zu importieren.",
   "import_match": "Spiel importieren",
   "import_preview_description": "Die folgenden Daten werden importiert",
-  "incompatible_version": "Diese Datei wurde mit einer inkompatiblen Version von Tallee erstellt und kann nicht importiert werden.",
+  "incompatible_version": "Diese Datei wurde mit einer anderen Version von Tallee erstellt und kann nicht importiert werden. Bitte aktualisiere deine App und versuche es erneut.",
+
   "info": "Info",
   "input_token_instruction": "Gib einen Match-Share-Token ein, den eine andere Person mit Tallee erstellt hat, um das Match zu importieren.",
   "invalid_file": "Ungültige Datei.",
