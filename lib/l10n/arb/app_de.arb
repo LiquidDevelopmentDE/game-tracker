@@ -26,6 +26,7 @@
   "classifier": "Klassifikator",
   "classifier_description": "Lege fest, welche Kennzahl berechnet und in der Statistik angezeigt wird.",
   "click_another_player_to_create_a_pair": "Klicke einen weiteren Spieler an, um ein Paar zu erstellen",
+  "close": "Schließen",
   "code_copied": "Code in die Zwischenablage kopiert",
   "code_pasted_from_clipboard": "Code aus der Zwischenablage eingefügt",
   "color": "Farbe",
@@ -38,6 +39,7 @@
   "color_teal": "Türkis",
   "color_yellow": "Gelb",
   "confirm": "Bestätigen",
+  "continue_": "Weiter",
   "copy_code": "Code kopieren",
   "could_not_add_player": "Spieler:in {playerName} konnte nicht hinzugefügt werden",
   "@could_not_add_player": {
@@ -334,7 +336,9 @@
   "type": "Typ",
   "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten.",
   "unknown_exception": "Unbekannter Fehler (siehe Konsole)",
-  "winners": "Gewinner:in",
+  "version": "Version",
+  "whats_new": "Neuigkeiten",
+  "winner": "Gewinner:in",
   "winrate": "Siegquote",
   "worst_score": "Schlechteste Punktzahl",
   "yesterday_at": "Gestern um"

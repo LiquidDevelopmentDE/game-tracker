@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:once/once.dart';
 import 'package:provider/provider.dart';
+import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
-import 'package:tallee/core/route_names.dart';
+import 'package:tallee/data/db/database.dart';
+import 'package:tallee/data/models/statistic.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_sheet_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/group_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/settings_view.dart';
 import 'package:tallee/presentation/views/main_menu/statistic_view/statistic_view.dart';
+import 'package:tallee/presentation/views/news/news_view.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
 import 'package:tallee/presentation/widgets/navbar_item.dart';
 import 'package:tallee/state/data_refresh_provider.dart';
@@ -32,6 +38,13 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
 
   /// Key count to force rebuild of tab views
   int tabKeyCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    addExampleStats();
+    openNewsDialog();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +72,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          _currentTabTitle(context),
+          currentTabTitle(context),
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         backgroundColor: CustomTheme.backgroundColor,
@@ -190,7 +203,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
   }
 
   /// Returns the title of the current tab based on [currentIndex].
-  String _currentTabTitle(BuildContext context) {
+  String currentTabTitle(BuildContext context) {
     final loc = AppLocalizations.of(context);
     switch (currentIndex) {
       case 0:
@@ -202,5 +215,55 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       default:
         return '';
     }
+  }
+
+  /// Opens the [NewsView] when the user installs a new version
+  void openNewsDialog() {
+    Once.runOnEveryNewVersion(
+      key: 'whats-new-screen',
+      callback: () {
+        Future.delayed(Constants.OPEN_WITH_NAVIGATION_DELAY, () {
+          if (!mounted) return;
+          Navigator.of(
+            context,
+            rootNavigator: true,
+          ).push(adaptiveSheetRoute(builder: (context) => const NewsView()));
+        });
+      },
+    );
+  }
+
+  /// Adds example statistics to the database the first time the user opens the app
+  void addExampleStats() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Once.runOnce(
+        'example-stats',
+        callback: () async {
+          final db = Provider.of<AppDatabase>(context, listen: false);
+          final stat1 = Statistic(
+            type: StatisticType.totalWins,
+            color: AppColor.orange,
+            displayCount: 3,
+            scopes: [StatisticScope.allPlayers],
+          );
+          final stat2 = Statistic(
+            type: StatisticType.averageScore,
+            color: AppColor.pink,
+            displayCount: 5,
+            scopes: [StatisticScope.allPlayers],
+          );
+          final stat3 = Statistic(
+            type: StatisticType.averageScore,
+            color: AppColor.green,
+            displayCount: 8,
+            scopes: [StatisticScope.allPlayers],
+          );
+
+          await db.statisticDao.addStatisticsAsList(
+            statistics: [stat1, stat2, stat3],
+          );
+        },
+      );
+    });
   }
 }

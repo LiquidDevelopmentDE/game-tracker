@@ -92,6 +92,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Klicke einen weiteren Spieler an, um ein Paar zu erstellen';
 
   @override
+  String get close => 'Schließen';
+
+  @override
   String get code_copied => 'Code in die Zwischenablage kopiert';
 
   @override
@@ -127,6 +130,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get confirm => 'Bestätigen';
+
+  @override
+  String get continue_ => 'Weiter';
 
   @override
   String get copy_code => 'Code kopieren';
@@ -883,7 +889,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
 
   @override
-  String get winners => 'Gewinner:in';
+  String get version => 'Version';
+
+  @override
+  String get whats_new => 'Neuigkeiten';
+
+  @override
+  String get winner => 'Gewinner:in';
 
   @override
   String get winrate => 'Siegquote';

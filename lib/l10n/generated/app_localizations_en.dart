@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Click another player to create a pair';
 
   @override
+  String get close => 'Close';
+
+  @override
   String get code_copied => 'Code copied to clipboard';
 
   @override
@@ -124,6 +127,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm => 'Confirm';
+
+  @override
+  String get continue_ => 'Continue';
 
   @override
   String get copy_code => 'Copy Code';
@@ -874,7 +880,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknown_exception => 'Unknown Exception (see console)';
 
   @override
-  String get winners => 'Winner';
+  String get version => 'Version';
+
+  @override
+  String get whats_new => 'What\'s new?';
+
+  @override
+  String get winner => 'Winner';
 
   @override
   String get winrate => 'Winrate';
