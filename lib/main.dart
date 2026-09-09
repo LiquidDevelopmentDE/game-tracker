@@ -18,6 +18,7 @@ import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
 import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/custom_navigation_bar.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
+import 'package:tallee/presentation/views/onboarding_view.dart';
 import 'package:tallee/presentation/views/preview_import_data_view.dart';
 import 'package:tallee/presentation/views/splash_screen.dart';
 import 'package:tallee/services/local_share_service.dart';
@@ -165,15 +166,36 @@ class _TalleeState extends State<Tallee> {
     final path = pendingImportPath;
     pendingImportPath = null;
 
+    bool isFirstRun = SharedPreferencesService.isFirstRun();
+
+    final targetWidget = isFirstRun
+        ? OnboardingView(onCompleted: () => navigateToHomeAndHandleImport(path))
+        : const CustomNavigationBar();
+
     navigator.pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const CustomNavigationBar(),
+        settings: RouteSettings(
+          name: isFirstRun ? RouteNames.onboarding : RouteNames.groupView,
+        ),
+        pageBuilder: (context, animation, secondaryAnimation) => targetWidget,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
         transitionDuration: const Duration(milliseconds: 300),
       ),
+    );
+
+    if (!isFirstRun && path != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => openImport(path));
+    }
+  }
+
+  void navigateToHomeAndHandleImport(String? path) {
+    final navigator = navigatorKey.currentState;
+    if (navigator == null) return;
+
+    navigator.pushReplacement(
+      adaptivePageRoute(builder: (_) => const CustomNavigationBar()),
     );
 
     if (path != null) {

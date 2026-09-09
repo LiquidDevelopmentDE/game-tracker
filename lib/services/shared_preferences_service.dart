@@ -25,6 +25,7 @@ class SharedPreferencesService {
   static const String filteredStatisticTypesKey = 'filtered_statistic_types';
   static const String showFavouritesKey = 'show_favourites';
   static const String sharingConsentKey = 'share_consent';
+  static const String onboardingCompletedKey = 'onboarding_completed';
 
   static void deleteAllFilters({required bool includeFavourites}) {
     final SharedPreferences prefs = _instance;
@@ -110,5 +111,14 @@ class SharedPreferencesService {
           ),
         )
         .toList();
+  }
+
+  static bool isFirstRun() {
+    final bool isCompleted = _instance.getBool(onboardingCompletedKey) ?? false;
+    if (!isCompleted) {
+      _instance.setBool(onboardingCompletedKey, true);
+      return true;
+    }
+    return false;
   }
 }
