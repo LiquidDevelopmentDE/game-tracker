@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/data/db/database.dart';
@@ -19,6 +21,7 @@ import 'package:tallee/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:tallee/presentation/widgets/tiles/object_tiles/match_tile.dart';
 import 'package:tallee/presentation/widgets/top_centered_message.dart';
 import 'package:tallee/state/match_search_provider.dart';
+import 'package:tallee/state/showcase_provider.dart';
 
 class MatchView extends StatefulWidget {
   /// A view that displays a list of matches
@@ -30,8 +33,11 @@ class MatchView extends StatefulWidget {
 
 class _MatchViewState extends State<MatchView> {
   late final AppDatabase db;
-  late final MatchSearchProvider _searchProvider;
+  late final MatchSearchProvider searchProvider;
+  late final ShowcaseProvider showcaseProvider;
   bool isLoading = true;
+
+  final GlobalKey matchViewCreateButtonKey = GlobalKey();
 
   TextEditingController searchBarController = TextEditingController();
 
@@ -67,16 +73,22 @@ class _MatchViewState extends State<MatchView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _searchProvider = Provider.of<MatchSearchProvider>(context, listen: false);
-    _searchProvider.addListener(_handleSearchToggle);
+    searchProvider = Provider.of<MatchSearchProvider>(context, listen: false);
+    searchProvider.addListener(_handleSearchToggle);
+    showcaseProvider = Provider.of<ShowcaseProvider>(context, listen: false);
 
     loadMatches();
+
+    ShowcaseView.register(blurValue: 0.5);
+
+    startTourStep();
   }
 
   @override
   void dispose() {
-    _searchProvider.removeListener(_handleSearchToggle);
+    searchProvider.removeListener(_handleSearchToggle);
     searchBarController.dispose();
+    ShowcaseView.get().unregister();
     super.dispose();
   }
 
@@ -197,28 +209,76 @@ class _MatchViewState extends State<MatchView> {
           ),
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom + 20,
-            child: FloatingAnimatedButton(
-              text: loc.create_match,
-              icon: RpgAwesome.clovers_card,
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  adaptivePageRoute(
-                    settings: const RouteSettings(
-                      name: RouteNames.createMatchView,
-                    ),
-                    builder: (context) => CreateMatchView(
-                      onWinnerChanged: loadMatches,
-                      onMatchesUpdated: loadMatches,
-                    ),
-                  ),
-                );
+            child: Showcase(
+              key: matchViewCreateButtonKey,
+              description:
+                  "Let's track your first match, click the button below.",
+              targetShapeBorder: const CircleBorder(),
+              disableBarrierInteraction: true,
+              disposeOnTap: true,
+              onTargetClick: () {
+                navigateToCreateMatchView();
+                showcaseProvider.markAsSeen('match_view_create_match_button');
               },
+              disableMovingAnimation: true,
+              tooltipPosition: TooltipPosition.top,
+              floatingActionWidget: FloatingActionWidget(
+                left: 16,
+                bottom: 32,
+                //TODO: change button
+                child: TextButton(
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    Provider.of<ShowcaseProvider>(
+                      context,
+                      listen: false,
+                    ).skipTour();
+                    ShowcaseView.get().dismiss();
+                  },
+                  child: const Text(
+                    'Skip',
+                    style: TextStyle(color: CustomTheme.textColor),
+                  ),
+                ),
+              ),
+              child: FloatingAnimatedButton(
+                text: loc.create_match,
+                icon: RpgAwesome.clovers_card,
+                onPressed: () async {
+                  navigateToCreateMatchView();
+                },
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void navigateToCreateMatchView() {
+    Navigator.push(
+      context,
+      adaptivePageRoute(
+        settings: const RouteSettings(name: RouteNames.createMatchView),
+        builder: (context) => CreateMatchView(
+          onWinnerChanged: loadMatches,
+          onMatchesUpdated: loadMatches,
+        ),
+      ),
+    );
+  }
+
+  void startTourStep() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (showcaseProvider.shouldShowShowcase(
+        'match_view_create_match_button',
+      )) {
+        if (!showcaseProvider.isTourActive) {
+          showcaseProvider.startTour();
+        }
+        ShowcaseView.get().startShowCase([matchViewCreateButtonKey]);
+      }
+    });
   }
 
   void filterMatches(String query) {
@@ -274,7 +334,7 @@ class _MatchViewState extends State<MatchView> {
       return;
     }
 
-    if (!_searchProvider.isSearching) {
+    if (!searchProvider.isSearching) {
       searchBarController.clear();
     }
   }

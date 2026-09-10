@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
@@ -17,6 +19,7 @@ import 'package:tallee/presentation/widgets/buttons/buttons.dart';
 import 'package:tallee/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:tallee/presentation/widgets/tiles/object_tiles/game_tile.dart';
 import 'package:tallee/presentation/widgets/top_centered_message.dart';
+import 'package:tallee/state/showcase_provider.dart';
 
 class ChooseGameView extends StatefulWidget {
   /// A view that allows the user to choose a game from a list of available games
@@ -65,6 +68,10 @@ class _ChooseGameViewState extends State<ChooseGameView> {
   // If selecting multiple is possible
   late bool enableMultiSelection;
 
+  final GlobalKey createGameKey = GlobalKey();
+
+  late final ShowcaseProvider showcaseProvider;
+
   @override
   void initState() {
     db = Provider.of<AppDatabase>(context, listen: false);
@@ -76,6 +83,17 @@ class _ChooseGameViewState extends State<ChooseGameView> {
 
     enableMultiSelection =
         widget.enableMultiSelection || widget.statistic != null;
+
+    showcaseProvider = Provider.of<ShowcaseProvider>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (showcaseProvider.shouldShowShowcase(
+        'choose_game_view_create_game_button',
+      )) {
+        ShowcaseView.get().startShowCase([createGameKey]);
+      }
+    });
+
     super.initState();
   }
 
@@ -89,36 +107,42 @@ class _ChooseGameViewState extends State<ChooseGameView> {
         actions: [
           Visibility(
             visible: !enableMultiSelection,
-            child: HapticIconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  adaptivePageRoute(
-                    settings: const RouteSettings(
-                      name: RouteNames.createGameView,
-                    ),
-                    builder: (context) => CreateGameView(
-                      requiredRuleset: widget.requiredRuleset,
-                      onGameChanged: () {
-                        widget.onGamesUpdated?.call();
-                      },
-                    ),
-                  ),
+            child: Showcase(
+              key: createGameKey,
+              description: "Nothing here yet, let's create your first game",
+              targetShapeBorder: const CircleBorder(),
+              disableBarrierInteraction: true,
+              disposeOnTap: true,
+              onTargetClick: () {
+                onGameCreateButtonClicked();
+                showcaseProvider.markAsSeen(
+                  'choose_game_view_create_game_button',
                 );
-                if (result != null && result.game != null) {
-                  if (widget.requiredRuleset != null &&
-                      result.game.ruleset != widget.requiredRuleset) {
-                    return;
-                  }
-
-                  setState(() {
-                    games.insert(0, result.game);
-                    games.sort((a, b) => a.name.compareIgnoringCaseTo(b.name));
-                  });
-                  refreshFromSource();
-                }
               },
+              disableMovingAnimation: true,
+              tooltipPosition: TooltipPosition.top,
+              floatingActionWidget: FloatingActionWidget(
+                left: 16,
+                bottom: 32,
+                //TODO: change button
+                child: TextButton(
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    showcaseProvider.skipTour();
+                    ShowcaseView.get().dismiss();
+                  },
+                  child: const Text(
+                    'Skip',
+                    style: TextStyle(color: CustomTheme.textColor),
+                  ),
+                ),
+              ),
+              child: HapticIconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () async {
+                  onGameCreateButtonClicked();
+                },
+              ),
             ),
           ),
         ],
@@ -276,6 +300,33 @@ class _ChooseGameViewState extends State<ChooseGameView> {
     if (widget.statistic != null) return null;
     if (enableMultiSelection) return selectedGames;
     return selectedGames.isEmpty ? null : selectedGames.first;
+  }
+
+  void onGameCreateButtonClicked() async {
+    final result = await Navigator.push(
+      context,
+      adaptivePageRoute(
+        settings: const RouteSettings(name: RouteNames.createGameView),
+        builder: (context) => CreateGameView(
+          requiredRuleset: widget.requiredRuleset,
+          onGameChanged: () {
+            widget.onGamesUpdated?.call();
+          },
+        ),
+      ),
+    );
+    if (result != null && result.game != null) {
+      if (widget.requiredRuleset != null &&
+          result.game.ruleset != widget.requiredRuleset) {
+        return;
+      }
+
+      setState(() {
+        games.insert(0, result.game);
+        games.sort((a, b) => a.name.compareIgnoringCaseTo(b.name));
+      });
+      refreshFromSource();
+    }
   }
 
   /// Fetches the usage count for all games and stores it in [gameCounts].

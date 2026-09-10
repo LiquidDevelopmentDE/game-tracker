@@ -1,7 +1,9 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants.dart';
@@ -21,6 +23,7 @@ import 'package:tallee/presentation/widgets/custom_stepper.dart';
 import 'package:tallee/presentation/widgets/player_selection_widget.dart';
 import 'package:tallee/presentation/widgets/text_input/text_input_field.dart';
 import 'package:tallee/presentation/widgets/tiles/choose_tile.dart';
+import 'package:tallee/state/showcase_provider.dart';
 
 class CreateMatchView extends StatefulWidget {
   /// A view that allows creating a new match
@@ -74,6 +77,10 @@ class _CreateMatchViewState extends State<CreateMatchView> {
   List<Player> selectedPlayers = [];
   List<Team> selectedUnits = [];
 
+  final GlobalKey selectGameKey = GlobalKey();
+
+  late final ShowcaseProvider showcaseProvider;
+
   /// GlobalKey for ScaffoldMessenger to show snackbars
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -82,6 +89,13 @@ class _CreateMatchViewState extends State<CreateMatchView> {
     super.initState();
     matchNameController.addListener(() {
       setState(() {});
+    });
+    showcaseProvider = Provider.of<ShowcaseProvider>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (showcaseProvider.shouldShowShowcase('create_match_view_game_tile')) {
+        ShowcaseView.get().startShowCase([selectGameKey]);
+      }
     });
 
     loadData();
@@ -127,14 +141,42 @@ class _CreateMatchViewState extends State<CreateMatchView> {
                 ),
               ),
 
-              // Game selection tile.
               if (!widget.editMode)
-                ChooseTile(
-                  title: loc.game,
-                  trailing: selectedGame == null
-                      ? Text(loc.none_group)
-                      : Text(selectedGame!.name),
-                  onPressed: () async => await onChoosingGame(),
+                Showcase(
+                  key: selectGameKey,
+                  description: "Now select the game you want to track",
+                  targetShapeBorder: const CircleBorder(),
+                  disableBarrierInteraction: true,
+                  disposeOnTap: true,
+                  onTargetClick: () {
+                    onChoosingGame();
+                    showcaseProvider.markAsSeen('create_match_view_game_tile');
+                  },
+                  disableMovingAnimation: true,
+                  tooltipPosition: TooltipPosition.top,
+                  floatingActionWidget: FloatingActionWidget(
+                    left: 16,
+                    bottom: 32,
+                    //TODO: change button
+                    child: TextButton(
+                      onPressed: () {
+                        HapticFeedback.selectionClick();
+                        showcaseProvider.skipTour();
+                        ShowcaseView.get().dismiss();
+                      },
+                      child: const Text(
+                        'Skip',
+                        style: TextStyle(color: CustomTheme.textColor),
+                      ),
+                    ),
+                  ),
+                  child: ChooseTile(
+                    title: loc.game,
+                    trailing: selectedGame == null
+                        ? Text(loc.none_group)
+                        : Text(selectedGame!.name),
+                    onPressed: () async => await onChoosingGame(),
+                  ),
                 ),
 
               // Choose the default lives

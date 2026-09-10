@@ -25,6 +25,7 @@ class SharedPreferencesService {
   static const String filteredStatisticTypesKey = 'filtered_statistic_types';
   static const String showFavouritesKey = 'show_favourites';
   static const String sharingConsentKey = 'share_consent';
+  static const String showcaseTourSkippedKey = 'showcase_tour_skipped';
   static const String onboardingCompletedKey = 'onboarding_completed';
 
   static void deleteAllFilters({required bool includeFavourites}) {
@@ -120,5 +121,21 @@ class SharedPreferencesService {
       return true;
     }
     return false;
+  }
+
+  static void setTourSkipped(bool skipped) {
+    _instance.setBool(showcaseTourSkippedKey, skipped);
+  }
+
+  static bool isTourSkipped() {
+    return _instance.getBool(showcaseTourSkippedKey) ?? false;
+  }
+
+  static void setShowcaseSeen(String screenKey) {
+    _instance.setBool('showcase_seen_$screenKey', true);
+  }
+
+  static bool hasSeenShowcase(String screenKey) {
+    return _instance.getBool('showcase_seen_$screenKey') ?? false;
   }
 }

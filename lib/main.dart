@@ -27,6 +27,7 @@ import 'package:tallee/services/shared_preferences_service.dart';
 import 'package:tallee/state/data_refresh_provider.dart';
 import 'package:tallee/state/group_search_provider.dart';
 import 'package:tallee/state/match_search_provider.dart';
+import 'package:tallee/state/showcase_provider.dart';
 
 void main() async {
   SentryWidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +59,7 @@ void main() async {
             ChangeNotifierProvider(create: (context) => MatchSearchProvider()),
             ChangeNotifierProvider(create: (context) => GroupSearchProvider()),
             ChangeNotifierProvider(create: (context) => DataRefreshProvider()),
+            ChangeNotifierProvider(create: (context) => ShowcaseProvider()),
           ],
           child: DefaultAssetBundle(
             bundle: SentryAssetBundle(),

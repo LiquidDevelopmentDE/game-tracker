@@ -68,6 +68,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           children: [
             Align(
               alignment: Alignment.centerRight,
+              //TODO: remove splash and implement custom button (maybe)
               child: TextButton(
                 onPressed: () {
                   HapticFeedback.lightImpact();
