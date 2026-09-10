@@ -136,7 +136,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               children: List.generate(
                 pages.length,
                 (index) => AnimatedContainer(
-                  curve: Curves.fastOutSlowIn,
+                  curve: Curves.easeInOut,
                   duration: const Duration(milliseconds: 300),
                   margin: const EdgeInsets.only(right: 8),
                   height: 8,
@@ -167,7 +167,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       } else {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
+                          curve: Curves.fastOutSlowIn,
                         );
                       }
                     },
