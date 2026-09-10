@@ -144,7 +144,7 @@ class _CreateMatchViewState extends State<CreateMatchView> {
               if (!widget.editMode)
                 Showcase(
                   key: selectGameKey,
-                  description: "Now select the game you want to track",
+                  description: 'Now select the game you want to track',
                   targetShapeBorder: const CircleBorder(),
                   disableBarrierInteraction: true,
                   disposeOnTap: true,
