@@ -9,7 +9,8 @@ import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/group.dart';
 import 'package:tallee/data/models/player.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/create_group_view.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/group_detail_view.dart';
 import 'package:tallee/presentation/widgets/app_skeleton.dart';
@@ -160,6 +161,9 @@ class _GroupViewState extends State<GroupView> {
                               await Navigator.push(
                                 context,
                                 adaptivePageRoute(
+                                  settings: const RouteSettings(
+                                    name: RouteNames.groupDetailView,
+                                  ),
                                   builder: (context) {
                                     return GroupDetailView(
                                       group: filteredGroups[index],
@@ -187,6 +191,9 @@ class _GroupViewState extends State<GroupView> {
                 await Navigator.push(
                   context,
                   adaptivePageRoute(
+                    settings: const RouteSettings(
+                      name: RouteNames.createGroupView,
+                    ),
                     builder: (context) {
                       return CreateGroupView(onMembersChanged: loadGroups);
                     },

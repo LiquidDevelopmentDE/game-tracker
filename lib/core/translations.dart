@@ -102,7 +102,7 @@ String translateRulesetToString(Ruleset ruleset, BuildContext context) {
     case Ruleset.loser:
       return loc.loser;
     case Ruleset.winner:
-      return loc.winners;
+      return loc.winner;
     case Ruleset.placement:
       return loc.placement;
     case Ruleset.lives:

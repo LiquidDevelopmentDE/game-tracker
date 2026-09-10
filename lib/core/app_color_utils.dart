@@ -1,27 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/data/models/statistic.dart';
 
 /// Returns the [Color] object corresponding to a [AppColor] enum value.
 Color getColorFromAppColor(AppColor color) {
   switch (color) {
     case AppColor.red:
-      return Colors.red;
+      return CustomTheme.red;
     case AppColor.blue:
-      return Colors.blue;
+      return CustomTheme.blue;
     case AppColor.green:
-      return Colors.green;
+      return CustomTheme.green;
     case AppColor.yellow:
-      return const Color(0xFFF7CA28);
+      return CustomTheme.yellow;
     case AppColor.purple:
-      return Colors.purple;
+      return CustomTheme.purple;
     case AppColor.orange:
-      return const Color(0xFFef681f);
+      return CustomTheme.orange;
     case AppColor.pink:
-      return const Color(0xFFE91E63);
+      return CustomTheme.pink;
     case AppColor.teal:
-      return const Color(0xFF00BCD4);
+      return CustomTheme.teal;
   }
 }
 

@@ -24,8 +24,17 @@ class Constants {
   /// Treshold for fuzzy search
   static const int FUZZY_SEARCH_THRESHOLD = 50;
 
+  static const int _MINIMUM_SKELETON_MS = 250;
+
   /// Minimum duration of all app skeletons
-  static const Duration MINIMUM_SKELETON_DURATION = Duration(milliseconds: 250);
+  static const Duration MINIMUM_SKELETON_DURATION = Duration(
+    milliseconds: _MINIMUM_SKELETON_MS,
+  );
+
+  /// Delay before navigating to a view after opening the app
+  static const Duration OPEN_WITH_NAVIGATION_DELAY = Duration(
+    milliseconds: _MINIMUM_SKELETON_MS + 200,
+  );
 
   /// Maximum length for player names
   static const int MAX_PLAYER_NAME_LENGTH = 32;
@@ -50,6 +59,9 @@ class Constants {
 
   /// Maximum length for game descriptions
   static const int MAX_GAME_DESCRIPTION_LENGTH = 256;
+
+  /// Maximum length for feedback message
+  static const int MAX_FEEDBACK_MESSAGE_LENGTH = 1000;
 
   /// Range for score input
   static const ({int min, int max}) SCORE_INPUT_BOUNDARIES = (

@@ -10,7 +10,8 @@ import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/game.dart';
 import 'package:tallee/data/models/statistic.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/create_match/create_game_view.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
 import 'package:tallee/presentation/widgets/text_input/custom_search_bar.dart';
@@ -94,6 +95,9 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                 final result = await Navigator.push(
                   context,
                   adaptivePageRoute(
+                    settings: const RouteSettings(
+                      name: RouteNames.createGameView,
+                    ),
                     builder: (context) => CreateGameView(
                       requiredRuleset: widget.requiredRuleset,
                       onGameChanged: () {
@@ -206,6 +210,9 @@ class _ChooseGameViewState extends State<ChooseGameView> {
                         final result = await Navigator.push(
                           context,
                           adaptivePageRoute(
+                            settings: const RouteSettings(
+                              name: RouteNames.createGameView,
+                            ),
                             builder: (context) => CreateGameView(
                               gameToEdit: game,
                               matchCount: getMatchCount(game),
