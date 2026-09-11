@@ -141,14 +141,18 @@ class _QrScanComponentState extends State<QrScanComponent> {
   }
 
   Future<void> handleQrCodeDetection(BarcodeCapture result) async {
-    if (isProcessing || !mounted) return;
-    final token = result.barcodes.first.rawValue;
-    if (token == null || isProcessing) return;
+    final barcodes = result.barcodes;
+    if (barcodes.isEmpty || isProcessing || !mounted) return;
+
+    final token = barcodes.first.rawValue;
+    if (token == null) return;
 
     setState(() {
       isProcessing = true;
       errorMessage = null;
     });
+
+    await controller.stop();
 
     await Future.delayed(Constants.MINIMUM_SKELETON_DURATION);
 
@@ -163,6 +167,7 @@ class _QrScanComponentState extends State<QrScanComponent> {
       );
 
       if (mounted) {
+        await startScanner();
         setState(() {
           isProcessing = false;
         });
@@ -189,9 +194,10 @@ class _QrScanComponentState extends State<QrScanComponent> {
       await Future.delayed(const Duration(seconds: 4));
 
       if (mounted) {
+        await startScanner();
+
         setState(() {
           isProcessing = false;
-          errorMessage = null;
         });
       }
     }
@@ -225,20 +231,7 @@ class StatusErrorOverlay extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (errorMessage == null) ...[
-                    const CircularProgressIndicator(
-                      color: CustomTheme.primaryColor,
-                      strokeWidth: 4,
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      loc.loading_match,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ] else ...[
+                  if (errorMessage != null) ...[
                     const Icon(
                       Icons.error_outline,
                       color: Colors.redAccent,
@@ -255,6 +248,19 @@ class StatusErrorOverlay extends StatelessWidget {
                         overflow: TextOverflow.visible,
                       ),
                       softWrap: true,
+                    ),
+                  ] else if (isProcessing) ...[
+                    const CircularProgressIndicator(
+                      color: CustomTheme.primaryColor,
+                      strokeWidth: 4,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      loc.loading_match,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ],
