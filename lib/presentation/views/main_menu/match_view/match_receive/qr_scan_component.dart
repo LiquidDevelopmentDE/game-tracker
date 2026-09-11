@@ -20,7 +20,7 @@ class QrScanComponent extends StatefulWidget {
 
 class _QrScanComponentState extends State<QrScanComponent> {
   late final MobileScannerController controller;
-  late final AppLifecycleListener _lifecycleListener;
+  late final AppLifecycleListener lifecycleListener;
 
   bool isProcessing = false;
   String? errorMessage;
@@ -33,31 +33,23 @@ class _QrScanComponentState extends State<QrScanComponent> {
       autoStart: false,
     );
 
-    _lifecycleListener = AppLifecycleListener(
-      onResume: _startScanner,
+    lifecycleListener = AppLifecycleListener(
+      onResume: startScanner,
       onPause: controller.stop,
     );
 
-    _startScanner();
+    startScanner();
   }
 
-  Future<void> _startScanner() async {
-    try {
-      if (!controller.value.isRunning) {
-        await controller.start();
-      }
-    } on MobileScannerException catch (e) {
-      if (e.errorCode != MobileScannerErrorCode.controllerAlreadyRunning) {
-        debugPrint('MobileScanner error: ${e.message}');
-      }
-    } catch (e) {
-      debugPrint('Unexpected error starting scanner: $e');
+  Future<void> startScanner() async {
+    if (!controller.value.isRunning) {
+      await controller.start();
     }
   }
 
   @override
   void dispose() {
-    _lifecycleListener.dispose();
+    lifecycleListener.dispose();
     controller.dispose();
     super.dispose();
   }
@@ -98,7 +90,6 @@ class _QrScanComponentState extends State<QrScanComponent> {
                           controller: controller,
                           fit: BoxFit.cover,
                           onDetect: handleQrCodeDetection,
-                          autoStart: false,
                         ),
                         // Scanner Overlay
                         Positioned.fill(
@@ -152,7 +143,7 @@ class _QrScanComponentState extends State<QrScanComponent> {
   Future<void> handleQrCodeDetection(BarcodeCapture result) async {
     if (isProcessing || !mounted) return;
     final token = result.barcodes.first.rawValue;
-    if (token == null) return;
+    if (token == null || isProcessing) return;
 
     setState(() {
       isProcessing = true;
