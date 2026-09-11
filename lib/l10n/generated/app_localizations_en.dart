@@ -755,9 +755,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sending => 'Sending...';
 
   @override
-  String server_error(int statusCode) {
-    return 'Server error: $statusCode';
-  }
+  String get server_error => 'Internal server error';
 
   @override
   String get set_name => 'Set name';

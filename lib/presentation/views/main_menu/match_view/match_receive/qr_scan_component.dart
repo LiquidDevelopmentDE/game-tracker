@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
-import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/data_association/associate_games_view.dart';
 import 'package:tallee/presentation/widgets/qr_scanner_overlay_shape.dart';
 import 'package:tallee/services/remote_share_service.dart';
@@ -19,15 +19,45 @@ class QrScanComponent extends StatefulWidget {
 }
 
 class _QrScanComponentState extends State<QrScanComponent> {
-  final MobileScannerController controller = MobileScannerController(
-    formats: [BarcodeFormat.qrCode],
-  );
+  late final MobileScannerController controller;
+  late final AppLifecycleListener _lifecycleListener;
 
   bool isProcessing = false;
   String? errorMessage;
 
   @override
+  void initState() {
+    super.initState();
+    controller = MobileScannerController(
+      formats: [BarcodeFormat.qrCode],
+      autoStart: false,
+    );
+
+    _lifecycleListener = AppLifecycleListener(
+      onResume: _startScanner,
+      onPause: controller.stop,
+    );
+
+    _startScanner();
+  }
+
+  Future<void> _startScanner() async {
+    try {
+      if (!controller.value.isRunning) {
+        await controller.start();
+      }
+    } on MobileScannerException catch (e) {
+      if (e.errorCode != MobileScannerErrorCode.controllerAlreadyRunning) {
+        debugPrint('MobileScanner error: ${e.message}');
+      }
+    } catch (e) {
+      debugPrint('Unexpected error starting scanner: $e');
+    }
+  }
+
+  @override
   void dispose() {
+    _lifecycleListener.dispose();
     controller.dispose();
     super.dispose();
   }
@@ -67,7 +97,8 @@ class _QrScanComponentState extends State<QrScanComponent> {
                           tapToFocus: true,
                           controller: controller,
                           fit: BoxFit.cover,
-                          onDetect: isProcessing ? null : handleQrCodeDetection,
+                          onDetect: handleQrCodeDetection,
+                          autoStart: false,
                         ),
                         // Scanner Overlay
                         Positioned.fill(
@@ -119,8 +150,9 @@ class _QrScanComponentState extends State<QrScanComponent> {
   }
 
   Future<void> handleQrCodeDetection(BarcodeCapture result) async {
+    if (isProcessing || !mounted) return;
     final token = result.barcodes.first.rawValue;
-    if (token == null || isProcessing) return;
+    if (token == null) return;
 
     setState(() {
       isProcessing = true;
@@ -155,7 +187,7 @@ class _QrScanComponentState extends State<QrScanComponent> {
       } else if (error is ServerException) {
         message = (error.statusCode == 404 || error.statusCode == 410)
             ? loc.invalid_qr_code
-            : loc.server_error(error.statusCode);
+            : loc.server_error;
       } else if (error is ParsingException) {
         message = loc.qr_code_parsing_error;
       } else {

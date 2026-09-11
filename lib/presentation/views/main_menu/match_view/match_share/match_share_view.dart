@@ -33,7 +33,7 @@ class _MatchShareViewState extends State<MatchShareView>
   bool isLoading = true;
 
   // this gets set to false before any data is sent
-  // defaults to true, to already show the qr code behind the ConsentDialog
+  // defaults to true, to already show the placeholder qr code behind the ConsentDialog
   bool serverSharingEnabled = true;
 
   Timer? timer;
@@ -224,7 +224,7 @@ class _MatchShareViewState extends State<MatchShareView>
             if (error is NetworkException) {
               errorMessage = loc.network_error;
             } else if (error is ServerException) {
-              errorMessage = loc.server_error(error.statusCode);
+              errorMessage = loc.server_error;
             } else if (error is ParsingException) {
               errorMessage = loc.parsing_error;
             } else {
@@ -339,7 +339,7 @@ class _MatchShareViewState extends State<MatchShareView>
       if (error is NetworkException) {
         errorMessage = loc.network_error;
       } else if (error is ServerException) {
-        errorMessage = loc.server_error(error.statusCode);
+        errorMessage = loc.server_error;
       } else if (error is ParsingException) {
         errorMessage = loc.parsing_error;
       } else {
