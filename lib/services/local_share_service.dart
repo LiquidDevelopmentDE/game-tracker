@@ -5,11 +5,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/services/remote_share_service.dart';
+import 'package:tallee/services/shared.dart';
 import 'package:tallee/services/shared_preferences_service.dart';
 
 class LocalShareService {
@@ -48,6 +48,7 @@ class LocalShareService {
     }
 
     final Map<String, dynamic> jsonMap = {
+      'version': Constants.APP_DATA_SCHEMA_VERSION,
       'players': players.map((player) => player.toNormalizedJson()).toList(),
       'groups': groups.map((group) => group.toNormalizedJson()).toList(),
       'games': games.map((game) => game.toJson()).toList(),
@@ -124,7 +125,7 @@ class LocalShareService {
       return (ImportResult.fileReadError, null);
     }
 
-    final (status, _) = await _validateJson(jsonString);
+    final (status, _) = await validateJson(jsonString);
     if (status != ImportResult.success &&
         status != ImportResult.matchSchemaDetected) {
       return (status, null);
@@ -137,42 +138,47 @@ class LocalShareService {
   ///
   /// Returns the decoded map on success, or an error status with a `null` map
   /// when validation fails or the JSON is malformed.
-  static Future<(ImportResult, Map<String, dynamic>?)> _validateJson(
+  static Future<(ImportResult, Map<String, dynamic>?)> validateJson(
     String jsonString,
   ) async {
     try {
-      final isValidAppSchema = await validateJsonSchema(
-        jsonString,
-        'assets/app_schema.json',
+      final isAppDataJson = await validateJsonSchema(
+        jsonString: jsonString,
+        schemaAssetPath: 'assets/app_schema.json',
       );
 
-      if (isValidAppSchema) {
-        final decoded = json.decode(jsonString) as Map<String, dynamic>;
+      final isMatchDataJson = await validateJsonSchema(
+        jsonString: jsonString,
+        schemaAssetPath: 'assets/match_schema.json',
+      );
 
+      if (!isAppDataJson && !isMatchDataJson) {
+        return (ImportResult.invalidSchema, null);
+      }
+
+      final decoded = json.decode(jsonString) as Map<String, dynamic>;
+      final isVersionCorrect = isSchemaVersionCorrect(
+        jsonMap: decoded,
+        schemaVersion: Constants.APP_DATA_SCHEMA_VERSION,
+      );
+
+      if (!isVersionCorrect) {
+        return (ImportResult.incompatibleVersion, null);
+      }
+
+      // Import app data
+      if (isAppDataJson) {
         if (!validateContent(decoded)) {
           return (ImportResult.invalidData, null);
         }
-
         return (ImportResult.success, decoded);
-      }
-
-      // Check if it's a single match
-      final isValidMatchSchema = await validateJsonSchema(
-        jsonString,
-        'assets/match_schema.json',
-      );
-
-      if (isValidMatchSchema) {
-        final decoded = json.decode(jsonString) as Map<String, dynamic>;
-
+      } else {
+        // Import match data
         if (!RemoteShareService.validateContent(decoded)) {
           return (ImportResult.invalidData, null);
         }
-
         return (ImportResult.matchSchemaDetected, null);
       }
-
-      return (ImportResult.invalidSchema, null);
     } on FormatException catch (e, stack) {
       print('[validateJson] FormatException');
       print('[validateJson] $e');
@@ -191,7 +197,8 @@ class LocalShareService {
     AppDatabase db,
     String jsonString,
   ) async {
-    final (status, decoded) = await _validateJson(jsonString);
+    final (status, decoded) = await validateJson(jsonString);
+    print('decoded: $decoded');
     if (status != ImportResult.success || decoded == null) {
       return status;
     }

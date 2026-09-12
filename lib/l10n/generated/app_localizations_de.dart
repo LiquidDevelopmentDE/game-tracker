@@ -165,7 +165,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get create_new_match => 'Neues Spiel erstellen';
 
   @override
-  String get create_statistic => 'Statistik erstellen';
+  String create_statistic(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Statistiken erstellen ($count)',
+      one: 'Statistik erstellen',
+      zero: 'Statistiken erstellen',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get create_teams => 'Teams erstellen';
@@ -400,6 +409,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get import_preview_description =>
       'Die folgenden Daten werden importiert';
+
+  @override
+  String get incompatible_version =>
+      'Diese Datei wurde mit einer anderen Version von Tallee erstellt und kann nicht importiert werden. Bitte aktualisiere deine App und versuche es erneut.';
 
   @override
   String get info => 'Info';
@@ -901,6 +914,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unsatisfied => 'Unzufrieden?';
+
+  @override
+  String get update_app_version =>
+      'Bitte aktualisiert eure Apps auf die neueste Version und versucht es erneut.';
 
   @override
   String get version => 'Version';

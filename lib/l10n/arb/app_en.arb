@@ -56,7 +56,14 @@
   "create_match": "Create Match",
   "create_new_group": "Create new group",
   "create_new_match": "Create new match",
-  "create_statistic": "Create statistic",
+  "create_statistic": "Create {count, plural, =0{statistics} =1{statistic} other{statistics ({count})}}",
+  "@create_statistic": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "create_teams": "Create teams",
   "created_on": "Created on",
   "creation_date": "Creation date",
@@ -153,6 +160,7 @@
   "import_file_instruction": "Select a match file (.tallee) exported from Tallee match share to import the data.",
   "import_match": "Import match",
   "import_preview_description": "The following data will be imported",
+  "incompatible_version": "This file was created with a different version of Tallee and can't be imported. Please update your app and try again.",
   "info": "Info",
   "input_token_instruction": "Input a match share token another person created using Tallee to import the match.",
   "invalid_email": "Please enter a valid email address.",
@@ -343,6 +351,7 @@
   "unexpected_error": "An unexpected error occurred.",
   "unknown_exception": "Unknown Exception (see console)",
   "unsatisfied": "Unsatisfied?",
+  "update_app_version": "Please update your apps to the newest version and try it again.",
   "version": "Version",
   "whats_new": "What's new?",
   "winner": "Winner",
