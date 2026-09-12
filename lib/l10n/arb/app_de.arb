@@ -14,7 +14,6 @@
   "best_player": "Beste:r Spieler:in",
   "best_score": "Beste Punktzahl",
   "cancel": "Abbrechen",
-  "check_app_version": "Bitte überprüft eure App-Version und teilt das Spiel erneut.",
   "choose_date_range": "Datumsbereich auswählen",
   "choose_game": "Spielvorlage wählen",
   "choose_group": "Gruppe wählen",
@@ -152,7 +151,6 @@
   "import_match": "Spiel importieren",
   "import_preview_description": "Die folgenden Daten werden importiert",
   "incompatible_version": "Diese Datei wurde mit einer anderen Version von Tallee erstellt und kann nicht importiert werden. Bitte aktualisiere deine App und versuche es erneut.",
-
   "info": "Info",
   "input_token_instruction": "Gib einen Match-Share-Token ein, den eine andere Person mit Tallee erstellt hat, um das Match zu importieren.",
   "invalid_email": "Bitte gib eine gültige E-Mail-Adresse ein.",
@@ -339,6 +337,7 @@
   "type": "Typ",
   "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten.",
   "unknown_exception": "Unbekannter Fehler (siehe Konsole)",
+  "update_app_version": "Bitte aktualisiert eure Apps auf die neueste Version und versucht es erneut.",
   "version": "Version",
   "whats_new": "Neuigkeiten",
   "winner": "Gewinner:in",

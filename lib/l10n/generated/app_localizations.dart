@@ -350,18 +350,6 @@ abstract class AppLocalizations {
   /// **'Could not add player {playerName}'**
   String could_not_add_player(String playerName);
 
-  /// No description provided for @check_app_version.
-  ///
-  /// In en, this message translates to:
-  /// **'Please check your app version and share the match again'**
-  String get check_app_version;
-
-  /// No description provided for @invalid_match.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid match data'**
-  String get invalid_match;
-
   /// No description provided for @create_as_new.
   ///
   /// In en, this message translates to:
@@ -800,6 +788,12 @@ abstract class AppLocalizations {
   /// **'The following data will be imported'**
   String get import_preview_description;
 
+  /// No description provided for @incompatible_version.
+  ///
+  /// In en, this message translates to:
+  /// **'This file was created with a different version of Tallee and can\'t be imported. Please update your app and try again.'**
+  String get incompatible_version;
+
   /// No description provided for @info.
   ///
   /// In en, this message translates to:
@@ -835,12 +829,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid Schema'**
   String get invalid_schema;
-
-  /// No description provided for @incompatible_version.
-  ///
-  /// In en, this message translates to:
-  /// **'This file was created with an incompatible version of Tallee and can\'t be imported.'**
-  String get incompatible_version;
 
   /// No description provided for @invalid_token.
   ///
@@ -1669,6 +1657,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown Exception (see console)'**
   String get unknown_exception;
+
+  /// No description provided for @update_app_version.
+  ///
+  /// In en, this message translates to:
+  /// **'Please update your apps to the newest version and try it again.'**
+  String get update_app_version;
 
   /// No description provided for @version.
   ///

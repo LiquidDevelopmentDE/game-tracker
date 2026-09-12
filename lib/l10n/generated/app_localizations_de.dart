@@ -143,13 +143,6 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get check_app_version =>
-      'Bitte überprüft eure App-Version und teilt das Spiel erneut';
-
-  @override
-  String get invalid_match => 'Ungültige Spieldaten';
-
-  @override
   String get create_as_new => 'Neu erstellen';
 
   @override
@@ -399,6 +392,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die folgenden Daten werden importiert';
 
   @override
+  String get incompatible_version =>
+      'Diese Datei wurde mit einer anderen Version von Tallee erstellt und kann nicht importiert werden. Bitte aktualisiere deine App und versuche es erneut.';
+
+  @override
   String get info => 'Info';
 
   @override
@@ -416,10 +413,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get invalid_schema => 'Ungültiges Schema';
-
-  @override
-  String get incompatible_version =>
-      'Diese Datei wurde mit einer inkompatiblen Version von Tallee erstellt und kann nicht importiert werden.';
 
   @override
   String get invalid_token => 'Ungültiger Token';
@@ -898,6 +891,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
+
+  @override
+  String get update_app_version =>
+      'Bitte aktualisiert eure Apps auf die neueste Version und versucht es erneut.';
 
   @override
   String get version => 'Version';
