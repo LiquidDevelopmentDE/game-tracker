@@ -294,36 +294,20 @@ class LocalShareService {
 
     final importedStats = parseStatsFromJson(decodedJson, gameById, groupById);
 
-    // Wrap the entire import in a single transaction to ensure atomicity
-    // and prevent foreign key constraint violations due to intermediate states.
-    print('[importDataToDatabase] START');
     await db.transaction(() async {
-      // Order is important for foreign key constraints:
       // 1. Games & Players (no dependencies)
-      print('[importDataToDatabase] adding games');
       await db.gameDao.addGamesAsList(games: importedGames);
-      print('[importDataToDatabase] added games');
-
-      print('[importDataToDatabase] adding players');
       await db.playerDao.addPlayersAsList(players: importedPlayers);
-      print('[importDataToDatabase] added players');
 
       // 2. Groups (depend on players)
-      print('[importDataToDatabase] adding groups');
       await db.groupDao.addGroupsAsList(groups: importedGroups);
-      print('[importDataToDatabase] added groups');
 
       // 3. Matches (now handles its own games/players/groups internally but safely)
-      print('[importDataToDatabase] adding matches');
       await db.matchDao.addMatchesAsList(matches: importedMatches);
-      print('[importDataToDatabase] added matches');
 
       // 4. Statistics (depend on games and groups)
-      print('[importDataToDatabase] adding statistics');
       await db.statisticDao.addStatisticsAsList(statistics: importedStats);
-      print('[importDataToDatabase] added statistics');
     });
-    print('[importDataToDatabase] END');
   }
 
   /* Parsing Methods */

@@ -22,7 +22,7 @@ class RemoteShareService {
   RemoteShareService({http.Client? httpClient})
     : httpClient = httpClient ?? SentryHttpClient();
 
-  Future<String> getShareToken(Match match) async {
+  Future<ShareCreateResponse> getShareToken(Match match) async {
     try {
       final response = await httpClient.post(
         Uri.parse('${getApiBaseUrl()}/v1/shares/'),
@@ -36,11 +36,7 @@ class RemoteShareService {
 
       final Map<String, dynamic> data = jsonDecode(response.body);
 
-      if (!data.containsKey('token')) {
-        throw ParsingException();
-      }
-
-      return data['token'] as String;
+      return ShareCreateResponse.fromJson(data);
     } on SocketException {
       // No internet connection or server down
       throw NetworkException();

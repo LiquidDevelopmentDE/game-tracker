@@ -63,17 +63,6 @@ class _SettingsViewState extends State<SettingsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 16, bottom: 10),
-                    child: Text(
-                      textAlign: TextAlign.start,
-                      loc.settings,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.only(
                       left: 16,
                       top: 10,

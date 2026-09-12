@@ -76,13 +76,21 @@ void main() {
           expect(request.url.toString(), 'https://api.tallee.test/v1/shares/');
           expect(request.headers['content-type'], 'application/json');
           expect(jsonDecode(request.body), equals(match.toJson()));
-          return http.Response('{"token":"A1B2C3"}', 201);
+          return http.Response(
+            '{"token":"A1B2C3","ttl_seconds":600,"expires_at":"2026-09-07T22:38:37.065Z"}',
+            201,
+          );
         });
         final service = TestRemoteShareService(httpClient: client);
 
-        final token = await service.getShareToken(match);
+        final shareResponse = await service.getShareToken(match);
 
-        expect(token, 'A1B2C3');
+        expect(shareResponse.token, 'A1B2C3');
+        expect(shareResponse.ttlSeconds, 600);
+        expect(
+          shareResponse.expiresAt,
+          DateTime.parse('2026-09-07T22:38:37.065Z').toLocal(),
+        );
       });
 
       test('throws ServerException on non-201 responses', () async {
@@ -104,6 +112,34 @@ void main() {
       test('throws ParsingException when token key is missing', () async {
         final client = MockClient(
           (_) async => http.Response('{"foo":"bar"}', 201),
+        );
+        final service = TestRemoteShareService(httpClient: client);
+
+        expect(
+          () => service.getShareToken(match),
+          throwsA(isA<ParsingException>()),
+        );
+      });
+
+      test('throws ParsingException when ttl_seconds is missing', () async {
+        final client = MockClient(
+          (_) async => http.Response(
+            '{"token":"A1B2C3","expires_at":"2026-09-07T22:38:37.065Z"}',
+            201,
+          ),
+        );
+        final service = TestRemoteShareService(httpClient: client);
+
+        expect(
+          () => service.getShareToken(match),
+          throwsA(isA<ParsingException>()),
+        );
+      });
+
+      test('throws ParsingException when expires_at is missing', () async {
+        final client = MockClient(
+          (_) async =>
+              http.Response('{"token":"A1B2C3","ttl_seconds":600}', 201),
         );
         final service = TestRemoteShareService(httpClient: client);
 

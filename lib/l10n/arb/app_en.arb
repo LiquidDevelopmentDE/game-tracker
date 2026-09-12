@@ -286,14 +286,7 @@
   "send_code_instruction": "Send this code to a person who also has Tallee to share the current match.",
   "send_feedback": "Send feedback",
   "sending": "Sending...",
-  "server_error": "Server error: {statusCode}",
-  "@server_error": {
-    "placeholders": {
-      "statusCode": {
-        "type": "int"
-      }
-    }
-  },
+  "server_error": "Internal server error",
   "set_name": "Set name",
   "settings": "Settings",
   "share_as_qr_code_info": "To share a match as a QR code with others, online sharing must be enabled",

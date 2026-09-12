@@ -1439,8 +1439,8 @@ abstract class AppLocalizations {
   /// No description provided for @server_error.
   ///
   /// In en, this message translates to:
-  /// **'Server error: {statusCode}'**
-  String server_error(int statusCode);
+  /// **'Internal server error'**
+  String get server_error;
 
   /// No description provided for @set_name.
   ///
