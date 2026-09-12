@@ -1,3 +1,5 @@
+import 'package:rate_my_app/rate_my_app.dart';
+
 /// Application-wide constants
 class Constants {
   Constants._(); // Private constructor to prevent instantiation
@@ -65,4 +67,15 @@ class Constants {
 
   /// Range for live input
   static const ({int min, int max}) LIVE_INPUT_BOUNDARIES = (min: 0, max: 99);
+
+  // Config for rate my app package
+  static final RateMyApp rateMyApp = RateMyApp(
+    preferencesPrefix: 'rateMyApp_',
+    minDays: 28,
+    minLaunches: 20,
+    remindDays: 28,
+    remindLaunches: 10,
+    googlePlayIdentifier: '',
+    appStoreIdentifier: '',
+  );
 }

@@ -15,6 +15,7 @@ import 'package:tallee/presentation/views/main_menu/match_view/create_match/crea
 import 'package:tallee/presentation/views/main_menu/match_view/match_detail_view.dart';
 import 'package:tallee/presentation/widgets/app_skeleton.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
+import 'package:tallee/presentation/widgets/dialog/custom_alert_dialog.dart';
 import 'package:tallee/presentation/widgets/text_input/custom_search_bar.dart';
 import 'package:tallee/presentation/widgets/tiles/object_tiles/match_tile.dart';
 import 'package:tallee/presentation/widgets/top_centered_message.dart';
@@ -30,7 +31,7 @@ class MatchView extends StatefulWidget {
 
 class _MatchViewState extends State<MatchView> {
   late final AppDatabase db;
-  late final MatchSearchProvider _searchProvider;
+  late final MatchSearchProvider searchProvider;
   bool isLoading = true;
 
   TextEditingController searchBarController = TextEditingController();
@@ -67,15 +68,15 @@ class _MatchViewState extends State<MatchView> {
   void initState() {
     super.initState();
     db = Provider.of<AppDatabase>(context, listen: false);
-    _searchProvider = Provider.of<MatchSearchProvider>(context, listen: false);
-    _searchProvider.addListener(_handleSearchToggle);
+    searchProvider = Provider.of<MatchSearchProvider>(context, listen: false);
+    searchProvider.addListener(handleSearchToggle);
 
     loadMatches();
   }
 
   @override
   void dispose() {
-    _searchProvider.removeListener(_handleSearchToggle);
+    searchProvider.removeListener(handleSearchToggle);
     searchBarController.dispose();
     super.dispose();
   }
@@ -201,7 +202,7 @@ class _MatchViewState extends State<MatchView> {
               text: loc.create_match,
               icon: RpgAwesome.clovers_card,
               onPressed: () async {
-                Navigator.push(
+                await Navigator.push(
                   context,
                   adaptivePageRoute(
                     settings: const RouteSettings(
@@ -213,8 +214,87 @@ class _MatchViewState extends State<MatchView> {
                     ),
                   ),
                 );
+                triggerRateDialog();
               },
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Triggers the rate dialog if the user has not rated the app yet and the conditions are met.
+  Future<void> triggerRateDialog() async {
+    if (!Constants.rateMyApp.shouldOpenDialog) return;
+
+    final loc = AppLocalizations.of(context);
+    bool? result;
+
+    await Future.delayed(const Duration(milliseconds: 500), () async {
+      result = await showPreRateDialog(loc);
+    });
+
+    if (result is bool) {
+      if (result! && mounted) {
+        // Pre rating is good
+        Constants.rateMyApp.showStarRateDialog(context);
+      } else if (mounted) {
+        // Pre rating is bad
+        await Future.delayed(
+          const Duration(milliseconds: 500),
+          () => showBadRatingDialog(loc),
+        );
+      }
+    }
+  }
+
+  /// Shows a dialog to check for the users opinion on the app
+  Future<bool?> showPreRateDialog(AppLocalizations loc) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) => CustomAlertDialog(
+        title: loc.do_you_like_the_app,
+        content: Text(loc.feedback_helps_us, overflow: TextOverflow.visible),
+        actions: [
+          CustomDialogAction(
+            onPressed: () => Navigator.of(context).pop(true),
+            isEmphasized: true,
+            text: loc.yes,
+          ),
+          CustomDialogAction(
+            onPressed: () => Navigator.of(context).pop(false),
+            buttonType: ButtonType.primary,
+            text: loc.no,
+          ),
+          CustomDialogAction(
+            onPressed: () => Navigator.of(context).pop(),
+            buttonType: ButtonType.secondary,
+            text: loc.cancel,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Shows a dialog prompting the user to contact support via email if they are unsatisfied with the app.
+  void showBadRatingDialog(AppLocalizations loc) {
+    showDialog<bool>(
+      context: context,
+      builder: (context) => CustomAlertDialog(
+        title: loc.unsatisfied,
+        content: Text(
+          loc.contact_us_through_mail,
+          overflow: TextOverflow.visible,
+        ),
+        actions: [
+          CustomDialogAction(
+            onPressed: () => Navigator.of(context).pop(true),
+            text: loc.write_email,
+          ),
+          CustomDialogAction(
+            onPressed: () => Navigator.of(context).pop(),
+            buttonType: ButtonType.secondary,
+            text: loc.cancel,
           ),
         ],
       ),
@@ -269,12 +349,10 @@ class _MatchViewState extends State<MatchView> {
     });
   }
 
-  void _handleSearchToggle() {
-    if (!mounted) {
-      return;
-    }
+  void handleSearchToggle() {
+    if (!mounted) return;
 
-    if (!_searchProvider.isSearching) {
+    if (!searchProvider.isSearching) {
       searchBarController.clear();
     }
   }

@@ -33,8 +33,11 @@ void main() async {
   if (kDebugMode) HttpOverrides.global = SelfSignedCertHttpOverrides();
 
   await dotenv.load();
+
+  // Initializing Services
   await SharedPreferencesService.init();
   await PackageInfoService.init();
+  await Constants.rateMyApp.init();
   await SentryFlutter.init(
     (options) {
       // error reporting & feedback is disabled in debugMode

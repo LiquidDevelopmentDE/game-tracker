@@ -39,6 +39,7 @@
   "color_teal": "Teal",
   "color_yellow": "Yellow",
   "confirm": "Confirm",
+  "contact_us_through_mail": "Feel free to contact us via email directly so we can solve your problem!",
   "continue_": "Continue",
   "copy_code": "Copy Code",
   "could_not_add_player": "Could not add player {playerName}",
@@ -85,6 +86,7 @@
   "deleted": "Deleted",
   "description": "Description",
   "displayed_entries": "Displayed entries",
+  "do_you_like_the_app": "Do you like the app?",
   "drag_to_set_placement": "Drag to set placement",
   "edit_game": "Edit Game",
   "edit_group": "Edit Group",
@@ -121,6 +123,7 @@
   "export_canceled": "Export canceled",
   "export_data": "Export data",
   "favourites": "Favourites",
+  "feedback_helps_us": "Feedback helps us improving the app.",
   "feedback_hint": "Your message or feedback (required)",
   "feedback_info_text": "Your feedback helps us continuously improve Tallee!",
   "file_couldnt_be_accessed": "The file could not be accessed",
@@ -202,6 +205,7 @@
       }
     }
   },
+  "no": "No",
   "no_data_available": "No data available",
   "no_data_to_export": "No data to export",
   "no_games_created_yet": "No games created yet",
@@ -338,10 +342,13 @@
   "type": "Type",
   "unexpected_error": "An unexpected error occurred.",
   "unknown_exception": "Unknown Exception (see console)",
+  "unsatisfied": "Unsatisfied?",
   "version": "Version",
   "whats_new": "What's new?",
   "winner": "Winner",
   "winrate": "Winrate",
   "worst_score": "Worst score",
+  "write_email": "Write an email",
+  "yes": "Yes",
   "yesterday_at": "Yesterday at"
 }

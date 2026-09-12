@@ -14,15 +14,15 @@ class CustomDialogAction extends StatelessWidget {
     required this.text,
     this.buttonType = ButtonType.primary,
     this.isDestructive = false,
+    this.isEmphasized = false,
   });
 
   final String text;
-
   final ButtonType buttonType;
-
   final VoidCallback? onPressed;
-
   final bool isDestructive;
+  final bool isEmphasized;
+
   @override
   Widget build(BuildContext context) {
     return BottomAnimatedButton(
@@ -34,7 +34,8 @@ class CustomDialogAction extends StatelessWidget {
           : null,
       buttonText: text,
       buttonType: buttonType,
-      isDescructive: isDestructive,
+      isDestructive: isDestructive,
+      isEmphasized: isEmphasized,
       buttonConstraints: const BoxConstraints(minWidth: 300),
     );
   }

@@ -132,6 +132,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get confirm => 'Bestätigen';
 
   @override
+  String get contact_us_through_mail =>
+      'Kontaktiere uns gerne direkt per E-Mail, damit wir dein Problem lösen können!';
+
+  @override
   String get continue_ => 'Weiter';
 
   @override
@@ -242,6 +246,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get displayed_entries => 'Angezeigte Einträge';
 
   @override
+  String get do_you_like_the_app => 'Gefällt dir die App?';
+
+  @override
   String get drag_to_set_placement => 'Ziehen um Platzierung zu setzen';
 
   @override
@@ -317,6 +324,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get favourites => 'Favoriten';
+
+  @override
+  String get feedback_helps_us => 'Feedback hilft uns, die App zu verbessern.';
 
   @override
   String get feedback_hint => 'Deine Nachricht oder Kritik (erforderlich)';
@@ -524,6 +534,9 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get no => 'Nein';
 
   @override
   String get no_data_available => 'Keine Daten verfügbar';
@@ -863,7 +876,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get today_at => 'Heute um';
 
   @override
-  String get token_expired => 'Token expired';
+  String get token_expired => 'Token abgelaufen';
 
   @override
   String get total_losses => 'Niederlagen insgesamt';
@@ -887,6 +900,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
 
   @override
+  String get unsatisfied => 'Unzufrieden?';
+
+  @override
   String get version => 'Version';
 
   @override
@@ -900,6 +916,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get worst_score => 'Schlechteste Punktzahl';
+
+  @override
+  String get write_email => 'Eine E-Mail schreiben';
+
+  @override
+  String get yes => 'Ja';
 
   @override
   String get yesterday_at => 'Gestern um';
