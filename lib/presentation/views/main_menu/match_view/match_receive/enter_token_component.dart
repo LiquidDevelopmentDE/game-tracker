@@ -3,6 +3,7 @@ import 'dart:core' hide Match;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
+import 'package:tallee/core/common.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/data/models/models.dart';
@@ -26,12 +27,17 @@ class _EnterTokenComponentState extends State<EnterTokenComponent> {
   late Match match;
 
   bool? isTokenValid;
+  bool? isMatchValid;
+  String errorMessage = '';
 
   @override
   void initState() {
     tokenInputFieldController.addListener(() {
-      if (isTokenValid == false) {
-        setState(() => isTokenValid = null);
+      if (isTokenValid == false || isMatchValid == false) {
+        setState(() {
+          isTokenValid = null;
+          isMatchValid = null;
+        });
       } else {
         setState(() {});
       }
@@ -82,12 +88,15 @@ class _EnterTokenComponentState extends State<EnterTokenComponent> {
       color: Colors.red,
       fontSize: 14,
       fontWeight: FontWeight.bold,
+      overflow: TextOverflow.visible,
     );
 
     return Column(
       children: [
         const SizedBox(height: 50),
         Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Icon(Icons.cloud_download, size: 50),
             Container(
@@ -140,11 +149,12 @@ class _EnterTokenComponentState extends State<EnterTokenComponent> {
                 ),
               ),
             ],
-            forceErrorState: isTokenValid == false,
-            errorText: loc.invalid_token,
+            forceErrorState: isTokenValid == false || isMatchValid == false,
+            errorText: getErrorText(loc),
             errorTextStyle: errorTextStyle,
             errorBuilder: (errorText, pin) {
-              return Center(
+              return SizedBox(
+                width: 300,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
@@ -186,32 +196,45 @@ class _EnterTokenComponentState extends State<EnterTokenComponent> {
     );
   }
 
+  String getErrorText(AppLocalizations loc) {
+    if (isTokenValid == false) return loc.invalid_token;
+    if (isMatchValid == false) return errorMessage;
+    return '';
+  }
+
   Future<void> handleApiMatchRequest(String token) async {
+    final loc = AppLocalizations.of(context);
+
     try {
-      final loadedMatch = await RemoteShareService().getMatchByToken(
+      final response = await RemoteShareService().getMatchByToken(
         tokenInputFieldController.text,
       );
-      if (!mounted) return;
+      isTokenValid = true;
 
-      setState(() {
-        match = loadedMatch;
-      });
-
-      Navigator.of(context).push(
-        adaptivePageRoute(builder: (_) => AssociateGamesView(match: match)),
-      );
+      // If an import error occured
+      if (response.result != ImportResult.success && mounted) {
+        errorMessage = translateMatchImportResultToString(
+          response.result,
+          context,
+        );
+        setState(() => isMatchValid = false);
+      } else {
+        setState(() {
+          isMatchValid = true;
+          match = response.match!;
+        });
+        if (mounted) {
+          Navigator.of(context).push(
+            adaptivePageRoute(builder: (_) => AssociateGamesView(match: match)),
+          );
+        }
+      }
     } catch (error) {
-      if (!mounted) return;
-
-      final loc = AppLocalizations.of(context);
-      String errorMessage;
       if (error is NetworkException) {
         errorMessage = loc.network_error;
       } else if (error is ServerException) {
         if (error.statusCode == 404 || error.statusCode == 410) {
-          setState(() {
-            isTokenValid = false;
-          });
+          setState(() => isTokenValid = false);
           errorMessage = '';
         } else {
           errorMessage = loc.server_error;
@@ -222,12 +245,12 @@ class _EnterTokenComponentState extends State<EnterTokenComponent> {
         errorMessage = loc.unexpected_error;
       }
 
-      if (errorMessage.isNotEmpty) {
+      if (errorMessage.isNotEmpty && mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(CustomSnackBar(message: errorMessage));
       }
 
-      rethrow; //redirect error to button
+      rethrow; // redirect error to button
     }
   }
 

@@ -56,7 +56,6 @@
   "create_new_group": "Neue Gruppe erstellen",
   "create_new_match": "Neues Spiel erstellen",
   "create_statistic": "{count, plural, =0{Statistiken erstellen} =1{Statistik erstellen} other{Statistiken erstellen ({count})}}",
-
   "@create_statistic": {
     "placeholders": {
       "count": {
@@ -158,6 +157,7 @@
   "import_file_instruction": "Wähle eine Spiel-Datei (.tallee), die aus einem Tallee-Spiel-Share exportiert wurde, um die Daten zu importieren.",
   "import_match": "Spiel importieren",
   "import_preview_description": "Die folgenden Daten werden importiert",
+  "incompatible_version": "Diese Datei wurde mit einer anderen Version von Tallee erstellt und kann nicht importiert werden. Bitte aktualisiere deine App und versuche es erneut.",
   "info": "Info",
   "input_token_instruction": "Gib einen Match-Share-Token ein, den eine andere Person mit Tallee erstellt hat, um das Match zu importieren.",
   "invalid_email": "Bitte gib eine gültige E-Mail-Adresse ein.",
@@ -337,6 +337,7 @@
   "type": "Typ",
   "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten.",
   "unknown_exception": "Unbekannter Fehler (siehe Konsole)",
+  "update_app_version": "Bitte aktualisiert eure Apps auf die neueste Version und versucht es erneut.",
   "version": "Version",
   "whats_new": "Neuigkeiten",
   "winner": "Gewinner:in",
