@@ -41,12 +41,6 @@ class _QrScanComponentState extends State<QrScanComponent> {
     startScanner();
   }
 
-  Future<void> startScanner() async {
-    if (!controller.value.isRunning) {
-      await controller.start();
-    }
-  }
-
   @override
   void dispose() {
     lifecycleListener.dispose();
@@ -138,6 +132,12 @@ class _QrScanComponentState extends State<QrScanComponent> {
         ],
       ),
     );
+  }
+
+  Future<void> startScanner() async {
+    if (!controller.value.isRunning) {
+      await controller.start();
+    }
   }
 
   Future<void> handleQrCodeDetection(BarcodeCapture result) async {

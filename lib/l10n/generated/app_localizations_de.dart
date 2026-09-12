@@ -762,7 +762,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sending => 'Wird gesendet...';
 
   @override
-  String get server_error => 'Internal server error';
+  String get server_error => 'Interner Server Fehler';
 
   @override
   String get set_name => 'Name setzen';
