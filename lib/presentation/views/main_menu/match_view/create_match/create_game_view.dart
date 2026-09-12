@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_popup/flutter_popup.dart';
 import 'package:provider/provider.dart';
 import 'package:tallee/core/app_color_utils.dart';
-import 'package:tallee/core/constants/value_constants.dart';
+import 'package:tallee/core/constants/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/enums.dart';
 import 'package:tallee/core/icon_utils.dart';

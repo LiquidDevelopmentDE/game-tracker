@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_numeric_text/flutter_numeric_text.dart';
-import 'package:tallee/core/constants/value_constants.dart';
+import 'package:tallee/core/constants/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
 

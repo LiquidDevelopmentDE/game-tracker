@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:tallee/core/constants/value_constants.dart';
+import 'package:tallee/core/constants/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/data/models/models.dart';

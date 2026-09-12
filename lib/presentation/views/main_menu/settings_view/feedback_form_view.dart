@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:tallee/core/constants/value_constants.dart';
+import 'package:tallee/core/constants/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/enums.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
