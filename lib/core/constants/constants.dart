@@ -1,7 +1,7 @@
 /// Barrel file for all constants
 ///
-/// Imports value_dart, icon_dart.
+/// Imports value_constants, icon_constants.
 library;
 
-export 'icon_dart';
-export 'value_dart';
+export 'icon_constants.dart';
+export 'value_constants.dart';
