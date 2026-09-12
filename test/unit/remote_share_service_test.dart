@@ -304,23 +304,18 @@ void main() {
   });
 
   group('RemoteShareService.parseAndValidateMatch', () {
-    test('returns invalidExtension when filename has wrong extension', () async {
-      final service = RemoteShareService();
-      final result = await service.parseAndValidateMatch('{}', 'test.txt');
+    test(
+      'returns invalidSchema when filename is correct but json is not',
+      () async {
+        final service = RemoteShareService();
+        final result = await service.parseAndValidateMatch(
+          '{"invalid": true}',
+          'test.${Constants.MATCH_FILE_EXTENSION}',
+        );
 
-      expect(result.$1, ImportResult.invalidExtension);
-    });
-
-    test('returns invalidSchema when extension is correct but json is not',
-        () async {
-      final service = RemoteShareService();
-      final result = await service.parseAndValidateMatch(
-        '{"invalid": true}',
-        'test.${Constants.MATCH_FILE_EXTENSION}',
-      );
-
-      expect(result.$1, ImportResult.invalidSchema);
-    });
+        expect(result.$1, ImportResult.invalidSchema);
+      },
+    );
   });
 
   group('RemoteShareService.loadMatchFromFile', () {

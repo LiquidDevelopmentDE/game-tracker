@@ -121,12 +121,6 @@ class RemoteShareService {
     String jsonString,
     String fileName,
   ) async {
-    if (!fileName.toLowerCase().endsWith(
-      '.${Constants.MATCH_FILE_EXTENSION}',
-    )) {
-      return (ImportResult.invalidExtension, null, fileName);
-    }
-
     try {
       final isValid = await validateJsonSchema(
         jsonString,
@@ -268,8 +262,15 @@ class RemoteShareService {
     }
 
     final file = path.files.single;
-    final jsonString = await readFileContent(file);
     final filePath = file.path ?? file.name;
+
+    if (!filePath.toLowerCase().endsWith(
+      '.${Constants.MATCH_FILE_EXTENSION}',
+    )) {
+      return (ImportResult.invalidExtension, null, filePath);
+    }
+
+    final jsonString = await readFileContent(file);
     if (jsonString == null) {
       return (ImportResult.fileReadError, null, filePath);
     }
