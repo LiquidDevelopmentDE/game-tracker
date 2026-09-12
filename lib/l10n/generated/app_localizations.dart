@@ -803,7 +803,7 @@ abstract class AppLocalizations {
   /// No description provided for @import_description.
   ///
   /// In en, this message translates to:
-  /// **'Import your Tallee data from a previously exported file. This is meant for transferring data between devices or restoring a backup, not for importing shared matches,  for that use the match share functionality.'**
+  /// **'Import your Tallee data (.json) from a previously exported file. This is meant for transferring data between devices or restoring a backup, not for importing shared matches,  for that use the match import functionality.'**
   String get import_description;
 
   /// No description provided for @general.
@@ -1205,7 +1205,7 @@ abstract class AppLocalizations {
   /// No description provided for @online_sharing_info_text.
   ///
   /// In en, this message translates to:
-  /// **'To share matches online, the app connects to external servers. To protect your privacy, this feature is disabled by default. All transmitted data is automatically deleted after 10 minutes. You can also share games locally as files.'**
+  /// **'To share matches via qr code or token, the app connects to external servers. To protect your privacy, this feature is disabled by default. All transmitted data is automatically deleted after 10 minutes. You can also share games locally as files.'**
   String get online_sharing_info_text;
 
   /// No description provided for @online_sharing_title.

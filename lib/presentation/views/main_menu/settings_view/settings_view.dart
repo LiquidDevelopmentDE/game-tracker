@@ -75,21 +75,6 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                   SettingsListTile(
-                    title: loc.online_sharing_title,
-                    icon: Icons.cloud,
-                    description: loc.online_sharing_info_text,
-                    suffixWidget: CustomAdaptiveSwitch(
-                      value: isOnlineSharingEnabled,
-                      onChanged: (value) async {
-                        setState(() {
-                          isOnlineSharingEnabled = value;
-                        });
-                        await SharedPreferencesService.setSharingConsent(value);
-                      },
-                    ),
-                    onPressed: null,
-                  ),
-                  SettingsListTile(
                     title: loc.send_feedback,
                     icon: Icons.chat_bubble_outline_rounded,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -108,6 +93,21 @@ class _SettingsViewState extends State<SettingsView> {
                         );
                       }
                     },
+                  ),
+                  SettingsListTile(
+                    title: loc.online_sharing_title,
+                    icon: Icons.cloud,
+                    description: loc.online_sharing_info_text,
+                    suffixWidget: CustomAdaptiveSwitch(
+                      value: isOnlineSharingEnabled,
+                      onChanged: (value) async {
+                        setState(() {
+                          isOnlineSharingEnabled = value;
+                        });
+                        await SharedPreferencesService.setSharingConsent(value);
+                      },
+                    ),
+                    onPressed: null,
                   ),
                   SettingsListTile(
                     title: loc.data_management,

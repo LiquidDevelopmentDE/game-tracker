@@ -330,7 +330,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get export_description =>
-      'Exportiere all deine Spielvorlagen, Spieler:innen und Spiele in eine Datei.';
+      'Exportiere alle deine Spiele, Spieler und Matches in eine Datei. Dies dient als Backup oder zum Übertragen von Daten zwischen Geräten – nicht zum Teilen von Matches mit anderen. Nutze dafür die Funktion zum Teilen von Matches.';
 
   @override
   String get favourites => 'Favoriten';
@@ -399,7 +399,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get import_description =>
-      'Importiere deine Tallee-Daten aus einer zuvor exportierten Datei.';
+      'Importiere deine Tallee-Daten (.json) aus einer zuvor exportierten Datei. Dies dient dem Übertragen von Daten zwischen Geräten oder dem Wiederherstellen eines Backups, nicht dem Importieren geteilter Spiele. Nutze dafür die Funktion zum Empfangen von Spielen.';
 
   @override
   String get general => 'Allgemein';
@@ -629,7 +629,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get online_sharing_info_text =>
-      'Für das Online-Teilen von Spielen stellt die App eine Verbindung zu externen Servern her. Zum Schutz deiner Daten ist diese Funktion standardmäßig deaktiviert. Alle übertragenen Daten werden nach 10 Minuten automatisch gelöscht. Du kannst Spiele auch lokal als Datei teilen.';
+      'Für das Teilen von Spielen per QR Code oder Token stellt die App eine Verbindung zu externen Servern her. Zum Schutz deiner Daten ist diese Funktion standardmäßig deaktiviert. Alle übertragenen Daten werden nach 10 Minuten automatisch gelöscht. Du kannst Spiele auch lokal als Datei teilen.';
 
   @override
   String get online_sharing_title => 'Online-Teilen aktivieren';
