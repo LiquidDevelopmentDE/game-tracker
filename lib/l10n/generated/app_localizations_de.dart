@@ -182,7 +182,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get import_export => 'Import/Export';
 
   @override
-  String get danger_zone => 'Danger Zone';
+  String get danger_zone => 'Gefahrenzone';
 
   @override
   String get data_management => 'Datenverwaltung';
