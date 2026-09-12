@@ -271,8 +271,6 @@ class _SettingsViewState extends State<SettingsView> {
             message: loc.data_successfully_imported,
           );
         }
-      case ImportResult.matchSchemaDetected:
-        break;
       default:
         HapticFeedback.errorNotification();
         if (context.mounted) {
