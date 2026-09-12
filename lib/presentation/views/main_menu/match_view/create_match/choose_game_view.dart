@@ -21,7 +21,7 @@ import 'package:tallee/presentation/widgets/top_centered_message.dart';
 class ChooseGameView extends StatefulWidget {
   /// A view that allows the user to choose a game from a list of available games
   /// - [games]: The list of available games
-  /// - [initialSelectedGames]: The initially selected game
+  /// - [initialSelectedGames]: The initially selected games
   /// - [onGamesUpdated]: Optional callback invoked when the games are updated
   /// - [statistic]: Optional statistic payload for choosing groups for a statistic
   /// - [selectedTypes]: Optional list of statistic types to determine the correct button text
@@ -286,9 +286,8 @@ class _ChooseGameViewState extends State<ChooseGameView> {
     );
   }
 
-  String get buttonText => statAmount > 1
-      ? '${AppLocalizations.of(context).create_statistic(statAmount)} ($statAmount)'
-      : AppLocalizations.of(context).create_statistic(statAmount);
+  String get buttonText =>
+      AppLocalizations.of(context).create_statistic(statAmount);
 
   Object? get popResult {
     if (widget.statistic != null) return null;

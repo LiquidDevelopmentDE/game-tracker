@@ -55,7 +55,8 @@
   "create_match": "Spiel erstellen",
   "create_new_group": "Neue Gruppe erstellen",
   "create_new_match": "Neues Spiel erstellen",
-  "create_statistic": "{count, plural, =1{Statistik erstellen} other{Statistiken erstellen}}",
+  "create_statistic": "{count, plural, =0{Statistiken erstellen} =1{Statistik erstellen} other{Statistiken erstellen ({count})}}",
+
   "@create_statistic": {
     "placeholders": {
       "count": {

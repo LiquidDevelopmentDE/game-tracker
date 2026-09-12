@@ -64,11 +64,7 @@ class _CreateStatisticViewState extends State<CreateStatisticView> {
       selectedScopes.contains(StatisticScope.selectedGroups) ||
           selectedScopes.contains(StatisticScope.selectedGames)
       ? AppLocalizations.of(context).continue_
-      : createText;
-
-  String get createText => selectedTypes.length > 1
-      ? '${AppLocalizations.of(context).create_statistic(selectedTypes.length)} (${selectedTypes.length})'
-      : AppLocalizations.of(context).create_statistic(1);
+      : AppLocalizations.of(context).create_statistic(selectedTypes.length);
 
   @override
   void initState() {
