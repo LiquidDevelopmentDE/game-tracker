@@ -346,80 +346,73 @@ class _CreateStatisticViewState extends State<CreateStatisticView> {
         });
   }
 
-  /// Creates the statistic based on the user selections. If the statistic
-  /// requires selecting specific groups or games, navigates to the respective
-  /// selection view. For multiple selected types, one [Statistic] per type is
-  /// created — all sharing the same scope, timeframe and color.
+  /// Creates the statistic based on the user selections. Navigates to the
+  /// ChooseViews if their type has been selected
   Future<void> submitStatistic() async {
-    final scopes = [...selectedScopes];
     final db = Provider.of<AppDatabase>(context, listen: false);
 
-    // Scope "Selected Groups"
-    if (scopes.contains(StatisticScope.selectedGroups)) {
-      final newStatistic = await Navigator.of(context).push<Statistic>(
+    final result = await resolveBaseStatistic();
+    if (result == null) return; // User cancelled the picker.
+    final baseStat = result.statistic;
+    final isStatSaved = result.isSaved;
+
+    // Create additional statistic based on the base stat
+    final additionalStats = [
+      for (final type in selectedTypes.skip(1))
+        baseStat.copyWith(id: const Uuid().v4(), type: type),
+    ];
+
+    final statsToSave = [
+      // When only "All Players" has been selected, stat wont get saved to db
+      if (!isStatSaved) baseStat,
+      ...additionalStats,
+    ];
+    if (statsToSave.isNotEmpty) {
+      await db.statisticDao.addStatisticsAsList(statistics: statsToSave);
+    }
+
+    if (!mounted) return;
+    widget.onStatisticCreated([baseStat, ...additionalStats]);
+    Navigator.of(context).pop();
+  }
+
+  /// Handles the navigation when multiple [StatisticType]s have been selected.
+  /// Returns the base statistic + a flag indicating if it has been saved to the db
+  Future<({Statistic statistic, bool isSaved})?> resolveBaseStatistic() async {
+    final firstType = selectedTypes.first;
+
+    // "Selected Groups" choosen
+    if (selectedScopes.contains(StatisticScope.selectedGroups)) {
+      final stat = await Navigator.of(context).push<Statistic>(
         adaptivePageRoute(
           settings: const RouteSettings(name: RouteNames.chooseGroupView),
           builder: (context) => ChooseGroupView(
             groups: groups,
-            statistic: buildStat(selectedTypes.first),
+            statistic: buildStat(firstType),
             selectedTypes: selectedTypes,
           ),
         ),
       );
-      // User cancelled the group selection
-      if (newStatistic == null) return;
+      return stat == null ? null : (statistic: stat, isSaved: true);
+    }
 
-      // Create the statistics with the other statistic types selected
-      final additionalStats = [
-        // Skip first type, stat with this type has been created in the ChooseGroupView
-        for (final t in selectedTypes.skip(1))
-          newStatistic.copyWith(id: const Uuid().v4(), type: t),
-      ];
-      await db.statisticDao.addStatisticsAsList(statistics: additionalStats);
-
-      if (!mounted) return;
-      widget.onStatisticCreated([newStatistic, ...additionalStats]);
-      Navigator.of(context).pop();
-
-      // Scope "Selected Games"
-    } else if (scopes.contains(StatisticScope.selectedGames)) {
-      final newStat = await Navigator.of(context).push<Statistic>(
+    // "Selected Games" choosen
+    if (selectedScopes.contains(StatisticScope.selectedGames)) {
+      final stat = await Navigator.of(context).push<Statistic>(
         adaptivePageRoute(
           settings: const RouteSettings(name: RouteNames.chooseGameView),
           builder: (context) => ChooseGameView(
             games: games,
-            statistic: buildStat(selectedTypes.first),
+            statistic: buildStat(firstType),
             selectedTypes: selectedTypes,
           ),
         ),
       );
-      if (newStat == null) return;
-
-      // Create the statistics with the other statistic types selected
-      final additionalStats = [
-        // Skip first type, stat with this type has been created in the ChooseGameView
-        for (final t in selectedTypes.skip(1))
-          newStat.copyWith(
-            id: const Uuid().v4(),
-            type: t,
-            color: selectedColor ?? getRandomAppColor(),
-          ),
-      ];
-
-      await db.statisticDao.addStatisticsAsList(statistics: additionalStats);
-
-      if (!mounted) return;
-      widget.onStatisticCreated([newStat, ...additionalStats]);
-      Navigator.of(context).pop();
-
-      // Scope "All players"
-    } else {
-      final stats = [for (final t in selectedTypes) buildStat(t)];
-      await db.statisticDao.addStatisticsAsList(statistics: stats);
-      if (!mounted) return;
-      widget.onStatisticCreated(stats);
-      Navigator.of(context).pop();
+      return stat == null ? null : (statistic: stat, isSaved: true);
     }
+
+    // "All players" choosen
+    return (statistic: buildStat(firstType), isSaved: false);
   }
 
   Statistic buildStat(StatisticType type) => Statistic(
