@@ -179,10 +179,6 @@ class _ChooseGroupViewState extends State<ChooseGroupView> {
       widget.statistic != null &&
           widget.statistic!.scopes.contains(StatisticScope.selectedGames)
       ? AppLocalizations.of(context).continue_
-      : statisticButtonText;
-
-  String get statisticButtonText => statAmount > 1
-      ? '${AppLocalizations.of(context).create_statistic(statAmount)} ($statAmount)'
       : AppLocalizations.of(context).create_statistic(statAmount);
 
   Object? get popResult {

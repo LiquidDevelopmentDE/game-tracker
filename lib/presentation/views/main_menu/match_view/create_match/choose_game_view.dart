@@ -279,9 +279,8 @@ class _ChooseGameViewState extends State<ChooseGameView> {
     );
   }
 
-  String get buttonText => statAmount > 1
-      ? '${AppLocalizations.of(context).create_statistic(statAmount)} ($statAmount)'
-      : AppLocalizations.of(context).create_statistic(statAmount);
+  String get buttonText =>
+      AppLocalizations.of(context).create_statistic(statAmount);
 
   Object? get popResult {
     if (widget.statistic != null) return null;

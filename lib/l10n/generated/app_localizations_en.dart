@@ -162,8 +162,9 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'statistics',
+      other: 'statistics ($count)',
       one: 'statistic',
+      zero: 'statistics',
     );
     return 'Create $_temp0';
   }
