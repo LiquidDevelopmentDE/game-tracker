@@ -88,3 +88,22 @@ Future<bool> validateJsonSchema(
     return false;
   }
 }
+
+/// Returns the rulesets which make sense for a given [StatisticType]
+List<Ruleset> getRulesetForTypes(StatisticType type) {
+  final scoreBaseRulesets = [Ruleset.lowestScore, Ruleset.highestScore];
+
+  switch (type) {
+    case StatisticType.averageScore:
+    case StatisticType.bestScore:
+    case StatisticType.worstScore:
+      return scoreBaseRulesets;
+
+    case StatisticType.totalMatches:
+    case StatisticType.totalScore:
+    case StatisticType.totalLosses:
+    case StatisticType.winrate:
+    case StatisticType.totalWins:
+      return Ruleset.values;
+  }
+}
