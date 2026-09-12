@@ -22,6 +22,7 @@ enum ApiButtonState { idle, loading, success, error }
 /// - [ImportResult.formatException]: A format exception occurred during import.
 /// - [ImportResult.unknownException]: An exception occurred during import.
 /// - [ImportResult.matchSchemaDetected]: A single match was detected during import.
+/// - [ImportResult.incompatibleVersion]: The data uses an incompatible schema version.
 enum ImportResult {
   success,
   canceled,
@@ -32,6 +33,7 @@ enum ImportResult {
   formatException,
   unknownException,
   matchSchemaDetected,
+  incompatibleVersion,
 }
 
 /// Enum for the Player Selection Widget

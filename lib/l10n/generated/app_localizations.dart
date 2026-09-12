@@ -788,6 +788,12 @@ abstract class AppLocalizations {
   /// **'The following data will be imported'**
   String get import_preview_description;
 
+  /// No description provided for @incompatible_version.
+  ///
+  /// In en, this message translates to:
+  /// **'This file was created with a different version of Tallee and can\'t be imported. Please update your app and try again.'**
+  String get incompatible_version;
+
   /// No description provided for @info.
   ///
   /// In en, this message translates to:
@@ -1433,8 +1439,8 @@ abstract class AppLocalizations {
   /// No description provided for @server_error.
   ///
   /// In en, this message translates to:
-  /// **'Server error: {statusCode}'**
-  String server_error(int statusCode);
+  /// **'Internal server error'**
+  String get server_error;
 
   /// No description provided for @set_name.
   ///
@@ -1651,6 +1657,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown Exception (see console)'**
   String get unknown_exception;
+
+  /// No description provided for @update_app_version.
+  ///
+  /// In en, this message translates to:
+  /// **'Please update your apps to the newest version and try it again.'**
+  String get update_app_version;
 
   /// No description provided for @version.
   ///

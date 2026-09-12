@@ -15,6 +15,12 @@ class Constants {
   /// Email for contacting LIQUID
   static const String LIQUID_CONTACT_EMAIL = 'hello@liquid-dev.de';
 
+  /// Schema version of the whole app data
+  static const int APP_DATA_SCHEMA_VERSION = 1;
+
+  /// Schema version of the match data
+  static const int MATCH_DATA_SCHEMA_VERSION = 1;
+
   /// Treshold for fuzzy search
   static const int FUZZY_SEARCH_THRESHOLD = 50;
 

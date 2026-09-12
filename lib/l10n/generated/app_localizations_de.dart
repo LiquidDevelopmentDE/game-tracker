@@ -401,6 +401,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die folgenden Daten werden importiert';
 
   @override
+  String get incompatible_version =>
+      'Diese Datei wurde mit einer anderen Version von Tallee erstellt und kann nicht importiert werden. Bitte aktualisiere deine App und versuche es erneut.';
+
+  @override
   String get info => 'Info';
 
   @override
@@ -771,9 +775,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sending => 'Wird gesendet...';
 
   @override
-  String server_error(int statusCode) {
-    return 'Serverfehler: $statusCode';
-  }
+  String get server_error => 'Interner Server Fehler';
 
   @override
   String get set_name => 'Name setzen';
@@ -896,6 +898,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unknown_exception => 'Unbekannter Fehler (siehe Konsole)';
+
+  @override
+  String get update_app_version =>
+      'Bitte aktualisiert eure Apps auf die neueste Version und versucht es erneut.';
 
   @override
   String get version => 'Version';

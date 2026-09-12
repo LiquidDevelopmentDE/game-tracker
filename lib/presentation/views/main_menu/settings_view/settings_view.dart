@@ -63,17 +63,6 @@ class _SettingsViewState extends State<SettingsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 16, bottom: 10),
-                    child: Text(
-                      textAlign: TextAlign.start,
-                      loc.settings,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.only(
                       left: 16,
                       top: 10,
@@ -291,13 +280,7 @@ class _SettingsViewState extends State<SettingsView> {
         }
       case ImportResult.matchSchemaDetected:
         break;
-      case ImportResult.invalidSchema:
-      case ImportResult.invalidData:
-      case ImportResult.fileReadError:
-      case ImportResult.fileNotFound:
-      case ImportResult.canceled:
-      case ImportResult.formatException:
-      case ImportResult.unknownException:
+      default:
         HapticFeedback.errorNotification();
         if (context.mounted) {
           showSnackbar(
