@@ -280,14 +280,7 @@ class _SettingsViewState extends State<SettingsView> {
         }
       case ImportResult.matchSchemaDetected:
         break;
-      case ImportResult.invalidSchema:
-      case ImportResult.invalidData:
-      case ImportResult.invalidExtension:
-      case ImportResult.fileReadError:
-      case ImportResult.fileNotFound:
-      case ImportResult.canceled:
-      case ImportResult.formatException:
-      case ImportResult.unknownException:
+      default:
         HapticFeedback.errorNotification();
         if (context.mounted) {
           showSnackbar(
