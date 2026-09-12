@@ -70,7 +70,7 @@ class LocalShareService {
     try {
       final bytes = Uint8List.fromList(utf8.encode(jsonString));
       final path = await FilePicker.saveFile(
-        fileName: '$fileName.tallee',
+        fileName: '$fileName.${Constants.APP_DATA_FILE_EXTENSION}',
         bytes: bytes,
       );
 
@@ -92,7 +92,7 @@ class LocalShareService {
     final result = await FilePicker.pickFiles(
       allowMultiple: false,
       type: FileType.custom,
-      allowedExtensions: ['tallee'],
+      allowedExtensions: [Constants.APP_DATA_FILE_EXTENSION],
     );
 
     if (result == null || result.files.isEmpty) {
@@ -108,6 +108,12 @@ class LocalShareService {
   static Future<(ImportResult, String?)> getDataFromPath(
     String filePath,
   ) async {
+    if (!filePath.toLowerCase().endsWith(
+      '.${Constants.APP_DATA_FILE_EXTENSION}',
+    )) {
+      return (ImportResult.invalidExtension, null);
+    }
+
     final file = File(filePath);
     final exists = await file.exists();
     if (!exists) {

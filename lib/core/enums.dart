@@ -31,6 +31,7 @@ enum ImportResult {
   invalidData,
   formatException,
   unknownException,
+  invalidExtension,
   matchSchemaDetected,
 }
 
