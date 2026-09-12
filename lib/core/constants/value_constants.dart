@@ -10,6 +10,12 @@ const String LIQUID_GITHUB_URL = 'https://github.com/liquiddevelopmentde';
 /// Email for contacting LIQUID
 const String LIQUID_CONTACT_EMAIL = 'hello@liquid-dev.de';
 
+/// Schema version of the whole app data
+const int APP_DATA_SCHEMA_VERSION = 1;
+
+/// Schema version of the match data
+const int MATCH_DATA_SCHEMA_VERSION = 1;
+
 /// Treshold for fuzzy search
 const int FUZZY_SEARCH_THRESHOLD = 50;
 

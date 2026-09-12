@@ -2,9 +2,11 @@ import 'dart:core' hide Match;
 
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:tallee/core/constants/constants.dart';
+import 'package:tallee/core/constants/value_constants.dart';
 import 'package:tallee/core/custom_theme.dart';
+import 'package:tallee/core/enums.dart';
 import 'package:tallee/core/share_exceptions.dart';
+import 'package:tallee/core/translations.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/data_association/associate_games_view.dart';
@@ -157,14 +159,25 @@ class _QrScanComponentState extends State<QrScanComponent> {
     await Future.delayed(MINIMUM_SKELETON_DURATION);
 
     try {
-      final loadedMatch = await RemoteShareService().getMatchByToken(token);
-      if (!mounted) return;
+      final response = await RemoteShareService().getMatchByToken(token);
 
-      await Navigator.of(context).push(
-        adaptivePageRoute(
-          builder: (_) => AssociateGamesView(match: loadedMatch),
-        ),
-      );
+      // If an import error occured
+      if (response.result != ImportResult.success && mounted) {
+        final message = translateMatchImportResultToString(
+          response.result,
+          context,
+        );
+        await displayErrorMessage(message);
+      } else {
+        final loadedMatch = response.match!;
+        if (!mounted) return;
+
+        await Navigator.of(context).push(
+          adaptivePageRoute(
+            builder: (_) => AssociateGamesView(match: loadedMatch),
+          ),
+        );
+      }
 
       if (mounted) {
         await startScanner();
@@ -189,17 +202,24 @@ class _QrScanComponentState extends State<QrScanComponent> {
       } else {
         message = loc.error_loading_match(error.toString());
       }
-      setState(() => errorMessage = message);
 
-      await Future.delayed(const Duration(seconds: 4));
+      await displayErrorMessage(message);
+    }
+  }
 
-      if (mounted) {
-        await startScanner();
+  /// Displays the [message] for 4 seconds and then resets the state.
+  Future<void> displayErrorMessage(String message) async {
+    setState(() => errorMessage = message);
 
-        setState(() {
-          isProcessing = false;
-        });
-      }
+    await Future.delayed(const Duration(seconds: 4));
+
+    if (mounted) {
+      await startScanner();
+
+      setState(() {
+        isProcessing = false;
+        errorMessage = null;
+      });
     }
   }
 }

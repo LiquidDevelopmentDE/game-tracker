@@ -9,10 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tallee/core/common.dart';
+import 'package:tallee/core/constants/value_constants.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/services/local_share_service.dart';
+import 'package:tallee/services/shared.dart';
 import 'package:tallee/services/shared_preferences_service.dart';
 
 void main() {
@@ -114,6 +115,7 @@ void main() {
 
   // Builds a schema-valid .tallee json string from the test entities.
   String buildJson() => json.encode({
+    'version': APP_DATA_SCHEMA_VERSION,
     'players': [
       {
         'id': testPlayer1.id,
@@ -1060,6 +1062,7 @@ void main() {
 
       test('validateJsonSchema() works correctly', () async {
         final validJson = json.encode({
+          'version': APP_DATA_SCHEMA_VERSION,
           'players': [
             {
               'id': testPlayer1.id,
@@ -1173,8 +1176,8 @@ void main() {
         });
 
         final isValidRoot = await validateJsonSchema(
-          validJson,
-          'assets/app_schema.json',
+          jsonString: validJson,
+          schemaAssetPath: 'assets/app_schema.json',
         );
         expect(isValidRoot, true);
       });
@@ -1182,6 +1185,7 @@ void main() {
       group('Schema Validation', () {
         test('validateJsonSchema() returns true for valid data', () async {
           final validJson = json.encode({
+            'version': MATCH_DATA_SCHEMA_VERSION,
             'players': [
               {
                 'id': testPlayer1.id,
@@ -1279,8 +1283,8 @@ void main() {
           });
 
           final isValid = await validateJsonSchema(
-            validJson,
-            'assets/app_schema.json',
+            jsonString: validJson,
+            schemaAssetPath: 'assets/app_schema.json',
           );
           expect(isValid, true);
         });
@@ -1324,8 +1328,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1368,8 +1372,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1433,8 +1437,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1490,8 +1494,8 @@ void main() {
             });
 
             final isValid = await validateJsonSchema(
-              invalidJson,
-              'assets/app_schema.json',
+              jsonString: invalidJson,
+              schemaAssetPath: 'assets/app_schema.json',
             );
             expect(isValid, false);
           },
@@ -1513,7 +1517,10 @@ void main() {
         expect(jsonString, isNotEmpty);
 
         final isValid = await tester.runAsync(
-          () => validateJsonSchema(jsonString, 'assets/app_schema.json'),
+          () => validateJsonSchema(
+            jsonString: jsonString,
+            schemaAssetPath: 'assets/app_schema.json',
+          ),
         );
         expect(isValid, true);
       });
@@ -1615,7 +1622,7 @@ void main() {
           bytes: Uint8List.fromList(utf8.encode(content)),
         );
 
-        final result = await readFileContent(file);
+        final result = await readFileContent(file: file);
 
         expect(result, content);
       });
@@ -1636,7 +1643,7 @@ void main() {
           path: tempFile.path,
         );
 
-        final result = await readFileContent(file);
+        final result = await readFileContent(file: file);
 
         expect(result, content);
       });
@@ -1644,7 +1651,7 @@ void main() {
       test('returns null when both bytes and path are null', () async {
         final file = PlatformFile(name: 'data.tallee', size: 0);
 
-        final result = await readFileContent(file);
+        final result = await readFileContent(file: file);
 
         expect(result, isNull);
       });
@@ -1669,7 +1676,7 @@ void main() {
         () async {
           final result = await LocalShareService.commitImport(
             database,
-            '{"players": "not a list"}',
+            '{"version": $APP_DATA_SCHEMA_VERSION, "players": "not a list"}',
           );
 
           expect(result, ImportResult.invalidSchema);
@@ -1723,6 +1730,77 @@ void main() {
 
         expect(result.$1, ImportResult.invalidSchema);
         expect(result.$2, isNull);
+      });
+    });
+
+    group('isSchemaVersionCorrect()', () {
+      test('returns true for the current schema version', () {
+        const schemaVersion = APP_DATA_SCHEMA_VERSION;
+        final decoded = <String, dynamic>{'version': schemaVersion};
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: schemaVersion,
+        );
+
+        expect(isVersionCorrect, isTrue);
+      });
+
+      test('returns false when the version field is missing', () {
+        final decoded = <String, dynamic>{};
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: APP_DATA_SCHEMA_VERSION,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false for an outdated schema version', () {
+        final decoded = <String, dynamic>{
+          'version': APP_DATA_SCHEMA_VERSION - 1,
+        };
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: APP_DATA_SCHEMA_VERSION,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false for a newer schema version', () {
+        const schemaVersion = APP_DATA_SCHEMA_VERSION;
+        final decoded = <String, dynamic>{'version': schemaVersion + 1};
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: schemaVersion,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false when the version is not an integer', () {
+        const schemaVersion = APP_DATA_SCHEMA_VERSION;
+        final decoded = <String, dynamic>{'version': '$schemaVersion'};
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: schemaVersion,
+        );
+
+        expect(isVersionCorrect, isFalse);
+      });
+
+      test('returns false when the version is null', () {
+        final decoded = <String, dynamic>{'version': null};
+
+        final isVersionCorrect = isSchemaVersionCorrect(
+          jsonMap: decoded,
+          schemaVersion: APP_DATA_SCHEMA_VERSION,
+        );
+
+        expect(isVersionCorrect, isFalse);
       });
     });
   });

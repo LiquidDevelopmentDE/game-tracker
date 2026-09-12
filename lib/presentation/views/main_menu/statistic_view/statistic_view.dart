@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tallee/core/app_color_utils.dart';
-import 'package:tallee/core/constants/constants.dart';
+import 'package:tallee/core/constants/icon_constants.dart';
+import 'package:tallee/core/constants/value_constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
@@ -400,7 +401,7 @@ class _StatisticsViewState extends State<StatisticsView> {
             Positioned(
               bottom: MediaQuery.paddingOf(context).bottom + 20,
               child: FloatingAnimatedButton(
-                text: loc.create_statistic,
+                text: loc.create_statistic(1),
                 icon: STATISTIC_ICON,
                 showAddBadge: true,
                 onPressed: () async {

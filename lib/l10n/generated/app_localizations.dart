@@ -389,8 +389,8 @@ abstract class AppLocalizations {
   /// No description provided for @create_statistic.
   ///
   /// In en, this message translates to:
-  /// **'Create statistic'**
-  String get create_statistic;
+  /// **'Create {count, plural, =0{statistics} =1{statistic} other{statistics ({count})}}'**
+  String create_statistic(int count);
 
   /// No description provided for @create_teams.
   ///
@@ -793,6 +793,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The following data will be imported'**
   String get import_preview_description;
+
+  /// No description provided for @incompatible_version.
+  ///
+  /// In en, this message translates to:
+  /// **'This file was created with a different version of Tallee and can\'t be imported. Please update your app and try again.'**
+  String get incompatible_version;
 
   /// No description provided for @info.
   ///
@@ -1657,6 +1663,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown Exception (see console)'**
   String get unknown_exception;
+
+  /// No description provided for @update_app_version.
+  ///
+  /// In en, this message translates to:
+  /// **'Please update your apps to the newest version and try it again.'**
+  String get update_app_version;
 
   /// No description provided for @version.
   ///

@@ -158,7 +158,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_new_match => 'Create new match';
 
   @override
-  String get create_statistic => 'Create statistic';
+  String create_statistic(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'statistics ($count)',
+      one: 'statistic',
+      zero: 'statistics',
+    );
+    return 'Create $_temp0';
+  }
 
   @override
   String get create_teams => 'Create teams';
@@ -389,6 +398,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get import_preview_description =>
       'The following data will be imported';
+
+  @override
+  String get incompatible_version =>
+      'This file was created with a different version of Tallee and can\'t be imported. Please update your app and try again.';
 
   @override
   String get info => 'Info';
@@ -880,6 +893,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknown_exception => 'Unknown Exception (see console)';
+
+  @override
+  String get update_app_version =>
+      'Please update your apps to the newest version and try it again.';
 
   @override
   String get version => 'Version';
