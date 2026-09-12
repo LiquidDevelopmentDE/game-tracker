@@ -285,14 +285,7 @@
   "send_code_instruction": "Sende diesen Code an eine Person, die ebenfalls Tallee hat, um das aktuelle Match zu teilen.",
   "send_feedback": "Feedback senden",
   "sending": "Wird gesendet...",
-  "server_error": "Serverfehler: {statusCode}",
-  "@server_error": {
-    "placeholders": {
-      "statusCode": {
-        "type": "int"
-      }
-    }
-  },
+  "server_error": "Interner Server Fehler",
   "set_name": "Name setzen",
   "settings": "Einstellungen",
   "share_as_qr_code_info": "Damit du ein Spiel als QR-Code mit anderen teilen kannst, muss Online-Teilen aktiviert sein",
