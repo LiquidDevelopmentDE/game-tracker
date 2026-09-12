@@ -21,7 +21,7 @@ import 'package:tallee/presentation/widgets/top_centered_message.dart';
 class ChooseGameView extends StatefulWidget {
   /// A view that allows the user to choose a game from a list of available games
   /// - [games]: The list of available games
-  /// - [initialGames]: The initially selected game
+  /// - [initialGames]: The initially selected games
   /// - [onGamesUpdated]: Optional callback invoked when the games are updated
   /// - [statistic]: Optional statistic payload for choosing groups for a statistic
   /// - [selectedTypes]: Optional list of statistic types to determine the correct button text
