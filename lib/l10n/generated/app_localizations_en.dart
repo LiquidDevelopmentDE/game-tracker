@@ -158,7 +158,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_new_match => 'Create new match';
 
   @override
-  String get create_statistic => 'Create statistic';
+  String create_statistic(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'statistics',
+      one: 'statistic',
+    );
+    return 'Create $_temp0';
+  }
 
   @override
   String get create_teams => 'Create teams';
