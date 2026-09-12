@@ -251,6 +251,68 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
+  /// Displays a snackbar based on the import result.
+  ///
+  /// [context] The BuildContext to show the snackbar in.
+  /// [result] The result of the import operation.
+  void showImportSnackBar({
+    required BuildContext context,
+    required ImportResult result,
+  }) async {
+    final loc = AppLocalizations.of(context);
+    switch (result) {
+      case ImportResult.success:
+        HapticFeedback.successNotification();
+        if (context.mounted) {
+          showSnackbar(
+            context: context,
+            message: loc.data_successfully_imported,
+          );
+        }
+      case ImportResult.matchSchemaDetected:
+        break;
+      default:
+        HapticFeedback.errorNotification();
+        if (context.mounted) {
+          showSnackbar(
+            context: context,
+            message: translateImportResultToString(result, context),
+          );
+        }
+    }
+  }
+
+  /// Displays a snackbar based on the export result.
+  ///
+  /// [context] The BuildContext to show the snackbar in.
+  /// [result] The result of the export operation.
+  void showExportSnackBar({
+    required BuildContext context,
+    required ExportResult result,
+  }) async {
+    final loc = AppLocalizations.of(context);
+    switch (result) {
+      case ExportResult.success:
+        HapticFeedback.successNotification();
+        if (context.mounted) {
+          showSnackbar(
+            context: context,
+            message: loc.data_successfully_exported,
+          );
+        }
+      case ExportResult.canceled:
+      case ExportResult.unknownException:
+      case ExportResult.noData:
+        HapticFeedback.errorNotification();
+        if (context.mounted) {
+          showSnackbar(
+            context: context,
+            message: translateExportResultToString(result, context),
+          );
+        }
+    }
+  }
+
   /// Displays a snackbar with the given message and optional action.
   ///
   /// [context] The BuildContext to show the snackbar in.

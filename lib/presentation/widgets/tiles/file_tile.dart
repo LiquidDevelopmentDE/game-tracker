@@ -7,10 +7,20 @@ import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 
-class FileTile extends StatelessWidget {
-  const FileTile({required this.match, this.margin, super.key});
+class MatchFileTile extends StatelessWidget {
+  /// Displays a match as file whith its filename, attributes and file size
+  /// - [match]: The match to display
+  /// - [fileName]: Optional filename to display instead of the match name
+  /// - [margin]: Optional margin to apply to the tile
+  const MatchFileTile({
+    required this.match,
+    this.fileName,
+    this.margin,
+    super.key,
+  });
 
   final Match match;
+  final String? fileName;
   final EdgeInsets? margin;
 
   @override
@@ -44,14 +54,20 @@ class FileTile extends StatelessWidget {
                   children: [
                     // Filename
                     Expanded(
-                      child: Text(
-                        '${match.name.toSafeFilename()}.${Constants.MATCH_FILE_EXTENSION}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: CustomTheme.textColor,
+                      child: SizedBox(
+                        height: 24,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${fileName ?? match.name.toSafeFilename()}.${Constants.MATCH_FILE_EXTENSION}',
+                            maxLines: 1,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: CustomTheme.textColor,
+                            ),
+                          ),
                         ),
                       ),
                     ),

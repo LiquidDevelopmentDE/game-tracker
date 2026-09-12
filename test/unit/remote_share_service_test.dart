@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/services/remote_share_service.dart';
+import 'package:tallee/services/shared.dart';
 
 class TestRemoteShareService extends RemoteShareService {
   TestRemoteShareService({super.httpClient});
@@ -34,14 +34,20 @@ void main() {
         return null;
       });
   group('RemoteShareService', () {
-    late Player player;
+    late Player player1;
+    late Player player2;
     late Game game;
     late Match match;
 
     setUp(() {
-      player = Player(
+      player1 = Player(
         id: 'player-1',
         name: 'Alice',
+        createdAt: DateTime.parse('2024-01-01T10:00:00.000Z'),
+      );
+      player2 = Player(
+        id: 'player-2',
+        name: 'Bob',
         createdAt: DateTime.parse('2024-01-01T10:00:00.000Z'),
       );
       game = Game(
@@ -55,8 +61,11 @@ void main() {
         createdAt: DateTime.parse('2024-01-01T10:00:00.000Z'),
         name: 'Friday Session',
         game: game,
-        players: [player],
-        scores: {player.id: ScoreEntry(score: 42)},
+        players: [player1, player2],
+        scores: {
+          player1.id: ScoreEntry(score: 42),
+          player2.id: ScoreEntry(score: 24),
+        },
       );
     });
 
@@ -175,7 +184,8 @@ void main() {
         });
         final service = TestRemoteShareService(httpClient: client);
 
-        final loadedMatch = await service.getMatchByToken('share-token');
+        final result = await service.getMatchByToken('share-token');
+        final loadedMatch = result.match!;
 
         expect(loadedMatch.id, match.id);
         expect(loadedMatch.name, match.name);
@@ -296,8 +306,8 @@ void main() {
       final jsonString = jsonEncode(matchObj.toJson());
 
       final isValid = await validateJsonSchema(
-        jsonString,
-        'assets/match_schema.json',
+        jsonString: jsonString,
+        schemaAssetPath: 'assets/match_schema.json',
       );
       expect(isValid, isTrue);
     });
@@ -313,7 +323,7 @@ void main() {
           'test.${Constants.MATCH_FILE_EXTENSION}',
         );
 
-        expect(result.$1, ImportResult.invalidSchema);
+        expect(result.result, ImportResult.invalidSchema);
       },
     );
   });
@@ -323,7 +333,7 @@ void main() {
       final service = RemoteShareService();
       final result = await service.loadMatchFromFile('test.json');
 
-      expect(result.$1, ImportResult.invalidExtension);
+      expect(result.result, ImportResult.invalidExtension);
     });
   });
 }
