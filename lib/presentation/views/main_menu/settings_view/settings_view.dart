@@ -5,24 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
-import 'package:tallee/core/enums.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
 import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
 import 'package:tallee/presentation/utils/navigation/route_names.dart';
-import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
+import 'package:tallee/presentation/views/main_menu/settings_view/data_management_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/feedback_form_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/licenses/licenses_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/privacy_policy_view.dart';
-import 'package:tallee/presentation/views/preview_import_data_view.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
 import 'package:tallee/presentation/widgets/custom_adaptive_switch.dart';
 import 'package:tallee/presentation/widgets/custom_snack_bar.dart';
-import 'package:tallee/presentation/widgets/dialog/custom_alert_dialog.dart';
 import 'package:tallee/presentation/widgets/tiles/settings_list_tile.dart';
-import 'package:tallee/services/local_share_service.dart';
 import 'package:tallee/services/package_info_service.dart';
 import 'package:tallee/services/shared_preferences_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -70,24 +65,12 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     child: Text(
                       textAlign: TextAlign.start,
-                      loc.data,
+                      loc.general,
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  SettingsListTile(
-                    title: loc.export_data,
-                    icon: Icons.upload,
-                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () => handleExport(scaffoldMessengerContext),
-                  ),
-                  SettingsListTile(
-                    title: loc.import_data,
-                    icon: Icons.download,
-                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () => handleImport(scaffoldMessengerContext),
                   ),
                   SettingsListTile(
                     title: loc.online_sharing_title,
@@ -103,13 +86,6 @@ class _SettingsViewState extends State<SettingsView> {
                       },
                     ),
                     onPressed: null,
-                  ),
-                  SettingsListTile(
-                    title: loc.delete_all_data,
-                    icon: Icons.delete,
-                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onPressed: () =>
-                        showDeleteDialog(scaffoldMessengerContext, loc),
                   ),
                   SettingsListTile(
                     title: loc.send_feedback,
@@ -129,6 +105,21 @@ class _SettingsViewState extends State<SettingsView> {
                           message: loc.thank_you_for_feedback,
                         );
                       }
+                    },
+                  ),
+                  SettingsListTile(
+                    title: loc.data_management,
+                    icon: Icons.storage_rounded,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        adaptivePageRoute(
+                          settings: const RouteSettings(
+                            name: RouteNames.dataManagementView,
+                          ),
+                          builder: (context) => const DataManagementView(),
+                        ),
+                      );
                     },
                   ),
                   Padding(
@@ -260,75 +251,6 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  /// Displays a snackbar based on the import result.
-  ///
-  /// [context] The BuildContext to show the snackbar in.
-  /// [result] The result of the import operation.
-  void showImportSnackBar({
-    required BuildContext context,
-    required ImportResult result,
-  }) async {
-    final loc = AppLocalizations.of(context);
-    switch (result) {
-      case ImportResult.success:
-        HapticFeedback.successNotification();
-        if (context.mounted) {
-          showSnackbar(
-            context: context,
-            message: loc.data_successfully_imported,
-          );
-        }
-      case ImportResult.matchSchemaDetected:
-        break;
-      case ImportResult.invalidSchema:
-      case ImportResult.invalidData:
-      case ImportResult.invalidExtension:
-      case ImportResult.fileReadError:
-      case ImportResult.fileNotFound:
-      case ImportResult.canceled:
-      case ImportResult.formatException:
-      case ImportResult.unknownException:
-        HapticFeedback.errorNotification();
-        if (context.mounted) {
-          showSnackbar(
-            context: context,
-            message: translateImportResultToString(result, context),
-          );
-        }
-    }
-  }
-
-  /// Displays a snackbar based on the export result.
-  ///
-  /// [context] The BuildContext to show the snackbar in.
-  /// [result] The result of the export operation.
-  void showExportSnackBar({
-    required BuildContext context,
-    required ExportResult result,
-  }) async {
-    final loc = AppLocalizations.of(context);
-    switch (result) {
-      case ExportResult.success:
-        HapticFeedback.successNotification();
-        if (context.mounted) {
-          showSnackbar(
-            context: context,
-            message: loc.data_successfully_exported,
-          );
-        }
-      case ExportResult.canceled:
-      case ExportResult.unknownException:
-      case ExportResult.noData:
-        HapticFeedback.errorNotification();
-        if (context.mounted) {
-          showSnackbar(
-            context: context,
-            message: translateExportResultToString(result, context),
-          );
-        }
-    }
-  }
-
   /// Displays a snackbar with the given message and optional action.
   ///
   /// [context] The BuildContext to show the snackbar in.
@@ -339,99 +261,6 @@ class _SettingsViewState extends State<SettingsView> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context)
         .showSnackBar(CustomSnackBar(message: message));
-  }
-
-  void handleExport(BuildContext scaffoldMessengerContext) async {
-    final String json = await LocalShareService.getAppDataAsJson(
-      scaffoldMessengerContext,
-    );
-
-    ExportResult result;
-
-    if (json.isEmpty) {
-      result = ExportResult.noData;
-    } else {
-      result = await LocalShareService.exportData(json, 'data');
-    }
-    if (!scaffoldMessengerContext.mounted) return;
-    showExportSnackBar(context: scaffoldMessengerContext, result: result);
-  }
-
-  void handleImport(BuildContext scaffoldMessengerContext) async {
-    final path = await LocalShareService.pickImportFilePath();
-
-    if (path == null) {
-      if (!scaffoldMessengerContext.mounted) return;
-      showImportSnackBar(
-        context: scaffoldMessengerContext,
-        result: ImportResult.canceled,
-      );
-      return;
-    }
-
-    if (!scaffoldMessengerContext.mounted) return;
-
-    // Pre-check the file type to avoid showing PreviewImportDataView for single matches
-    final (status, _) = await LocalShareService.getDataFromPath(path);
-
-    if (status == ImportResult.matchSchemaDetected) {
-      if (!scaffoldMessengerContext.mounted) return;
-      Navigator.of(scaffoldMessengerContext).push(
-        adaptivePageRoute(
-          builder: (context) => MatchReceiveView(initialFilePath: path),
-        ),
-      );
-      return;
-    }
-
-    if (!scaffoldMessengerContext.mounted) return;
-    final result = await Navigator.of(scaffoldMessengerContext)
-        .push<ImportResult>(
-          adaptivePageRoute<ImportResult>(
-            settings: const RouteSettings(name: RouteNames.importFile),
-            fullscreenDialog: true,
-            builder: (_) => PreviewImportDataView(filePath: path),
-          ),
-        );
-
-    if (result == null) return;
-    if (!scaffoldMessengerContext.mounted) return;
-    showImportSnackBar(context: scaffoldMessengerContext, result: result);
-  }
-
-  void showDeleteDialog(
-    BuildContext scaffoldMessengerContext,
-    AppLocalizations loc,
-  ) {
-    showDialog<bool>(
-      context: context,
-      builder: (context) => CustomAlertDialog(
-        title: '${loc.delete_all_data}?',
-        content: Text(
-          loc.this_cannot_be_undone,
-          overflow: TextOverflow.visible,
-        ),
-        actions: [
-          CustomDialogAction(
-            onPressed: () => Navigator.of(context).pop(true),
-            text: loc.delete,
-          ),
-          CustomDialogAction(
-            onPressed: () => Navigator.of(context).pop(false),
-            buttonType: ButtonType.secondary,
-            text: loc.cancel,
-          ),
-        ],
-      ),
-    ).then((confirmed) {
-      if (confirmed == true && mounted && scaffoldMessengerContext.mounted) {
-        LocalShareService.deleteAllData(context);
-        showSnackbar(
-          context: scaffoldMessengerContext,
-          message: AppLocalizations.of(context).data_successfully_deleted,
-        );
-      }
-    });
   }
 
   Future<void> loadSettings() async {

@@ -176,6 +176,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get data => 'Data';
 
   @override
+  String get import_export => 'Import/Export';
+
+  @override
+  String get danger_zone => 'Danger Zone';
+
+  @override
+  String get data_management => 'Data Management';
+
+  @override
   String get data_successfully_deleted => 'Data successfully deleted';
 
   @override
@@ -194,6 +203,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete_all_data => 'Delete all data';
+
+  @override
+  String get delete_app_data_description =>
+      'Permanently delete all app data. This action is irreversible.';
 
   @override
   String get delete_game => 'Delete Game';
@@ -312,6 +325,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get export_data => 'Export data';
 
   @override
+  String get export_description =>
+      'Export all your games, players, and matches to a file. This is meant as a backup or for transferring data between devices, not for sharing matches with others, for that use the match share functionality.';
+
+  @override
   String get favourites => 'Favourites';
 
   @override
@@ -374,6 +391,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get import_data => 'Import data';
+
+  @override
+  String get import_description =>
+      'Import your Tallee data from a previously exported file. This is meant for transferring data between devices or restoring a backup, not for importing shared matches,  for that use the match share functionality.';
+
+  @override
+  String get general => 'General';
 
   @override
   String get import_file_instruction =>

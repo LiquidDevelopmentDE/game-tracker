@@ -422,6 +422,24 @@ abstract class AppLocalizations {
   /// **'Data'**
   String get data;
 
+  /// No description provided for @import_export.
+  ///
+  /// In en, this message translates to:
+  /// **'Import/Export'**
+  String get import_export;
+
+  /// No description provided for @danger_zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger Zone'**
+  String get danger_zone;
+
+  /// No description provided for @data_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Management'**
+  String get data_management;
+
   /// No description provided for @data_successfully_deleted.
   ///
   /// In en, this message translates to:
@@ -457,6 +475,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete all data'**
   String get delete_all_data;
+
+  /// No description provided for @delete_app_data_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete all app data. This action is irreversible.'**
+  String get delete_app_data_description;
 
   /// No description provided for @delete_game.
   ///
@@ -650,6 +674,12 @@ abstract class AppLocalizations {
   /// **'Export data'**
   String get export_data;
 
+  /// No description provided for @export_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Export all your games, players, and matches to a file. This is meant as a backup or for transferring data between devices, not for sharing matches with others, for that use the match share functionality.'**
+  String get export_description;
+
   /// No description provided for @favourites.
   ///
   /// In en, this message translates to:
@@ -769,6 +799,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Import data'**
   String get import_data;
+
+  /// No description provided for @import_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Import your Tallee data from a previously exported file. This is meant for transferring data between devices or restoring a backup, not for importing shared matches,  for that use the match share functionality.'**
+  String get import_description;
+
+  /// No description provided for @general.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get general;
 
   /// No description provided for @import_file_instruction.
   ///

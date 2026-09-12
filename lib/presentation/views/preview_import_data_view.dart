@@ -234,11 +234,11 @@ class _PreviewImportDataViewState extends State<PreviewImportDataView> {
                 BottomAnimatedButton(
                   buttonText: loc.confirm,
                   sizeRelativeToWidth: 0.95,
+                  buttonType: ButtonType.secondary,
                   onPressed: jsonString == null ? null : confirmImport,
                 ),
                 BottomAnimatedButton(
                   buttonText: loc.cancel,
-                  buttonType: ButtonType.secondary,
                   sizeRelativeToWidth: 0.95,
                   onPressed: cancelImport,
                 ),
