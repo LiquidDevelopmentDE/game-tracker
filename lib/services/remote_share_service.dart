@@ -199,7 +199,11 @@ class RemoteShareService {
     if (!filePath.toLowerCase().endsWith(
       '.${Constants.MATCH_FILE_EXTENSION}',
     )) {
-      return (result: ImportResult.invalidExtension, match: null, filePath: filePath);
+      return (
+        result: ImportResult.invalidExtension,
+        match: null,
+        filePath: filePath,
+      );
     }
 
     final file = File(filePath);
@@ -314,7 +318,11 @@ class RemoteShareService {
     if (!filePath.toLowerCase().endsWith(
       '.${Constants.MATCH_FILE_EXTENSION}',
     )) {
-      return (result: ImportResult.invalidExtension, match: null, filePath: filePath);
+      return (
+        result: ImportResult.invalidExtension,
+        match: null,
+        filePath: filePath,
+      );
     }
 
     final jsonString = await readFileContent(file: file);

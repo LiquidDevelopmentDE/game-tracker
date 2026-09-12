@@ -323,7 +323,7 @@ void main() {
           'test.${Constants.MATCH_FILE_EXTENSION}',
         );
 
-        expect(result.$1, ImportResult.invalidSchema);
+        expect(result.result, ImportResult.invalidSchema);
       },
     );
   });
@@ -333,7 +333,7 @@ void main() {
       final service = RemoteShareService();
       final result = await service.loadMatchFromFile('test.json');
 
-      expect(result.$1, ImportResult.invalidExtension);
+      expect(result.result, ImportResult.invalidExtension);
     });
   });
 }
