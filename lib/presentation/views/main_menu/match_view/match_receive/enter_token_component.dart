@@ -7,7 +7,7 @@ import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/share_exceptions.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/data_association/associate_games_view.dart';
 import 'package:tallee/presentation/widgets/buttons/api_action_animated_button.dart';
 import 'package:tallee/presentation/widgets/custom_snack_bar.dart';
@@ -214,7 +214,7 @@ class _EnterTokenComponentState extends State<EnterTokenComponent> {
           });
           errorMessage = '';
         } else {
-          errorMessage = loc.server_error(error.statusCode);
+          errorMessage = loc.server_error;
         }
       } else if (error is ParsingException) {
         errorMessage = loc.parsing_error;

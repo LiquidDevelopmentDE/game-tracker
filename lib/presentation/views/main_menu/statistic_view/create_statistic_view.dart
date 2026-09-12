@@ -14,7 +14,8 @@ import 'package:tallee/data/models/group.dart';
 import 'package:tallee/data/models/player.dart';
 import 'package:tallee/data/models/statistic.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/create_match/choose_game_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/create_match/choose_group_view.dart';
 import 'package:tallee/presentation/widgets/buttons/bottom_animated_button.dart';
@@ -352,6 +353,7 @@ class _CreateStatisticViewState extends State<CreateStatisticView> {
     if (scopes.contains(StatisticScope.selectedGroups)) {
       final created = await Navigator.of(context).push<Statistic>(
         adaptivePageRoute(
+          settings: const RouteSettings(name: RouteNames.chooseGroupView),
           builder: (context) => ChooseGroupView(
             groups: groups,
             statistic: buildStat(selectedType.first),
@@ -371,6 +373,7 @@ class _CreateStatisticViewState extends State<CreateStatisticView> {
     } else if (scopes.contains(StatisticScope.selectedGames)) {
       final created = await Navigator.of(context).push<Statistic>(
         adaptivePageRoute(
+          settings: const RouteSettings(name: RouteNames.chooseGameView),
           builder: (context) => ChooseGameView(
             games: games,
             statistic: buildStat(selectedType.first),

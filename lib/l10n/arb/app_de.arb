@@ -26,6 +26,7 @@
   "classifier": "Klassifikator",
   "classifier_description": "Lege fest, welche Kennzahl berechnet und in der Statistik angezeigt wird.",
   "click_another_player_to_create_a_pair": "Klicke einen weiteren Spieler an, um ein Paar zu erstellen",
+  "close": "Schließen",
   "code_copied": "Code in die Zwischenablage kopiert",
   "code_pasted_from_clipboard": "Code aus der Zwischenablage eingefügt",
   "color": "Farbe",
@@ -38,6 +39,7 @@
   "color_teal": "Türkis",
   "color_yellow": "Gelb",
   "confirm": "Bestätigen",
+  "continue_": "Weiter",
   "copy_code": "Code kopieren",
   "could_not_add_player": "Spieler:in {playerName} konnte nicht hinzugefügt werden",
   "@could_not_add_player": {
@@ -90,6 +92,7 @@
   "edit_match": "Spiel bearbeiten",
   "edit_name": "Name ändern",
   "edit_player": "Spieler bearbeiten",
+  "email_optional": "E-Mail-Adresse (optional)",
   "enable": "Aktivieren",
   "enter_results": "Ergebnisse eintragen",
   "error_creating_group": "Fehler beim Erstellen der Gruppe, bitte erneut versuchen",
@@ -106,6 +109,7 @@
   },
   "error_loading_privacy_policy": "Fehler beim Laden der Datenschutzerklärung",
   "error_reading_file": "Fehler beim Lesen der Datei",
+  "error_sending_feedback": "Feedback konnte nicht gesendet werden. Bitte versuche es erneut.",
   "error_while_processing_file_try_again": "Fehler beim Verarbeiten der Datei. Bitte versuche es erneut",
   "expires_in": "Läuft ab in {time}",
   "@expires_in": {
@@ -118,6 +122,8 @@
   "export_canceled": "Export abgebrochen",
   "export_data": "Daten exportieren",
   "favourites": "Favoriten",
+  "feedback_hint": "Deine Nachricht oder Kritik (erforderlich)",
+  "feedback_info_text": "Dein Feedback hilft uns, Tallee stetig zu verbessern!",
   "file_couldnt_be_accessed": "Die Datei konnte nicht geöffnet werden",
   "file_share_instruction": "Spiel-Daten manuell in einer Datei teilen für eine vollständige lokale Übertragung.",
   "filter": "Filter",
@@ -147,6 +153,7 @@
   "import_preview_description": "Die folgenden Daten werden importiert",
   "info": "Info",
   "input_token_instruction": "Gib einen Match-Share-Token ein, den eine andere Person mit Tallee erstellt hat, um das Match zu importieren.",
+  "invalid_email": "Bitte gib eine gültige E-Mail-Adresse ein.",
   "invalid_file": "Ungültige Datei.",
   "invalid_qr_code": "Dieser QR-Code ist ungültig oder abgelaufen.",
   "invalid_schema": "Ungültiges Schema",
@@ -183,6 +190,7 @@
   "matches_won": "Spiele gewonnen",
   "member": "Mitglied",
   "members": "Mitglieder",
+  "name_optional": "Name (optional)",
   "names_or_descriptions_too_long": "Die Daten enthalten zu lange Namen oder Beschreibungen.",
   "network_error": "Netzwerkfehler. Bitte überprüfe deine Verbindung.",
   "new_game_will_be_created": "Neue Spielvorlage wird erstellt",
@@ -276,14 +284,9 @@
   "selected_groups": "Ausgewählte Gruppen",
   "selected_players": "Ausgewählte Spieler:innen",
   "send_code_instruction": "Sende diesen Code an eine Person, die ebenfalls Tallee hat, um das aktuelle Match zu teilen.",
-  "server_error": "Serverfehler: {statusCode}",
-  "@server_error": {
-    "placeholders": {
-      "statusCode": {
-        "type": "int"
-      }
-    }
-  },
+  "send_feedback": "Feedback senden",
+  "sending": "Wird gesendet...",
+  "server_error": "Interner Server Fehler",
   "set_name": "Name setzen",
   "settings": "Einstellungen",
   "share_as_qr_code_info": "Damit du ein Spiel als QR-Code mit anderen teilen kannst, muss Online-Teilen aktiviert sein",
@@ -310,6 +313,7 @@
   "team": "Team",
   "team_match": "Teamspiel",
   "teams": "Teams",
+  "thank_you_for_feedback": "Vielen Dank für dein Feedback!",
   "there_are_no_games_matching_your_search": "Es gibt keine Spielvorlagen, die deiner Suche entspricht",
   "there_is_no_group_matching_your_search": "Es gibt keine Gruppe, die deiner Suche entspricht",
   "there_is_no_match_matching_your_search": "Es gibt kein Spiel, das deiner Suche entspricht",
@@ -326,7 +330,9 @@
   "type": "Typ",
   "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten.",
   "unknown_exception": "Unbekannter Fehler (siehe Konsole)",
-  "winners": "Gewinner:in",
+  "version": "Version",
+  "whats_new": "Neuigkeiten",
+  "winner": "Gewinner:in",
   "winrate": "Siegquote",
   "worst_score": "Schlechteste Punktzahl",
   "yesterday_at": "Gestern um"

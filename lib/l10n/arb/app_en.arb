@@ -26,6 +26,7 @@
   "classifier": "Classifier",
   "classifier_description": "Choose which metric is calculated and shown in this statistic.",
   "click_another_player_to_create_a_pair": "Click another player to create a pair",
+  "close": "Close",
   "code_copied": "Code copied to clipboard",
   "code_pasted_from_clipboard": "Code pasted from clipboard",
   "color": "Color",
@@ -38,6 +39,7 @@
   "color_teal": "Teal",
   "color_yellow": "Yellow",
   "confirm": "Confirm",
+  "continue_": "Continue",
   "copy_code": "Copy Code",
   "could_not_add_player": "Could not add player {playerName}",
   "@could_not_add_player": {
@@ -90,6 +92,7 @@
   "edit_match": "Edit Match",
   "edit_name": "Edit name",
   "edit_player": "Edit player",
+  "email_optional": "Email address (optional)",
   "enable": "Enable",
   "enter_results": "Enter Results",
   "error_creating_group": "Error while creating group, please try again",
@@ -106,6 +109,7 @@
   },
   "error_loading_privacy_policy": "Error loading privacy policy",
   "error_reading_file": "Error reading file",
+  "error_sending_feedback": "Feedback could not be sent. Please try again.",
   "error_while_processing_file_try_again": "Error while processing file. Please try again.",
   "expires_in": "Expires in {time}",
   "@expires_in": {
@@ -118,6 +122,8 @@
   "export_canceled": "Export canceled",
   "export_data": "Export data",
   "favourites": "Favourites",
+  "feedback_hint": "Your message or feedback (required)",
+  "feedback_info_text": "Your feedback helps us continuously improve Tallee!",
   "file_couldnt_be_accessed": "The file could not be accessed",
   "file_share_instruction": "Manually share the match data in a file for full local transfer.",
   "filter": "Filter",
@@ -147,6 +153,7 @@
   "import_preview_description": "The following data will be imported",
   "info": "Info",
   "input_token_instruction": "Input a match share token another person created using Tallee to import the match.",
+  "invalid_email": "Please enter a valid email address.",
   "invalid_file": "Invalid File.",
   "invalid_qr_code": "This QR code is invalid or expired.",
   "invalid_schema": "Invalid Schema",
@@ -183,6 +190,7 @@
   "matches_won": "Matches won",
   "member": "Member",
   "members": "Members",
+  "name_optional": "Name (optional)",
   "names_or_descriptions_too_long": "The data contains names or descriptions that are too long.",
   "network_error": "Network error. Please check your connection.",
   "new_game_will_be_created": "New game will be created",
@@ -276,14 +284,9 @@
   "selected_groups": "Selected groups",
   "selected_players": "Selected players",
   "send_code_instruction": "Send this code to a person who also has Tallee to share the current match.",
-  "server_error": "Server error: {statusCode}",
-  "@server_error": {
-    "placeholders": {
-      "statusCode": {
-        "type": "int"
-      }
-    }
-  },
+  "send_feedback": "Send feedback",
+  "sending": "Sending...",
+  "server_error": "Internal server error",
   "set_name": "Set name",
   "settings": "Settings",
   "share_as_qr_code_info": "To share a match as a QR code with others, online sharing must be enabled",
@@ -319,6 +322,7 @@
   "team": "Team",
   "team_match": "Team Match",
   "teams": "Teams",
+  "thank_you_for_feedback": "Thank you for your feedback!",
   "there_are_no_games_matching_your_search": "There are no games matching your search",
   "there_is_no_group_matching_your_search": "There is no group matching your search",
   "there_is_no_match_matching_your_search": "There is no match matching your search",
@@ -335,7 +339,9 @@
   "type": "Type",
   "unexpected_error": "An unexpected error occurred.",
   "unknown_exception": "Unknown Exception (see console)",
-  "winners": "Winner",
+  "version": "Version",
+  "whats_new": "What's new?",
+  "winner": "Winner",
   "winrate": "Winrate",
   "worst_score": "Worst score",
   "yesterday_at": "Yesterday at"

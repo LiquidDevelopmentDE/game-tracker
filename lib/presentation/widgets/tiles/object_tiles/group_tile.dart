@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:tallee/core/common.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/data/models/group.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/player_view/player_detail_view.dart';
 import 'package:tallee/presentation/widgets/colored_icon_container.dart';
 import 'package:tallee/presentation/widgets/tiles/text_icon_tile/player_tile.dart';
@@ -146,6 +147,9 @@ class _GroupTileState extends State<GroupTile> {
                             Navigator.push(
                               context,
                               adaptivePageRoute(
+                                settings: const RouteSettings(
+                                  name: RouteNames.playerDetailView,
+                                ),
                                 builder: (context) => PlayerDetailView(
                                   player: member,
                                   onPlayerUpdated: () {

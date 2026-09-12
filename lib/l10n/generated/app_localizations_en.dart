@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Click another player to create a pair';
 
   @override
+  String get close => 'Close';
+
+  @override
   String get code_copied => 'Code copied to clipboard';
 
   @override
@@ -124,6 +127,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm => 'Confirm';
+
+  @override
+  String get continue_ => 'Continue';
 
   @override
   String get copy_code => 'Copy Code';
@@ -255,6 +261,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit_player => 'Edit player';
 
   @override
+  String get email_optional => 'Email address (optional)';
+
+  @override
   String get enable => 'Enable';
 
   @override
@@ -288,6 +297,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error_reading_file => 'Error reading file';
 
   @override
+  String get error_sending_feedback =>
+      'Feedback could not be sent. Please try again.';
+
+  @override
   String get error_while_processing_file_try_again =>
       'Error while processing file. Please try again.';
 
@@ -304,6 +317,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favourites => 'Favourites';
+
+  @override
+  String get feedback_hint => 'Your message or feedback (required)';
+
+  @override
+  String get feedback_info_text =>
+      'Your feedback helps us continuously improve Tallee!';
 
   @override
   String get file_couldnt_be_accessed => 'The file could not be accessed';
@@ -376,6 +396,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get input_token_instruction =>
       'Input a match share token another person created using Tallee to import the match.';
+
+  @override
+  String get invalid_email => 'Please enter a valid email address.';
 
   @override
   String get invalid_file => 'Invalid File.';
@@ -472,6 +495,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get members => 'Members';
+
+  @override
+  String get name_optional => 'Name (optional)';
 
   @override
   String get names_or_descriptions_too_long =>
@@ -727,9 +753,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Send this code to a person who also has Tallee to share the current match.';
 
   @override
-  String server_error(int statusCode) {
-    return 'Server error: $statusCode';
-  }
+  String get send_feedback => 'Send feedback';
+
+  @override
+  String get sending => 'Sending...';
+
+  @override
+  String get server_error => 'Internal server error';
 
   @override
   String get set_name => 'Set name';
@@ -798,6 +828,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teams => 'Teams';
 
   @override
+  String get thank_you_for_feedback => 'Thank you for your feedback!';
+
+  @override
   String get there_are_no_games_matching_your_search =>
       'There are no games matching your search';
 
@@ -849,7 +882,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknown_exception => 'Unknown Exception (see console)';
 
   @override
-  String get winners => 'Winner';
+  String get version => 'Version';
+
+  @override
+  String get whats_new => 'What\'s new?';
+
+  @override
+  String get winner => 'Winner';
 
   @override
   String get winrate => 'Winrate';

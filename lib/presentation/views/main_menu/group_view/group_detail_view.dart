@@ -6,7 +6,8 @@ import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/create_group_view.dart';
 import 'package:tallee/presentation/views/main_menu/player_view/player_detail_view.dart';
 import 'package:tallee/presentation/widgets/buttons/buttons.dart';
@@ -163,6 +164,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                         onTileTap: () {
                           Navigator.of(context).pushReplacement(
                             adaptivePageRoute(
+                              settings: const RouteSettings(
+                                name: RouteNames.playerDetailView,
+                              ),
                               builder: (context) => PlayerDetailView(
                                 player: member,
                                 onPlayerUpdated: widget.callback,
@@ -195,6 +199,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                   final updatedGroup = await Navigator.push<Group?>(
                     context,
                     adaptivePageRoute(
+                      settings: const RouteSettings(
+                        name: RouteNames.createGroupView,
+                      ),
                       builder: (context) {
                         return CreateGroupView(
                           groupToEdit: group,

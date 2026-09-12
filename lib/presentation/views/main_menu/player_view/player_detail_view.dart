@@ -6,8 +6,9 @@ import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/data/db/database.dart';
 import 'package:tallee/data/models/models.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
 import 'package:tallee/presentation/utils/name_display.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/group_view/group_detail_view.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_detail_view.dart';
 import 'package:tallee/presentation/views/main_menu/player_view/edit_player_view.dart';
@@ -219,6 +220,9 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                       adaptivePageRoute(
+                                        settings: const RouteSettings(
+                                          name: RouteNames.groupDetailView,
+                                        ),
                                         builder: (context) => GroupDetailView(
                                           group: group,
                                           callback: widget.onPlayerUpdated,
@@ -263,6 +267,9 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(
                                     adaptivePageRoute(
+                                      settings: const RouteSettings(
+                                        name: RouteNames.matchDetailView,
+                                      ),
                                       builder: (context) => MatchDetailView(
                                         match: match,
                                         onMatchUpdate: widget.onPlayerUpdated,

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants/constants.dart';
@@ -18,9 +19,9 @@ class RemoteShareService {
   final http.Client httpClient;
 
   RemoteShareService({http.Client? httpClient})
-    : httpClient = httpClient ?? http.Client();
+    : httpClient = httpClient ?? SentryHttpClient();
 
-  Future<String> getShareToken(Match match) async {
+  Future<ShareCreateResponse> getShareToken(Match match) async {
     try {
       final response = await httpClient.post(
         Uri.parse('${getApiBaseUrl()}/v1/shares/'),
@@ -34,11 +35,7 @@ class RemoteShareService {
 
       final Map<String, dynamic> data = jsonDecode(response.body);
 
-      if (!data.containsKey('token')) {
-        throw ParsingException();
-      }
-
-      return data['token'] as String;
+      return ShareCreateResponse.fromJson(data);
     } on SocketException {
       // No internet connection or server down
       throw NetworkException();

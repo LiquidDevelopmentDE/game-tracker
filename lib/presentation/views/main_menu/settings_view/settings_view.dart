@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tallee/core/common.dart';
 import 'package:tallee/core/constants/constants.dart';
 import 'package:tallee/core/custom_theme.dart';
 import 'package:tallee/core/enums.dart';
 import 'package:tallee/l10n/generated/app_localizations.dart';
-import 'package:tallee/presentation/utils/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/adaptive_page_route.dart';
+import 'package:tallee/presentation/utils/navigation/route_names.dart';
 import 'package:tallee/presentation/views/main_menu/match_view/match_receive/match_receive_view.dart';
+import 'package:tallee/presentation/views/main_menu/settings_view/feedback_form_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/licenses/licenses_view.dart';
 import 'package:tallee/presentation/views/main_menu/settings_view/privacy_policy_view.dart';
 import 'package:tallee/presentation/views/preview_import_data_view.dart';
@@ -22,6 +23,7 @@ import 'package:tallee/presentation/widgets/custom_snack_bar.dart';
 import 'package:tallee/presentation/widgets/dialog/custom_alert_dialog.dart';
 import 'package:tallee/presentation/widgets/tiles/settings_list_tile.dart';
 import 'package:tallee/services/local_share_service.dart';
+import 'package:tallee/services/package_info_service.dart';
 import 'package:tallee/services/shared_preferences_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -35,19 +37,13 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  PackageInfo _packageInfo = PackageInfo(
-    appName: 'n.A.',
-    packageName: 'n.A.',
-    version: 'n.A.',
-    buildNumber: 'n.A.',
-  );
+  final PackageInfo packageInfo = PackageInfoService.info;
 
   bool isOnlineSharingEnabled = false;
 
   @override
   void initState() {
     super.initState();
-    _initPackageInfo();
     loadSettings();
   }
 
@@ -115,6 +111,26 @@ class _SettingsViewState extends State<SettingsView> {
                     onPressed: () =>
                         showDeleteDialog(scaffoldMessengerContext, loc),
                   ),
+                  SettingsListTile(
+                    title: loc.send_feedback,
+                    icon: Icons.chat_bubble_outline_rounded,
+                    suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onPressed: () async {
+                      final result = await Navigator.push<bool>(
+                        context,
+                        MaterialPageRoute<bool>(
+                          fullscreenDialog: true,
+                          builder: (context) => const FeedbackFormView(),
+                        ),
+                      );
+                      if (result == true && scaffoldMessengerContext.mounted) {
+                        showSnackbar(
+                          context: scaffoldMessengerContext,
+                          message: loc.thank_you_for_feedback,
+                        );
+                      }
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 16,
@@ -136,7 +152,10 @@ class _SettingsViewState extends State<SettingsView> {
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
+                        adaptivePageRoute(
+                          settings: const RouteSettings(
+                            name: RouteNames.licensesView,
+                          ),
                           builder: (context) => const LicensesView(),
                         ),
                       );
@@ -213,7 +232,7 @@ class _SettingsViewState extends State<SettingsView> {
                             ),
                           ),
                           Text(
-                            'Version ${_packageInfo.version} (${_packageInfo.buildNumber})',
+                            '${loc.version} ${packageInfo.version} (${packageInfo.buildNumber})',
                             style: TextStyle(
                               color: Colors.grey.shade600,
                               fontSize: 14,
@@ -313,14 +332,6 @@ class _SettingsViewState extends State<SettingsView> {
         .showSnackBar(CustomSnackBar(message: message));
   }
 
-  /// Initializes the package information.
-  Future<void> _initPackageInfo() async {
-    final info = await PackageInfo.fromPlatform();
-    setState(() {
-      _packageInfo = info;
-    });
-  }
-
   void handleExport(BuildContext scaffoldMessengerContext) async {
     final String json = await LocalShareService.getAppDataAsJson(
       scaffoldMessengerContext,
@@ -368,6 +379,7 @@ class _SettingsViewState extends State<SettingsView> {
     final result = await Navigator.of(scaffoldMessengerContext)
         .push<ImportResult>(
           adaptivePageRoute<ImportResult>(
+            settings: const RouteSettings(name: RouteNames.importFile),
             fullscreenDialog: true,
             builder: (_) => PreviewImportDataView(filePath: path),
           ),
