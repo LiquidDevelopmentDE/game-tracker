@@ -387,6 +387,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The following data will be imported';
 
   @override
+  String get incompatible_version =>
+      'This file was created with a different version of Tallee and can\'t be imported. Please update your app and try again.';
+
+  @override
   String get info => 'Info';
 
   @override
@@ -876,6 +880,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknown_exception => 'Unknown Exception (see console)';
+
+  @override
+  String get update_app_version =>
+      'Please update your apps to the newest version and try it again.';
 
   @override
   String get version => 'Version';
