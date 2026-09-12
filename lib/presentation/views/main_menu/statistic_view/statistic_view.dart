@@ -385,6 +385,7 @@ class _StatisticsViewState extends State<StatisticsView> {
               child: FloatingAnimatedButton(
                 text: loc.create_statistic,
                 icon: STATISTIC_ICON,
+                showAddBadge: true,
                 onPressed: () async {
                   if (!mounted) return;
                   final navigator = Navigator.of(this.context);
