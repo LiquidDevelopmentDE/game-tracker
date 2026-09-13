@@ -17,7 +17,7 @@ enum ApiButtonState { idle, loading, success, error }
 /// - [ImportResult.success]: The import operation was successful.
 /// - [ImportResult.canceled]: The import operation was canceled by the user.
 /// - [ImportResult.fileReadError]: There was an error reading the selected file.
-/// /// - [ImportResult.fileNotFound]: The selected file was not found.
+/// - [ImportResult.fileNotFound]: The selected file was not found.
 /// - [ImportResult.invalidSchema]: The JSON schema of the imported data is invalid.
 /// - [ImportResult.invalidData]: The JSON Schema is correct, but the data itself is invalid.
 /// - [ImportResult.formatException]: A format exception occurred during import.
