@@ -27,7 +27,7 @@ class _DataManagementViewState extends State<DataManagementView> {
       child: Builder(
         builder: (scaffoldMessengerContext) {
           return Scaffold(
-            appBar: AppBar(title: Text(loc.data_management)),
+            appBar: AppBar(title: Text(loc.data_backup)),
             backgroundColor: CustomTheme.backgroundColor,
             body: SingleChildScrollView(
               child: Column(
@@ -43,7 +43,7 @@ class _DataManagementViewState extends State<DataManagementView> {
                     ),
                     child: Text(
                       textAlign: TextAlign.start,
-                      loc.import_export,
+                      loc.export_import,
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

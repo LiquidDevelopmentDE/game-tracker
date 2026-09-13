@@ -422,11 +422,11 @@ abstract class AppLocalizations {
   /// **'Data'**
   String get data;
 
-  /// No description provided for @import_export.
+  /// No description provided for @export_import.
   ///
   /// In en, this message translates to:
-  /// **'Import/Export'**
-  String get import_export;
+  /// **'Export/Import'**
+  String get export_import;
 
   /// No description provided for @danger_zone.
   ///
@@ -434,11 +434,11 @@ abstract class AppLocalizations {
   /// **'Danger Zone'**
   String get danger_zone;
 
-  /// No description provided for @data_management.
+  /// No description provided for @data_backup.
   ///
   /// In en, this message translates to:
-  /// **'Data Management'**
-  String get data_management;
+  /// **'Data & Backup'**
+  String get data_backup;
 
   /// No description provided for @data_successfully_deleted.
   ///
@@ -677,7 +677,7 @@ abstract class AppLocalizations {
   /// No description provided for @export_description.
   ///
   /// In en, this message translates to:
-  /// **'Export all your games, players, and matches to a file. This is meant as a backup or for transferring data between devices, not for sharing matches with others, for that use the match share functionality.'**
+  /// **'Export all your games, players, match templates, and game templates into a single file. This serves as a backup or for transferring data to a new device. If you want to share a game with friends, open the game and select \"Share\".'**
   String get export_description;
 
   /// No description provided for @favourites.
@@ -803,7 +803,7 @@ abstract class AppLocalizations {
   /// No description provided for @import_description.
   ///
   /// In en, this message translates to:
-  /// **'Import your Tallee data (.json) from a previously exported file. This is meant for transferring data between devices or restoring a backup, not for importing shared matches,  for that use the match import functionality.'**
+  /// **'Import your Tallee data (.json) from a previously exported file. This is meant for restoring a backup or transferring data between devices. To import shared matches, tap the QR code icon in the match view.'**
   String get import_description;
 
   /// No description provided for @general.

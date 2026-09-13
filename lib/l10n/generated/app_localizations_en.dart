@@ -176,13 +176,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get data => 'Data';
 
   @override
-  String get import_export => 'Import/Export';
+  String get export_import => 'Export/Import';
 
   @override
   String get danger_zone => 'Danger Zone';
 
   @override
-  String get data_management => 'Data Management';
+  String get data_backup => 'Data & Backup';
 
   @override
   String get data_successfully_deleted => 'Data successfully deleted';
@@ -326,7 +326,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get export_description =>
-      'Export all your games, players, and matches to a file. This is meant as a backup or for transferring data between devices, not for sharing matches with others, for that use the match share functionality.';
+      'Export all your games, players, match templates, and game templates into a single file. This serves as a backup or for transferring data to a new device. If you want to share a game with friends, open the game and select \"Share\".';
 
   @override
   String get favourites => 'Favourites';
@@ -394,7 +394,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get import_description =>
-      'Import your Tallee data (.json) from a previously exported file. This is meant for transferring data between devices or restoring a backup, not for importing shared matches,  for that use the match import functionality.';
+      'Import your Tallee data (.json) from a previously exported file. This is meant for restoring a backup or transferring data between devices. To import shared matches, tap the QR code icon in the match view.';
 
   @override
   String get general => 'General';

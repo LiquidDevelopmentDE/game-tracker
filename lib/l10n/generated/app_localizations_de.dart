@@ -179,13 +179,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get data => 'Daten';
 
   @override
-  String get import_export => 'Import/Export';
+  String get export_import => 'Export/Import';
 
   @override
   String get danger_zone => 'Gefahrenzone';
 
   @override
-  String get data_management => 'Datenverwaltung';
+  String get data_backup => 'Data & Backup';
 
   @override
   String get data_successfully_deleted => 'Daten erfolgreich gelöscht';
@@ -399,7 +399,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get import_description =>
-      'Importiere deine Tallee-Daten (.json) aus einer zuvor exportierten Datei. Dies dient dem Übertragen von Daten zwischen Geräten oder dem Wiederherstellen eines Backups, nicht dem Importieren geteilter Spiele. Nutze dafür die Funktion zum Empfangen von Spielen.';
+      'Importiere deine Tallee-Daten (.json) aus einer zuvor exportierten Datei. Dies dient zum Wiederherstellen eines Backups oder zum Übertragen von Daten auf ein neues Gerät. Um geteilte Spiele zu importieren, tippe auf das QR-Code-Symbol in der Spielansicht.';
 
   @override
   String get general => 'Allgemein';
