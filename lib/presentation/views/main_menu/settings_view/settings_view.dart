@@ -110,7 +110,7 @@ class _SettingsViewState extends State<SettingsView> {
                     onPressed: null,
                   ),
                   SettingsListTile(
-                    title: loc.data_management,
+                    title: loc.data_backup,
                     icon: Icons.storage_rounded,
                     suffixWidget: const Icon(Icons.arrow_forward_ios, size: 16),
                     onPressed: () {
